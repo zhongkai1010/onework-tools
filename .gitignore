@@ -3,3 +3,6 @@
 /src/OneWork/.vs
 /src/OneWork.Core.App/obj
 /src/OneWork.Core.App/bin
+/src/OneWork.Core/bin
+/src/OneWork.Core/obj
+/src/.vs
