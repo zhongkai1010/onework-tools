@@ -1,28 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using asp_net_core_autofac.Server;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using OneWork.Server.Base;
+using OneWork.Server.Repository;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
-namespace asp_net_core_autofac
+namespace OneWork
 {
+    /// <summary>
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
@@ -30,9 +35,14 @@ namespace asp_net_core_autofac
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddControllersAsServices();
+            services.AddControllers(options => { options.Filters.Add<ResponseResultFilterAttribute>(); })
+                .AddControllersAsServices();
 
             services.AddSwaggerGen();
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
+
+            services.AddDbContext<OneWorkDbContext>(options => options.UseInMemoryDatabase("one_work"));
         }
 
         /// <summary>
@@ -47,8 +57,14 @@ namespace asp_net_core_autofac
                     .Where(type => typeof(ControllerBase)
                         .IsAssignableFrom(type))
                     .ToArray();
-            builder.RegisterType<ControllerLoggerInterceptor>();
-            builder.RegisterTypes(controllersTypesInAssembly).EnableClassInterceptors().InterceptedBy(typeof(ControllerLoggerInterceptor)); //∆Ù”√¿πΩÿ
+            builder.RegisterType<ControllerEfTransactionInterceptor>();
+            builder.RegisterTypes(controllersTypesInAssembly).EnableClassInterceptors()
+                .InterceptedBy(typeof(ControllerEfTransactionInterceptor)); //∆Ù”√¿πΩÿ
+            builder.RegisterType(typeof(IRepository<>));
+            builder.RegisterType(typeof(BaseRepository<>));
+            builder.RegisterType<UserRepository>().As<IUserRepository>();
+            builder.RegisterType(typeof(OneWorkDbContext)).As<DbContext>();
+            builder.RegisterType<OneWorkDatabaseContext>().As<IDatabaseContext>().SingleInstance();
         }
 
         /// <summary>
@@ -66,10 +82,7 @@ namespace asp_net_core_autofac
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseRouting();
 

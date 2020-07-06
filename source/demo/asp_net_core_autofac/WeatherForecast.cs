@@ -1,6 +1,6 @@
 using System;
 
-namespace asp_net_core_autofac
+namespace OneWork
 {
     public class WeatherForecast
     {
