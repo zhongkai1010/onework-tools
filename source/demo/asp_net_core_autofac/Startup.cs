@@ -1,15 +1,20 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using asp_net_core_autofac.Server;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
-using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace OneWork.Web.App
+namespace asp_net_core_autofac
 {
     public class Startup
     {
@@ -42,8 +47,8 @@ namespace OneWork.Web.App
                     .Where(type => typeof(ControllerBase)
                         .IsAssignableFrom(type))
                     .ToArray();
-            builder.RegisterType<CallLogger>();
-            builder.RegisterTypes(controllersTypesInAssembly).EnableClassInterceptors().InterceptedBy(typeof(CallLogger)); //∆Ù”√¿πΩÿ
+            builder.RegisterType<ControllerLoggerInterceptor>();
+            builder.RegisterTypes(controllersTypesInAssembly).EnableClassInterceptors().InterceptedBy(typeof(ControllerLoggerInterceptor)); //∆Ù”√¿πΩÿ
         }
 
         /// <summary>
@@ -54,7 +59,7 @@ namespace OneWork.Web.App
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
-              app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

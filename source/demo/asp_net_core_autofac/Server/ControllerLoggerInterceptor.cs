@@ -2,9 +2,9 @@
 using System.Linq;
 using Castle.DynamicProxy;
 
-namespace OneWork.Web.App
+namespace asp_net_core_autofac.Server
 {
-    public class CallLogger : IInterceptor
+    public class ControllerLoggerInterceptor : IInterceptor
     {
         public void Intercept(IInvocation invocation)
         {

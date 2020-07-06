@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace OneWork.Web.App.Controllers
+namespace asp_net_core_autofac.Controllers
 {
     [ApiController]
-  
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
@@ -18,13 +18,13 @@ namespace OneWork.Web.App.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public  WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
         }
 
         [HttpGet]
-        public virtual  IEnumerable<WeatherForecast> Get()
+        public virtual IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

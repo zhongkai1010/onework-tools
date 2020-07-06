@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:53186",
-      "sslPort": 44338
+      "applicationUrl": "http://localhost:62730",
+      "sslPort": 44335
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "OneWork.Web.App": {
+    "asp_net_core_autofac": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -32,11 +32,11 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "ASPNETCORE_URLS": "https://+:443;http://+:80",
-        "ASPNETCORE_HTTPS_PORT": "44339"
+        "ASPNETCORE_HTTPS_PORT": "44336"
       },
-      "httpPort": 53189,
+      "httpPort": 62731,
       "useSSL": true,
-      "sslPort": 44339
+      "sslPort": 44336
     }
   }
 }

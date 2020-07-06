@@ -8,16 +8,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-nanoserver-1809 AS build
 WORKDIR /src
-COPY ["OneWork.Web.App/OneWork.Web.App.csproj", "OneWork.Web.App/"]
-RUN dotnet restore "OneWork.Web.App/OneWork.Web.App.csproj"
+COPY ["asp_net_core_autofac/asp_net_core_autofac.csproj", "asp_net_core_autofac/"]
+RUN dotnet restore "asp_net_core_autofac/asp_net_core_autofac.csproj"
 COPY . .
-WORKDIR "/src/OneWork.Web.App"
-RUN dotnet build "OneWork.Web.App.csproj" -c Release -o /app/build
+WORKDIR "/src/asp_net_core_autofac"
+RUN dotnet build "asp_net_core_autofac.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "OneWork.Web.App.csproj" -c Release -o /app/publish
+RUN dotnet publish "asp_net_core_autofac.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "OneWork.Web.App.dll"]
+ENTRYPOINT ["dotnet", "asp_net_core_autofac.dll"]
