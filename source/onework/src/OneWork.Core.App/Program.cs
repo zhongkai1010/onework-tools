@@ -23,8 +23,7 @@ namespace OneWork.Core.App
             Console.WriteLine("Insert Role");
         }
     }
-
-
+ 
     class Program
     {
         static void Main(string[] args)
