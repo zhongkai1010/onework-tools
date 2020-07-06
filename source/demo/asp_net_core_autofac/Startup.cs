@@ -42,7 +42,7 @@ namespace OneWork
 
             services.AddAutoMapper(typeof(Startup).Assembly);
 
-            services.AddDbContext<OneWorkDbContext>(options => options.UseInMemoryDatabase("one_work"));
+           
         }
 
         /// <summary>
@@ -63,8 +63,9 @@ namespace OneWork
             builder.RegisterType(typeof(IRepository<>));
             builder.RegisterType(typeof(BaseRepository<>));
             builder.RegisterType<UserRepository>().As<IUserRepository>();
-            builder.RegisterType(typeof(OneWorkDbContext)).As<DbContext>();
             builder.RegisterType<OneWorkDatabaseContext>().As<IDatabaseContext>().SingleInstance();
+
+            builder.Register(c=>new OneWorkDbContext() ).As<DbContext>().SingleInstance();
         }
 
         /// <summary>

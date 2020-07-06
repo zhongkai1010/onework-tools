@@ -36,27 +36,27 @@ namespace OneWork.Server.Base
         public void Intercept(IInvocation invocation)
         {
 
-            //_logger.LogWarning("Calling method {0} with parameters {1}... ",
-            //    invocation.Method.Name,
-            //    string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray()));
+            _logger.LogWarning("Calling method {0} with parameters {1}... ",
+                invocation.Method.Name,
+                string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray()));
 
-            //IDbContextTransaction dbTransaction = _databaseContext.GetDbContext().Database.BeginTransaction();
+            IDbContextTransaction dbTransaction = _databaseContext.GetDbContext().Database.BeginTransaction();
 
             try
             {
                 invocation.Proceed();
 
-                //_databaseContext.GetDbContext().SaveChanges();
+                _databaseContext.GetDbContext().SaveChanges();
 
-                //dbTransaction.Commit();
+                dbTransaction.Commit();
             }
             catch (Exception)
             {
-                //dbTransaction.Rollback();
-                //throw;
+                dbTransaction.Rollback();
+                throw;
             }
 
-           // _logger.LogWarning("Done: result was {0}.", invocation.ReturnValue);
+            _logger.LogWarning("Done: result was {0}.", invocation.ReturnValue);
         }
     }
 }
