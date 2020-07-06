@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-namespace asp_net_core_autofac.Controllers
+namespace OneWork.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -18,7 +20,11 @@ namespace asp_net_core_autofac.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public  WeatherForecastController(ILogger<WeatherForecastController> logger)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"></param>
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
         }
@@ -37,7 +43,7 @@ namespace asp_net_core_autofac.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
