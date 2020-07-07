@@ -3,17 +3,17 @@
 namespace OneWork.Server.Base
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public class OneWorkDatabaseContext:IDatabaseContext
+    public class OneWorkDatabaseContext : IDatabaseContext
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private readonly DbContext _dbContext;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dbContext"></param>
         public OneWorkDatabaseContext(DbContext dbContext)
@@ -22,7 +22,7 @@ namespace OneWork.Server.Base
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public DbContext GetDbContext()

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace OneWork.Server.Base
 {
@@ -10,19 +10,18 @@ namespace OneWork.Server.Base
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected DbContext DbContext;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="databaseContext"></param>
         public BaseRepository(IDatabaseContext databaseContext)
         {
             DbContext = databaseContext.GetDbContext();
         }
-
 
         /// <summary>
         /// </summary>
@@ -31,7 +30,6 @@ namespace OneWork.Server.Base
         {
             entity.Id = Guid.NewGuid();
             DbContext.Set<TEntity>().Add(entity);
-        
         }
 
         /// <summary>
@@ -39,9 +37,8 @@ namespace OneWork.Server.Base
         /// <param name="entity"></param>
         public virtual void Update(TEntity entity)
         {
-            DbContext.Attach(entity);
+            DbContext.Entry(entity).State = EntityState.Modified;
             DbContext.Update(entity);
-     
         }
 
         /// <summary>
@@ -51,7 +48,6 @@ namespace OneWork.Server.Base
         {
             DbContext.Attach(entity);
             DbContext.Remove(entity);
-     
         }
 
         /// <summary>

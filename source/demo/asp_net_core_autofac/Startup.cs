@@ -4,13 +4,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OneWork.Server.Base;
 using OneWork.Server.Repository;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace OneWork
 {
@@ -41,8 +41,6 @@ namespace OneWork
             services.AddSwaggerGen();
 
             services.AddAutoMapper(typeof(Startup).Assembly);
-
-           
         }
 
         /// <summary>
@@ -64,8 +62,7 @@ namespace OneWork
             builder.RegisterType(typeof(BaseRepository<>));
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<OneWorkDatabaseContext>().As<IDatabaseContext>().SingleInstance();
-
-            builder.Register(c=>new OneWorkDbContext() ).As<DbContext>().SingleInstance();
+            builder.Register(c => new OneWorkDbContext()).As<DbContext>();
         }
 
         /// <summary>

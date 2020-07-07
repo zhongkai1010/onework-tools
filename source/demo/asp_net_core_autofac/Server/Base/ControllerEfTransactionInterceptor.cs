@@ -1,8 +1,9 @@
-﻿using System;
-using Castle.DynamicProxy;
-using Microsoft.Extensions.Logging;
-using System.Linq;
+﻿using Castle.DynamicProxy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace OneWork.Server.Base
 {
@@ -16,17 +17,17 @@ namespace OneWork.Server.Base
         /// </summary>
         private readonly ILogger<ControllerEfTransactionInterceptor> _logger;
 
-        private readonly IDatabaseContext _databaseContext;
+        private readonly DbContext _dbContext;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="databaseContext"></param>
         public ControllerEfTransactionInterceptor(ILogger<ControllerEfTransactionInterceptor> logger, IDatabaseContext databaseContext)
         {
             _logger = logger;
-            _databaseContext = databaseContext;
+            _dbContext = databaseContext.GetDbContext();
         }
 
         /// <summary>
@@ -35,18 +36,17 @@ namespace OneWork.Server.Base
         /// <param name="invocation"></param>
         public void Intercept(IInvocation invocation)
         {
-
             _logger.LogWarning("Calling method {0} with parameters {1}... ",
                 invocation.Method.Name,
                 string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray()));
 
-            IDbContextTransaction dbTransaction = _databaseContext.GetDbContext().Database.BeginTransaction();
+            IDbContextTransaction dbTransaction = _dbContext.Database.BeginTransaction();
 
             try
             {
                 invocation.Proceed();
 
-                _databaseContext.GetDbContext().SaveChanges();
+                _dbContext.SaveChanges();
 
                 dbTransaction.Commit();
             }

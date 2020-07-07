@@ -40,7 +40,7 @@ namespace OneWork.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public User Post(User user)
+        public virtual User Post(User user)
         {
             _userRepository.Insert(user);
             return user;
@@ -52,7 +52,7 @@ namespace OneWork.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPut]
-        public User Put(User user)
+        public virtual User Put(User user)
         {
             _userRepository.Update(user);
             return user;
@@ -63,7 +63,7 @@ namespace OneWork.Controllers
         /// </summary>
         /// <param name="user"></param>
         [HttpDelete]
-        public void Delete(User user)
+        public virtual void Delete(User user)
         {
             _userRepository.Delete(user);
         }

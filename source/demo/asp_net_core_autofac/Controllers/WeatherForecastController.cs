@@ -7,7 +7,7 @@ using System.Linq;
 namespace OneWork.Controllers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -21,7 +21,7 @@ namespace OneWork.Controllers
         private readonly ILogger<WeatherForecastController> _logger;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="logger"></param>
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
