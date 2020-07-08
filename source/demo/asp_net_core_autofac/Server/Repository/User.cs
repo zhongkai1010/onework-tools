@@ -1,20 +1,14 @@
 ﻿using OneWork.Server.Base;
-using System;
 
 namespace OneWork.Server.Repository
 {
     /// <summary>
     ///
     /// </summary>
-    public class User : IEntity
+    public class User : EntityBase
     {
         /// <summary>
-        ///
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        ///
+        /// 
         /// </summary>
         public string Name { get; set; }
     }

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using OneWork.Server.Base;
 using OneWork.Server.Repository;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 
 namespace OneWork.Controllers
 {
@@ -15,13 +17,17 @@ namespace OneWork.Controllers
     {
         private readonly IUserRepository _userRepository;
 
+        private IMapper _mapper;
+
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="userRepository"></param>
-        public UserController(IUserRepository userRepository)
+        /// <param name="mapper"></param>
+        public UserController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -42,6 +48,7 @@ namespace OneWork.Controllers
         [HttpPost]
         public virtual User Post(User user)
         {
+
             _userRepository.Insert(user);
             return user;
         }
@@ -54,8 +61,15 @@ namespace OneWork.Controllers
         [HttpPut]
         public virtual User Put(User user)
         {
-            _userRepository.Update(user);
-            return user;
+            IQueryable<User> queryable = _userRepository.GetQueryable();
+            User local = queryable.FirstOrDefault(t => t.Id == user.Id);
+            if (local == null)
+            {
+                throw new ArgumentException("该用户不存在，请重新操作。");
+            }
+            _mapper.Map(user, local);
+            _userRepository.Update(local);
+            return local;
         }
 
         /// <summary>

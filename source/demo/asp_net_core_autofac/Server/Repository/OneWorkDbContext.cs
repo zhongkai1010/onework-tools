@@ -21,7 +21,7 @@ namespace OneWork.Server.Repository
         /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=onework;Uid=root;Pwd=123qwe!@#;");
+            optionsBuilder.UseMySql("Server=127.0.0.1;Database=onework;Uid=root;Pwd=123qwe!@#;CharSet=utf8;");
             optionsBuilder.UseLoggerFactory(MyLoggerFactory);
         }
 

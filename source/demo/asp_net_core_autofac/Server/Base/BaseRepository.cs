@@ -28,7 +28,7 @@ namespace OneWork.Server.Base
         /// <param name="entity"></param>
         public virtual void Insert(TEntity entity)
         {
-            entity.Id = Guid.NewGuid();
+            entity.Uuid = Guid.NewGuid().ToString();
             DbContext.Set<TEntity>().Add(entity);
         }
 
@@ -37,7 +37,7 @@ namespace OneWork.Server.Base
         /// <param name="entity"></param>
         public virtual void Update(TEntity entity)
         {
-            DbContext.Entry(entity).State = EntityState.Modified;
+            DbContext.Attach(entity);
             DbContext.Update(entity);
         }
 

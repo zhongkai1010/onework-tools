@@ -10,6 +10,11 @@ namespace OneWork.Server.Base
         /// <summary>
         ///
         /// </summary>
-        Guid Id { get; set; }
+        int Id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string Uuid { get; set; }
     }
 }
