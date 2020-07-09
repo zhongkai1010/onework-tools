@@ -67,7 +67,7 @@ namespace OneWork.Controllers
             {
                 throw new ArgumentException("该用户不存在，请重新操作。");
             }
-            _mapper.Map(user, local);
+            local = _mapper.Map<User>(user);
             _userRepository.Update(local);
             return local;
         }

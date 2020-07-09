@@ -5,6 +5,7 @@
     <UserSecretsId>a2bcd8aa-e5ad-4250-9e2d-ba551f068b3b</UserSecretsId>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <RootNamespace>OneWork</RootNamespace>
+    <AssemblyName>asp_net_core_autofac</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
