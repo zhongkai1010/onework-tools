@@ -1,3 +1,4 @@
+using dynamic_asp_net_core.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,9 @@ namespace dynamic_asp_net_core
             services.AddControllers();
 
             services.AddSwaggerGen();
+
+            services.AddDynamicControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
