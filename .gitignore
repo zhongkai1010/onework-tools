@@ -22,3 +22,5 @@
 /source/demo/.vs
 /source/demo/dynamic_asp_net_core/obj
 /source/demo/dynamic_asp_net_core/bin
+/source/demo/net_core_ef/obj
+/source/demo/net_core_ef/bin

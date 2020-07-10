@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asp_net_core_autofac", "asp_net_core_autofac\asp_net_core_autofac.csproj", "{60299396-5CD5-4182-BF65-B9F08C572AFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dynamic_asp_net_core", "dynamic_asp_net_core\dynamic_asp_net_core.csproj", "{6B9E16A9-3407-4D5C-A009-49BF4CFA1E0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dynamic_asp_net_core", "dynamic_asp_net_core\dynamic_asp_net_core.csproj", "{6B9E16A9-3407-4D5C-A009-49BF4CFA1E0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net_core_ef", "net_core_ef\net_core_ef.csproj", "{CCBEFECD-EFEC-4D8D-AECE-E38DA6D25080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6B9E16A9-3407-4D5C-A009-49BF4CFA1E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B9E16A9-3407-4D5C-A009-49BF4CFA1E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B9E16A9-3407-4D5C-A009-49BF4CFA1E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCBEFECD-EFEC-4D8D-AECE-E38DA6D25080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBEFECD-EFEC-4D8D-AECE-E38DA6D25080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBEFECD-EFEC-4D8D-AECE-E38DA6D25080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBEFECD-EFEC-4D8D-AECE-E38DA6D25080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
