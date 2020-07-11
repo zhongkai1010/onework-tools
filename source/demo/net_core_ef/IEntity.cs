@@ -16,10 +16,5 @@ namespace net_core_ef
         /// 
         /// </summary>
         Guid Uuid { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        Guid? Tenant { get; set; }
     }
 }

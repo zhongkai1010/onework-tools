@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using RandomGen;
 
 namespace net_core_ef
 {
@@ -6,7 +8,24 @@ namespace net_core_ef
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            OneWorkDbContext dbContext = new OneWorkDbContext();
+
+            //for (int i = 0; i < 10; i++)
+            //{
+
+            //    dbContext.Users.Add(new User
+            //    {
+            //        Name = Gen.Random.Names.Full()(),
+            //        TenantId =  CurrentTenant.TenantId
+
+            //    });
+            //}
+
+
+            //dbContext.SaveChanges();
+
+
+            Console.WriteLine(dbContext.Users.Count());   
         }
     }
 }
