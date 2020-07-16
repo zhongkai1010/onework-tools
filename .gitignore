@@ -28,3 +28,5 @@
 /source/demo/net_core_rabbitmq/bin
 /source/demo/net_core_rabbitmq_consumer/obj
 /source/demo/net_core_rabbitmq_consumer/bin
+/source/demo/asp_net_docker/obj
+/source/demo/asp_net_docker/bin
