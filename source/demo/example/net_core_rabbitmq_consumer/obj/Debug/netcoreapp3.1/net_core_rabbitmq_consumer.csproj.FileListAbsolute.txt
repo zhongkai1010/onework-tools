@@ -1,0 +1,14 @@
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.exe
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\obj\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.AssemblyInfoInputs.cache
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\obj\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.AssemblyInfo.cs
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\obj\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.csprojAssemblyReference.cache
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.deps.json
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.runtimeconfig.json
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.runtimeconfig.dev.json
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.dll
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.pdb
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\RabbitMQ.Client.dll
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\bin\Debug\netcoreapp3.1\System.Threading.Channels.dll
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\obj\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.csproj.CopyComplete
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\obj\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.dll
+D:\github\OneWork\source\demo\net_core_rabbitmq_consumer\obj\Debug\netcoreapp3.1\net_core_rabbitmq_consumer.pdb
