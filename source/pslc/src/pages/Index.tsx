@@ -1,22 +1,50 @@
-import React, { Component } from 'react'
+import * as React from 'react';
+import { Tabs } from 'antd';
+import Task from '@/pages/Task/Index';
+import Analysis from '@/pages/Analysis/Index';
+import Driver from '@/pages/Driver/Index';
+import Line from '@/pages//Line/Index';
+import Storage from '@/pages/Storage/Index';
+import styles from './Index.less';
 
-interface Props {
-    
+const { TabPane } = Tabs;
+
+export interface Props {}
+
+export interface State {}
+
+class Index extends React.Component<Props, State> {
+  render() {
+    const callback = () => {};
+
+    return (
+      <Tabs
+        defaultActiveKey="2"
+        onChange={callback}
+        type="card"
+        tabBarGutter={10}
+        animated={false}
+        tabBarStyle={{ margin: '0px' }}
+        size="large"
+      >
+        <TabPane tab="任务列表" key="1" className={styles.tab_panel}>
+          <Task />
+        </TabPane>
+        <TabPane tab="视频分析" key="2" className={styles.tab_panel}>
+          <Analysis />
+        </TabPane>
+        <TabPane tab="司机管理" key="3" className={styles.tab_panel}>
+          <Driver />
+        </TabPane>
+        <TabPane tab="线路管理" key="4" className={styles.tab_panel}>
+          <Line />
+        </TabPane>
+        <TabPane tab="存储管理" key="5" className={styles.tab_panel}>
+          <Storage />
+        </TabPane>
+      </Tabs>
+    );
+  }
 }
-interface State {
-    
-}
 
-class Index extends Component<Props, State> {
-    state = {}
-
-    render() {
-        return (
-            <div>
-                2222
-            </div>
-        )
-    }
-}
-
-export default Index
+export default Index;
