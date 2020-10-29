@@ -4,16 +4,21 @@ import { Row, Col, Button, Form, Input, Table } from 'antd';
 import { TaskPageState } from '@/models/task';
 import { Task } from '../../models/task';
 import { ColumnsType } from 'antd/es/table';
-import debounce from 'debounce';
 import { FormInstance } from 'antd/lib/form';
+import debounce from 'debounce';
+import styles from '@/pages/Task/Index.less';
 
 export interface IAppProps {
   dispatch: Dispatch;
   task: TaskPageState;
   loading: Loading;
 }
+export interface IAppState {
+  page: number;
+  pageSize: number;
+}
 
-class Index extends React.Component<IAppProps,IAppState> {
+class Index extends React.Component<IAppProps, IAppState> {
   formRef = React.createRef<FormInstance>();
   constructor(props: IAppProps) {
     super(props);
@@ -33,10 +38,19 @@ class Index extends React.Component<IAppProps,IAppState> {
     });
   }
   componentWillReceiveProps(nextProps: IAppProps) {}
+
   inputOnChange = () => {
     if (this.formRef.current) {
       console.log(this.formRef.current.getFieldsValue());
     }
+  };
+  tableOnSelect = (record: any, selected: any, selectedRows: any, nativeEvent: any) => {
+    const { dispatch } = this.props;
+    console.log('tableOnSelect',record)
+    dispatch({
+      type: 'index/enableAnalysisTab',
+      payload: record,
+    });
   };
   public render() {
     const columns: ColumnsType<Task> = [
@@ -96,8 +110,8 @@ class Index extends React.Component<IAppProps,IAppState> {
     };
 
     return (
-      <Row style={{ height: '100%', display: 'block' }}>
-        <Col span={24} style={{ marginBottom: '10px', height: '5vh' }}>
+      <Row className={styles.container}>
+        <Col span={24} className={styles.tools_container}>
           <Button type="primary" style={{ marginRight: '10px' }} size="large">
             新建任务
           </Button>
@@ -114,57 +128,56 @@ class Index extends React.Component<IAppProps,IAppState> {
             下载报告
           </Button>
         </Col>
-        <Col span={24} style={{ marginBottom: '10px', height: '5vh' }}>
-          <div
-            style={{ backgroundColor: 'rgb(243, 243, 241)', padding: '10px', borderRadius: '5px' }}
-          >
+        <Col span={24} className={styles.search_container}>
+          <div className={styles.from_container}>
             <Form layout="inline" ref={this.formRef} name="control-ref">
               <Form.Item label="创建时间" name="createdAt">
                 <Input
-                  style={{ width: '8vw', borderRadius: '5px' }}
+                  className={styles.from_input}
                   onChange={debounce(this.inputOnChange, 1000)}
                 />
               </Form.Item>
               <Form.Item label="机车号" name="locomotiveNo">
                 <Input
-                  style={{ width: '8vw', borderRadius: '5px' }}
+                  className={styles.from_input}
                   onChange={debounce(this.inputOnChange, 1000)}
                 />
               </Form.Item>
               <Form.Item label="车次" name="trainNo">
                 <Input
-                  style={{ width: '8vw', borderRadius: '5px' }}
+                  className={styles.from_input}
                   onChange={debounce(this.inputOnChange, 1000)}
                 />
               </Form.Item>
               <Form.Item label="司机" name="driverName">
                 <Input
-                  style={{ width: '8vw', borderRadius: '5px' }}
+                  className={styles.from_input}
                   onChange={debounce(this.inputOnChange, 1000)}
                 />
               </Form.Item>
               <Form.Item label="发车时间" name="departureDate">
                 <Input
-                  style={{ width: '8vw', borderRadius: '5px' }}
+                  className={styles.from_input}
                   onChange={debounce(this.inputOnChange, 1000)}
                 />
               </Form.Item>
               <Form.Item label="任务状态" name="taskStatus">
                 <Input
-                  style={{ width: '8vw', borderRadius: '5px' }}
+                  className={styles.from_input}
                   onChange={debounce(this.inputOnChange, 1000)}
                 />
               </Form.Item>
             </Form>
           </div>
         </Col>
-        <Col span={24} style={{ height: '60vh' }}>
+        <Col span={24} className={styles.table_container}>
           <Table
             style={{ height: '100%' }}
             rowKey="id"
             columns={columns}
             scroll={{ y: 400 }}
             loading={effects['task/load']}
+            rowSelection={{ onSelect: this.tableOnSelect, type: 'radio' }}
             dataSource={data}
             pagination={{
               showSizeChanger: true,
@@ -179,7 +192,8 @@ class Index extends React.Component<IAppProps,IAppState> {
     );
   }
 }
-export default connect(({ task, loading }: { task: any; loading: Loading }) => ({
+export default connect(({ index, task, loading }: { index: any; task: any; loading: Loading }) => ({
   loading: loading,
   task: task,
+  index: index,
 }))(Index);

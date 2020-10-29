@@ -1,17 +1,23 @@
 import * as React from 'react';
-import { Row, Col, Descriptions, Progress, Button, Tag, Space, Table } from 'antd';
+import { Row, Col, Descriptions, Progress, Button, Tag, Space, Table, Image } from 'antd';
+import { Loading, connect, Dispatch } from 'umi';
+import { IndexPageData } from '@/models/index';
+import styles from './Index.less';
 
-export interface IAppProps {}
-
+export interface IAppProps {
+  dispatch: Dispatch;
+  index: IndexPageData;
+}
 export interface IAppState {}
 
-export default class Analysis extends React.Component<IAppProps, IAppState> {
+class Index extends React.Component<IAppProps, IAppState> {
   constructor(props: IAppProps) {
     super(props);
-
     this.state = {};
   }
-
+  imgOnClick = () => {
+    alert('1')
+  };
   public render() {
     const columns = [
       {
@@ -61,7 +67,6 @@ export default class Analysis extends React.Component<IAppProps, IAppState> {
         ),
       },
     ];
-
     const data = [
       {
         key: '1',
@@ -85,22 +90,61 @@ export default class Analysis extends React.Component<IAppProps, IAppState> {
         tags: ['cool', 'teacher'],
       },
     ];
+    const { task } = this.props.index;
+    console.log(this.props);
     return (
       <Row gutter={[12, 12]}>
         <Col span={12}>
-          <Row style={{ border: '1px solid #ccc' }}>
-            <Col span={24} style={{ height: '15vh' }}>
-              <Descriptions title="User Info">
-                <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
-                <Descriptions.Item label="Live">Hangzhou, Zhejiang</Descriptions.Item>
-                <Descriptions.Item label="Remark">empty</Descriptions.Item>
-                <Descriptions.Item label="Address">
-                  No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-                </Descriptions.Item>
+          <Row style={{ border: '1px solid #EEF1F6' }}>
+            <Col span={24} className={styles.description_container}>
+              <Descriptions title={task.videoName}>
+                <Descriptions.Item label="司机">{task.driverName} </Descriptions.Item>
+                <Descriptions.Item label="副司机">{task.coDriverName}</Descriptions.Item>
+                <Descriptions.Item label="机车号">{task.locomotiveNo}</Descriptions.Item>
+                <Descriptions.Item label="车次">{task.trainNo}</Descriptions.Item>
+                <Descriptions.Item label="线路">{task.lineName}</Descriptions.Item>
               </Descriptions>
             </Col>
-            <Col span={24} style={{ height: '50vh', backgroundColor: '#ccc' }}></Col>
+            <Col span={24} className={styles.image_container}>
+              {/* <Row>
+                <Col span={24}>
+                  <Image
+                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    preview={false}
+                    className={styles.video_img}
+                  />
+                </Col>
+              </Row> */}
+              <Row>
+                <Col span={12} className={styles.video_img_h}>
+                  <img
+                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    className={styles.video_img}
+                    onClick={this.imgOnClick}
+                  />
+                </Col>
+                <Col span={12} className={styles.video_img_h}>
+                  <img
+                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    className={styles.video_img}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12} className={styles.video_img_h}>
+                  <img
+                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    className={styles.video_img}
+                  />
+                </Col>
+                <Col span={12} className={styles.video_img_h}>
+                  <img
+                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    className={styles.video_img}
+                  />
+                </Col>
+              </Row>
+            </Col>
             <Col span={24}>
               <Progress percent={30} />
               <Progress percent={50} status="active" />
@@ -129,3 +173,7 @@ export default class Analysis extends React.Component<IAppProps, IAppState> {
     );
   }
 }
+export default connect(({ index, loading }: { index: any; loading: Loading }) => ({
+  loading: loading,
+  index: index,
+}))(Index);

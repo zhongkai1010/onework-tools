@@ -1,63 +1,43 @@
 import * as React from 'react';
-import { Tabs } from 'antd';
-import Task from '@/pages/Task/Index';
-import Analysis from '@/pages/Analysis/Index';
-import Driver from '@/pages/Driver/Index';
-import Line from '@/pages//Line/Index';
-import Storage from '@/pages/Storage/Index';
-import styles from './Index.less';
+import CustomTabs from '@/components/CustomTabs';
 import { Loading, connect, Dispatch } from 'umi';
+import { IndexPageData } from '@/models/index';
 
-const { TabPane } = Tabs;
+import { TabPaneProps } from 'antd/lib/tabs';
 
 export interface Props {
   dispatch: Dispatch;
+  index: IndexPageData;
 }
 
 export interface State {}
 
 class Index extends React.Component<Props, State> {
-  componentDidMount() {
-    console.log('Index_componentDidMount');
-  }
+  tab = React.createRef<any>();
+  componentDidMount() {}
+  tabOnTabClick = (key: string) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'index/setTabKey',
+      payload: key,
+    });
+    
+  };
   render() {
-    const tabOnChange = () => {
-      console.log('tabOnChange', arguments);
-    };
-    const tabOnTabClick = () => {
-      console.log('tabOnTabClick', arguments);
-    };
+    const { tabKey, analysisTabDisabled } = this.props.index;
+    console.log('tabKey', this.tab);
     return (
-      <Tabs
-        defaultActiveKey="1"
-        onChange={tabOnChange}
-        type="card"
-        tabBarGutter={10}
-        animated={false}
-        tabBarStyle={{ margin: '0px' }}
-        size="large"
-        onTabClick={tabOnTabClick}
-      >
-        <TabPane tab="任务列表" key="1" className={styles.tab_panel}>
-          <Task />
-        </TabPane>
-        <TabPane tab="视频分析" key="2" className={styles.tab_panel}>
-          <Analysis />
-        </TabPane>
-        <TabPane tab="司机管理" key="3" className={styles.tab_panel}>
-          <Driver />
-        </TabPane>
-        <TabPane tab="线路管理" key="4" className={styles.tab_panel}>
-          <Line />
-        </TabPane>
-        <TabPane tab="存储管理" key="5" className={styles.tab_panel}>
-          <Storage />
-        </TabPane>
-      </Tabs>
+      <CustomTabs
+        ref={this.tab}
+        tabKey={tabKey}
+        onTabClick={this.tabOnTabClick}
+        analysisTabDisabled={analysisTabDisabled}
+      />
     );
   }
 }
 
-export default connect(({ loading }: { loading: Loading }) => ({
+export default connect(({ index, loading }: { index: any; loading: Loading }) => ({
   loading: loading.models.index,
+  index: index,
 }))(Index);

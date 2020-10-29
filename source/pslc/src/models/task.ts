@@ -13,6 +13,7 @@ export interface Task {
   trainNo: string; //车次
   driverId: string; //司机Id
   driverName: string; //司机名称
+  videoName:string;//视频名称
   coDriverId: string; //副司机Id
   coDriverName: string; //副司机名称
   departureDate: string; //发车时间
