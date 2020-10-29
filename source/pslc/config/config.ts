@@ -1,9 +1,6 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
-import proxy from './proxy';
-
-const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
@@ -40,9 +37,6 @@ export default defineConfig({
         },
       ],
     },
-    {
-      component: './404',
-    },
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
@@ -54,9 +48,8 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: {
     '/api': {
-      'target': 'http://ytms.net:3000/mock/8/api/',
-      'changeOrigin': true,
-      'pathRewrite': { '^/api' : '' },
+      target: 'http://ytms.net:3000/mock/14/',
+      changeOrigin: true,
     },
   },
   manifest: {

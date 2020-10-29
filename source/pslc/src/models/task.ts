@@ -1,4 +1,4 @@
-import { Effect } from 'umi';
+import { Effect, Reducer } from 'umi';
 import { taskGetList } from '@/services/index';
 /**
  * 任务
@@ -23,24 +23,68 @@ export interface Task {
   taskStatus: number; //任务状态 0：无、1：排队中、 2：分析中、3：已完成、4：已停止
 }
 
+/**
+ * 任务列表搜索参数
+ *
+ * @export
+ * @interface TaskSearchListParams
+ */
+export interface TaskSearchListParams {}
+
+/**
+ * 任务页面状态
+ *
+ * @export
+ * @interface TaskPageState
+ */
+export interface TaskPageState {
+  data: Array<Task>;
+  dataTotal: number;
+  search: TaskSearchListParams;
+}
+
+/**
+ *  任务页面model
+ *
+ * @export
+ * @interface TaskModelType
+ */
 export interface TaskModelType {
   namespace: 'task';
-  state: any;
+  state: TaskPageState;
   effects: {
-    fetch: Effect;
+    load: Effect; //检索
+    add: Effect; //添加
+    start: Effect; //启动
+    stop: Effect; //停止
+  };
+  reducers: {
+    setListData: Reducer<TaskPageState>;
   };
 }
 
 const TaskModel: TaskModelType = {
   namespace: 'task',
-  state: {},
+  state: {
+    data: [],
+    dataTotal: 0,
+    search: {},
+  },
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(taskGetList);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
+    *load({ payload }, { call, put }) {
+     
+      const data = yield call(taskGetList, payload);
+      yield put({ type: 'setListData', payload: data });
+    },
+    add: (_, {}) => {},
+    start: (_, {}) => {},
+    stop: (_, {}) => {},
+  },
+  reducers: {
+    setListData(state = { data: [], dataTotal: 0, search: {} }, { payload }) {
+      state.data = payload.result.data;
+      state.dataTotal = payload.result.total;
+      return state;
     },
   },
 };

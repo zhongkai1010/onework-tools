@@ -6,26 +6,37 @@ import Driver from '@/pages/Driver/Index';
 import Line from '@/pages//Line/Index';
 import Storage from '@/pages/Storage/Index';
 import styles from './Index.less';
+import { Loading, connect, Dispatch } from 'umi';
 
 const { TabPane } = Tabs;
 
-export interface Props {}
+export interface Props {
+  dispatch: Dispatch;
+}
 
 export interface State {}
 
 class Index extends React.Component<Props, State> {
+  componentDidMount() {
+    console.log('Index_componentDidMount');
+  }
   render() {
-    const callback = () => {};
-
+    const tabOnChange = () => {
+      console.log('tabOnChange', arguments);
+    };
+    const tabOnTabClick = () => {
+      console.log('tabOnTabClick', arguments);
+    };
     return (
       <Tabs
-        defaultActiveKey="2"
-        onChange={callback}
+        defaultActiveKey="1"
+        onChange={tabOnChange}
         type="card"
         tabBarGutter={10}
         animated={false}
         tabBarStyle={{ margin: '0px' }}
         size="large"
+        onTabClick={tabOnTabClick}
       >
         <TabPane tab="任务列表" key="1" className={styles.tab_panel}>
           <Task />
@@ -47,4 +58,6 @@ class Index extends React.Component<Props, State> {
   }
 }
 
-export default Index;
+export default connect(({ loading }: { loading: Loading }) => ({
+  loading: loading.models.index,
+}))(Index);
