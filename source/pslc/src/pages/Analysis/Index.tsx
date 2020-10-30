@@ -16,7 +16,7 @@ class Index extends React.Component<IAppProps, IAppState> {
     this.state = {};
   }
   imgOnClick = () => {
-    alert('1')
+    alert('1');
   };
   public render() {
     const columns = [
@@ -117,31 +117,18 @@ class Index extends React.Component<IAppProps, IAppState> {
               </Row> */}
               <Row>
                 <Col span={12} className={styles.video_img_h}>
-                  <img
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    className={styles.video_img}
-                    onClick={this.imgOnClick}
-                  />
+                  <img className={styles.video_img} onClick={this.imgOnClick} />
                 </Col>
                 <Col span={12} className={styles.video_img_h}>
-                  <img
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    className={styles.video_img}
-                  />
+                  <img className={styles.video_img} />
                 </Col>
               </Row>
               <Row>
                 <Col span={12} className={styles.video_img_h}>
-                  <img
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    className={styles.video_img}
-                  />
+                  <img className={styles.video_img} />
                 </Col>
                 <Col span={12} className={styles.video_img_h}>
-                  <img
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    className={styles.video_img}
-                  />
+                  <img className={styles.video_img} />
                 </Col>
               </Row>
             </Col>
@@ -152,17 +139,32 @@ class Index extends React.Component<IAppProps, IAppState> {
           </Row>
         </Col>
         <Col span={12}>
-          <Row style={{ border: '1px solid #ccc' }}>
-            <Col span={24} style={{ height: '10vh', backgroundColor: '#ccc' }}>
-              <Button type="primary" style={{ marginRight: '10px' }} size="large">
-                新建任务
-              </Button>
-              <Button type="primary" style={{ marginRight: '10px' }} size="large">
-                停止
-              </Button>
-              <Button type="primary" style={{ marginRight: '10px' }} size="large">
-                开始
-              </Button>
+          <Row>
+            <Col
+              span={24}
+              style={{
+                border: '1px solid #EEF1F6',
+                height: '8vh',
+                lineHeight: '8vh',
+                backgroundColor: 'rgb(243, 243, 244)',
+                paddingLeft: '20px',
+                marginBottom: '10px',
+                borderRadius: '5px',
+              }}
+            >
+              <span style={{ marginRight: '20px' }}>分析中</span>
+              <span>已用时间：12:13</span>
+              <div style={{ display: 'inline-block', position: 'absolute', right: 0 }}>
+                <Button type="primary" style={{ marginRight: '10px' }} size="large">
+                  新建任务
+                </Button>
+                <Button type="primary" style={{ marginRight: '10px' }} size="large">
+                  停止
+                </Button>
+                <Button type="primary" style={{ marginRight: '10px' }} size="large">
+                  开始
+                </Button>
+              </div>
             </Col>
             <Col span={24}>
               <Table columns={columns} dataSource={data} style={{ height: '100%' }} />

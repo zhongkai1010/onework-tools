@@ -17,11 +17,10 @@ export interface IAppProps {
 
 class CustomTabs extends React.Component<IAppProps> {
   public render() {
- 
-    const { tabKey, onTabClick, analysisTabDisabled } = this.props;
+    const { onTabClick, analysisTabDisabled } = this.props;
     return (
       <Tabs
-        defaultActiveKey="1"
+        defaultActiveKey="2"
         type="card"
         tabBarGutter={10}
         animated={false}

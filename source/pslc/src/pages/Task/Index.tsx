@@ -5,8 +5,8 @@ import { TaskPageState } from '@/models/task';
 import { Task } from '../../models/task';
 import { ColumnsType } from 'antd/es/table';
 import { FormInstance } from 'antd/lib/form';
-import debounce from 'debounce';
 import styles from '@/pages/Task/Index.less';
+const debounce = require('debounce');
 
 export interface IAppProps {
   dispatch: Dispatch;
@@ -46,7 +46,7 @@ class Index extends React.Component<IAppProps, IAppState> {
   };
   tableOnSelect = (record: any, selected: any, selectedRows: any, nativeEvent: any) => {
     const { dispatch } = this.props;
-    console.log('tableOnSelect',record)
+    console.log('tableOnSelect', record);
     dispatch({
       type: 'index/enableAnalysisTab',
       payload: record,
