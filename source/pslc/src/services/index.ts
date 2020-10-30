@@ -23,7 +23,6 @@ export interface TaskGetListParams {
  * @returns
  */
 export async function taskGetList(params: TaskGetListParams & ListParams) {
-  console.log(params);
   return request('/api/task/getList', {
     method: 'GET',
     params: params,

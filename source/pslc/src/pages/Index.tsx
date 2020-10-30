@@ -17,15 +17,15 @@ class Index extends React.Component<Props, State> {
   componentDidMount() {}
   tabOnTabClick = (key: string) => {
     const { dispatch } = this.props;
+    console.log('tabOnTabClick',key.toString())
     dispatch({
       type: 'index/setTabKey',
       payload: key,
     });
-    
   };
   render() {
     const { tabKey, analysisTabDisabled } = this.props.index;
-    console.log('tabKey', this.tab);
+    console.log('tabKey', tabKey);
     return (
       <CustomTabs
         ref={this.tab}

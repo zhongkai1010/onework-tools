@@ -39,9 +39,11 @@ const IndexModel: IndexModelType = {
     enableAnalysisTab(_, { payload }) {
       return { task: payload, analysisTabDisabled: false, tabKey: '2' };
     },
-    setTabKey(state = {}, { payload }) {
-      state.tabKey = payload;
-      console.log(state)
+    setTabKey(state, { payload }) {
+      Object.assign({}, state, {
+        tabKey: payload,
+      });
+      console.log('reducers',state,payload)
       return state;
     },
   },

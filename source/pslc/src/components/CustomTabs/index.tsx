@@ -17,30 +17,32 @@ export interface IAppProps {
 
 class CustomTabs extends React.Component<IAppProps> {
   public render() {
-    const { onTabClick, analysisTabDisabled } = this.props;
+    const { onTabClick, analysisTabDisabled, tabKey } = this.props;
+    console.log('CustomTabs', tabKey);
     return (
       <Tabs
-        defaultActiveKey="2"
+        defaultActiveKey="task"
         type="card"
+        activeKey={tabKey}
         tabBarGutter={10}
         animated={false}
         tabBarStyle={{ margin: '0px' }}
         onTabClick={onTabClick}
         size="large"
       >
-        <TabPane tab="任务列表" key="1" className={styles.tab_panel}>
+        <TabPane tab="任务列表" key="task" className={styles.tab_panel}>
           <Task />
         </TabPane>
-        <TabPane tab="视频分析" key="2" disabled={analysisTabDisabled} className={styles.tab_panel}>
+        <TabPane tab="视频分析" key="analysis" disabled={analysisTabDisabled} className={styles.tab_panel}>
           <Analysis />
         </TabPane>
-        <TabPane tab="司机管理" key="3" className={styles.tab_panel}>
+        <TabPane tab="司机管理" key="driver" className={styles.tab_panel}>
           <Driver />
         </TabPane>
-        <TabPane tab="线路管理" key="4" className={styles.tab_panel}>
+        <TabPane tab="线路管理" key="line" className={styles.tab_panel}>
           <Line />
         </TabPane>
-        <TabPane tab="存储管理" key="5" className={styles.tab_panel}>
+        <TabPane tab="存储管理" key="storage" className={styles.tab_panel}>
           <Storage />
         </TabPane>
       </Tabs>

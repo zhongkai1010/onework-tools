@@ -37,16 +37,16 @@ class Index extends React.Component<IAppProps, IAppState> {
       },
     });
   }
-  componentWillReceiveProps(nextProps: IAppProps) {}
+  componentWillReceiveProps(_nextProps: IAppProps) {}
 
   inputOnChange = () => {
     if (this.formRef.current) {
       console.log(this.formRef.current.getFieldsValue());
     }
   };
-  tableOnSelect = (record: any, selected: any, selectedRows: any, nativeEvent: any) => {
+  tableOnSelect = (record: any, _selected: any, _selectedRows: any, _nativeEvent: any) => {
     const { dispatch } = this.props;
-    console.log('tableOnSelect', record);
+
     dispatch({
       type: 'index/enableAnalysisTab',
       payload: record,
@@ -56,7 +56,7 @@ class Index extends React.Component<IAppProps, IAppState> {
     const columns: ColumnsType<Task> = [
       {
         title: '序号',
-        render: (text, record, index) => `${index + 1}`,
+        render: (_text, _record, index) => `${index + 1}`,
       },
 
       {
