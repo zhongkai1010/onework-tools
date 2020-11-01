@@ -1,13 +1,12 @@
 import * as React from 'react';
 import CustomTabs from '@/components/CustomTabs';
 import { Loading, connect, Dispatch } from 'umi';
-import { IndexPageData } from '@/models/index';
-
-import { TabPaneProps } from 'antd/lib/tabs';
+import { IndexPageState } from '@/models/index';
+import styles from './Index.less';
 
 export interface Props {
   dispatch: Dispatch;
-  index: IndexPageData;
+  index: IndexPageState;
 }
 
 export interface State {}
@@ -17,7 +16,7 @@ class Index extends React.Component<Props, State> {
   componentDidMount() {}
   tabOnTabClick = (key: string) => {
     const { dispatch } = this.props;
-    console.log('tabOnTabClick',key.toString())
+    console.log('tabOnTabClick', key);
     dispatch({
       type: 'index/setTabKey',
       payload: key,
@@ -27,12 +26,15 @@ class Index extends React.Component<Props, State> {
     const { tabKey, analysisTabDisabled } = this.props.index;
     console.log('tabKey', tabKey);
     return (
-      <CustomTabs
-        ref={this.tab}
-        tabKey={tabKey}
-        onTabClick={this.tabOnTabClick}
-        analysisTabDisabled={analysisTabDisabled}
-      />
+      <div>
+        <CustomTabs
+          ref={this.tab}
+          tabKey={tabKey}
+          onTabClick={this.tabOnTabClick}
+          analysisTabDisabled={analysisTabDisabled}
+        />
+        <div className={styles.user_container}>指导司机王师傅，已登录</div>
+      </div>
     );
   }
 }

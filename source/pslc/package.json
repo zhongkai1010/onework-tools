@@ -59,6 +59,7 @@
     "omit.js": "^2.0.2",
     "qs": "^6.9.0",
     "react": "^16.8.6",
+    "react-amap": "^1.2.8",
     "react-dom": "^16.8.6",
     "react-helmet-async": "^1.0.4",
     "umi": "^3.2.14",

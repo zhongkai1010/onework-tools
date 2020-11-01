@@ -1,70 +1,68 @@
+/*
+ * @Author: 钟凯
+ * @Date: 2020-10-31 08:32:34
+ * @Last Modified by: 钟凯
+ * @Last Modified time: 2020-10-31 08:55:37
+ */
 import * as React from 'react';
-import { Row, Col, Descriptions, Progress, Button, Tag, Space, Table, Image } from 'antd';
+import { Row, Col, Descriptions, Progress, Button, Table } from 'antd';
 import { Loading, connect, Dispatch } from 'umi';
-import { IndexPageData } from '@/models/index';
+import { IndexPageState } from '@/models/index';
 import styles from './Index.less';
+import { BorderOutlined, CaretRightOutlined, DownloadOutlined } from '@ant-design/icons';
 
 export interface IAppProps {
   dispatch: Dispatch;
-  index: IndexPageData;
+  index: IndexPageState;
 }
-export interface IAppState {}
+export interface IAppState {
+  imgState: boolean; //图片状态
+  analysisTime: string;
+}
 
 class Index extends React.Component<IAppProps, IAppState> {
   constructor(props: IAppProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      imgState: false,
+      analysisTime: '00:00',
+    };
   }
   imgOnClick = () => {
-    alert('1');
+    const { imgState } = this.state;
+    this.setState({
+      imgState: !imgState,
+    });
   };
   public render() {
+    const { task } = this.props.index;
+    const { imgState, analysisTime } = this.state;
     const columns = [
       {
-        title: 'Name',
+        title: '时间',
         dataIndex: 'name',
         key: 'name',
         render: (text: any) => <a>{text}</a>,
       },
       {
-        title: 'Age',
+        title: '公里数',
         dataIndex: 'age',
         key: 'age',
       },
       {
-        title: 'Address',
+        title: '违规类型',
         dataIndex: 'address',
         key: 'address',
       },
       {
-        title: 'Tags',
+        title: '视频回放',
         key: 'tags',
         dataIndex: 'tags',
-        render: (tags: any) => (
-          <>
-            {tags.map((tag: any) => {
-              let color = tag.length > 5 ? 'geekblue' : 'green';
-              if (tag === 'loser') {
-                color = 'volcano';
-              }
-              return (
-                <Tag color={color} key={tag}>
-                  {tag.toUpperCase()}
-                </Tag>
-              );
-            })}
-          </>
-        ),
       },
       {
-        title: 'Action',
+        title: '签认',
         key: 'action',
-        render: (text: any, record: any) => (
-          <Space size="middle">
-            <a>Invite {record.name}</a>
-            <a>Delete</a>
-          </Space>
-        ),
+        dataIndex: 'action',
       },
     ];
     const data = [
@@ -90,12 +88,40 @@ class Index extends React.Component<IAppProps, IAppState> {
         tags: ['cool', 'teacher'],
       },
     ];
-    const { task } = this.props.index;
-    console.log(this.props);
+    const renderState = () => {
+      switch (task.taskStatus) {
+        case 1:
+          return (
+            <span className={styles.analysis_state} style={{ color: '#20C5F5' }}>
+              排队中
+            </span>
+          );
+        case 2:
+          return (
+            <span className={styles.analysis_state} style={{ color: '#000000' }}>
+              分析中
+            </span>
+          );
+        case 3:
+          return (
+            <span className={styles.analysis_state} style={{ color: '#D82525' }}>
+              已停止
+            </span>
+          );
+        case 4:
+          return (
+            <span className={styles.analysis_state} style={{ color: '#7FD154' }}>
+              已完成
+            </span>
+          );
+        default:
+          return <span className={styles.analysis_state}> - </span>;
+      }
+    };
     return (
       <Row gutter={[12, 12]}>
         <Col span={12}>
-          <Row style={{ border: '1px solid #EEF1F6' }}>
+          <Row style={{ border: '1px solid #EEF1F6', borderRadius: '5px' }}>
             <Col span={24} className={styles.description_container}>
               <Descriptions title={task.videoName}>
                 <Descriptions.Item label="司机">{task.driverName} </Descriptions.Item>
@@ -106,68 +132,104 @@ class Index extends React.Component<IAppProps, IAppState> {
               </Descriptions>
             </Col>
             <Col span={24} className={styles.image_container}>
-              {/* <Row>
-                <Col span={24}>
-                  <Image
+              {imgState ? (
+                <>
+                  <img
                     src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    preview={false}
-                    className={styles.video_img}
+                    style={{ height: '54vh', width: '100%' }}
+                    onClick={this.imgOnClick}
                   />
-                </Col>
-              </Row> */}
-              <Row>
-                <Col span={12} className={styles.video_img_h}>
-                  <img className={styles.video_img} onClick={this.imgOnClick} />
-                </Col>
-                <Col span={12} className={styles.video_img_h}>
-                  <img className={styles.video_img} />
-                </Col>
-              </Row>
-              <Row>
-                <Col span={12} className={styles.video_img_h}>
-                  <img className={styles.video_img} />
-                </Col>
-                <Col span={12} className={styles.video_img_h}>
-                  <img className={styles.video_img} />
-                </Col>
-              </Row>
+                </>
+              ) : (
+                <>
+                  <Row>
+                    <Col span={12} className={styles.video_img_h}>
+                      <img
+                        className={styles.video_img}
+                        onClick={this.imgOnClick}
+                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                      />
+                    </Col>
+                    <Col span={12} className={styles.video_img_h}>
+                      <img
+                        className={styles.video_img}
+                        onClick={this.imgOnClick}
+                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={12} className={styles.video_img_h}>
+                      <img
+                        className={styles.video_img}
+                        onClick={this.imgOnClick}
+                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                      />
+                    </Col>
+                    <Col span={12} className={styles.video_img_h}>
+                      <img
+                        className={styles.video_img}
+                        onClick={this.imgOnClick}
+                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                      />
+                    </Col>
+                  </Row>
+                </>
+              )}
             </Col>
             <Col span={24}>
-              <Progress percent={30} />
-              <Progress percent={50} status="active" />
+              <Row>
+                <Col span={2} style={{ textAlign: 'right', paddingRight: '5px' }}>
+                  111
+                </Col>
+                <Col span={20}>
+                  <Progress percent={30} showInfo={false} />
+                </Col>
+                <Col span={2} style={{ paddingLeft: '5px' }}>
+                  222
+                </Col>
+              </Row>
+              <Row>
+                <Col span={2} style={{ textAlign: 'right', paddingRight: '5px' }}>
+                  111
+                </Col>
+                <Col span={20}>
+                  <Progress percent={50} status="active" showInfo={false} />
+                </Col>
+                <Col span={2} style={{ paddingLeft: '5px' }}>
+                  222
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Col>
         <Col span={12}>
           <Row>
-            <Col
-              span={24}
-              style={{
-                border: '1px solid #EEF1F6',
-                height: '8vh',
-                lineHeight: '8vh',
-                backgroundColor: 'rgb(243, 243, 244)',
-                paddingLeft: '20px',
-                marginBottom: '10px',
-                borderRadius: '5px',
-              }}
-            >
-              <span style={{ marginRight: '20px' }}>分析中</span>
-              <span>已用时间：12:13</span>
-              <div style={{ display: 'inline-block', position: 'absolute', right: 0 }}>
-                <Button type="primary" style={{ marginRight: '10px' }} size="large">
-                  新建任务
-                </Button>
-                <Button type="primary" style={{ marginRight: '10px' }} size="large">
+            <Col span={24} className={styles.state_container}>
+              {renderState()}
+              <span>已用时间：{analysisTime}</span>
+              <div className={styles.state_container_tools}>
+                <Button size="large" icon={<BorderOutlined style={{ color: '#AC1818' }} />}>
                   停止
                 </Button>
-                <Button type="primary" style={{ marginRight: '10px' }} size="large">
+                <Button
+                  size="large"
+                  icon={<CaretRightOutlined style={{ color: 'rgb(127, 209, 84)' }} />}
+                >
                   开始
+                </Button>
+                <Button size="large" icon={<DownloadOutlined style={{ color: '#35C9BA' }} />}>
+                  下载报告
                 </Button>
               </div>
             </Col>
             <Col span={24}>
-              <Table columns={columns} dataSource={data} style={{ height: '100%' }} />
+              <Table
+                columns={columns}
+                dataSource={data}
+                style={{ height: '100%' }}
+                pagination={false}
+              />
             </Col>
           </Row>
         </Col>
