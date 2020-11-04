@@ -1,23 +1,20 @@
 /*
  * @Author: 钟凯
- * @Date: 2020-10-30 21:56:24
- * @Last Modified by: 钟凯
- * @Last Modified time: 2020-10-31 08:49:07
+ * @Github: https://github.com/zhongkai1010
+ * @Date: 2020-11-02 09:06:37
+ * @LastEditors: 钟凯
+ * @LastEditTime: 2020-11-04 19:55:43
+ * @Description:
+ * @FilePath: \pslc\src\models\index.ts
  */
 import { Reducer } from 'umi';
 import { Task } from '@/models/task';
 
-/**
- * @description Index页面状态
- * @author 钟凯
- * @date 30/10/2020
- * @export
- * @interface IndexPageState
- */
 export interface IndexPageState {
-  task: Task | any;
-  analysisTabDisabled: boolean;
-  tabKey: TabType;
+  task: Task | any; //当前选中的任务
+  analysisTabDisabled: boolean; //视频分析tab状态
+  tabKey: TabType; //当前选中的tab
+  createing: boolean; //是否创建任务中
 }
 
 /** Index页面Tab标签类型
@@ -48,6 +45,7 @@ export interface IndexModelType {
   reducers: {
     enableAnalysisTab: Reducer;
     setTabKey: Reducer<IndexPageState | any>;
+    setCreateing: Reducer;
   };
 }
 
@@ -57,6 +55,7 @@ const IndexModel: IndexModelType = {
     tabKey: TabType.task,
     task: {},
     analysisTabDisabled: true,
+    createing: false,
   },
   reducers: {
     enableAnalysisTab(_state: IndexPageState | any = {}, { payload }) {
@@ -66,7 +65,12 @@ const IndexModel: IndexModelType = {
       state = Object.assign({}, state, {
         tabKey: payload,
       });
-      console.log('setTabKey',state)
+      return state;
+    },
+    setCreateing(state = {}, { payload }) {
+      state = Object.assign({}, state, {
+        createing: payload,
+      });
       return state;
     },
   },

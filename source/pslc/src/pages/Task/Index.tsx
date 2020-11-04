@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading, connect, Dispatch } from 'umi';
-import { Row, Col, Button, Form, Input, Table, Modal } from 'antd';
+import { Row, Col, Button, Form, Input, Table, Modal, Select } from 'antd';
 import { TaskPageState } from '@/models/task';
 import { Task } from '../../models/task';
 import { ColumnsType } from 'antd/es/table';
@@ -15,11 +15,14 @@ import {
   DownloadOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import TaskCreateModal from '@/pages/Task/components/TaskCreateModal/Index';
+import { IndexPageState } from '@/models/index';
 
 export interface IAppProps {
   dispatch: Dispatch;
   task: TaskPageState;
   loading: Loading;
+  index: IndexPageState;
 }
 export interface IAppState {
   page: number;
@@ -47,7 +50,6 @@ class Index extends React.Component<IAppProps, IAppState> {
       },
     });
   }
-  componentWillReceiveProps(_nextProps: IAppProps) {}
 
   inputOnChange = () => {
     if (this.formRef.current) {
@@ -73,19 +75,17 @@ class Index extends React.Component<IAppProps, IAppState> {
     });
   };
   createButtonOnClick = () => {
-    this.setState({
-      createModalvisible: true,
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'index/setCreateing',
+      payload: true,
     });
   };
-  handleOk = (e: any) => {
-    this.setState({
-      createModalvisible: false,
-    });
-  };
-
-  handleCancel = (e: any) => {
-    this.setState({
-      createModalvisible: false,
+  handleCancel = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'index/setCreateing',
+      payload: false,
     });
   };
   public render() {
@@ -165,23 +165,13 @@ class Index extends React.Component<IAppProps, IAppState> {
         render: (value: any, _record, _index) => renderStatus(value),
       },
     ];
+
     const { effects } = this.props.loading;
     const { data, dataTotal } = this.props.task;
-    const { createModalvisible } = this.state;
-
+    const { createing } = this.props.index;
     return (
-      <div>
-        <Modal
-          title="Basic Modal"
-          visible={createModalvisible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          maskClosable={false}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Modal>
+      <>
+        <TaskCreateModal visible={createing} closeModal={this.handleCancel} />
         <Row>
           <Col span={24} className={styles.tools_container}>
             <Button
@@ -278,7 +268,7 @@ class Index extends React.Component<IAppProps, IAppState> {
             />
           </Col>
         </Row>
-      </div>
+      </>
     );
   }
 }

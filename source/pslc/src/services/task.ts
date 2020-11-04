@@ -1,5 +1,15 @@
+/*
+ * @Author: 钟凯
+ * @Github: https://github.com/zhongkai1010
+ * @Date: 2020-10-28 14:43:24
+ * @LastEditors: 钟凯
+ * @LastEditTime: 2020-11-04 18:51:40
+ * @Description: 
+ * @FilePath: \pslc\src\services\task.ts
+ */
 import request from '@/utils/request';
 import { ListParams } from '../models/common';
+
 
 /**
  * 检索任务列表参数
@@ -23,7 +33,7 @@ export interface TaskGetListParams {
  * @returns
  */
 export async function taskGetList(params: TaskGetListParams & ListParams) {
-  return request('/api/task/getList', {
+  return request('/api/v1/task/getList', {
     method: 'GET',
     params: params,
   });

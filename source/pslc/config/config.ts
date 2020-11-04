@@ -1,3 +1,12 @@
+/*
+ * @Author: 钟凯
+ * @Github: https://github.com/zhongkai1010
+ * @Date: 2020-10-28 09:17:42
+ * @LastEditors: 钟凯
+ * @LastEditTime: 2020-11-04 19:12:52
+ * @Description: 
+ * @FilePath: \pslc\config\config.ts
+ */
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
@@ -48,11 +57,14 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: {
     '/api': {
-      target: 'http://ytms.net:3000/mock/14/',
+      target: 'http://ytms.net:3000/mock/8/',
       changeOrigin: true,
     },
   },
   manifest: {
     basePath: '/',
   },
+  request:{
+    dataField: 'result',
+  }
 });

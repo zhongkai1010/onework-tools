@@ -1,5 +1,15 @@
+/*
+ * @Author: 钟凯
+ * @Github: https://github.com/zhongkai1010
+ * @Date: 2020-10-30 10:06:09
+ * @LastEditors: 钟凯
+ * @LastEditTime: 2020-11-04 15:05:14
+ * @Description:
+ * @FilePath: \pslc\src\models\task.ts
+ */
 import { Effect, Reducer } from 'umi';
-import { taskGetList } from '@/services/index';
+import { taskGetList } from '@/services/task';
+
 /**
  * 任务
  *
@@ -13,7 +23,7 @@ export interface Task {
   trainNo: string; //车次
   driverId: string; //司机Id
   driverName: string; //司机名称
-  videoName:string;//视频名称
+  videoName: string; //视频名称
   coDriverId: string; //副司机Id
   coDriverName: string; //副司机名称
   departureDate: string; //发车时间
@@ -73,7 +83,6 @@ const TaskModel: TaskModelType = {
   },
   effects: {
     *load({ payload }, { call, put }) {
-     
       const data = yield call(taskGetList, payload);
       yield put({ type: 'setListData', payload: data });
     },
