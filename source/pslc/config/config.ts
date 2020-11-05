@@ -57,7 +57,7 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: {
     '/api': {
-      target: 'http://ytms.net:3000/mock/8/',
+      target: 'http://ytms.net:3000/mock/11/',
       changeOrigin: true,
     },
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading, connect, Dispatch } from 'umi';
-import { Row, Col, Button, Form, Input, Table, Modal, Select } from 'antd';
+import { Row, Col, Button, Form, Input, Table } from 'antd';
 import { TaskPageState } from '@/models/task';
 import { Task } from '../../models/task';
 import { ColumnsType } from 'antd/es/table';
@@ -17,21 +17,44 @@ import {
 } from '@ant-design/icons';
 import TaskCreateModal from '@/pages/Task/components/TaskCreateModal/Index';
 import { IndexPageState } from '@/models/index';
+import { RcFile } from 'antd/lib/upload';
 
+/**
+ * @description
+ * @author 钟凯
+ * @date 05/11/2020
+ * @export
+ * @interface IAppProps
+ */
 export interface IAppProps {
   dispatch: Dispatch;
   task: TaskPageState;
   loading: Loading;
   index: IndexPageState;
 }
+/**
+ * @description
+ * @author 钟凯
+ * @date 05/11/2020
+ * @export
+ * @interface IAppState
+ */
 export interface IAppState {
   page: number;
   pageSize: number;
   createModalvisible: boolean;
   createModalStep: number;
   createModelTask: Task | any;
+  createModelFiles: Array<RcFile>;
 }
 
+/**
+ * @description
+ * @author 钟凯
+ * @date 05/11/2020
+ * @class Index
+ * @extends {React.Component<IAppProps, IAppState>}
+ */
 class Index extends React.Component<IAppProps, IAppState> {
   formRef = React.createRef<FormInstance>();
   constructor(props: IAppProps) {
@@ -42,8 +65,16 @@ class Index extends React.Component<IAppProps, IAppState> {
       createModalvisible: false,
       createModalStep: 0,
       createModelTask: {},
+      createModelFiles: [],
     };
   }
+
+  /**
+   * @description 初始化页面加载任务列表
+   * @author 钟凯
+   * @date 05/11/2020
+   * @memberof Index
+   */
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -54,12 +85,27 @@ class Index extends React.Component<IAppProps, IAppState> {
       },
     });
   }
-
+  /**
+   * @description 填写搜索表单筛选列表
+   * @author 钟凯
+   * @date 05/11/2020
+   * @memberof Index
+   */
   inputOnChange = () => {
     if (this.formRef.current) {
       console.log(this.formRef.current.getFieldsValue());
     }
   };
+  /**
+   * @description 标签切换
+   * @author 钟凯
+   * @date 05/11/2020
+   * @param {*} record
+   * @param {*} _selected
+   * @param {*} _selectedRows
+   * @param {*} _nativeEvent
+   * @memberof Index
+   */
   tableOnSelect = (record: any, _selected: any, _selectedRows: any, _nativeEvent: any) => {
     const { dispatch } = this.props;
 
@@ -68,6 +114,15 @@ class Index extends React.Component<IAppProps, IAppState> {
       payload: record,
     });
   };
+
+  /**
+   * @description 列表分页事件
+   * @author 钟凯
+   * @date 05/11/2020
+   * @param {number} page
+   * @param {number} [pageSize]
+   * @memberof Index
+   */
   paginationOnChange = (page: number, pageSize?: number) => {
     const { dispatch } = this.props;
     dispatch({
@@ -78,19 +133,25 @@ class Index extends React.Component<IAppProps, IAppState> {
       },
     });
   };
+  /**
+   * @description 新建任务
+   * @author 钟凯
+   * @date 05/11/2020
+   * @memberof Index
+   */
   createButtonOnClick = () => {
     this.setState({
       createModalvisible: true,
     });
   };
-  handleCancel = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'index/setCreateing',
-      payload: false,
-    });
-  };
   public render() {
+    /**
+     * @description
+     * @author 钟凯
+     * @date 05/11/2020
+     * @param {number} status
+     * @return {*}
+     */
     const renderStatus = (status: number) => {
       switch (status) {
         case 1:
@@ -105,6 +166,8 @@ class Index extends React.Component<IAppProps, IAppState> {
           return <span></span>;
       }
     };
+
+    /** @type {*}  */
     const columns: ColumnsType<Task> = [
       {
         title: '序号',
@@ -169,7 +232,7 @@ class Index extends React.Component<IAppProps, IAppState> {
     ];
     const { effects } = this.props.loading;
     const { data, dataTotal } = this.props.task;
-    const { createModalvisible, createModalStep, createModelTask } = this.state;
+    const { createModalvisible, createModalStep, createModelTask, createModelFiles } = this.state;
     return (
       <>
         <TaskCreateModal
@@ -182,24 +245,26 @@ class Index extends React.Component<IAppProps, IAppState> {
               createModalStep: 0,
             });
           }}
+          files={createModelFiles}
           task={createModelTask}
-          onConfirmButton={() => {
-            console.log('onConfirmButton', createModalStep);
+          onConfirmButton={(e, files) => {
             if (createModalStep == 0) {
-              // 新增
+              // 调用后端任务新建接口，创建任务，等到任务id
               this.setState({
                 createModalStep: createModalStep + 1,
                 createModelTask: {},
+                createModelFiles: files,
               });
+              console.log('onConfirmButton', files);
             }
             if (createModalStep == 1) {
-              // 上传文件
+              // 调用后端任务上传文件
               this.setState({
                 createModalStep: createModalStep + 1,
               });
             }
             if (createModalStep == 2) {
-              //操作完成
+              //操作完成，清空表单数据，关闭弹框
               this.setState({
                 createModalvisible: false,
                 createModelTask: {},
