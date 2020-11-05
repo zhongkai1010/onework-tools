@@ -28,6 +28,8 @@ export interface IAppState {
   page: number;
   pageSize: number;
   createModalvisible: boolean;
+  createModalStep: number;
+  createModelTask: Task | any;
 }
 
 class Index extends React.Component<IAppProps, IAppState> {
@@ -38,6 +40,8 @@ class Index extends React.Component<IAppProps, IAppState> {
       page: 1,
       pageSize: 10,
       createModalvisible: false,
+      createModalStep: 0,
+      createModelTask: {},
     };
   }
   componentDidMount() {
@@ -75,10 +79,8 @@ class Index extends React.Component<IAppProps, IAppState> {
     });
   };
   createButtonOnClick = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'index/setCreateing',
-      payload: true,
+    this.setState({
+      createModalvisible: true,
     });
   };
   handleCancel = () => {
@@ -165,13 +167,48 @@ class Index extends React.Component<IAppProps, IAppState> {
         render: (value: any, _record, _index) => renderStatus(value),
       },
     ];
-
     const { effects } = this.props.loading;
     const { data, dataTotal } = this.props.task;
-    const { createing } = this.props.index;
+    const { createModalvisible, createModalStep, createModelTask } = this.state;
     return (
       <>
-        <TaskCreateModal visible={createing} closeModal={this.handleCancel} />
+        <TaskCreateModal
+          visible={createModalvisible}
+          onCloseButton={() => {
+            //操作完成
+            this.setState({
+              createModalvisible: false,
+              createModelTask: {},
+              createModalStep: 0,
+            });
+          }}
+          task={createModelTask}
+          onConfirmButton={() => {
+            console.log('onConfirmButton', createModalStep);
+            if (createModalStep == 0) {
+              // 新增
+              this.setState({
+                createModalStep: createModalStep + 1,
+                createModelTask: {},
+              });
+            }
+            if (createModalStep == 1) {
+              // 上传文件
+              this.setState({
+                createModalStep: createModalStep + 1,
+              });
+            }
+            if (createModalStep == 2) {
+              //操作完成
+              this.setState({
+                createModalvisible: false,
+                createModelTask: {},
+                createModalStep: 0,
+              });
+            }
+          }}
+          step={createModalStep}
+        />
         <Row>
           <Col span={24} className={styles.tools_container}>
             <Button
