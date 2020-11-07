@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-10-27 22:58:00
+ * @LastEditTime: 2020-11-07 10:37:40
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \pslc\config\proxy.ts
+ */
 /**
  * 在生产环境 代理是无法生效的，所以这里没有生产环境的配置
  * The agent cannot take effect in the production environment
@@ -7,24 +15,21 @@
  */
 export default {
   dev: {
-    '/api/': {
-      target: 'https://preview.pro.ant.design',
+    '/api': {
+      target: 'http://127.0.0.1:7001/',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
     },
   },
   test: {
-    '/api/': {
-      target: 'https://preview.pro.ant.design',
+    '/api': {
+      target: 'http://127.0.0.1:7001/',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
     },
   },
   pre: {
-    '/api/': {
-      target: 'your pre url',
+    '/api': {
+      target: 'http://127.0.0.1:7001/',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
     },
   },
 };

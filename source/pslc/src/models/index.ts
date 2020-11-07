@@ -2,13 +2,13 @@
  * @Author: 钟凯
  * @Github: https://github.com/zhongkai1010
  * @Date: 2020-11-02 09:06:37
- * @LastEditors: 钟凯
- * @LastEditTime: 2020-11-05 14:12:21
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-07 10:30:27
  * @Description:
  * @FilePath: \pslc\src\models\index.ts
  */
 import { Reducer } from 'umi';
-import { Task } from '@/models/task';
+import { Task } from './task.d';
 
 export interface IndexPageState {
   task: Task | any; //当前选中的任务

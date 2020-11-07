@@ -10,6 +10,7 @@ import { Loading, connect, Dispatch } from 'umi';
 import { IndexPageState } from '@/models/index';
 import styles from './Index.less';
 import { BorderOutlined, CaretRightOutlined, DownloadOutlined } from '@ant-design/icons';
+const io = require('socket.io-client');
 
 export interface IAppProps {
   dispatch: Dispatch;
@@ -27,6 +28,36 @@ class Index extends React.Component<IAppProps, IAppState> {
       imgState: false,
       analysisTime: '00:00',
     };
+  }
+  componentDidMount() {
+    const { task } = this.props.index;
+    console.log('componentDidMount', task);
+    let socket = io('http://127.0.0.1:7001', {
+      query: {
+        taskId: `${task.id}_results`,
+        userId: `client_${Math.random()}`,
+      },
+      //path:'/',
+      transports: ['websocket'],
+    });
+    const log = console.log;
+    // 接收在线用户信息
+    socket.on('online', (msg:any) => {
+      log('#online,', msg);
+    });
+
+    // 系统事件
+    socket.on('disconnect', (msg:any) => {
+      log('#disconnect', msg);
+    });
+
+    socket.on('disconnecting', () => {
+      log('#disconnecting');
+    });
+
+    socket.on('error', () => {
+      log('#error');
+    });
   }
   imgOnClick = () => {
     const { imgState } = this.state;

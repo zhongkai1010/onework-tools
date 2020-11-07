@@ -2,9 +2,9 @@
  * @Author: 钟凯
  * @Github: https://github.com/zhongkai1010
  * @Date: 2020-10-28 09:17:42
- * @LastEditors: 钟凯
- * @LastEditTime: 2020-11-04 19:12:52
- * @Description: 
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-07 16:35:21
+ * @Description:
  * @FilePath: \pslc\config\config.ts
  */
 // https://umijs.org/config/
@@ -17,6 +17,7 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
+
   locale: {
     // default zh-CN
     default: 'zh-CN',
@@ -57,14 +58,14 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: {
     '/api': {
-      target: 'http://ytms.net:3000/mock/11/',
+      target: 'http://127.0.0.1:7001/',
       changeOrigin: true,
     },
   },
   manifest: {
     basePath: '/',
   },
-  request:{
+  request: {
     dataField: 'result',
-  }
+  },
 });

@@ -24,7 +24,7 @@ class Index extends React.Component<Props, State> {
   };
   render() {
     const { tabKey, analysisTabDisabled } = this.props.index;
-    console.log('tabKey', tabKey);
+   
     return (
       <div>
         <CustomTabs

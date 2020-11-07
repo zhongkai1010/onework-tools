@@ -32,7 +32,7 @@ export interface IAppProps {
 class CustomTabs extends React.Component<IAppProps> {
   public render() {
     const { onTabClick, analysisTabDisabled, tabKey } = this.props;
-    console.log('CustomTabs', tabKey);
+
     return (
       <Tabs
         defaultActiveKey={TabType.task}

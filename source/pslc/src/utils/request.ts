@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-10-27 22:58:00
+ * @LastEditTime: 2020-11-07 11:34:49
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \pslc\src\utils\request.ts
+ */
 /**
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
@@ -49,7 +57,13 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
+  headers: {
+    'Content-Type': '	application/json',
+    token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTYwNDU5MTgwNSwiZXhwIjoxNjA2MzE5ODA1fQ.NWuzn-QxPjlUrnHQGr2EWVZgKR_GMKfHqJM5kwI_s6A',
+  },
   errorHandler, // 默认错误处理
+
   credentials: 'include', // 默认请求是否带上cookie
 });
 
