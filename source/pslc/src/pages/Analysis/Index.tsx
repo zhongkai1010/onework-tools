@@ -42,12 +42,23 @@ class Index extends React.Component<IAppProps, IAppState> {
     });
     const log = console.log;
     // 接收在线用户信息
-    socket.on('online', (msg:any) => {
+    socket.on('online', (msg: any) => {
       log('#online,', msg);
     });
 
+    socket.on('connect', () => {
+      const id = socket.id;
+
+      log('#connect,', id, socket);
+
+      // 监听自身 id 以实现 p2p 通讯
+      socket.on('exchange', (msg: any) => {
+        log('#receive,', msg);
+      });
+    });
+
     // 系统事件
-    socket.on('disconnect', (msg:any) => {
+    socket.on('disconnect', (msg: any) => {
       log('#disconnect', msg);
     });
 
