@@ -3,8 +3,11 @@ import { useRequest } from 'umi';
 import { Select } from 'antd';
 import * as services from '@/services/user';
 import { SelectProps } from 'antd/es/select';
+import { DriverType } from '@/models/user.d';
 
-export interface IAppProps {}
+export interface IAppProps {
+  SelectType: DriverType;
+}
 
 export interface OptionData {
   id: number;
@@ -15,7 +18,7 @@ const { Option } = Select;
 
 const UserSelect: React.FC<IAppProps & SelectProps<any>> = (props) => {
   const { data } = useRequest(() => {
-    return services.getUserSelectData();
+    return services.getUserSelectData(props.SelectType);
   });
 
   const renderOption = (item: Array<OptionData> = []) => {

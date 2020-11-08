@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-27 22:58:00
- * @LastEditTime: 2020-11-07 11:34:49
+ * @LastEditTime: 2020-11-09 01:10:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \pslc\src\utils\request.ts
@@ -36,10 +36,12 @@ const codeMessage = {
  */
 const errorHandler = (error: { response: Response }): Response => {
   const { response } = error;
+  debugger
+  console.log('errorHandler',error.response.json());
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
-
+ 
     notification.error({
       message: `请求错误 ${status}: ${url}`,
       description: errorText,

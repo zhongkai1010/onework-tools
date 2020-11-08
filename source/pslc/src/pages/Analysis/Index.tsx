@@ -166,11 +166,12 @@ class Index extends React.Component<IAppProps, IAppState> {
           <Row style={{ border: '1px solid #EEF1F6', borderRadius: '5px' }}>
             <Col span={24} className={styles.description_container}>
               <Descriptions title={task.videoName}>
+                <Descriptions.Item label="车次">{task.trainNo}</Descriptions.Item>
+                <Descriptions.Item label="线路">{task.lineName}</Descriptions.Item>
+                <Descriptions.Item label=""> </Descriptions.Item>
                 <Descriptions.Item label="司机">{task.driverName} </Descriptions.Item>
                 <Descriptions.Item label="副司机">{task.coDriverName}</Descriptions.Item>
                 <Descriptions.Item label="机车号">{task.locomotiveNo}</Descriptions.Item>
-                <Descriptions.Item label="车次">{task.trainNo}</Descriptions.Item>
-                <Descriptions.Item label="线路">{task.lineName}</Descriptions.Item>
               </Descriptions>
             </Col>
             <Col span={24} className={styles.image_container}>

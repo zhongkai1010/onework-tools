@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Modal, Form, Upload, Button, message } from 'antd';
 import UserSelect from '@/pages/Task/components/UserSelect/Index';
 import RouteSelect from '@/pages/Task/components/RouteSelect/Index';
@@ -7,7 +7,8 @@ import { UploadOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
 import { RcFile } from 'antd/lib/upload';
 import { request } from 'umi';
-import './Index.less';
+
+import { DriverType } from '@/models/user.d';
 
 interface IAppProps {
   onClaseModel: () => void;
@@ -16,7 +17,7 @@ interface IAppProps {
 const App: React.FC<IAppProps & ModalProps> = (props) => {
   let formRef = React.createRef<FormInstance>();
   let files: Array<RcFile> = [];
-  let loading = false;
+  const [loading, setLoading] = useState(false);
   // const { loading, run } = useRequest(services.createAndFile, { manual: true });
   const onOk = () => {
     if (formRef.current) {
@@ -25,11 +26,10 @@ const App: React.FC<IAppProps & ModalProps> = (props) => {
       files.forEach((file) => {
         fromFiles.append('files[]', file);
       });
-      loading = true;
+      setLoading(true);
       request('/api/v1/task/createAndFile', {
         method: 'post',
         headers: {
-        
           token:
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTYwNDc0MTAzNiwiZXhwIjoxNjA2NDY5MDM2fQ.dL9xvrzACrJC_sXzgSSjL70QcV-ERVqddkhxUFFwS_w',
         },
@@ -44,12 +44,12 @@ const App: React.FC<IAppProps & ModalProps> = (props) => {
         data: fromFiles,
       })
         .then(() => {
-          loading = false;
+          setLoading(false);
           message.info('创建任务成功。');
           props.onClaseModel();
         })
         .catch(() => {
-          loading = false;
+          setLoading(false);
         });
     }
   };
@@ -83,13 +83,28 @@ const App: React.FC<IAppProps & ModalProps> = (props) => {
       }}
     >
       <Form labelCol={{ span: 4 }} wrapperCol={{ span: 20 }} ref={formRef} name="task-create—form">
-        <Form.Item label="司机" name="driverId" required={true}>
-          <UserSelect key="driverId" />
+        <Form.Item
+          label="司机"
+          name="driverId"
+          required={true}
+          rules={[{ required: true, message: '请选择司机！' }]}
+        >
+          <UserSelect key="driverId" SelectType={DriverType.A} />
         </Form.Item>
-        <Form.Item label="副司机" name="coDriverId" required={true}>
-          <UserSelect key="coDriverId" />
+        <Form.Item
+          label="副司机"
+          name="coDriverId"
+          required={true}
+          rules={[{ required: true, message: '请选择副司机！' }]}
+        >
+          <UserSelect key="coDriverId" SelectType={DriverType.B} />
         </Form.Item>
-        <Form.Item label="线路" name="routeId" required={true}>
+        <Form.Item
+          label="线路"
+          name="routeId"
+          required={true}
+          rules={[{ required: true, message: '请选择副线路！' }]}
+        >
           <RouteSelect key="routeId" />
         </Form.Item>
         <Form.Item
@@ -100,7 +115,7 @@ const App: React.FC<IAppProps & ModalProps> = (props) => {
           getValueFromEvent={normFile}
         >
           <Upload
-            directory={true}
+            multiple={true}
             beforeUpload={(file) => {
               files.push(file);
               return false;

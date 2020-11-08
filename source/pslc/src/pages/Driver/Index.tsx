@@ -1,30 +1,33 @@
 import React from 'react';
 import { Loading, connect, Dispatch } from 'umi';
-import { Row, Col, Button, Form, Input, Table, Modal } from 'antd';
-import { TaskPageState } from '@/models/task';
-import { Task } from '../../models/task';
-import { ColumnsType } from 'antd/es/table';
+import { Row, Col, Button, Table, message } from 'antd';
+import { DriverPageState } from '@/models/driver';
+import { Driver } from '@/models/user.d';
 import { FormInstance } from 'antd/lib/form';
 import styles from './Index.less';
-import debounce from 'debounce';
-import {
-  PlusOutlined,
-  BorderOutlined,
-  CaretRightOutlined,
-  HddOutlined,
-  DownloadOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { PlusOutlined, FormOutlined, DeleteOutlined } from '@ant-design/icons';
+import { TableColumns } from './Config';
+import FromModal from './components/FromModal/Index';
+import TableSearch from './components/TableSearch/Index';
 
 export interface IAppProps {
   dispatch: Dispatch;
-  task: TaskPageState;
+  driver: DriverPageState;
   loading: Loading;
 }
 export interface IAppState {
   page: number;
-  pageSize: number;
+  limit: number;
+  order: number;
+  sort: 'desc';
   createModalvisible: boolean;
+  slectDriver?: Driver;
+  work_id?: string;
+  name?: string;
+  user_type?: string;
+  work_group?: string;
+  teacher_group?: string;
+  addOperation: boolean;
 }
 
 class Index extends React.Component<IAppProps, IAppState> {
@@ -33,121 +36,173 @@ class Index extends React.Component<IAppProps, IAppState> {
     super(props);
     this.state = {
       page: 1,
-      pageSize: 10,
+      limit: 10,
+      order: 0,
+      sort: 'desc',
       createModalvisible: false,
+      addOperation: false,
     };
   }
   componentDidMount() {
     const { dispatch } = this.props;
+    const { page, limit, order, sort } = this.state;
     dispatch({
-      type: 'task/load',
+      type: 'driver/load',
       payload: {
-        page: 1,
-        pageSize: 10,
+        page,
+        limit,
+        order,
+        sort,
       },
     });
   }
-  componentWillReceiveProps(_nextProps: IAppProps) {}
-
-  inputOnChange = () => {
-    if (this.formRef.current) {
-      console.log(this.formRef.current.getFieldsValue());
-    }
-  };
-  tableOnSelect = (record: any, _selected: any, _selectedRows: any, _nativeEvent: any) => {
+  /**
+   * @description 填写搜索表单筛选列表
+   * @author 钟凯
+   * @date 05/11/2020
+   * @memberof Index
+   */
+  onSearchChange = (formData: any) => {
     const { dispatch } = this.props;
-
-    dispatch({
-      type: 'index/enableAnalysisTab',
-      payload: record,
+    const { page, limit, order, sort } = this.state;
+    this.setState(
+      {
+        work_id: formData.work_id,
+        name: formData.name,
+        user_type: formData.user_type,
+        work_group: formData.work_group,
+        teacher_group: formData.teacher_group,
+      },
+      () => {
+        dispatch({
+          type: 'driver/load',
+          payload: {
+            page: page,
+            limit: limit,
+            order: order,
+            sort: sort,
+            ...formData,
+          },
+        });
+      },
+    );
+  };
+  tableOnSelect = (selected: any, _selectedRows: any, _nativeEvent: any) => {
+    this.setState({
+      slectDriver: selected,
     });
   };
   paginationOnChange = (page: number, pageSize?: number) => {
     const { dispatch } = this.props;
+    const { order, sort } = this.state;
     dispatch({
-      type: 'task/load',
+      type: 'driver/load',
       payload: {
         page,
-        pageSize,
+        limit: pageSize,
+        order,
+        sort,
+        work_id: this.state.work_id,
+        name: this.state.name,
+        user_type: this.state.user_type,
+        work_group: this.state.work_group,
+        teacher_group: this.state.teacher_group,
       },
     });
   };
   createButtonOnClick = () => {
     this.setState({
+      addOperation: true,
       createModalvisible: true,
     });
   };
-  handleOk = (e: any) => {
-    this.setState({
-      createModalvisible: false,
-    });
+  updateButtonOnClick = () => {
+    const { slectDriver } = this.state;
+    if (!slectDriver) {
+      message.info('请选择一行数据进行操作。');
+    } else {
+      this.setState({
+        addOperation: false,
+        createModalvisible: true,
+      });
+    }
   };
-
-  handleCancel = (e: any) => {
-    this.setState({
-      createModalvisible: false,
-    });
+  deleteButtonOnClick = () => {
+    const { slectDriver } = this.state;
+    if (!slectDriver) {
+      message.info('请选择一行数据进行操作。');
+    } else {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'driver/load',
+        payload: {
+          page: this.state.page,
+          limit: this.state.limit,
+          order: this.state.order,
+          sort: this.state.sort,
+          work_id: this.state.work_id,
+          name: this.state.name,
+          user_type: this.state.user_type,
+          work_group: this.state.work_group,
+          teacher_group: this.state.teacher_group,
+        },
+      });
+    }
   };
   public render() {
-    const renderStatus = (status: number) => {
-      switch (status) {
-        case 1:
-          return <span style={{ color: '#20C5F5' }}>排队中</span>;
-        case 2:
-          return <span style={{ color: '#000000' }}>分析中...</span>;
-        case 3:
-          return <span style={{ color: '#D82525' }}>已停止</span>;
-        case 4:
-          return <span style={{ color: '#7FD154' }}>已完成</span>;
-        default:
-          return <span></span>;
-      }
-    };
-    const columns: ColumnsType<Task> = [
-      {
-        title: '序号',
-        render: (_text, _record, index) => `${index + 1}`,
-        width: 80,
-      },
-
-      {
-        title: '工号',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-      },
-      {
-        title: '姓名',
-        dataIndex: 'locomotiveNo',
-        key: 'locomotiveNo',
-      },
-      {
-        title: '职称',
-        dataIndex: 'trainNo',
-        key: 'trainNo',
-      },
-    ];
     const { effects } = this.props.loading;
-    const { data, dataTotal } = this.props.task;
-    const { createModalvisible } = this.state;
-
+    const { data, dataTotal } = this.props.driver;
+    const { createModalvisible, slectDriver, addOperation } = this.state;
     return (
-      <div>
-        <Modal
-          title="Basic Modal"
+      <>
+        <FromModal
+          addOperation={addOperation}
+          onConfirm={() => {
+            this.setState({
+              createModalvisible: false,
+            });
+            // dispatch({
+            //   type: 'driver/add',
+            //   payload: { ...fromData, username: fromData.work_id },
+            // }).then(() => {
+            //   this.setState(
+            //     {
+            //       createModalvisible: false,
+            //     },
+            //     () => {
+            //       message.info('创建成功');
+            //       dispatch({
+            //         type: 'driver/load',
+            //         payload: {
+            //           page: this.state.page,
+            //           limit: this.state.limit,
+            //           order: this.state.order,
+            //           sort: this.state.sort,
+            //           work_id: this.state.work_id,
+            //           name: this.state.name,
+            //           user_type: this.state.user_type,
+            //           work_group: this.state.work_group,
+            //           teacher_group: this.state.teacher_group,
+            //         },
+            //       });
+            //     },
+            //   );
+            // });
+          }}
           visible={createModalvisible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          maskClosable={false}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Modal>
+          data={slectDriver}
+          destroyOnClose={true}
+          onClaseModel={() => {
+            this.setState({
+              createModalvisible: false,
+            });
+          }}
+        />
         <Row>
           <Col span={24} className={styles.tools_container}>
             <Button
               size="large"
-              icon={<PlusOutlined style={{ color: '#ccc' }} />}
+              icon={<PlusOutlined style={{ color: '#4391DA' }} />}
               onClick={this.createButtonOnClick}
             >
               添加司机
@@ -156,55 +211,33 @@ class Index extends React.Component<IAppProps, IAppState> {
             <Button
               style={{ marginRight: '10px' }}
               size="large"
-              icon={<BorderOutlined style={{ color: '#AC1818' }} />}
+              icon={<FormOutlined style={{ color: '#FDD281' }} />}
+              onClick={this.updateButtonOnClick}
             >
               修改
             </Button>
             <Button
               size="large"
-              icon={<CaretRightOutlined style={{ color: 'rgb(127, 209, 84)' }} />}
+              icon={<DeleteOutlined style={{ color: '#7667C8' }} />}
+              onClick={this.deleteButtonOnClick}
             >
               删除
             </Button>
           </Col>
           <Col span={24} className={styles.search_container}>
-            <div className={styles.from_container}>
-              <Form layout="inline" ref={this.formRef} name="control-ref">
-                <Form.Item label="工号" name="createdAt">
-                  <Input
-                    className={styles.from_input}
-                    onChange={debounce(this.inputOnChange, 1000)}
-                  />
-                </Form.Item>
-                <Form.Item label="修改" name="locomotiveNo">
-                  <Input
-                    className={styles.from_input}
-                    onChange={debounce(this.inputOnChange, 1000)}
-                  />
-                </Form.Item>
-                <Form.Item label="删除" name="trainNo">
-                  <Input
-                    className={styles.from_input}
-                    onChange={debounce(this.inputOnChange, 1000)}
-                  />
-                </Form.Item>
-              </Form>
-            </div>
+            <TableSearch onSearchChange={this.onSearchChange} />
           </Col>
           <Col span={24} className={styles.table_container}>
             <Table
               rowKey="id"
-              columns={columns}
+              columns={TableColumns}
               scroll={{ y: '45vh', scrollToFirstRowOnChange: true }}
-              loading={effects['task/load']}
+              loading={effects['driver/load']}
+              dataSource={data}
               rowSelection={{
                 onSelect: this.tableOnSelect,
                 type: 'radio',
-                getCheckboxProps: (record) => ({
-                  disabled: record.taskStatus === 2,
-                }),
               }}
-              dataSource={data}
               pagination={{
                 showSizeChanger: true,
                 showQuickJumper: true,
@@ -215,12 +248,14 @@ class Index extends React.Component<IAppProps, IAppState> {
             />
           </Col>
         </Row>
-      </div>
+      </>
     );
   }
 }
-export default connect(({ index, task, loading }: { index: any; task: any; loading: Loading }) => ({
-  loading: loading,
-  task: task,
-  index: index,
-}))(Index);
+export default connect(
+  ({ index, driver, loading }: { index: any; driver: any; loading: Loading }) => ({
+    loading: loading,
+    driver: driver,
+    index: index,
+  }),
+)(Index);
