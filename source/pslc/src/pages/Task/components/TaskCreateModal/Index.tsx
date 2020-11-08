@@ -8,7 +8,6 @@ import { FormInstance } from 'antd/lib/form';
 import { RcFile } from 'antd/lib/upload';
 import { request } from 'umi';
 import './Index.less';
-import * as services from '@/services/task';
 
 interface IAppProps {
   onClaseModel: () => void;
@@ -44,7 +43,7 @@ const App: React.FC<IAppProps & ModalProps> = (props) => {
         responseType: 'json',
         data: fromFiles,
       })
-        .then((value) => {
+        .then(() => {
           loading = false;
           message.info('创建任务成功。');
           props.onClaseModel();
