@@ -37,7 +37,7 @@ const App: React.FC<IAppProps & ModalProps> = (props) => {
           coDriverId: formData.coDriverId,
           driverId: formData.driverId,
           routeId: formData.routeId,
-          total: files.length,
+          fileTotal: files.length,
         },
         requestType: 'form',
         responseType: 'json',

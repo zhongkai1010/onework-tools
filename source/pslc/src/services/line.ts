@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-11-07 13:39:04
- * @LastEditTime: 2020-11-09 17:35:37
- * @LastEditors: 钟凯
+ * @LastEditTime: 2020-11-09 22:29:09
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \videoanalyze_web\src\services\line.ts
  */
@@ -22,7 +22,7 @@ export async function lineCreate(params: any) {
 export async function lineGetList(params: any) {
   return request('/api/v1/routes/getList', {
     method: 'GET',
-    data: params,
+    params: params,
   });
 }
 
@@ -43,6 +43,6 @@ export async function lineCopy(params: any) {
 export async function lineDelete(params: any) {
   return request('/api/v1/routes/delete', {
     method: 'delete',
-    data: params,
+    params: params,
   });
 }

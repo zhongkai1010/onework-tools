@@ -52,7 +52,7 @@ export const TableColumns: ColumnsType<Driver> = [
     title: '车队',
     dataIndex: 'work_group',
     key: 'work_group',
-  },
+  },  
   {
     title: '指导组',
     dataIndex: 'teacher_group',

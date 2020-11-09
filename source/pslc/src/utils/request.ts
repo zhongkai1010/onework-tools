@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-10-27 22:58:00
- * @LastEditTime: 2020-11-09 15:29:44
- * @LastEditors: 钟凯
+ * @LastEditTime: 2020-11-09 23:14:44
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \videoanalyze_web\src\utils\request.ts
  */
@@ -62,14 +62,15 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
+  prefix: 'http://127.0.0.1:7001',
   headers: {
-    'Content-Type': '	application/json',
+    'Origin':'127.0.0.1:8000',
     token:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTYwNDU5MTgwNSwiZXhwIjoxNjA2MzE5ODA1fQ.NWuzn-QxPjlUrnHQGr2EWVZgKR_GMKfHqJM5kwI_s6A',
   },
   errorHandler, // 默认错误处理
 
-  credentials: 'include', // 默认请求是否带上cookie
+ // credentials: 'include', // 默认请求是否带上cookie
 });
 
 export default request;

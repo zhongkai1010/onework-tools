@@ -21,6 +21,9 @@ export const TableColumns: ColumnsType<Line> = [
     title: '全长(km)',
     dataIndex: 'mileage',
     key: 'mileage',
+    render: (value) => {
+      return (value / 1000).toFixed(2);
+    },
   },
   {
     title: '识别项点数',
