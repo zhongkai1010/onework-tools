@@ -2,10 +2,10 @@
  * @Author: 钟凯
  * @Github: https://github.com/zhongkai1010
  * @Date: 2020-10-28 09:17:42
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-08 20:46:45
+ * @LastEditors: 钟凯
+ * @LastEditTime: 2020-11-09 16:13:18
  * @Description:
- * @FilePath: \pslc\src\services\user.ts
+ * @FilePath: \videoanalyze_web\src\services\user.ts
  */
 
 import request from '@/utils/request';

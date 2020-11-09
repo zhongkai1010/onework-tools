@@ -1,13 +1,48 @@
 /*
  * @Author: your name
  * @Date: 2020-11-07 13:39:04
- * @LastEditTime: 2020-11-07 14:05:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-09 17:35:37
+ * @LastEditors: 钟凯
  * @Description: In User Settings Edit
- * @FilePath: \pslc\src\services\line.js
+ * @FilePath: \videoanalyze_web\src\services\line.ts
  */
 import request from '@/utils/request';
 
 export const getLineSelectData = () => {
   return request('/api/v1/routes/getSelect');
 };
+
+export async function lineCreate(params: any) {
+  return request('/api/v1/routes/create', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function lineGetList(params: any) {
+  return request('/api/v1/routes/getList', {
+    method: 'GET',
+    data: params,
+  });
+}
+
+export async function lineGetDetails(params: any) {
+  return request('/api/v1/routes/getDetails', {
+    method: 'GET',
+    data: params,
+  });
+}
+
+export async function lineCopy(params: any) {
+  return request('/api/v1/routes/copy', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function lineDelete(params: any) {
+  return request('/api/v1/routes/delete', {
+    method: 'delete',
+    data: params,
+  });
+}

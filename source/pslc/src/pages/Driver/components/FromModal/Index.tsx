@@ -15,8 +15,8 @@ interface IAppProps {
 }
 const FromModal: React.FunctionComponent<IAppProps & ModalProps> = (props) => {
   const formRef = React.createRef<FormInstance>();
-  const update1 = useRequest(services.updateDriver, { manual: true });
-  const create = useRequest(services.createDriver, { manual: true });
+  const update1 = useRequest(services.updateDriver, { manual: true, throwOnError: true });
+  const create = useRequest(services.createDriver, { manual: true, throwOnError: true });
   useEffect(() => {});
 
   const onCancel = () => {
@@ -27,12 +27,15 @@ const FromModal: React.FunctionComponent<IAppProps & ModalProps> = (props) => {
     if (formRef.current) {
       const fromData = formRef.current.getFieldsValue();
       if (props.addOperation) {
-        create.run({ ...fromData, username: fromData.work_id })
-        console.log(create.error?.message)
-      } else {
-        update1.run({ ...fromData, id: fromData.id }).then(() => {
+        create.run({ ...fromData, username: fromData.work_id }).then((value) => {
           props.onConfirm(fromData);
         });
+      } else {
+        if (props.data) {
+          update1.run({ ...fromData, id: props.data.id, username: fromData.work_id }).then(() => {
+            props.onConfirm(fromData);
+          });
+        }
       }
     }
   };

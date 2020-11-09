@@ -1,55 +1,27 @@
 .tools_container {
-  position: relative;
   margin-bottom: 10px;
+  height: 5vh;
 }
 
-.tools_container_botton {
-  float: right;
+.tools_container > button {
   margin-right: 10px;
+}
+
+.search_container {
+  background-color: #eef1f6;
+  height: 8vh;
   margin-bottom: 10px;
-}
-.tools_container_botton > button {
-  margin-right: 10px;
-}
-:global(.ant-card-body) {
-  padding: 0;
-}
-.list_container {
-  height: 75vh;
-  overflow-y: auto;
-  border: 1px solid #eef1f6;
   border-radius: 5px;
 }
-:global(.ant-collapse) {
-  border: 0px;
+
+.from_container {
+  padding: 15px;
 }
-:global(.ant-collapse) {
-  background-color: #fff;
-}
-:global(.ant-card-head) {
-  background-color: #fafafa;
-}
-:global(.ant-card-bordered) {
-  border: 0px;
-}
-:global(.ant-collapse-item-active) {
-  background-color: #e6eef6;
-}
-/*滚动条样式*/
-.list_container::-webkit-scrollbar {
-  /*滚动条整体样式*/
-  width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
-  height: 4px;
-}
-.list_container::-webkit-scrollbar-thumb {
-  /*滚动条里面小方块*/
+
+.from_input {
+  width: 8vw;
   border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.2);
 }
-.list_container::-webkit-scrollbar-track {
-  /*滚动条里面轨道*/
-  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 0;
-  background: rgba(0, 0, 0, 0.1);
+.table_container {
+  height: 65vh;
 }

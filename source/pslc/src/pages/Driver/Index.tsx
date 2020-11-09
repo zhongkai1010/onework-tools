@@ -134,22 +134,31 @@ class Index extends React.Component<IAppProps, IAppState> {
     } else {
       const { dispatch } = this.props;
       dispatch({
-        type: 'driver/load',
+        type: 'driver/deleteDriver',
         payload: {
-          page: this.state.page,
-          limit: this.state.limit,
-          order: this.state.order,
-          sort: this.state.sort,
-          work_id: this.state.work_id,
-          name: this.state.name,
-          user_type: this.state.user_type,
-          work_group: this.state.work_group,
-          teacher_group: this.state.teacher_group,
+          id: slectDriver.id,
         },
+      }).then((value: any) => {
+        message.info('删除成功');
+        dispatch({
+          type: 'driver/load',
+          payload: {
+            page: this.state.page,
+            limit: this.state.limit,
+            order: this.state.order,
+            sort: this.state.sort,
+            work_id: this.state.work_id,
+            name: this.state.name,
+            user_type: this.state.user_type,
+            work_group: this.state.work_group,
+            teacher_group: this.state.teacher_group,
+          },
+        });
       });
     }
   };
   public render() {
+    const { dispatch } = this.props;
     const { effects } = this.props.loading;
     const { data, dataTotal } = this.props.driver;
     const { createModalvisible, slectDriver, addOperation } = this.state;
@@ -158,36 +167,27 @@ class Index extends React.Component<IAppProps, IAppState> {
         <FromModal
           addOperation={addOperation}
           onConfirm={() => {
-            this.setState({
-              createModalvisible: false,
-            });
-            // dispatch({
-            //   type: 'driver/add',
-            //   payload: { ...fromData, username: fromData.work_id },
-            // }).then(() => {
-            //   this.setState(
-            //     {
-            //       createModalvisible: false,
-            //     },
-            //     () => {
-            //       message.info('创建成功');
-            //       dispatch({
-            //         type: 'driver/load',
-            //         payload: {
-            //           page: this.state.page,
-            //           limit: this.state.limit,
-            //           order: this.state.order,
-            //           sort: this.state.sort,
-            //           work_id: this.state.work_id,
-            //           name: this.state.name,
-            //           user_type: this.state.user_type,
-            //           work_group: this.state.work_group,
-            //           teacher_group: this.state.teacher_group,
-            //         },
-            //       });
-            //     },
-            //   );
-            // });
+            this.setState(
+              {
+                createModalvisible: false,
+              },
+              () => {
+                dispatch({
+                  type: 'driver/load',
+                  payload: {
+                    page: this.state.page,
+                    limit: this.state.limit,
+                    order: this.state.order,
+                    sort: this.state.sort,
+                    work_id: this.state.work_id,
+                    name: this.state.name,
+                    user_type: this.state.user_type,
+                    work_group: this.state.work_group,
+                    teacher_group: this.state.teacher_group,
+                  },
+                });
+              },
+            );
           }}
           visible={createModalvisible}
           data={slectDriver}

@@ -1,17 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2020-10-27 22:58:00
- * @LastEditTime: 2020-11-09 01:10:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-09 15:29:44
+ * @LastEditors: 钟凯
  * @Description: In User Settings Edit
- * @FilePath: \pslc\src\utils\request.ts
+ * @FilePath: \videoanalyze_web\src\utils\request.ts
  */
 /**
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -35,24 +35,27 @@ const codeMessage = {
  * 异常处理程序
  */
 const errorHandler = (error: { response: Response }): Response => {
-  const { response } = error;
-  debugger
-  console.log('errorHandler',error.response.json());
-  if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
- 
+  error.response.json().then((value) => {
     notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
+      message: value.error.message,
     });
-  } else if (!response) {
-    notification.error({
-      description: '您的网络发生异常，无法连接服务器',
-      message: '网络异常',
-    });
-  }
-  return response;
+  });
+  // const { response } = error;
+  // if (response && response.status) {
+  //   const errorText = codeMessage[response.status] || response.statusText;
+  //   const { status, url } = response;
+
+  //   notification.error({
+  //     message: `请求错误 ${status}: ${url}`,
+  //     description: errorText,
+  //   });
+  // } else if (!response) {
+  //   notification.error({
+  //     description: '您的网络发生异常，无法连接服务器',
+  //     message: '网络异常',
+  //   });
+  // }
+  throw error;
 };
 
 /**
