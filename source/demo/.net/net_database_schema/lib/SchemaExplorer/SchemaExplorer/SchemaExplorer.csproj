@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A41D95B-4DD7-430F-939C-E38D8620F302}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SchemaExplorer</RootNamespace>
+    <AssemblyName>SchemaExplorer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>4096</FileAlignment>
+    <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CodeSmith.ActiproSoftware.PropertyGrid.Legacy.Wpf" />
+    <Reference Include="CodeSmith.Core">
+      <HintPath>..\..\CodeSmith.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CodeSmith.Engine">
+      <HintPath>..\..\CodeSmith.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="#B\#Ol.cs" />
+    <Compile Include="#cTc\#5Zc.cs" />
+    <Compile Include="#cTc\#AVc.cs" />
+    <Compile Include="#cTc\#bTc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="#cTc\#bTc.Designer.cs">
+      <DependentUpon>#bTc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="#cTc\#JVc.cs" />
+    <Compile Include="#cTc\#jYc.cs" />
+    <Compile Include="#cTc\#lTc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="#cTc\#lTc.Designer.cs">
+      <DependentUpon>#lTc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="#cTc\#Mk.cs" />
+    <Compile Include="#cTc\#nUc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="#cTc\#nUc.Designer.cs">
+      <DependentUpon>#nUc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="#cTc\#qgc.cs" />
+    <Compile Include="#cTc\#TVc.cs" />
+    <Compile Include="#cTc\#uVc.cs" />
+    <Compile Include="#cTc\#vVc.cs" />
+    <Compile Include="#cTc\#wVc.cs" />
+    <Compile Include="#cTc\#xVc.cs" />
+    <Compile Include="#cTc\#yVc.cs" />
+    <Compile Include="#cTc\#zVc.cs" />
+    <Compile Include="#J2c\#Jlc.cs" />
+    <Compile Include="#J2c\#N0c.cs" />
+    <Compile Include="#J2c\#qgc.cs" />
+    <Compile Include="#n1c\#m1c.cs" />
+    <Compile Include="#n1c\#s1c.cs" />
+    <Compile Include="#Nk\#Mk.cs" />
+    <Compile Include="#Nk\#Ok.cs" />
+    <Compile Include="#Nk\#Pk.cs" />
+    <Compile Include="CachedSchemaProviderProxy.cs" />
+    <Compile Include="CodeSmith\Core\Collections\INamedObject.cs" />
+    <Compile Include="CodeSmith\Core\Collections\INamedObjectCollection.cs" />
+    <Compile Include="CodeSmith\Core\Collections\IReadOnlyCollection.cs" />
+    <Compile Include="CodeSmith\Core\Collections\IReadOnlyNamedObjectCollection.cs" />
+    <Compile Include="CodeSmith\Core\Collections\NamedObjectBase.cs" />
+    <Compile Include="CodeSmith\Core\Collections\NamedObjectCollection.cs" />
+    <Compile Include="CodeSmith\Core\Collections\ReadOnlyCollection.cs" />
+    <Compile Include="CodeSmith\Core\Collections\ReadOnlyNamedObjectCollection.cs" />
+    <Compile Include="ColumnSchema.cs" />
+    <Compile Include="ColumnSchemaCollection.cs" />
+    <Compile Include="CommandResultColumnSchema.cs" />
+    <Compile Include="CommandResultColumnSchemaCollection.cs" />
+    <Compile Include="CommandResultSchema.cs" />
+    <Compile Include="CommandResultSchemaCollection.cs" />
+    <Compile Include="CommandSchema.cs" />
+    <Compile Include="CommandSchemaCollection.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="ConfigurationImport.cs" />
+    <Compile Include="DatabaseSchema.cs" />
+    <Compile Include="DataObjectBase.cs" />
+    <Compile Include="DataObjectBaseCollection.2.cs" />
+    <Compile Include="DataObjectBaseCollection.cs" />
+    <Compile Include="DataSource.cs" />
+    <Compile Include="DataSourceCollection.cs" />
+    <Compile Include="DataSourceManager.cs" />
+    <Compile Include="Design\ColumnSchemaPickerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ColumnSchemaPickerUI.Designer.cs">
+      <DependentUpon>ColumnSchemaPickerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CommandSchemaPickerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\CommandSchemaPickerUI.Designer.cs">
+      <DependentUpon>CommandSchemaPickerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\DatabaseSchemaPickerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\DatabaseSchemaPickerUI.Designer.cs">
+      <DependentUpon>DatabaseSchemaPickerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\DataSourceManagerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\DataSourceManagerUI.Designer.cs">
+      <DependentUpon>DataSourceManagerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\DataSourceUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\DataSourceUI.Designer.cs">
+      <DependentUpon>DataSourceUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ErrorDialog.Designer.cs">
+      <DependentUpon>ErrorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ExtendedBindableProperty.cs" />
+    <Compile Include="Design\ExtendedPropertyEditorUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ExtendedPropertyEditorUI.Designer.cs">
+      <DependentUpon>ExtendedPropertyEditorUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\SchemaObjectEditor.cs" />
+    <Compile Include="Design\SchemaSelectorEditor.cs" />
+    <Compile Include="Design\SchemaSelectorEditorUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\SchemaSelectorEditorUI.Designer.cs">
+      <DependentUpon>SchemaSelectorEditorUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\TableSchemaPickerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\TableSchemaPickerUI.Designer.cs">
+      <DependentUpon>TableSchemaPickerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\TabularObjectBasePickerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\TabularObjectBasePickerUI.Designer.cs">
+      <DependentUpon>TabularObjectBasePickerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ThreeStateTreeView.cs" />
+    <Compile Include="Design\ViewColumnSchemaPickerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ViewColumnSchemaPickerUI.Designer.cs">
+      <DependentUpon>ViewColumnSchemaPickerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ViewSchemaPickerUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ViewSchemaPickerUI.Designer.cs">
+      <DependentUpon>ViewSchemaPickerUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExtendedProperty.cs" />
+    <Compile Include="ExtendedPropertyCollection.cs" />
+    <Compile Include="ExtendedPropertyCollectionTypeConverter.cs" />
+    <Compile Include="ExtendedPropertyNames.cs" />
+    <Compile Include="Extensions\ExtendedPropertyCollectionExtensions.cs" />
+    <Compile Include="IColumnSchema.cs" />
+    <Compile Include="ICommandResultColumnSchema.cs" />
+    <Compile Include="ICommandResultSchema.cs" />
+    <Compile Include="ICommandSchema.cs" />
+    <Compile Include="IDatabaseSchema.cs" />
+    <Compile Include="IDataObject.cs" />
+    <Compile Include="IDbConnectionStringEditor.cs" />
+    <Compile Include="IDbSchemaProvider.cs" />
+    <Compile Include="IDbSchemaProviderCollection.cs" />
+    <Compile Include="IExtendedProperty.cs" />
+    <Compile Include="IIndexSchema.cs" />
+    <Compile Include="IMemberColumnSchema.cs" />
+    <Compile Include="IndexSchema.cs" />
+    <Compile Include="IndexSchemaCollection.cs" />
+    <Compile Include="IParameterSchema.cs" />
+    <Compile Include="IPrimaryKeySchema.cs" />
+    <Compile Include="IReadOnlySchemaObjectCollection.cs" />
+    <Compile Include="IReadOnlySchemaObjectWithOwnerCollection.cs" />
+    <Compile Include="ISchemaObject.cs" />
+    <Compile Include="ISchemaObjectCollection.cs" />
+    <Compile Include="ISchemaObjectWithOwner.cs" />
+    <Compile Include="ISchemaObjectWithOwnerCollection.cs" />
+    <Compile Include="ITableKeySchema.cs" />
+    <Compile Include="ITableSchema.cs" />
+    <Compile Include="ITabularObject.cs" />
+    <Compile Include="IViewColumnSchema.cs" />
+    <Compile Include="IViewSchema.cs" />
+    <Compile Include="MemberColumnSchema.cs" />
+    <Compile Include="MemberColumnSchemaCollection.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\AccessConnectionUIControl.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\AdoDotNetConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\ContextHelpEventArgs.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\DataConnectionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Microsoft\Data\ConnectionUI\DataConnectionDialog.Designer.cs">
+      <DependentUpon>DataConnectionDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Microsoft\Data\ConnectionUI\DataConnectionDialogContext.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\DataProvider.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\DataSource.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\IDataConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\IDataConnectionUIControl.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OdbcConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OdbcConnectionUIControl.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OleDBAccessConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OleDBConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OleDBConnectionUIControl.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OleDBOracleConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OleDBSpecializedConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OleDBSqlConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OracleConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\OracleConnectionUIControl.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\SqlConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\SqlConnectionUIControl.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\SqlFileConnectionProperties.cs" />
+    <Compile Include="Microsoft\Data\ConnectionUI\SqlFileConnectionUIControl.cs" />
+    <Compile Include="ParameterSchema.cs" />
+    <Compile Include="ParameterSchemaCollection.cs" />
+    <Compile Include="PrimaryKeySchema.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyComparer.2.cs" />
+    <Compile Include="PropertyComparer.cs" />
+    <Compile Include="PropertyStateEnum.cs" />
+    <Compile Include="SchemaObjectBase.cs" />
+    <Compile Include="SchemaObjectBaseCollection.cs" />
+    <Compile Include="SchemaObjectCollection.cs" />
+    <Compile Include="SchemaObjectWithOwnerBase.cs" />
+    <Compile Include="SchemaObjectWithOwnerCollection.cs" />
+    <Compile Include="SchemaProvider.cs" />
+    <Compile Include="SchemaSelector.cs" />
+    <Compile Include="SchemaSelectorExtensions.cs" />
+    <Compile Include="SchemaUtility.cs" />
+    <Compile Include="SelectMode.cs" />
+    <Compile Include="Serialization\DatabaseSchemaSerializer.cs" />
+    <Compile Include="Serialization\DataObjectSerializer.cs" />
+    <Compile Include="Serialization\SchemaObjectFactorySerializer.cs" />
+    <Compile Include="Serialization\SchemaObjectSerializer.cs" />
+    <Compile Include="Serialization\SchemaSelectorSerializer.cs" />
+    <Compile Include="SmartAssembly\Attributes\PoweredByAttribute.cs" />
+    <Compile Include="SortExpression.cs" />
+    <Compile Include="TableDependancyComparer.cs" />
+    <Compile Include="TableKeySchema.cs" />
+    <Compile Include="TableKeySchemaCollection.cs" />
+    <Compile Include="TableSchema.cs" />
+    <Compile Include="TableSchemaCollection.cs" />
+    <Compile Include="TableSortOrder.cs" />
+    <Compile Include="TabularObject.cs" />
+    <Compile Include="TabularObjectBase.cs" />
+    <Compile Include="TabularObjectBaseCollection.cs" />
+    <Compile Include="TypeConverters\SchemaObjectFactoryTypeConverter.cs" />
+    <Compile Include="TypeConverters\SchemaSelectorTypeConverter.cs" />
+    <Compile Include="ViewColumnSchema.cs" />
+    <Compile Include="ViewColumnSchemaCollection.cs" />
+    <Compile Include="ViewSchema.cs" />
+    <Compile Include="ViewSchemaCollection.cs" />
+    <Compile Include="WrappedNamedObjectCollection.cs" />
+    <Compile Include="WrappedSchemaObjectCollection.cs" />
+    <Compile Include="WrappedSchemaObjectWithOwnerCollection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="#cTc\#bTc.resources" />
+    <EmbeddedResource Include="#cTc\#lTc.resources" />
+    <EmbeddedResource Include="#cTc\#nUc.resources" />
+    <EmbeddedResource Include="Configuration\Upgrade.xslt" />
+    <EmbeddedResource Include="ConnectionDialog\Strings.resources" />
+    <EmbeddedResource Include="Design\ColumnSchemaPickerUI.resources" />
+    <EmbeddedResource Include="Design\CommandSchemaPickerUI.resources" />
+    <EmbeddedResource Include="Design\DatabaseSchemaPickerUI.resources" />
+    <EmbeddedResource Include="Design\DataSourceManagerUI.resources" />
+    <EmbeddedResource Include="Design\DataSourceUI.resources" />
+    <EmbeddedResource Include="Design\ErrorDialog.resources" />
+    <EmbeddedResource Include="Design\ExtendedPropertyEditorUI.resources" />
+    <EmbeddedResource Include="Design\SchemaSelectorEditorUI.resources" />
+    <EmbeddedResource Include="Design\TableSchemaPickerUI.resources" />
+    <EmbeddedResource Include="Design\TabularObjectBasePickerUI.resources" />
+    <EmbeddedResource Include="Design\ViewColumnSchemaPickerUI.resources" />
+    <EmbeddedResource Include="Design\ViewSchemaPickerUI.resources" />
+    <EmbeddedResource Include="Microsoft\Data\ConnectionUI\AccessConnectionUIControl.resources" />
+    <EmbeddedResource Include="Microsoft\Data\ConnectionUI\DataConnectionDialog.resources" />
+    <EmbeddedResource Include="Microsoft\Data\ConnectionUI\OdbcConnectionUIControl.resources" />
+    <EmbeddedResource Include="Microsoft\Data\ConnectionUI\OleDBConnectionUIControl.resources" />
+    <EmbeddedResource Include="Microsoft\Data\ConnectionUI\OracleConnectionUIControl.resources" />
+    <EmbeddedResource Include="Microsoft\Data\ConnectionUI\SqlConnectionUIControl.resources" />
+    <EmbeddedResource Include="Microsoft\Data\ConnectionUI\SqlFileConnectionUIControl.resources" />
+    <EmbeddedResource Include="{e50e1315-a36b-44b9-b646-bebd7ff104fb}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
