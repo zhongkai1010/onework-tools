@@ -2,25 +2,22 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-usingystem;
-usingystem.Collections.Generic;
-usingystem.Linq;
-usingystem.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace net_web_ioc
 {
     public class Program
     {
-        publictatic void Main(string[]rgs)
+        public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
-        publictatic IHostBuilder CreateHostBuilder(string[]rgs) =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                   ebBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

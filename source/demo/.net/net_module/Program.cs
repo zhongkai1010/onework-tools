@@ -1,17 +1,21 @@
-﻿usingystem;
-usingystem.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace net_module
 {
     class Program
     {
-       tatic void Main(string[]rgs)
+        static void Main(string[] rgs)
         {
-           ssemblyssembly =ssembly.GetAssembly(typeof(Program));
-           oreachType type inssembly.GetTypes())
+            Assembly assembly  = Assembly.GetAssembly(typeof(Program));
+
+
+            foreach (Type type in assembly.GetTypes())
             {
                 Console.WriteLine(type.FullName);
             }
+
+          
 
             Console.Read();
         }

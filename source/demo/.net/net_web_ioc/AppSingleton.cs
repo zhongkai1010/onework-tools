@@ -1,15 +1,15 @@
-﻿usingystem;
-usingystem.Collections.Generic;
-usingystem.Linq;
-usingystem.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace net_web_ioc
 {
-    public classppSingleton
+    public class AppSingleton
     {
-        publictring Version { get;et; }
+        public string Version { get;set; }
 
-        publicppSingleton()
+        public AppSingleton()
         {
             Version = DateTime.Now.ToLongTimeString();
         }

@@ -1,12 +1,12 @@
-﻿usingystem;
-usingystem.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 
 namespace net_database_schema
 {
     class Program
     {
-       tatic void Main(string[]rgs)
+       static void Main(string[]rgs)
         {
 
             
@@ -18,8 +18,8 @@ namespace net_database_schema
             //    // ...
             //}
 
-           qlConnectionqlConnection = newqlConnection();
-            Console.WriteLine("Helloorld!");
+           //qlConnectionqlConnection = newqlConnection();
+           // Console.WriteLine("Helloorld!");
         }
     }
 }

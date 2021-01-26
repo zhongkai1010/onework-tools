@@ -1,4 +1,4 @@
-﻿usingystem;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,42 +6,42 @@ namespace net_web_ioc.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public classeatherForecastController : ControllerBase
+    public class WeatherForecastController : ControllerBase
     {
-        privateeadonlyppSingleton _appSingleton;
+        private readonly AppSingleton _appSingleton;
 
-        privateeadonlyppScoped _appScoped;
+        private readonly AppScoped _appScoped;
 
 
-        privateeadonly IServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
-        publiceatherForecastController(AppSingletonppSingleton,ppScopedppScoped, IServiceProvidererviceProvider)
+        public WeatherForecastController(AppSingleton appSingleton, AppScoped appScoped, IServiceProvider serviceProvider)
         {
-            _appSingleton =ppSingleton;
-            _appScoped =ppScoped;
-            _serviceProvider =erviceProvider;
+            _appSingleton = appSingleton;
+            _appScoped = appScoped;
+            _serviceProvider = serviceProvider;
         }
 
         [HttpGet]
         [Route("/a")]
-        publictring()
+        public string A()
         {
-           eturn _appSingleton.Version;
+            return _appSingleton.Version;
         }
 
         [HttpGet]
         [Route("/b")]
-        publictring()
+        public string B()
         {
-           eturn _appScoped.Version;
+            return _appScoped.Version;
         }
 
         [HttpGet]
         [Route("/c")]
-        publictring C()
+        public string C()
         {
-           ppTransientppTransient = _serviceProvider.GetService<AppTransient>();
-           eturnppTransient.Version;
+            AppTransient appTransient = _serviceProvider.GetService<AppTransient>();
+            return appTransient.Version;
         }
     }
 }

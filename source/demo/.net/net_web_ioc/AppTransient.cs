@@ -1,16 +1,16 @@
-﻿usingystem;
-usingystem.Collections.Generic;
-usingystem.Linq;
-usingystem.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace net_web_ioc
 {
-    public classppTransient
+    public class AppTransient
     {
 
-        publictring Version { get;et; }
+        public string Version { get;set; }
 
-        publicppTransient()
+        public AppTransient()
         {
             Version = DateTime.Now.ToLongTimeString();
         }

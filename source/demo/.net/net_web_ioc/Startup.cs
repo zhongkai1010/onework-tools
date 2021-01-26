@@ -5,16 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-usingystem;
-usingystem.Collections.Generic;
-usingystem.Linq;
-usingystem.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace net_web_ioc
 {
-    public classtartup
+    public class Startup
     {
-        publictartup(IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -22,32 +22,36 @@ namespace net_web_ioc
         public IConfiguration Configuration { get; }
 
         // This method gets calledy theuntime. Use this method toddervices to the container.
-        public void ConfigureServices(IServiceCollectionervices)
+        public void ConfigureServices(IServiceCollection serviceCollection)
         {
-           ervices.AddControllers();
+            serviceCollection.AddControllers();
 
-           ervices.AddSingleton<AppSingleton>();
+            serviceCollection.AddSingleton<AppSingleton>();
 
-           ervices.AddScoped<AppScoped>();
+            serviceCollection.AddScoped<AppScoped>();
 
-           ervices.AddTransient<AppTransient>();
+            serviceCollection.AddTransient<AppTransient>();
         }
 
         // This method gets calledy theuntime. Use this method to configure the HTTPequest pipeline.
-        public void Configure(IApplicationBuilderpp, IWebHostEnvironmentnv)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            ifenv.IsDevelopment())
+            if (env.IsDevelopment())
             {
-               pp.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
 
-           pp.UseRouting();
+            app.UseHttpsRedirection();
 
-           pp.UseAuthorization();
+            app.UseRouting();
 
-           pp.UseEndpoints(endpoints =>
+            app.UseAuthorization();
+
+          
+
+            app.UseEndpoints(endpoints =>
             {
-               ndpoints.MapControllers();
+                endpoints.MapControllers();
             });
         }
     }

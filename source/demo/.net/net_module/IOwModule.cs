@@ -1,7 +1,7 @@
-﻿namespace net_module
-{
-    public interface IOwModule
-    {
-        void ConfigureServices(ServiceConfigurationContext context);
-    }
-}
+﻿//namespace net_module
+//{
+//    public interface IOwModule
+//    {
+//        void ConfigureServices(ServiceConfigurationContext context);
+//    }
+//}
