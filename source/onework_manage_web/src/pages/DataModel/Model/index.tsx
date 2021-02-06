@@ -4,7 +4,7 @@ import { Switch } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import request from 'umi-request';
-import type { Item } from '@/pages/Model/data.d';
+import type { Item } from '@/pages/DataModel/data.d';
 
 const columns: ProColumns<Item>[] = [
   {

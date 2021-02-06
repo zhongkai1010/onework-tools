@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-03 15:56:55
+ * @LastEditTime: 2021-02-05 21:41:18
  * @LastEditors: 钟凯
  * @Description: 
  * @FilePath: \onework_manage_web\src\locales\zh-CN\menu.ts
@@ -59,8 +59,8 @@ export default {
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
   'menu.model': '模型管理',
-  'menu.model.public-data': '公共模型',
-  'menu.model.public-data-item': '公共数据项',
-  'menu.model.data': '模型',
-  'menu.model.data-item': '数据项',
+  'menu.model.item': '数据项',
+  'menu.model.set': '数据集',
+  'menu.model.model': '数据模型',
+  'menu.model.behavior': '模型行为',
 };

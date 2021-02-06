@@ -1,7 +1,7 @@
 ﻿/*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-03 15:51:34
+ * @LastEditTime: 2021-02-05 21:37:54
  * @LastEditors: 钟凯
  * @Description: 
  * @FilePath: \onework_manage_web\config\routes.ts
@@ -59,28 +59,28 @@ export default [
     access: 'canAdmin',
     routes: [
       {
-        path: '/model/publuc-data',
-        name: 'public-data',
+        path: '/model/item',
+        name: 'item',
         icon: 'smile',
-        component: './Model/PublicData',
+        component: './DataModel/Item',
       },
       {
-        path: '/model/public-data-item',
-        name: 'public-data-item',
+        path: '/model/set',
+        name: 'set',
         icon: 'table',
-        component: './Model/PublicDataItem',
+        component: './DataModel/Set',
       },
       {
-        path: '/model/data',
-        name: 'data',
+        path: '/model/model',
+        name: 'model',
         icon: 'smile',
-        component: './Model/Data',
+        component: './DataModel/Model',
       },
       {
-        path: '/model/data-item',
-        name: 'data-item',
+        path: '/model/behavior',
+        name: 'behavior',
         icon: 'smile',
-        component: './Model/DataItem',
+        component: './DataModel/Behavior',
       },
     ],
   },
