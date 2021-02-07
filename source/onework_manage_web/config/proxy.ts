@@ -1,3 +1,12 @@
+/*
+ * @Author: 钟凯
+ * @Date: 2021-02-03 14:28:04
+ * @LastEditTime: 2021-02-07 15:58:31
+ * @LastEditors: 钟凯
+ * @Description: 
+ * @FilePath: \onework_manage_web\config\proxy.ts
+ * @可以输入预定的版权声明、个性签名、空行等
+ */
 /**
  * 在生产环境 代理是无法生效的，所以这里没有生产环境的配置
  * The agent cannot take effect in the production environment
@@ -7,11 +16,16 @@
  */
 export default {
   dev: {
+    '/api/trans/vip/translate': {
+      target: 'http://api.fanyi.baidu.com',
+      changeOrigin: true,
+    },
     '/api/': {
       target: 'https://preview.pro.ant.design',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
+   
   },
   test: {
     '/api/': {

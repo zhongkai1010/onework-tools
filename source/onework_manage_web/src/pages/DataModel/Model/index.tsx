@@ -4,7 +4,7 @@ import { Switch } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import request from 'umi-request';
-import type { Item } from '@/pages/DataModel/data.d';
+import type { Item } from '@/types/models/model.d';
 
 const columns: ProColumns<Item>[] = [
   {
@@ -98,7 +98,7 @@ export default () => {
       columns={columns}
       recordCreatorProps={{
         newRecordType: 'dataSource',
-        position:'top',
+        position: 'top',
         record: () => ({
           id: '12',
           name: '', // 名称
