@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-07 09:21:39
- * @LastEditTime: 2021-02-07 17:28:27
+ * @LastEditTime: 2021-02-08 11:28:34
  * @LastEditors: 钟凯
  * @Description: 
  * @FilePath: \onework_manage_web\mock\model.ts
@@ -22,7 +22,7 @@ import { Request, Response } from 'express';
 import Mock from 'mockjs';
 
 export default {
-  'GET /api/model/item/getlist': (req: Request, res: Response) => {
+  'GET /api/model/item/getItemList': (req: Request, res: Response) => {
     let dataSource = Mock.mock({
       'data|10': [
         {

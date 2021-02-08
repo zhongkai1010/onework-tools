@@ -1,22 +1,23 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-07 17:45:26
+ * @LastEditTime: 2021-02-08 12:23:24
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
+import EditableProTable from '@ant-design/pro-table';
 import type { Item } from '@/types/models/model.d';
-import { getItemList } from './service';
-import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { ModalForm, ProFormText, ProFormSelect } from '@ant-design/pro-form';
+import { Button, Form } from 'antd';
 import { Translate } from '@/utils/translate';
+import debounce from 'debounce';
+import { ModalForm, ProFormText, ProFormSelect } from '@ant-design/pro-form';
+import { getItemList, saveItem } from '@/pages/DataModel/Item/service';
+import { useRequest } from 'umi';
 
 const typeValueEnum = {
   character: { text: '字符串' },
@@ -34,6 +35,7 @@ const statusValueEnum = {
 };
 
 export default () => {
+  const [form] = Form.useForm();
   const columns: ProColumns<Item>[] = [
     {
       title: '编码',
@@ -96,10 +98,11 @@ export default () => {
       ],
     },
   ];
-
+  const [nameValue, setNameValue] = useState('');
+  const saveItemOperate = useRequest(saveItem, { manual: true });
   return (
     <PageContainer content="欢迎使用 ProLayout 组件">
-      <ProTable<Item>
+      <EditableProTable<Item>
         headerTitle="查询表格"
         rowKey="id"
         options={{
@@ -107,67 +110,94 @@ export default () => {
           search: true,
         }}
         search={false}
-        debounceTime={500}
+        debounceTime={800}
+        editable={{
+          onSave: (key, row) => {
+            // console.log('row', row);
+            return new Promise((reslove) => {
+              reslove('');
+            });
+          },
+          onDelete: () => {
+            return new Promise((reslove) => {
+              reslove('');
+            });
+          },
+        }}
         toolBarRender={() => [
           <ModalForm
             title="新建数据项"
             layout="horizontal"
-            trigger={
-              <Button type="primary">
-                <PlusOutlined />
-                新建
-              </Button>
-            }
+            form={form}
+            onFinish={async (values) => {
+              const data = { ...values, name: nameValue };
+              saveItemOperate.run(data).then(() => {
+                return true;
+              });
+            }}
+            trigger={<Button type="primary">新建</Button>}
           >
-            <ProFormText label="名称" name="name" />
+            <ProFormText
+              label="名称"
+              name="name"
+              fieldProps={{
+                onChange: debounce((e: any) => {
+                  const { value } = e.target;
+                  const temp = (value as string).trimEnd();
+                  let code = '';
+                  if (temp.length > 0) {
+                    setNameValue(value);
+                    Translate.to(value).then((data: any) => {
+                      code = data.trans_result.length > 0 ? data.trans_result[0].dst : '';
+                      const values = form.getFieldsValue();
+                      form.setFieldsValue({ ...values, code });
+                    });
+                  }
+                }, 500),
+              }}
+            />
             <ProFormText label="编码" name="code" />
             <ProFormSelect
               label="类型"
               name="type"
               options={[
                 {
-                  value: 1,
+                  value: 'character',
                   label: '字符串',
                 },
                 {
-                  value: 2,
+                  value: 'integer',
                   label: '整型',
                 },
                 {
-                  value: 3,
+                  value: 'digital',
                   label: '数字',
                 },
                 {
-                  value: 4,
+                  value: 'boolean',
                   label: '布尔',
                 },
                 {
-                  value: 5,
+                  value: 'enumerate',
                   label: '枚举',
                 },
                 {
-                  value: 6,
+                  value: 'date',
                   label: '日期',
                 },
                 {
-                  value: 7,
+                  value: 'datetime',
                   label: '日期时间',
                 },
               ]}
             />
           </ModalForm>,
-          <Button
-            onClick={() => {
-              Translate.to('高度').then((data) => {
-                console.log(data);
-              });
-            }}
-          >
-            测试
-          </Button>,
         ]}
         columns={columns}
-        request={() => getItemList()}
+        request={(params, sort, filter) => {
+          console.log(params, sort, filter);
+          return getItemList();
+        }}
       />
     </PageContainer>
   );
