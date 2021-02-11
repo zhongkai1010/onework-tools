@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-08 12:23:24
+ * @LastEditTime: 2021-02-11 17:50:48
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
@@ -194,9 +195,16 @@ export default () => {
           </ModalForm>,
         ]}
         columns={columns}
-        request={(params, sort, filter) => {
-          console.log(params, sort, filter);
-          return getItemList();
+        request={async (params, sort, filter) => {
+          const where = {
+            page: params.current,
+            limit: params.pageSize,
+            order: 'createdAt',
+            sort: 'desc',
+            keyword: params.keyword,
+            filter,
+          };
+          return getItemList(where);
         }}
       />
     </PageContainer>

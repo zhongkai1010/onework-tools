@@ -15,8 +15,11 @@ import { request } from 'umi';
  * @param {*}
  * @return {*}
  */
-export async function getItemList() {
-    return request('/api/model/item/getItemList');
+export async function getItemList(params: any) {
+    return request('/api/model/item/getItemList', {
+        method: 'GET',
+        params
+    });
 }
 
 /**

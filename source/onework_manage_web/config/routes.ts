@@ -1,7 +1,7 @@
 ﻿/*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-05 21:37:54
+ * @LastEditTime: 2021-02-09 07:30:20
  * @LastEditors: 钟凯
  * @Description: 
  * @FilePath: \onework_manage_web\config\routes.ts
@@ -51,7 +51,6 @@ export default [
     path: '/list',
     component: './TableList',
   },
-
   {
     path: '/model',
     name: 'model',
