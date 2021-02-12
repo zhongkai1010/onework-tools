@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 19:22:50
- * @LastEditTime: 2021-02-12 01:25:03
+ * @LastEditTime: 2021-02-13 07:13:58
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\controller\items.js
+ * @FilePath: \onework_manage_api\app\controller\api\model\items.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 /*
@@ -18,26 +18,26 @@
  */
 'use strict';
 
-const Controller = require('../../core/base_controller');
+const Controller = require('../../../core/base_controller');
 
 class ItemController extends Controller {
   /**
-   * @description: 获取数据项列表，包含分页、排序、检索等功能。
+   * @description: 添加数据项
    * @param {*}
    * @return {*}
    */
-  async getItemList() {
+  async insert() {
     const ctx = this.ctx;
     const query = { limit: this.toInt(ctx.query.limit), offset: this.toInt(ctx.query.offset) };
     ctx.body = await ctx.model.User.findAll(query);
   }
 
   /**
-   * @description:  修改数据项
+   * @description:  获取数据项列表（分页、排序、关键字）
    * @param {*}
    * @return {*}
    */
-  async update() {
+  async getlist() {
     const ctx = this.ctx;
     const id = this.toInt(ctx.params.id);
     const user = await ctx.model.User.findByPk(id);
@@ -52,11 +52,11 @@ class ItemController extends Controller {
   }
 
   /**
-   * @description:  批量操作数据项，包含：新增、修改等功能。
+   * @description:  修改数据项（单条）
    * @param {*}
    * @return {*}
    */
-  async batchSave() {
+  async update() {
     const ctx = this.ctx;
     const { name, age } = ctx.request.body;
     const user = await ctx.model.User.create({ name, age });
@@ -65,11 +65,11 @@ class ItemController extends Controller {
   }
 
   /**
-   * @description:  移除数据项，进行软删除。
+   * @description:  保存数据项（新增或修改）
    * @param {*}
    * @return {*}
    */
-  async remove() {
+  async save() {
     const ctx = this.ctx;
     const id = this.toInt(ctx.params.id);
     const user = await ctx.model.User.findByPk(id);
@@ -80,6 +80,24 @@ class ItemController extends Controller {
 
     await user.destroy();
     ctx.status = 200;
+  }
+
+  /**
+   * @description: 删除数据项
+   * @param {*}
+   * @return {*}
+   */
+  async remove() {
+    this.failure();
+  }
+
+  /**
+   * @description: 检索数据项（关键字、限制10条）
+   * @param {*}
+   * @return {*}
+   */
+  async search() {
+    this.failure();
   }
 }
 

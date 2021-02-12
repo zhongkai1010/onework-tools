@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-02-11 21:40:59
+ * @LastEditTime: 2021-02-13 07:31:45
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\config\config.default.js
@@ -24,8 +24,15 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1613040293104_971';
 
+  config.security = {
+    domainWhiteList: [ '*' ], // 白名单
+    csrf: { enable: false },
+  };
+
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = [
+    'errorHandler',
+  ];
 
   // add your user config here
   const userConfig = {

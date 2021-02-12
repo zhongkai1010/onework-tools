@@ -3,7 +3,7 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-11-01 14:25:37
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-02-12 01:20:38
+ * @LastEditTime: 2021-02-13 07:25:54
  * @Description:
  * @FilePath: \onework_manage_api\app\extend\helper.js
  */
@@ -15,14 +15,14 @@ module.exports = {
   /**
    *  请求响应返回结果包裹器
    *
-   * @param {*} [result=null]
+   * @param {*} [data=null]
    * @param {boolean} [success=false]
    * @param {*} [error=null]
    * @returns
    */
-  getRequestWrapper: (result = null, success = false, error = null) => {
+  getRequestWrapper: (data = null, success = false, error = null) => {
     return {
-      result,
+      data,
       success,
       error,
     };
@@ -39,7 +39,7 @@ module.exports = {
   getResponseErrorCode: (code, message = 'internal server error') => {
     const msg = code ? errorCode[code] : message;
     return {
-      result: null,
+      data: null,
       success: false,
       error: {
         message: msg,
