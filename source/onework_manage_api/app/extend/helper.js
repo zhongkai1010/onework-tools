@@ -3,13 +3,13 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-11-01 14:25:37
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-02-13 07:25:54
+ * @LastEditTime: 2021-02-14 19:29:36
  * @Description:
  * @FilePath: \onework_manage_api\app\extend\helper.js
  */
 'use strict';
 
-const errorCode = require('./errorCode');
+const errorCode = require('../core/errorCode');
 
 module.exports = {
   /**

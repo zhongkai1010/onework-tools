@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-02-13 07:31:45
+ * @LastEditTime: 2021-02-14 23:53:01
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\config\config.default.js
@@ -31,6 +31,7 @@ module.exports = appInfo => {
 
   // add your middleware config here
   config.middleware = [
+    'transactionHandler',
     'errorHandler',
   ];
 
@@ -43,6 +44,7 @@ module.exports = appInfo => {
       password: '123qwe!@#',
       database: 'egg-sequelize-doc-default',
       host: '127.0.0.1',
+      timezone: '+08:00', // for writing to database
     },
   };
 
