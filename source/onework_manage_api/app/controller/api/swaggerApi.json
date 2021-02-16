@@ -1,0 +1,3252 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "快速构建平台",
+    "version": "last"
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "item",
+      "description": "公共数据项"
+    },
+    {
+      "name": "collection",
+      "description": "公共数据项集合"
+    },
+    {
+      "name": "dataModel",
+      "description": "数据模型集成数据项与模型行为"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/model/item/insert": {
+      "post": {
+        "tags": [
+          "item"
+        ],
+        "summary": "添加数据项",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "名称"
+                },
+                "code": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "编码"
+                },
+                "type": {
+                  "type": "integer",
+                  "description": "数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举",
+                  "mock": {
+                    "mock": "@pick(1,2,3,4,5,6)"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "code",
+                "type"
+              ],
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@integer"
+                      },
+                      "description": "ID"
+                    },
+                    "uid": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@guid"
+                      },
+                      "description": "唯一值"
+                    },
+                    "name": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@string"
+                      },
+                      "description": "名称"
+                    },
+                    "code": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@string"
+                      },
+                      "description": "代码"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举",
+                      "mock": {
+                        "mock": "@pick(1,2,3,4,5,6,7)"
+                      }
+                    },
+                    "status": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@pick(1,2)"
+                      },
+                      "description": "状态，1：启用 ，2：禁用"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "description": "创建时间",
+                      "mock": {
+                        "mock": "@datetime"
+                      }
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "description": "修改时间",
+                      "mock": {
+                        "mock": "@datetime"
+                      }
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "type",
+                    "status",
+                    "created_at",
+                    "updated_at",
+                    "id",
+                    "uid",
+                    "name"
+                  ],
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "响应状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/item/getlist": {
+      "post": {
+        "tags": [
+          "item"
+        ],
+        "summary": "获取数据项列表（分页、排序、关键字）",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "页数",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "个数",
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "description": "关键字",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": true,
+            "description": "排序类型，0：无、1：名称，2：编码，3：类型、4：创建时间，5、修改时间",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": true,
+            "description": "排序方式，desc、asc",
+            "type": "string"
+          },
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "type": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "description": "数据项类型，1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举",
+                    "mock": {
+                      "mock": "@pick(1,2,3,4,5,6,7)"
+                    }
+                  },
+                  "description": "类型集合"
+                },
+                "status": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "description": "数据状态，1：启用、2：禁用",
+                    "mock": {
+                      "mock": "@pick(1,2)"
+                    }
+                  },
+                  "description": "状态集合"
+                }
+              },
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "mock": {
+                          "mock": "@integer"
+                        },
+                        "description": "ID"
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "name": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "名称"
+                      },
+                      "code": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "代码"
+                      },
+                      "type": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2,3,4,5,6,7)"
+                        },
+                        "description": "数据项类型，0:缺省值，1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2)"
+                        },
+                        "description": "状态，1：启用 ，2：禁用"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "创建时间"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "修改时间"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "uid",
+                      "name",
+                      "code",
+                      "type",
+                      "status",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "description": "数据"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 20,
+                  "maxItems": 20,
+                  "description": "数据结果"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "请求状态"
+                },
+                "total": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@integer"
+                  },
+                  "description": "总页数"
+                }
+              },
+              "required": [
+                "total"
+              ],
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/item/update": {
+      "patch": {
+        "tags": [
+          "item"
+        ],
+        "summary": "修改数据项（单条）",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "编码"
+                },
+                "type": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@pick(1,2,3,4,5,6,7)"
+                  },
+                  "description": "数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举"
+                },
+                "status": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@pick(1,2)"
+                  },
+                  "description": " 状态，1：启用 ，2：禁用"
+                },
+                "uid": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@guid"
+                  },
+                  "description": "唯一值"
+                },
+                "name": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "名称"
+                }
+              },
+              "required": [
+                "code",
+                "type",
+                "status",
+                "uid",
+                "name"
+              ],
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "uid": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": []
+                },
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/item/save": {
+      "put": {
+        "tags": [
+          "item"
+        ],
+        "summary": "保存数据项（新增或修改）",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值",
+                    "mock": {
+                      "mock": "@guid"
+                    }
+                  },
+                  "name": {
+                    "type": "string",
+                    "mock": {
+                      "mock": "@string"
+                    },
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "mock": {
+                      "mock": "@string"
+                    },
+                    "description": "编码"
+                  },
+                  "type": {
+                    "type": "integer",
+                    "description": "数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举",
+                    "mock": {
+                      "mock": "@pick(1,2,3,4,5,6)"
+                    }
+                  },
+                  "status": {
+                    "type": "integer",
+                    "description": "状态，0：无、1：启用 ，2：禁用",
+                    "mock": {
+                      "mock": "@pick(1,2)"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "code",
+                  "type",
+                  "status"
+                ],
+                "description": "数据"
+              },
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "ID",
+                        "mock": {
+                          "mock": "@integer"
+                        }
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "name": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "名称"
+                      },
+                      "code": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "编码"
+                      },
+                      "type": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2,3,5,6,7)"
+                        },
+                        "description": "数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2)"
+                        },
+                        "description": "状态，0：无、1：启用 ，2：禁用"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "创建时间"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "修改时间"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "uid",
+                      "name",
+                      "code",
+                      "type",
+                      "status",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "description": "数据"
+                  },
+                  "description": "数据结果"
+                },
+                "success": {
+                  "type": "boolean",
+                  "description": "响应状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/item/remove": {
+      "delete": {
+        "tags": [
+          "item"
+        ],
+        "summary": "删除数据项",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "uuid集合"
+              },
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "description": "数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "description": "响应状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/item/search": {
+      "get": {
+        "tags": [
+          "item"
+        ],
+        "summary": "检索数据项（关键字、限制10条）",
+        "description": "",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "关键字",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "mock": {
+                          "mock": "@integer"
+                        },
+                        "description": "ID"
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "name": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "名称"
+                      },
+                      "code": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "代码"
+                      },
+                      "type": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2,3,4,5,6,7)"
+                        },
+                        "description": "数据项类型，0:缺省值，1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、7：枚举"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2)"
+                        },
+                        "description": "状态，1：启用 ，2：禁用"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "创建时间"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "修改时间"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "uid",
+                      "name",
+                      "code",
+                      "type",
+                      "status",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "description": "数据"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 0,
+                  "maxItems": 10,
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "请求状态"
+                },
+                "total": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@integer"
+                  },
+                  "description": "总页数"
+                }
+              },
+              "required": [
+                "total"
+              ],
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/collection/insert": {
+      "post": {
+        "tags": [
+          "collection"
+        ],
+        "summary": "添加数据集",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "名称"
+                },
+                "code": {
+                  "type": "string",
+                  "description": "编码"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "数据项唯一值集合"
+                  },
+                  "description": "数据项集合",
+                  "minItems": 1,
+                  "maxItems": 10,
+                  "uniqueItems": true
+                },
+                "description": {
+                  "type": "string",
+                  "description": "描述",
+                  "mock": {
+                    "mock": "@cparagraph"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "code",
+                "items"
+              ],
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "响应状态"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@integer"
+                      },
+                      "description": "ID"
+                    },
+                    "uid": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@guid"
+                      },
+                      "description": "唯一值"
+                    },
+                    "name": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@title"
+                      },
+                      "description": "名称"
+                    },
+                    "code": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@string"
+                      },
+                      "description": "编码"
+                    },
+                    "description": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@cparagraph"
+                      },
+                      "description": "描述"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "mock": {
+                              "mock": "@integer"
+                            },
+                            "description": "ID"
+                          },
+                          "uuid": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@guid"
+                            },
+                            "description": "唯一值"
+                          },
+                          "name": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@title"
+                            },
+                            "description": "名称"
+                          },
+                          "code": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@string"
+                            },
+                            "description": "编码"
+                          },
+                          "type": {
+                            "type": "integer",
+                            "mock": {
+                              "mock": "@pick(1,2,3,4,5,6,7)"
+                            },
+                            "description": "类型"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "code",
+                          "type",
+                          "uuid"
+                        ],
+                        "description": "数据项"
+                      },
+                      "minItems": 1,
+                      "maxItems": 10,
+                      "uniqueItems": true,
+                      "description": "数据项集合"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@datetime"
+                      },
+                      "description": "创建时间"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@datetime"
+                      },
+                      "description": "修改时间"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "uid",
+                    "name",
+                    "code",
+                    "description",
+                    "items",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "description": "响应数据"
+                }
+              },
+              "required": [
+                "success",
+                "data"
+              ],
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/collection/getlist": {
+      "post": {
+        "tags": [
+          "collection"
+        ],
+        "summary": "获取数据集列表（分页、排序、关键字）",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "页数",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "个数",
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "description": "关键字",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": true,
+            "description": "排序类型，0：无，1：名称、2：编码、3：状态、4：创建时间、5：修改时间",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": true,
+            "description": "排序方式，desc、asc",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@integer"
+                        },
+                        "description": "ID"
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "name": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@title"
+                        },
+                        "description": "名称"
+                      },
+                      "code": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "编码"
+                      },
+                      "description": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@cparagraph"
+                        },
+                        "description": "描述"
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "mock": {
+                                "mock": "@integer"
+                              },
+                              "description": "ID"
+                            },
+                            "uuid": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@guid"
+                              },
+                              "description": "唯一值"
+                            },
+                            "name": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@title"
+                              },
+                              "description": "名称"
+                            },
+                            "code": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@string"
+                              },
+                              "description": "编码"
+                            },
+                            "type": {
+                              "type": "integer",
+                              "mock": {
+                                "mock": "@pick(1,2,3,4,5,6,7)"
+                              },
+                              "description": "类型"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "code",
+                            "type",
+                            "uuid"
+                          ],
+                          "description": "数据项"
+                        },
+                        "minItems": 1,
+                        "maxItems": 10,
+                        "uniqueItems": true,
+                        "description": "数据项集合"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "创建时间"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "修改时间"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "uid",
+                      "name",
+                      "code",
+                      "type",
+                      "status",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "description": "数据"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 20,
+                  "maxItems": 20,
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "请求状态"
+                },
+                "total": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@integer"
+                  },
+                  "description": "总页数"
+                }
+              },
+              "required": [
+                "total"
+              ],
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/collection/update": {
+      "patch": {
+        "tags": [
+          "collection"
+        ],
+        "summary": "修改数据集",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "名称"
+                },
+                "code": {
+                  "type": "string",
+                  "description": "编码"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "数据项唯一值",
+                    "mock": {
+                      "mock": "@guid"
+                    }
+                  },
+                  "description": "数据项集合",
+                  "minItems": 1,
+                  "maxItems": 10,
+                  "uniqueItems": true
+                },
+                "uid": {
+                  "type": "string",
+                  "description": "唯一值",
+                  "mock": {
+                    "mock": "@guid"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "description": "描述",
+                  "mock": {
+                    "mock": "@cparagraph"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "code",
+                "items",
+                "description",
+                "uid"
+              ],
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "响应状态"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@integer"
+                      },
+                      "description": "ID"
+                    },
+                    "uuid": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@guid"
+                      },
+                      "description": "唯一值"
+                    },
+                    "name": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@title"
+                      },
+                      "description": "名称"
+                    },
+                    "code": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@string"
+                      },
+                      "description": "编码"
+                    },
+                    "description": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@cparagraph"
+                      },
+                      "description": "描述"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "mock": {
+                              "mock": "@integer"
+                            },
+                            "description": "ID"
+                          },
+                          "uuid": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@guid"
+                            },
+                            "description": "唯一值"
+                          },
+                          "name": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@title"
+                            },
+                            "description": "名称"
+                          },
+                          "code": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@string"
+                            },
+                            "description": "编码"
+                          },
+                          "type": {
+                            "type": "integer",
+                            "mock": {
+                              "mock": "@pick(1,2,3,4,5,6,7)"
+                            },
+                            "description": "类型"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "code",
+                          "type",
+                          "uuid"
+                        ],
+                        "description": "数据项"
+                      },
+                      "minItems": 1,
+                      "maxItems": 10,
+                      "uniqueItems": true,
+                      "description": "数据项集合"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@datetime"
+                      },
+                      "description": "创建时间"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@datetime"
+                      },
+                      "description": "修改时间"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "uuid",
+                    "name",
+                    "code",
+                    "description",
+                    "items",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "description": "响应数据"
+                }
+              },
+              "required": [
+                "success",
+                "data"
+              ],
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/collection/search": {
+      "get": {
+        "tags": [
+          "collection"
+        ],
+        "summary": "检索数据集合（关键字、限制10条）",
+        "description": "",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "关键字",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@integer"
+                        },
+                        "description": "ID"
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "name": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@title"
+                        },
+                        "description": "名称"
+                      },
+                      "code": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "编码"
+                      },
+                      "description": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@cparagraph"
+                        },
+                        "description": "描述"
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "mock": {
+                                "mock": "@integer"
+                              },
+                              "description": "ID"
+                            },
+                            "uuid": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@guid"
+                              },
+                              "description": "唯一值"
+                            },
+                            "name": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@title"
+                              },
+                              "description": "名称"
+                            },
+                            "code": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@string"
+                              },
+                              "description": "编码"
+                            },
+                            "type": {
+                              "type": "integer",
+                              "mock": {
+                                "mock": "@pick(1,2,3,4,5,6,7)"
+                              },
+                              "description": "类型"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "code",
+                            "type",
+                            "uuid"
+                          ],
+                          "description": "数据项"
+                        },
+                        "minItems": 1,
+                        "maxItems": 10,
+                        "uniqueItems": true,
+                        "description": "数据项集合"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "创建时间"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@datetime"
+                        },
+                        "description": "修改时间"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "uid",
+                      "name",
+                      "code",
+                      "type",
+                      "status",
+                      "created_at",
+                      "updated_at"
+                    ]
+                  },
+                  "uniqueItems": true,
+                  "minItems": 20,
+                  "maxItems": 20,
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "响应状态"
+                },
+                "total": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@integer"
+                  },
+                  "description": "总页数"
+                }
+              },
+              "required": [
+                "total"
+              ],
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/collection/remove": {
+      "delete": {
+        "tags": [
+          "collection"
+        ],
+        "summary": "删除数据集",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "mock": {
+                  "mock": "@guid"
+                },
+                "description": "唯一值"
+              },
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "请求状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/data/insert": {
+      "post": {
+        "tags": [
+          "dataModel"
+        ],
+        "summary": "添加数据模型",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "名称"
+                },
+                "code": {
+                  "type": "string",
+                  "description": "编码",
+                  "mock": {
+                    "mock": "@string"
+                  }
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "名称",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "code": {
+                        "type": "string",
+                        "description": "编码",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "type": {
+                        "type": "integer",
+                        "description": "类型",
+                        "mock": {
+                          "mock": "@pick(1,2,3,4,5,6)"
+                        }
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "isNull": {
+                        "type": "boolean",
+                        "description": "是否可未空",
+                        "mock": {
+                          "mock": "@boolean"
+                        }
+                      },
+                      "length": {
+                        "type": "integer",
+                        "description": "长度",
+                        "mock": {
+                          "mock": "@integer(0,255)"
+                        }
+                      },
+                      "precision": {
+                        "type": "integer",
+                        "description": "小数位数",
+                        "mock": {
+                          "mock": "@integer(0,8)"
+                        }
+                      },
+                      "defaultValue": {
+                        "type": "string",
+                        "description": "默认值",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "code",
+                      "type",
+                      "isNull"
+                    ]
+                  },
+                  "description": "数据项集合",
+                  "minItems": 1,
+                  "maxItems": 10,
+                  "uniqueItems": true
+                },
+                "behaviors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "行为名称",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "code": {
+                        "type": "string",
+                        "description": "行为编码",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "inputs": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "integer",
+                              "description": "参数类型，0：无、1：值，2：集合",
+                              "mock": {
+                                "mock": "@pick(0,1,2)"
+                              }
+                            },
+                            "value": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@guid"
+                              },
+                              "description": "输入参数值"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        "description": "行为输入参数集合"
+                      },
+                      "outputType": {
+                        "type": "integer",
+                        "description": "输出类型，0：无、1：值，2：集合",
+                        "mock": {
+                          "mock": "@pick(0,1,2)"
+                        }
+                      },
+                      "outputValue": {
+                        "type": "string",
+                        "description": "输出值",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "行为描述"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "code",
+                      "outputType",
+                      "inputs"
+                    ]
+                  },
+                  "description": "行为集合",
+                  "minItems": 0,
+                  "maxItems": 10
+                },
+                "description": {
+                  "type": "string",
+                  "description": "描述",
+                  "mock": {
+                    "mock": "@cparagraph"
+                  }
+                },
+                "type": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@pick(1,2,3)"
+                  },
+                  "description": "类型，1：类，2：抽象，3：接口"
+                }
+              },
+              "required": [
+                "name",
+                "code",
+                "items",
+                "behaviors",
+                "type"
+              ],
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@string"
+                      },
+                      "description": "名称"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "编码",
+                      "mock": {
+                        "mock": "@string"
+                      }
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "名称",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "编码",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "type": {
+                            "type": "integer",
+                            "description": "类型",
+                            "mock": {
+                              "mock": "@pick(1,2,3,4,5,6)"
+                            }
+                          },
+                          "uid": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@guid"
+                            },
+                            "description": "唯一值"
+                          },
+                          "isNull": {
+                            "type": "boolean",
+                            "description": "是否可未空",
+                            "mock": {
+                              "mock": "@boolean"
+                            }
+                          },
+                          "length": {
+                            "type": "integer",
+                            "description": "长度",
+                            "mock": {
+                              "mock": "@integer"
+                            }
+                          },
+                          "precision": {
+                            "type": "integer",
+                            "description": "小数位数",
+                            "mock": {
+                              "mock": "@integer"
+                            }
+                          },
+                          "defaultValue": {
+                            "type": "string",
+                            "description": "默认值",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "code",
+                          "type",
+                          "isNull"
+                        ],
+                        "description": "数据项"
+                      },
+                      "description": "数据项集合",
+                      "minItems": 1,
+                      "maxItems": 10,
+                      "uniqueItems": true
+                    },
+                    "behaviors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "行为名称",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "行为编码",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "input": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "integer",
+                                  "description": "参数类型，0：无、1：值，2：集合",
+                                  "mock": {
+                                    "mock": "@pick(1,2)"
+                                  }
+                                },
+                                "valueUid": {
+                                  "type": "string",
+                                  "mock": {
+                                    "mock": "@guid"
+                                  },
+                                  "description": "输入参数值"
+                                }
+                              },
+                              "required": [
+                                "type"
+                              ]
+                            },
+                            "description": "行为输入参数集合"
+                          },
+                          "outputType": {
+                            "type": "integer",
+                            "description": "输出类型，0：无、1：值，2：集合"
+                          },
+                          "outputValue": {
+                            "type": "string",
+                            "description": "输出值"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "行为描述"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "code",
+                          "outputType",
+                          "input"
+                        ],
+                        "description": "行为"
+                      },
+                      "description": "行为集合",
+                      "minItems": 0,
+                      "maxItems": 10
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "描述",
+                      "mock": {
+                        "mock": "@cparagraph"
+                      }
+                    },
+                    "type": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@pick(1,2,3)"
+                      },
+                      "description": "类型，1：类，2：抽象，3：接口"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@integer"
+                      },
+                      "description": "ID"
+                    },
+                    "uid": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@guid"
+                      },
+                      "description": "唯一值"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "description": "创建时间"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "description": "修改时间"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@pick(1,2)"
+                      },
+                      "description": "状态，1：启用、2：禁用"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "type",
+                    "status",
+                    "created_at",
+                    "updated_at",
+                    "id",
+                    "uid",
+                    "name",
+                    "id",
+                    "uid",
+                    "created_at",
+                    "updated_at",
+                    "status"
+                  ],
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "处理状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/data/getlist": {
+      "post": {
+        "tags": [
+          "dataModel"
+        ],
+        "summary": "获取数据模型列表（分页、排序、关键字）",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "页数",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "个数",
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "关键字",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": true,
+            "description": "排序类型，0：无，1：名称、2：编码、3：类型、4：创建时间、5：修改时间",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": true,
+            "description": "排序方式，desc、asc",
+            "type": "string"
+          },
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "type": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "mock": {
+                      "mock": "@pick(1,2,3)"
+                    },
+                    "description": "数据模型类型，1：类模型，2：抽象类型、3：接口类型"
+                  },
+                  "description": "类型集合"
+                },
+                "status": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "description": "数据状态，1：启用、2：禁用",
+                    "mock": {
+                      "mock": "@pick(1,2)"
+                    }
+                  },
+                  "description": "状态集合"
+                }
+              },
+              "required": [
+                "type",
+                "status"
+              ],
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "名称"
+                      },
+                      "code": {
+                        "type": "string",
+                        "description": "编码",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "名称",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "code": {
+                              "type": "string",
+                              "description": "编码",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "type": {
+                              "type": "integer",
+                              "description": "类型",
+                              "mock": {
+                                "mock": "@pick(1,2,3,4,5,6)"
+                              }
+                            },
+                            "uid": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@guid"
+                              },
+                              "description": "唯一值"
+                            },
+                            "isNull": {
+                              "type": "boolean",
+                              "description": "是否可未空",
+                              "mock": {
+                                "mock": "@boolean"
+                              }
+                            },
+                            "length": {
+                              "type": "integer",
+                              "description": "长度",
+                              "mock": {
+                                "mock": "@integer"
+                              }
+                            },
+                            "precision": {
+                              "type": "integer",
+                              "description": "小数位数",
+                              "mock": {
+                                "mock": "@integer"
+                              }
+                            },
+                            "defaultValue": {
+                              "type": "string",
+                              "description": "默认值",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "code",
+                            "type",
+                            "isNull"
+                          ],
+                          "description": "数据项"
+                        },
+                        "description": "数据项集合",
+                        "minItems": 1,
+                        "maxItems": 10,
+                        "uniqueItems": true
+                      },
+                      "behaviors": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "行为名称",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "code": {
+                              "type": "string",
+                              "description": "行为编码",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "input": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "integer",
+                                    "description": "参数类型，0：无、1：值，2：集合",
+                                    "mock": {
+                                      "mock": "@pick(1,2)"
+                                    }
+                                  },
+                                  "valueUid": {
+                                    "type": "string",
+                                    "mock": {
+                                      "mock": "@guid"
+                                    },
+                                    "description": "输入参数值"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              "description": "行为输入参数集合"
+                            },
+                            "output": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "description": "类型，0：无、1：值，2：集合"
+                                  },
+                                  "valueUid": {
+                                    "type": "string",
+                                    "description": "输出参数值"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              "description": "行为输出参数集合"
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "行为描述"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "code",
+                            "output",
+                            "input"
+                          ],
+                          "description": "行为"
+                        },
+                        "description": "行为集合",
+                        "minItems": 0,
+                        "maxItems": 10
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "描述",
+                        "mock": {
+                          "mock": "@cparagraph"
+                        }
+                      },
+                      "type": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2,3)"
+                        },
+                        "description": "类型，1：类，2：抽象，3：接口"
+                      },
+                      "id": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@integer"
+                        },
+                        "description": "ID"
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "description": "创建时间"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "description": "修改时间"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2)"
+                        },
+                        "description": "状态，1：启用、2：禁用"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "uid",
+                      "name",
+                      "code",
+                      "type",
+                      "status",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "description": "数据"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 20,
+                  "maxItems": 20,
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "请求状态"
+                },
+                "total": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@integer"
+                  },
+                  "description": "总页数"
+                }
+              },
+              "required": [
+                "total"
+              ],
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/data/update": {
+      "patch": {
+        "tags": [
+          "dataModel"
+        ],
+        "summary": "修改数据模型",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "object",
+              "title": "empty object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@string"
+                  },
+                  "description": "名称"
+                },
+                "code": {
+                  "type": "string",
+                  "description": "编码",
+                  "mock": {
+                    "mock": "@string"
+                  }
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "名称",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "code": {
+                        "type": "string",
+                        "description": "编码",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "type": {
+                        "type": "integer",
+                        "description": "类型",
+                        "mock": {
+                          "mock": "@pick(1,2,3,4,5,6)"
+                        }
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "isNull": {
+                        "type": "boolean",
+                        "description": "是否可未空",
+                        "mock": {
+                          "mock": "@boolean"
+                        }
+                      },
+                      "length": {
+                        "type": "integer",
+                        "description": "长度",
+                        "mock": {
+                          "mock": "@integer(0,255)"
+                        }
+                      },
+                      "precision": {
+                        "type": "integer",
+                        "description": "小数位数",
+                        "mock": {
+                          "mock": "@integer(0,8)"
+                        }
+                      },
+                      "defaultValue": {
+                        "type": "string",
+                        "description": "默认值",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "code",
+                      "type",
+                      "isNull"
+                    ],
+                    "description": "数据项"
+                  },
+                  "description": "数据项集合",
+                  "minItems": 1,
+                  "maxItems": 10,
+                  "uniqueItems": true
+                },
+                "behaviors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "行为名称",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "code": {
+                        "type": "string",
+                        "description": "行为编码",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "inputs": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "integer",
+                              "description": "参数类型，0：无、1：值，2：集合",
+                              "mock": {
+                                "mock": "@pick(1,2)"
+                              }
+                            },
+                            "value": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@guid"
+                              },
+                              "description": "输入参数值"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        "description": "行为输入参数集合"
+                      },
+                      "outputType": {
+                        "type": "integer",
+                        "description": "输出类型，0：无、1：值，2：集合",
+                        "mock": {
+                          "mock": "@pick(0,1,2)"
+                        }
+                      },
+                      "outputValue": {
+                        "type": "string",
+                        "description": "输出值",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "行为描述"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "code",
+                      "outputType",
+                      "inputs"
+                    ],
+                    "description": "行为"
+                  },
+                  "description": "行为集合",
+                  "minItems": 0,
+                  "maxItems": 10
+                },
+                "description": {
+                  "type": "string",
+                  "description": "描述",
+                  "mock": {
+                    "mock": "@cparagraph"
+                  }
+                },
+                "type": {
+                  "type": "integer",
+                  "mock": {
+                    "mock": "@pick(1,2,3)"
+                  },
+                  "description": "类型，1：类，2：抽象，3：接口"
+                },
+                "uid": {
+                  "type": "string",
+                  "mock": {
+                    "mock": "@guid"
+                  },
+                  "description": "唯一值"
+                }
+              },
+              "required": [
+                "name",
+                "code",
+                "items",
+                "behaviors",
+                "type",
+                "uid"
+              ],
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@string"
+                      },
+                      "description": "名称"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "编码",
+                      "mock": {
+                        "mock": "@string"
+                      }
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "名称",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "编码",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "type": {
+                            "type": "integer",
+                            "description": "类型",
+                            "mock": {
+                              "mock": "@pick(1,2,3,4,5,6)"
+                            }
+                          },
+                          "uid": {
+                            "type": "string",
+                            "mock": {
+                              "mock": "@guid"
+                            },
+                            "description": "唯一值"
+                          },
+                          "isNull": {
+                            "type": "boolean",
+                            "description": "是否可未空",
+                            "mock": {
+                              "mock": "@boolean"
+                            }
+                          },
+                          "length": {
+                            "type": "integer",
+                            "description": "长度",
+                            "mock": {
+                              "mock": "@integer"
+                            }
+                          },
+                          "precision": {
+                            "type": "integer",
+                            "description": "小数位数",
+                            "mock": {
+                              "mock": "@integer"
+                            }
+                          },
+                          "defaultValue": {
+                            "type": "string",
+                            "description": "默认值",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "code",
+                          "type",
+                          "isNull"
+                        ],
+                        "description": "数据项"
+                      },
+                      "description": "数据项集合",
+                      "minItems": 1,
+                      "maxItems": 10,
+                      "uniqueItems": true
+                    },
+                    "behaviors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "行为名称",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "行为编码",
+                            "mock": {
+                              "mock": "@string"
+                            }
+                          },
+                          "input": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "integer",
+                                  "description": "参数类型，0：无、1：值，2：集合",
+                                  "mock": {
+                                    "mock": "@pick(1,2)"
+                                  }
+                                },
+                                "valueUid": {
+                                  "type": "string",
+                                  "mock": {
+                                    "mock": "@guid"
+                                  },
+                                  "description": "输入参数值"
+                                }
+                              },
+                              "required": [
+                                "type"
+                              ]
+                            },
+                            "description": "行为输入参数集合"
+                          },
+                          "outputType": {
+                            "type": "integer",
+                            "description": "输出类型，0：无、1：值，2：集合"
+                          },
+                          "outputValue": {
+                            "type": "string",
+                            "description": "输出值"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "行为描述"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "code",
+                          "outputType",
+                          "input"
+                        ],
+                        "description": "行为"
+                      },
+                      "description": "行为集合",
+                      "minItems": 0,
+                      "maxItems": 10
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "描述",
+                      "mock": {
+                        "mock": "@cparagraph"
+                      }
+                    },
+                    "type": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@pick(1,2,3)"
+                      },
+                      "description": "类型，1：类，2：抽象，3：接口"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@integer"
+                      },
+                      "description": "ID"
+                    },
+                    "uid": {
+                      "type": "string",
+                      "mock": {
+                        "mock": "@guid"
+                      },
+                      "description": "唯一值"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "description": "创建时间"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "description": "修改时间"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "mock": {
+                        "mock": "@pick(1,2)"
+                      },
+                      "description": "状态，1：启用、2：禁用"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "type",
+                    "status",
+                    "created_at",
+                    "updated_at",
+                    "id",
+                    "uid",
+                    "name",
+                    "id",
+                    "uid",
+                    "created_at",
+                    "updated_at",
+                    "status"
+                  ],
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "响应状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/data/remove": {
+      "delete": {
+        "tags": [
+          "dataModel"
+        ],
+        "summary": "删除数据模型",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "body",
+            "description": "请求数据",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "唯一值",
+                "mock": {
+                  "mock": "@guid"
+                }
+              },
+              "description": "请求数据"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "响应状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    },
+    "/api/model/data/search": {
+      "get": {
+        "tags": [
+          "dataModel"
+        ],
+        "summary": "检索数据模型（关键字、限制10条）",
+        "description": "",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "关键字",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@string"
+                        },
+                        "description": "名称"
+                      },
+                      "code": {
+                        "type": "string",
+                        "description": "编码",
+                        "mock": {
+                          "mock": "@string"
+                        }
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "名称",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "code": {
+                              "type": "string",
+                              "description": "编码",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "type": {
+                              "type": "integer",
+                              "description": "类型",
+                              "mock": {
+                                "mock": "@pick(1,2,3,4,5,6)"
+                              }
+                            },
+                            "uid": {
+                              "type": "string",
+                              "mock": {
+                                "mock": "@guid"
+                              },
+                              "description": "唯一值"
+                            },
+                            "isNull": {
+                              "type": "boolean",
+                              "description": "是否可未空",
+                              "mock": {
+                                "mock": "@boolean"
+                              }
+                            },
+                            "length": {
+                              "type": "integer",
+                              "description": "长度",
+                              "mock": {
+                                "mock": "@integer"
+                              }
+                            },
+                            "precision": {
+                              "type": "integer",
+                              "description": "小数位数",
+                              "mock": {
+                                "mock": "@integer"
+                              }
+                            },
+                            "defaultValue": {
+                              "type": "string",
+                              "description": "默认值",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "code",
+                            "type",
+                            "isNull"
+                          ],
+                          "description": "数据项"
+                        },
+                        "description": "数据项集合",
+                        "minItems": 1,
+                        "maxItems": 10,
+                        "uniqueItems": true
+                      },
+                      "behaviors": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "行为名称",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "code": {
+                              "type": "string",
+                              "description": "行为编码",
+                              "mock": {
+                                "mock": "@string"
+                              }
+                            },
+                            "input": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "integer",
+                                    "description": "参数类型，0：无、1：值，2：集合",
+                                    "mock": {
+                                      "mock": "@pick(1,2)"
+                                    }
+                                  },
+                                  "valueUid": {
+                                    "type": "string",
+                                    "mock": {
+                                      "mock": "@guid"
+                                    },
+                                    "description": "输入参数值"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              "description": "行为输入参数集合"
+                            },
+                            "output": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "description": "类型，0：无、1：值，2：集合"
+                                  },
+                                  "valueUid": {
+                                    "type": "string",
+                                    "description": "输出参数值"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              "description": "行为输出参数集合"
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "行为描述"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "code",
+                            "output",
+                            "input"
+                          ],
+                          "description": "行为"
+                        },
+                        "description": "行为集合",
+                        "minItems": 0,
+                        "maxItems": 10
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "描述",
+                        "mock": {
+                          "mock": "@cparagraph"
+                        }
+                      },
+                      "type": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2,3)"
+                        },
+                        "description": "类型，1：类，2：抽象，3：接口"
+                      },
+                      "id": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@integer"
+                        },
+                        "description": "ID"
+                      },
+                      "uid": {
+                        "type": "string",
+                        "mock": {
+                          "mock": "@guid"
+                        },
+                        "description": "唯一值"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "description": "创建时间"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "description": "修改时间"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "mock": {
+                          "mock": "@pick(1,2)"
+                        },
+                        "description": "状态，1：启用、2：禁用"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "uid",
+                      "name",
+                      "code",
+                      "type",
+                      "status",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "description": "数据"
+                  },
+                  "uniqueItems": true,
+                  "minItems": 20,
+                  "maxItems": 20,
+                  "description": "响应数据"
+                },
+                "success": {
+                  "type": "boolean",
+                  "mock": {
+                    "mock": "@boolean"
+                  },
+                  "description": "响应状态"
+                }
+              },
+              "description": "响应结果"
+            }
+          }
+        }
+      }
+    }
+  }
+}

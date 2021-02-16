@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-02-14 23:52:12
+ * @LastEditTime: 2021-02-16 09:59:11
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\router.js
@@ -15,6 +15,8 @@
 module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
+
+  router.get('/api/swagger.json', controller.api.swagger.index);
 
   router.post('/api/model/item/insert', controller.api.model.item.insert);
   router.post('/api/model/item/getlist', controller.api.model.item.getlist);
