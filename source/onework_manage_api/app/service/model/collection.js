@@ -68,10 +68,10 @@ class CollectionService extends Service {
       where: {},
     };
     // 排序
-    const orderFeilds = [ 'id', 'name', 'code', 'status', 'created_at', 'updated_at' ];
+
     const sort = params.sort === AppCode.common.order.desc ? 'DESC' : 'ASC';
-    if (params.order > 0 && params.order < orderFeilds.length) {
-      queryParmas.order = [[ orderFeilds[params.order], sort ]];
+    if (params.order) {
+      queryParmas.order = [[ params.order, sort ]];
     }
     // 条件
     if (params.keyword) {

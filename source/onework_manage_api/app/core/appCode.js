@@ -11,13 +11,12 @@
 const appCode = {
   common: {
     status: {
-      enable: 1, // 启用
-      disable: 2, // 禁用
+      enable: 'enable', // 启用
+      disable: 'disable', // 禁用
     },
     order: {
-      defaluet: 0, // 默认
-      desc: 1, // 降序
-      asc: 2, // 升序
+      desc: 'desc', // 降序
+      asc: 'asc', // 升序
     },
     page: {
       maxlimit: 1000, // 分页最大显示个数
@@ -26,22 +25,22 @@ const appCode = {
   },
   model: {
     itemType: { // 数据项类型
-      string: 1, // 字符
-      integer: 2, // 整型
-      number: 3, // 数字
-      boolean: 4, // 布尔
-      date: 5, // 日期
-      datetime: 6, // 时间
+      character: 'character', // 字符
+      integer: 'integer', // 整型
+      digital: 'digital', // 数字
+      boolean: 'boolean', // 布尔
+      date: 'enumerate', // 日期
+      datetime: 'date', // 时间
     },
     dataModelType: {
-      clsss: 1, // 类
-      abstract: 2, // 抽象
-      interface: 3, // 接口
+      clsss: 'clsss', // 类
+      abstract: 'abstract', // 抽象
+      interface: 'interface', // 接口
     },
     behaviorParamType: {
-      no: 0, // 无
-      value: 1, // 值
-      object: 2, // 对象
+      void: 'void', // 无
+      value: 'value', // 值
+      object: 'object', // 对象
     },
   },
 };

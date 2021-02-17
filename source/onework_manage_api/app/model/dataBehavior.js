@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 22:34:45
- * @LastEditTime: 2021-02-14 22:41:13
+ * @LastEditTime: 2021-02-17 14:02:03
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\model\dataBehavior.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\dataBehavior.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -20,8 +20,8 @@ module.exports = app => {
     behaviorName: { type: DataTypes.STRING, allowNull: true, comment: '行为名称' },
     behaviorCode: { type: DataTypes.STRING, allowNull: true, comment: '行为代码' },
     inputs: { type: DataTypes.JSON, allowNull: false, comment: '输入参数' },
-    outputType: { type: DataTypes.INTEGER, allowNull: false, defaultValue: AppCode.model.behaviorParamType.no, comment: '输出参数类型，0：无、1：值，2：集合' },
-    outputValue: { type: DataTypes.STRING, allowNull: true, comment: '精确度' },
+    outputType: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.behaviorParamType.void, comment: '输出参数类型' },
+    outputValue: { type: DataTypes.STRING, allowNull: true, comment: '输出值' },
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE,
   }, {

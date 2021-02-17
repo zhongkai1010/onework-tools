@@ -633,7 +633,7 @@
       }
     },
     "/api/model/item/remove": {
-      "delete": {
+      "post": {
         "tags": [
           "item"
         ],
@@ -644,6 +644,13 @@
         ],
         "parameters": [
           {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "description": "",
+            "type": "string"
+          },
+          {
             "name": "root",
             "in": "body",
             "description": "请求数据",
@@ -651,7 +658,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "description": "uuid集合"
+                "description": "唯一值集合"
               },
               "description": "请求数据"
             }
@@ -1602,7 +1609,7 @@
       }
     },
     "/api/model/collection/remove": {
-      "delete": {
+      "post": {
         "tags": [
           "collection"
         ],
@@ -2922,7 +2929,7 @@
       }
     },
     "/api/model/data/remove": {
-      "delete": {
+      "post": {
         "tags": [
           "dataModel"
         ],

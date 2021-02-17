@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 19:22:50
- * @LastEditTime: 2021-02-14 18:24:58
+ * @LastEditTime: 2021-02-17 17:13:17
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\controller\api\model\item.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\controller\api\model\item.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -41,7 +41,6 @@ class ItemController extends Controller {
     const typeRule = Object.values(app.appCode.model.itemType);
     const statusRule = Object.values(app.appCode.common.status);
     const rule = {
-      order: [ 0, ...typeRule ],
       status: {
         type: 'array',
         required: false,

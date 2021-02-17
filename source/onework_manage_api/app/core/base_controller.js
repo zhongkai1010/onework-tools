@@ -3,9 +3,9 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-10-15 02:56:11
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-02-14 19:28:48
+ * @LastEditTime: 2021-02-17 17:05:49
  * @Description:
- * @FilePath: \onework_manage_api\app\core\base_controller.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\core\base_controller.js
  */
 'use strict';
 
@@ -31,7 +31,7 @@ class BaseController extends Controller {
       page: { type: 'int', required: true, min: appCode.common.page.minpage },
       limit: { type: 'int', required: true, min: 1, max: appCode.common.page.maxlimit },
       keyword: 'string?',
-      order: 'int?',
+      order: 'string?',
       sort: Object.values(appCode.common.order),
       ...rule,
     };
@@ -51,8 +51,8 @@ class BaseController extends Controller {
       page: this.toDefaultInt(page),
       limit: this.toDefaultInt(limit),
       keyword,
-      order: this.toDefaultInt(order),
-      sort: this.toDefaultInt(sort),
+      order,
+      sort,
     };
     return params;
   }
@@ -67,7 +67,7 @@ class BaseController extends Controller {
       page: { type: 'int', required: true, min: appCode.common.page.minpage },
       limit: { type: 'int', required: true, min: 1, max: appCode.common.page.maxlimit },
       keyword: 'string?',
-      order: 'int?',
+      order: 'string?',
       sort: Object.values(appCode.common.order),
     };
     const params = this.getPageParmas();

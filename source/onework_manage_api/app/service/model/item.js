@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-02-14 23:17:48
+ * @LastEditTime: 2021-02-17 17:28:35
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\model\item.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\item.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -54,10 +54,9 @@ class ItemService extends Service {
       where: {},
     };
     // 排序
-    const orderFeilds = [ 'id', 'name', 'code', 'type', 'created_at', 'updated_at' ];
     const sort = params.sort === AppCode.common.order.desc ? 'DESC' : 'ASC';
-    if (params.order > 0 && params.order < orderFeilds.length) {
-      queryParmas.order = [[ orderFeilds[params.order], sort ]];
+    if (params.order) {
+      queryParmas.order = [[ params.order, sort ]];
     }
     // 条件
     if (params.keyword) {
@@ -72,19 +71,19 @@ class ItemService extends Service {
           } }],
       };
     }
-    if (params.type) {
+    if (params.type && params.type.length > 0) {
       queryParmas.where.type = {
         [Op.in]: params.type,
       };
     }
-    if (params.status) {
+    if (params.status && params.status.length > 0) {
       queryParmas.where.status = {
         [Op.in]: params.status,
       };
     }
     // 查询
     const result = await ItemModel.findAndCountAll(queryParmas);
-    return result;
+    return { total: result.count, rows: result.rows.map(t => t.dataValues) };
   }
 
   /**

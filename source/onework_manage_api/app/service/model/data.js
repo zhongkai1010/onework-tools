@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-14 23:46:59
+ * @LastEditTime: 2021-02-17 17:28:21
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\model\data.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\data.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -98,10 +98,10 @@ class DataService extends Service {
       where: {},
     };
     // 排序
-    const orderFeilds = [ 'id', 'name', 'code', 'type', 'created_at', 'updated_at' ];
+
     const sort = params.sort === ctx.app.appCode.common.order.desc ? 'DESC' : 'ASC';
-    if (params.order > 0 && params.order < orderFeilds.length) {
-      queryParmas.order = [[ orderFeilds[params.order], sort ]];
+    if (params.order) {
+      queryParmas.order = [[ params.order, sort ]];
     }
     // 条件
     if (params.keyword) {
