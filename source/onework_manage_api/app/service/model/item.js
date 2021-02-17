@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-02-17 17:28:35
+ * @LastEditTime: 2021-02-17 20:29:28
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\item.js
@@ -31,7 +31,7 @@ class ItemService extends Service {
       },
     });
     if (amount > 0) {
-      throw new AppError(5100);
+      throw new AppError(`${params.name},已存在无法进行添加！`);
     }
     item = await ItemModel.create(item);
     return item.dataValues;

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 22:00:56
- * @LastEditTime: 2021-02-14 19:28:38
+ * @LastEditTime: 2021-02-17 20:26:06
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\core\appError.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\core\appError.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -16,6 +16,8 @@ class AppError extends Error {
     let message = '未知异常';
     if (names.includes(String(code))) {
       message = errorCode[code];
+    } else {
+      message = code;
     }
     super(message);
     this.code = code;

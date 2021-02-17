@@ -1,3 +1,12 @@
+/*
+ * @Author: 钟凯
+ * @Date: 2021-02-15 21:46:13
+ * @LastEditTime: 2021-02-17 13:56:45
+ * @LastEditors: 钟凯
+ * @Description:
+ * @FilePath: \onework_manage_web\src\services\API.d.ts
+ * @可以输入预定的版权声明、个性签名、空行等
+ */
 declare namespace API {
   export type CurrentUser = {
     avatar?: string;
@@ -32,4 +41,39 @@ declare namespace API {
     extra: any;
     status: string;
   };
+
+  export type ResponseResult<T> = {
+    data: T;
+    success: boolean;
+  };
+
+  declare namespace Model {
+    export type AddItem = {
+      /** 名称 */
+      name: string;
+      /** 代码 */
+      code: string;
+      /** 数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、 */
+      type: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
+    };
+
+    export type Item = {
+      /** ID */
+      id: string;
+      /** 唯一值 */
+      uid: string;
+      /** 名称 */
+      name: string;
+      /** 代码 */
+      code: string;
+      /** 数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、 */
+      type: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
+      /** 状态，1：启用 ，2：禁用 */
+      status: 'enable' | 'disable';
+      /** 创建时间 */
+      created_at: string;
+      /** 修改时间 */
+      updated_at: string;
+    };
+  }
 }

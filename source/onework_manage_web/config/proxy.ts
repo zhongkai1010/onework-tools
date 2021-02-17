@@ -1,9 +1,9 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-07 15:58:31
+ * @LastEditTime: 2021-02-16 21:01:29
  * @LastEditors: 钟凯
- * @Description: 
+ * @Description:
  * @FilePath: \onework_manage_web\config\proxy.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
@@ -20,12 +20,15 @@ export default {
       target: 'http://api.fanyi.baidu.com',
       changeOrigin: true,
     },
+    '/api/model': {
+      target: 'http://127.0.0.1:7001',
+      changeOrigin: true,
+    },
     '/api/': {
       target: 'https://preview.pro.ant.design',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
-   
   },
   test: {
     '/api/': {

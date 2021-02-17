@@ -2,34 +2,30 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-11 17:50:48
+ * @LastEditTime: 2021-02-17 20:43:51
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
-import type { Item } from '@/types/models/model.d';
-import { Button, Form } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { Translate } from '@/utils/translate';
-import debounce from 'debounce';
 import { ModalForm, ProFormText, ProFormSelect } from '@ant-design/pro-form';
-import { getItemList, saveItem } from '@/pages/DataModel/Item/service';
-import { useRequest } from 'umi';
+import * as itemService from '@/services/model/item';
+import FastFormModal from './components/FastFormModal';
 
 const typeValueEnum = {
-  character: { text: '字符串' },
+  character: { text: '文本' },
   integer: { text: '整型' },
   digital: { text: '数字' },
   boolean: { text: '布尔' },
   enumerate: { text: '枚举' },
   date: { text: '日期' },
-  datetime: { text: '日期时间' },
 };
-
 const statusValueEnum = {
   enable: { text: '启用' },
   disable: { text: '停用' },
@@ -37,7 +33,8 @@ const statusValueEnum = {
 
 export default () => {
   const [form] = Form.useForm();
-  const columns: ProColumns<Item>[] = [
+  const tabRef = useRef<ActionType>();
+  const columns: ProColumns<API.Model.Item>[] = [
     {
       title: '编码',
       sorter: true,
@@ -59,20 +56,6 @@ export default () => {
       valueEnum: typeValueEnum,
     },
     {
-      title: '创建时间',
-      dataIndex: 'created',
-      valueType: 'date',
-      sorter: true,
-      width: 150,
-    },
-    {
-      title: '修改时间',
-      dataIndex: 'updated',
-      valueType: 'date',
-      sorter: true,
-      width: 150,
-    },
-    {
       title: '状态',
       dataIndex: 'status',
       valueType: 'select',
@@ -81,48 +64,64 @@ export default () => {
       width: 100,
     },
     {
+      title: '计数',
+      dataIndex: 'cumulate',
+      editable: false,
+      width: 100,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      editable: false,
+      valueType: 'date',
+      sorter: true,
+      width: 150,
+    },
+    {
+      title: '修改时间',
+      dataIndex: 'updatedAt',
+      valueType: 'date',
+      editable: false,
+      sorter: true,
+      width: 150,
+    },
+    {
       title: '操作',
       valueType: 'option',
       width: 200,
-      render: (text, record, _, action) => [
+      render: (_text, record, _, action) => [
         <a
           key="editable"
           onClick={() => {
-            action.startEditable?.(record.id);
+            action.startEditable?.(record.uid);
           }}
         >
           编辑
         </a>,
-        <a key="delete" onClick={() => {}}>
-          删除
-        </a>,
       ],
     },
   ];
-  const [nameValue, setNameValue] = useState('');
-  const saveItemOperate = useRequest(saveItem, { manual: true });
   return (
-    <PageContainer content="欢迎使用 ProLayout 组件">
-      <EditableProTable<Item>
-        headerTitle="查询表格"
-        rowKey="id"
+    <PageContainer content="构建数据模型集成元素">
+      <EditableProTable<API.Model.Item>
+        rowKey="uid"
+        actionRef={tabRef}
         options={{
           density: true,
-          search: true,
+          search: {
+            allowClear: true,
+            enterButton: true,
+          },
         }}
         search={false}
         debounceTime={800}
         editable={{
-          onSave: (key, row) => {
-            // console.log('row', row);
-            return new Promise((reslove) => {
-              reslove('');
-            });
+          type: 'multiple',
+          onSave: (_key, row) => {
+            return itemService.update(row);
           },
-          onDelete: () => {
-            return new Promise((reslove) => {
-              reslove('');
-            });
+          onDelete: (_, row: API.Model.Item) => {
+            return itemService.remove([row.uid]);
           },
         }}
         toolBarRender={() => [
@@ -131,80 +130,110 @@ export default () => {
             layout="horizontal"
             form={form}
             onFinish={async (values) => {
-              const data = { ...values, name: nameValue };
-              saveItemOperate.run(data).then(() => {
-                return true;
-              });
+              const result = await itemService.insert(values);
+              if (result.success) {
+                tabRef.current?.reload();
+              }
+              return result.success;
             }}
             trigger={<Button type="primary">新建</Button>}
           >
-            <ProFormText
+            <Form.Item
               label="名称"
               name="name"
-              fieldProps={{
-                onChange: debounce((e: any) => {
-                  const { value } = e.target;
-                  const temp = (value as string).trimEnd();
-                  let code = '';
-                  if (temp.length > 0) {
-                    setNameValue(value);
-                    Translate.to(value).then((data: any) => {
-                      code = data.trans_result.length > 0 ? data.trans_result[0].dst : '';
+              rules={[{ required: true, message: '请输入数据项名称!' }]}
+            >
+              <Input.Search
+                onSearch={(value) => {
+                  Translate.to(value).then((data) => {
+                    if (data.trans_result) {
+                      const code = data.trans_result.length > 0 ? data.trans_result[0].dst : '';
                       const values = form.getFieldsValue();
                       form.setFieldsValue({ ...values, code });
-                    });
-                  }
-                }, 500),
-              }}
+                    }
+                  });
+                }}
+                autoComplete="new-password"
+              />
+            </Form.Item>
+            <ProFormText
+              label="编码"
+              name="code"
+              rules={[
+                {
+                  required: true,
+                  message: '请选择数据项类型',
+                },
+              ]}
             />
-            <ProFormText label="编码" name="code" />
             <ProFormSelect
               label="类型"
               name="type"
+              rules={[
+                {
+                  required: true,
+                  message: '请选择数据项类型',
+                },
+              ]}
+              initialValue={'character'}
+              // 数据项类型，1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间
               options={[
                 {
+                  label: '文本',
                   value: 'character',
-                  label: '字符串',
                 },
                 {
+                  label: '整数',
                   value: 'integer',
-                  label: '整型',
                 },
                 {
-                  value: 'digital',
                   label: '数字',
+                  value: 'digital',
                 },
                 {
-                  value: 'boolean',
                   label: '布尔',
+                  value: 'boolean',
                 },
                 {
-                  value: 'enumerate',
                   label: '枚举',
+                  value: 'enumerate',
                 },
                 {
+                  label: '时间',
                   value: 'date',
-                  label: '日期',
-                },
-                {
-                  value: 'datetime',
-                  label: '日期时间',
                 },
               ]}
             />
           </ModalForm>,
+          <FastFormModal
+            onSubmit={() => {
+              tabRef.current?.reload();
+            }}
+          />,
         ]}
         columns={columns}
         request={async (params, sort, filter) => {
-          const where = {
+          let orderValue = 'id';
+          let sortValue = 'desc';
+          const entries = Object.entries(sort);
+          if (entries.length > 0) {
+            orderValue = entries[0][0] as string;
+            sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
+          }      
+          const query = {
             page: params.current,
             limit: params.pageSize,
-            order: 'createdAt',
-            sort: 'desc',
+            order: orderValue,
+            sort: sortValue,
             keyword: params.keyword,
-            filter,
           };
-          return getItemList(where);
+
+          const result = await itemService.getlist(query, filter);
+          return {
+            data: result.data.rows,
+            success: result.success,
+            total: result.data.total,
+          };
         }}
       />
     </PageContainer>

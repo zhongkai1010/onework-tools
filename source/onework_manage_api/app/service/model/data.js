@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-17 17:28:21
+ * @LastEditTime: 2021-02-17 20:26:20
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\data.js
@@ -27,7 +27,7 @@ class DataService extends Service {
     const DataBehaviorModel = ctx.model.DataBehavior;
     // 验证名称是否重复
     let data = await DataModel.findOne({ where: { name: params.name } });
-    if (data) throw new AppError(5100);
+    if (data) throw new AppError(`${params.name},已存在无法进行添加！`);
     // 新增数据模型
     data = {
       name: params.name,

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-02-14 23:53:01
+ * @LastEditTime: 2021-02-17 14:09:06
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\config\config.default.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\config\config.default.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 /* eslint valid-jsdoc: "off" */
@@ -42,7 +42,7 @@ module.exports = appInfo => {
       dialect: 'mysql',
       username: 'root',
       password: '123qwe!@#',
-      database: 'egg-sequelize-doc-default',
+      database: 'onework',
       host: '127.0.0.1',
       timezone: '+08:00', // for writing to database
     },

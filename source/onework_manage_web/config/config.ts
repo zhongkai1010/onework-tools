@@ -1,3 +1,12 @@
+/*
+ * @Author: 钟凯
+ * @Date: 2021-02-05 20:50:39
+ * @LastEditTime: 2021-02-16 11:28:04
+ * @LastEditors: 钟凯
+ * @Description:
+ * @FilePath: \onework_manage_web\config\config.ts
+ * @可以输入预定的版权声明、个性签名、空行等
+ */
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
@@ -17,6 +26,13 @@ export default defineConfig({
     siderWidth: 208,
     ...defaultSettings,
   },
+  // openAPI: {
+  //   requestLibPath: "import { request } from 'umi'",
+  //   // 或者使用在线的版本
+  //   // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
+  //   schemaPath: 'http://127.0.0.1:7001/api/swagger.json',
+  //   mock: false,
+  // },
   locale: {
     // default zh-CN
     default: 'zh-CN',
