@@ -13,7 +13,7 @@ import React from 'react';
  
 import { Button, Form, Input } from 'antd';
 import { Translate } from '@/utils/translate';
-import ItemSelect from './ItemSelect';
+import ItemSelect from '@/pages/DataModel/components/ItemSelect';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
  

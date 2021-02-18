@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:25
- * @LastEditTime: 2021-02-18 14:21:51
+ * @LastEditTime: 2021-02-18 22:05:32
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\collection.js
@@ -88,7 +88,7 @@ class CollectionService extends Service {
     }
     // 查询
     const result = await CollectionModel.findAndCountAll(queryParmas);
-    return result;
+    return { total: result.count, rows: result.rows.map(t => t.dataValues) };
   }
 
   /**

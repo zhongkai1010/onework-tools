@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 12:10:16
- * @LastEditTime: 2021-02-18 14:16:34
+ * @LastEditTime: 2021-02-18 21:55:07
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\EditModal.tsx
@@ -14,7 +14,7 @@ import { Button, Descriptions, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { Translate } from '@/utils/translate';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import ItemSelect from './ItemSelect';
+import ItemSelect from '@/pages/DataModel/components/ItemSelect';
 import * as collectionServices from '@/services/model/collection';
 import { useRequest } from 'umi';
 

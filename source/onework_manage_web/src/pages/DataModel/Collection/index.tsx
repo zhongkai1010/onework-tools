@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-18 14:23:23
+ * @LastEditTime: 2021-02-18 18:06:31
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\index.tsx
@@ -33,21 +33,21 @@ export default () => {
       dataIndex: 'name',
       width: 220,
     },
-    {
-      title: '数据项',
-      sorter: true,
-      editable: false,
-      render: (_text, record: API.Model.Collection) => {
-        return record.items.map((t) => (
-          <span key={`${t.uid}_name`}>
-            {t.name}
-            <br />
-          </span>
-        ));
-      },
-      dataIndex: 'items',
-      width: 220,
-    },
+    // {
+    //   title: '数据项',
+    //   sorter: true,
+    //   editable: false,
+    //   render: (_text, record: API.Model.Collection) => {
+    //     return record.items.map((t) => (
+    //       <span key={`${t.uid}_name`}>
+    //         {t.name}
+    //         <br />
+    //       </span>
+    //     ));
+    //   },
+    //   dataIndex: 'items',
+    //   width: 220,
+    // },
     {
       title: '描述',
       dataIndex: 'description',
@@ -106,6 +106,9 @@ export default () => {
             allowClear: true,
             enterButton: true,
           },
+        }}
+        pagination={{
+          defaultPageSize:10
         }}
         search={false}
         debounceTime={800}

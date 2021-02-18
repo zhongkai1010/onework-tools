@@ -18,9 +18,7 @@ module.exports = app => {
     name: { type: DataTypes.STRING, allowNull: false, comment: '数据集合名称，唯一' },
     code: { type: DataTypes.STRING, allowNull: false, comment: '代码值' },
     items: { type: DataTypes.JSON, allowNull: false, defaultValue: [], comment: '数据项集合' },
-    description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE,
+    description: { type: DataTypes.STRING, allowNull: true, comment: '描述' }
   }, {
     tableName: 'model_collections',
     paranoid: true,

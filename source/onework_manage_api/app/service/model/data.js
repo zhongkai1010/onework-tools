@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-17 20:26:20
+ * @LastEditTime: 2021-02-18 18:44:11
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\data.js
@@ -42,22 +42,26 @@ class DataService extends Service {
       const element = params.items[index];
       let dataItem = {
         dataUid: data.uid,
-        itemUid: element.uid,
-        itemType: element.type,
-        itemName: element.name,
-        itemCode: element.code,
+        itemName: element.itemName,
+        itemCode: element.itemCode,
+        itemCoitemTypede: element.itemType,
         isNull: element.isNull,
         length: element.length,
         precision: element.precision,
         defaultValue: element.defaultValue,
       };
+      const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.itemName }, defaults: {
+        name: dataItem.itemName,
+        code: dataItem.itemCode,
+        type: dataItem.itemType,
+        status: ctx.app.appCode.common.status.enable,
+        cumulate: 0,
+      } });
+      dataItem.itemUid = item.uid;
       dataItem = await DataItemModel.create(dataItem);
       dataItems.push(dataItem.dataValues);
       // 记录数据项计数
-      const item = await ItemModel.findOne({ where: { uid: dataItem.itemUid } });
-      if (item) {
-        await item.plusCumulate();
-      }
+      await item.plusCumulate();
     }
     // 新增行为
     const dataBehaviors = [];
@@ -70,7 +74,7 @@ class DataService extends Service {
         inputs: element.inputs,
         outputType: element.outputType,
         outputValue: element.outputValue,
-        description: element,
+        description: element.description,
       };
       dataBehavior = await DataBehaviorModel.create(dataBehavior);
       dataBehaviors.push(dataBehavior.dataValues);
@@ -187,22 +191,26 @@ class DataService extends Service {
       const element = params.items[index];
       let dataItem = {
         dataUid: data.uid,
-        itemUid: element.uid,
-        itemType: element.type,
-        itemName: element.name,
-        itemCode: element.code,
+        itemName: element.itemName,
+        itemCode: element.itemCode,
+        itemCoitemTypede: element.itemType,
         isNull: element.isNull,
         length: element.length,
         precision: element.precision,
         defaultValue: element.defaultValue,
       };
+      const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.itemName }, defaults: {
+        name: dataItem.itemName,
+        code: dataItem.itemCode,
+        type: dataItem.itemType,
+        status: ctx.app.appCode.common.status.enable,
+        cumulate: 0,
+      } });
+      dataItem.itemUid = item.uid;
       dataItem = await DataItemModel.create(dataItem);
       newDataItems.push(dataItem.dataValues);
       // 记录数据项计数
-      const item = await ItemModel.findOne({ where: { uid: dataItem.itemUid } });
-      if (item) {
-        await item.plusCumulate();
-      }
+      await item.plusCumulate();
     }
     // 处理旧行为数据
     const dataBehaviors = await DataBehaviorModel.findAll({ where: { dataUid: data.uid } });
@@ -221,7 +229,7 @@ class DataService extends Service {
         inputs: element.inputs,
         outputType: element.outputType,
         outputValue: element.outputValue,
-        description: element,
+        description: element.description,
       };
       dataBehavior = await DataBehaviorModel.create(dataBehavior);
       dataBehaviors.push(dataBehavior.dataValues);

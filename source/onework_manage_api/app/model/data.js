@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:34:51
- * @LastEditTime: 2021-02-17 14:06:34
+ * @LastEditTime: 2021-02-18 18:43:26
  * @LastEditors: 钟凯
  * @Description: Sequelize的数据模型Model文件
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\data.js
@@ -21,8 +21,6 @@ module.exports = app => {
     type: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.dataModelType.clsss, comment: '数据项类型' },
     status: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.common.status.enable, comment: '状态' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE,
   }, {
     tableName: 'model_datas',
     paranoid: true,

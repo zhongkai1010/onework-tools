@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 17:59:30
- * @LastEditTime: 2021-02-17 14:07:38
+ * @LastEditTime: 2021-02-18 17:41:46
  * @LastEditors: 钟凯
  * @Description: 数据模型
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\dataItem.js
@@ -17,7 +17,7 @@ module.exports = app => {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     uid: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, allowNull: false },
     dataUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型唯一值' },
-    itemUid: { type: DataTypes.UUID, allowNull: true, comment: '数据项唯一值' },
+    itemUid: { type: DataTypes.UUID, allowNull: false, comment: '数据项唯一值' },
     itemType: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.itemType.character, comment: '数据项类型' },
     itemName: { type: DataTypes.STRING, allowNull: true, comment: '数据项名称，唯一' },
     itemCode: { type: DataTypes.STRING, allowNull: false, comment: '代码值' },
@@ -25,8 +25,6 @@ module.exports = app => {
     length: { type: DataTypes.INTEGER, allowNull: true, comment: '长度' },
     precision: { type: DataTypes.INTEGER, allowNull: true, comment: '精确度' },
     defaultValue: { type: DataTypes.STRING, allowNull: true, comment: '默认值' },
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE,
   }, {
     tableName: 'model_data_items',
     paranoid: true,

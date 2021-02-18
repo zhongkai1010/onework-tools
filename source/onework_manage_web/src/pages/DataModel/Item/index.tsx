@@ -124,6 +124,9 @@ export default () => {
             return itemService.remove([row.uid]);
           },
         }}
+        pagination={{
+          defaultPageSize:10
+        }}
         toolBarRender={() => [
           <ModalForm
             title="新建数据项"

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
- * @Date: 2021-02-18 08:16:02
- * @LastEditTime: 2021-02-18 13:57:22
+ * @Date: 2021-02-18 21:55:44
+ * @LastEditTime: 2021-02-18 23:18:13
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\ItemSelect.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\components\collectionSelect.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import type { SelectProps } from 'antd';
@@ -12,16 +12,16 @@ import { Spin } from 'antd';
 import { Select } from 'antd';
 import React, { useState } from 'react';
 import { useRequest } from 'umi';
-import * as itemServices from '@/services/model/item';
+import * as collectionServices from '@/services/model/collection';
 import debounce from 'debounce';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 // const { Option } = Select;
 
-const ItemSelect = (props: Props & SelectProps<any>) => {
+const CollectionSelect = (props: Props & SelectProps<any>) => {
   const [options, setOptions] = useState(props.options ?? []);
-  const searchOperate = useRequest(itemServices.search, { manual: true });
+  const searchOperate = useRequest(collectionServices.search, { manual: true });
   // const renderOption = (items: API.Model.Item[] = []) => {
   //   return items.map((t) => <Option value={t.uid}>{t.name}</Option>);
   // };
@@ -38,8 +38,9 @@ const ItemSelect = (props: Props & SelectProps<any>) => {
         if (value.trim().length === 0) return;
         searchOperate.run({ keyword: value }).then((data) => {
           setOptions(
-            data.map((t: API.Model.Item) => {
+            data.map((t: API.Model.Collection) => {
               return {
+                 ...t,
                 label: t.name,
                 value: t.uid,
               };
@@ -51,4 +52,4 @@ const ItemSelect = (props: Props & SelectProps<any>) => {
   );
 };
 
-export default ItemSelect;
+export default CollectionSelect;

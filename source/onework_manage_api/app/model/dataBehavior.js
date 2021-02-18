@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 22:34:45
- * @LastEditTime: 2021-02-17 14:02:03
+ * @LastEditTime: 2021-02-18 18:43:32
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\dataBehavior.js
@@ -22,8 +22,7 @@ module.exports = app => {
     inputs: { type: DataTypes.JSON, allowNull: false, comment: '输入参数' },
     outputType: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.behaviorParamType.void, comment: '输出参数类型' },
     outputValue: { type: DataTypes.STRING, allowNull: true, comment: '输出值' },
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE,
+    description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
     tableName: 'model_data_behaviors',
     paranoid: true,

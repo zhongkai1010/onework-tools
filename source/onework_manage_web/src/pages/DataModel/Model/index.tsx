@@ -1,22 +1,180 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-18 14:34:02
+ * @LastEditTime: 2021-02-18 21:46:46
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import React from 'react';
+import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import EditableProTable from '@ant-design/pro-table';
+import * as modelService from '@/services/model/dataModel';
+import TableDetails from './components/TableDetails';
+import AddDataModel from './components/AddDataModel';
+
+const typeValueEnum = {
+  clsss: { text: '类' },
+  abstract: { text: '抽象' },
+  interface: { text: '接口' },
+};
+const statusValueEnum = {
+  enable: { text: '启用' },
+  disable: { text: '停用' },
+};
 
 export default () => {
+  const tabRef = useRef<ActionType>();
+  const columns: ProColumns<API.Model.DataModel>[] = [
+    {
+      title: '编码',
+      sorter: true,
+      dataIndex: 'code',
+      width: 150,
+    },
+    {
+      title: '名称',
+      sorter: true,
+      dataIndex: 'name',
+      width: 150,
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      valueType: 'select',
+      sorter: true,
+      initialValue: 'clsss',
+      filters: true,
+      width: 120,
+      valueEnum: typeValueEnum,
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      filters: true,
+      valueEnum: statusValueEnum,
+      width: 100,
+    },
+    // {
+    //   title: '数据项',
+    //   dataIndex: 'cumulate',
+    //   editable: false,
+    //   render: (_text, record: API.Model.DataModel) => {
+    //     return record.items.map((t) => (
+    //       <span key={`${t.uid}_name`}>
+    //         {t.itemName}
+    //         <br />
+    //       </span>
+    //     ));
+    //   },
+    // },
+    // {
+    //   title: '行为',
+    //   dataIndex: 'cumulate',
+    //   editable: false,
+    //   render: (_text, record: API.Model.DataModel) => {
+    //     return (record.behaviors || []).map((t) => (
+    //       <span key={`${t.uid}_name`}>
+    //         {t.behaviorName}
+    //         <br />
+    //       </span>
+    //     ));
+    //   },
+    // },
+    {
+      title: '描述',
+      dataIndex: 'description',
+      editable: false,
+      ellipsis: true,
+    },
+
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      editable: false,
+      valueType: 'date',
+      sorter: true,
+      width: 150,
+    },
+    {
+      title: '修改时间',
+      dataIndex: 'updatedAt',
+      valueType: 'date',
+      editable: false,
+      sorter: true,
+      width: 150,
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 200,
+      render: (_text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action.startEditable?.(record.uid);
+          }}
+        >
+          编辑
+        </a>,
+      ],
+    },
+  ];
   return (
-    <PageContainer content="公共数据由多项公共数据项组合而成，分离在模型创建中常用的数据，例如：用户、组织等，便于创建模型过程中，快速构建常用的数据项，不需要重复创建，例如：基础模板、数据模板、状态模板、模型模板组合。">
+    <PageContainer content="构建数据模型集成元素">
+      <EditableProTable<API.Model.DataModel>
+        rowKey="uid"
+        actionRef={tabRef}
+        options={{
+          density: true,
+          search: {
+            allowClear: true,
+            enterButton: true,
+          },
+        }}
+        expandable={{
+          expandedRowRender: (record) => <TableDetails data={record} />,
+        }}
+        search={false}
+        debounceTime={800}
+        editable={{
+          type: 'multiple',
+          onSave: (_key, row) => {
+            return modelService.update(row);
+          },
+          onDelete: (_, row: API.Model.DataModel) => {
+            return modelService.remove([row.uid]);
+          },
+        }}
+        toolBarRender={() => [<AddDataModel />]}
+        columns={columns}
+        request={async (params, sort, filter) => {
+          let orderValue = 'id';
+          let sortValue = 'desc';
+          const entries = Object.entries(sort);
+          if (entries.length > 0) {
+            orderValue = entries[0][0] as string;
+            sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
+          }
+          const query = {
+            page: params.current,
+            limit: params.pageSize,
+            order: orderValue,
+            sort: sortValue,
+            keyword: params.keyword,
+          };
 
-
-
-      
+          const result = await modelService.getlist(query, filter);
+          return {
+            data: result.data.rows,
+            success: result.success,
+            total: result.data.total,
+          };
+        }}
+      />
     </PageContainer>
   );
 };
