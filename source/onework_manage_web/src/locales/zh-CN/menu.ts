@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-05 21:41:18
+ * @LastEditTime: 2021-02-17 20:46:41
  * @LastEditors: 钟凯
  * @Description: 
  * @FilePath: \onework_manage_web\src\locales\zh-CN\menu.ts
@@ -60,7 +60,7 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.model': '模型管理',
   'menu.model.item': '数据项',
-  'menu.model.set': '数据集',
+  'menu.model.collection': '数据集',
   'menu.model.model': '数据模型',
   'menu.model.behavior': '模型行为',
 };

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-15 21:46:13
- * @LastEditTime: 2021-02-17 13:56:45
+ * @LastEditTime: 2021-02-17 21:00:56
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\services\API.d.ts
@@ -70,6 +70,25 @@ declare namespace API {
       type: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
       /** 状态，1：启用 ，2：禁用 */
       status: 'enable' | 'disable';
+      /** 创建时间 */
+      created_at: string;
+      /** 修改时间 */
+      updated_at: string;
+    };
+
+    export type Collection = {
+      /** ID */
+      id: number;
+      /** 唯一值 */
+      uid: string;
+      /** 名称 */
+      name: string;
+      /** 编码 */
+      code: string;
+      /** 描述 */
+      description: string;
+      /** 数据项集合 */
+      items: Item[];
       /** 创建时间 */
       created_at: string;
       /** 修改时间 */

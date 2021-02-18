@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:13
- * @LastEditTime: 2021-02-14 18:24:48
+ * @LastEditTime: 2021-02-18 14:17:55
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\controller\api\model\collection.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\controller\api\model\collection.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -24,7 +24,7 @@ class CollectionController extends Controller {
       name: 'string',
       code: 'string',
       items: { type: 'array', itemType: 'string' },
-      description: 'string',
+      description: 'string?',
     };
     ctx.validate(rule, ctx.request.body);
     const data = await ctx.service.model.collection.add(ctx.request.body);
@@ -59,7 +59,7 @@ class CollectionController extends Controller {
       name: 'string',
       code: 'string',
       items: { type: 'array', rule: 'string' },
-      description: 'string',
+      description: 'string?',
     };
     ctx.validate(rule, ctx.request.body);
     const data = await ctx.service.model.collection.update(ctx.request.body);

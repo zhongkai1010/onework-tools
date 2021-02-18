@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:25
- * @LastEditTime: 2021-02-14 18:26:29
+ * @LastEditTime: 2021-02-18 14:21:51
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\model\collection.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\collection.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -139,7 +139,7 @@ class CollectionService extends Service {
     collection.code = params.code;
     collection.description = params.description;
     collection.items = items.map(t => t.dataValues);
-    collection = await collection.save();
+    collection = await collection.save({ fields: [ 'name', 'code', 'items', 'description' ] });
     return collection.dataValues;
   }
 

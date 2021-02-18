@@ -1,7 +1,7 @@
 ﻿/*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-09 07:30:20
+ * @LastEditTime: 2021-02-17 20:46:20
  * @LastEditors: 钟凯
  * @Description: 
  * @FilePath: \onework_manage_web\config\routes.ts
@@ -64,10 +64,10 @@ export default [
         component: './DataModel/Item',
       },
       {
-        path: '/model/set',
-        name: 'set',
+        path: '/model/collection',
+        name: 'collection',
         icon: 'table',
-        component: './DataModel/Set',
+        component: './DataModel/Collection',
       },
       {
         path: '/model/model',

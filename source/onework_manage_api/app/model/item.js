@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 22:37:45
- * @LastEditTime: 2021-02-17 14:03:17
+ * @LastEditTime: 2021-02-18 09:18:36
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\item.js
@@ -28,7 +28,7 @@ module.exports = app => {
 
   Item.prototype.plusCumulate = async function() {
     this.cumulate = this.cumulate + 1;
-    await this.save({ fields: [ 'cumulate' ], transaction: app.ctx.transaction });
+    await this.save({ fields: [ 'cumulate' ] });
   };
   Item.prototype.subCumulate = async function() {
     this.cumulate = this.cumulate - 1;
