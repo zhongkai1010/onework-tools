@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 22:37:45
- * @LastEditTime: 2021-02-14 18:23:32
+ * @LastEditTime: 2021-02-19 18:26:12
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\model\collection.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\collection.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -18,7 +18,7 @@ module.exports = app => {
     name: { type: DataTypes.STRING, allowNull: false, comment: '数据集合名称，唯一' },
     code: { type: DataTypes.STRING, allowNull: false, comment: '代码值' },
     items: { type: DataTypes.JSON, allowNull: false, defaultValue: [], comment: '数据项集合' },
-    description: { type: DataTypes.STRING, allowNull: true, comment: '描述' }
+    description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
     tableName: 'model_collections',
     paranoid: true,

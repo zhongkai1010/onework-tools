@@ -25,12 +25,12 @@ const appCode = {
   },
   model: {
     itemType: { // 数据项类型
-      character: 'character', // 字符
-      integer: 'integer', // 整型
-      digital: 'digital', // 数字
+      string: 'string', // 文本
+      number: 'number', // 数字
+      array: 'array', // 数组
+      object: 'object', // 对象
       boolean: 'boolean', // 布尔
-      date: 'enumerate', // 日期
-      datetime: 'date', // 时间
+      integer: 'integer', // 整数
     },
     dataModelType: {
       clsss: 'clsss', // 类

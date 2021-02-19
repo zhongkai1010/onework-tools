@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 17:59:30
- * @LastEditTime: 2021-02-18 17:41:46
+ * @LastEditTime: 2021-02-19 18:29:17
  * @LastEditors: 钟凯
  * @Description: 数据模型
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\dataItem.js
@@ -19,7 +19,7 @@ module.exports = app => {
     dataUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型唯一值' },
     itemUid: { type: DataTypes.UUID, allowNull: false, comment: '数据项唯一值' },
     itemType: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.itemType.character, comment: '数据项类型' },
-    itemName: { type: DataTypes.STRING, allowNull: true, comment: '数据项名称，唯一' },
+    itemName: { type: DataTypes.STRING, allowNull: true, comment: '数据项名称' },    
     itemCode: { type: DataTypes.STRING, allowNull: false, comment: '代码值' },
     isNull: { type: DataTypes.BOOLEAN, allowNull: true, comment: '是否为空' },
     length: { type: DataTypes.INTEGER, allowNull: true, comment: '长度' },

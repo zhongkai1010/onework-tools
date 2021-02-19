@@ -218,6 +218,7 @@ export default () => {
           setVisible(false);
         }}
         onFinish={() => {
+          setVisible(false);
           tabRef.current?.reload();
         }}
       />

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-15 21:46:13
- * @LastEditTime: 2021-02-18 17:53:10
+ * @LastEditTime: 2021-02-19 17:38:12
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\services\API.d.ts
@@ -130,7 +130,7 @@ declare namespace API {
       /** 行为编码 */
       behaviorCode: string;
       /** 行为输入参数集合 */
-      input: DataModelBehaviorInput[];
+      inputs: DataModelBehaviorInput[];
       /** 输出类型  */
       outputType: 'void' | 'value' | 'object';
       /** 输出值 */

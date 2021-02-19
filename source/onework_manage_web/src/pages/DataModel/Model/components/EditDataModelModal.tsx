@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-19 09:51:03
- * @LastEditTime: 2021-02-19 10:45:01
+ * @LastEditTime: 2021-02-19 18:09:21
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\EditDataModelModal.tsx
@@ -300,6 +300,45 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
         props.onClose();
         setIsEditState(false);
       }}
+      onOk={() => {
+        form.validateFields().then((values) => {
+          const dataModel = { ...props.model, ...values };
+
+          dataModel.items = values.items.map((t: any) => {
+            return { ...t, isNull: Boolean(t.isNull) };
+          });
+
+          let behaviors = props.model?.behaviors || ([] as any);
+          behaviors = behaviors.map((t: any) => {
+            return { ...t, inputs: t.inputs.shift() };
+          });
+          // TODO 需要解决数据模型输入参数为数组，目前修改不能处理数组
+          dataModel.behaviors = values.behaviors.map((t: any) => {
+             
+            const oldbehavior = behaviors.find((o: any) => o.behaviorName === t.name);
+            const inputs = [];
+            if (oldbehavior) {
+              inputs.push(...oldbehavior.inputs);
+              if (t.intputType) {
+                inputs.push({ type: t.intputType, value: t.intputValue });
+              }
+              return {
+                ...t,
+                inputs,
+              };
+            }
+            return {
+              ...t,
+              inputs: t.intputType ? [{ type: t.intputType, value: t.intputValue }] : [],
+            };
+          });
+
+          // updateOperate.run(values).then(() => {
+          //   setIsEditState(false);
+          //   props.onFinish();
+          // });
+        });
+      }}
       okButtonProps={{
         loading: updateOperate.loading,
       }}
@@ -465,9 +504,25 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
             <Button
               type="primary"
               onClick={() => {
+                let items = props.model?.items as any[];
+                items = items?.map((t) => {
+                  return { ...t, isNull: String(t.isNull) };
+                });
+                let behaviors = props.model?.behaviors as any[];
+
+                behaviors = behaviors?.map((t) => {
+                  return {
+                    ...t,
+                    name: t.behaviorName,
+                    code: t.behaviorCode,
+                    outputType: t.inputs.length === 0 ? null : t.inputs[0].type,
+                    outputValue: t.inputs.length === 0 ? null : t.inputs[0].value,
+                  };
+                });
                 form.setFieldsValue({
                   ...props.model,
-                  // items: props.collection?.items.map((t) => t.uid),
+                  items,
+                  behaviors,
                 });
                 setIsEditState(true);
               }}
@@ -489,6 +544,7 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
           <Descriptions.Item label="数据项" span={3}>
             <ProTable<API.Model.DataModelItem>
               key={`${props.model?.uid}_items`}
+              rowKey="uid"
               dataSource={props.model?.items || []}
               pagination={false}
               options={false}
@@ -499,6 +555,7 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
           <Descriptions.Item label="行为" span={3}>
             <ProTable<API.Model.DataModelBehavior>
               key={`${props.model?.uid}_behaviors`}
+              rowKey="uid"
               dataSource={props.model?.behaviors || []}
               pagination={false}
               options={false}
