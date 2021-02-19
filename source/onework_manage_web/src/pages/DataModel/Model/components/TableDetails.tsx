@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 18:10:26
- * @LastEditTime: 2021-02-18 18:46:37
+ * @LastEditTime: 2021-02-19 09:47:58
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\TableDetails.tsx
@@ -48,6 +48,9 @@ const TableDetails = (props: Props) => {
     {
       title: '是否为空',
       dataIndex: 'isNull',
+      renderText: (text: any) => {
+        return text ? '是' : '否';
+      },
     },
     {
       title: '长度',
@@ -68,12 +71,30 @@ const TableDetails = (props: Props) => {
       dataIndex: 'behaviorCode',
     },
     {
+      title: '输入类型',
+      dataIndex: 'outputType',
+      render: (text: any, record: any) => {
+        const inputs = record.inputs || [];
+        if (inputs === 0) return null;
+        return outputTypeEnum[inputs[0].type].text;
+      },
+    },
+    {
+      title: '输入类型值',
+      dataIndex: 'outputValue',
+      render: (text: any, record: any) => {
+        const inputs = record.inputs || [];
+        if (inputs === 0) return null;
+        return inputs[0].value;
+      },
+    },
+    {
       title: '输出类型',
       dataIndex: 'outputType',
       valueEnum: outputTypeEnum,
     },
     {
-      title: '输出值',
+      title: '输出类型值',
       dataIndex: 'outputValue',
     },
     {

@@ -1,12 +1,13 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 21:41:50
- * @LastEditTime: 2021-02-19 00:35:29
+ * @LastEditTime: 2021-02-19 09:20:50
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\AddDataModel.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
+import type { ModalFormProps} from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { Button, Form, Input, InputNumber, Select, Space } from 'antd';
 import { Translate } from '@/utils/translate';
@@ -16,9 +17,8 @@ import type { LabeledValue } from 'antd/lib/select';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import type { FormListFieldData } from 'antd/lib/form/FormList';
 
-const AddDataModel = () => {
+const AddDataModelModal = (props: ModalFormProps) => {
   const [form] = Form.useForm();
-
   const renderItem = (field: FormListFieldData, index: number) => {
     return (
       <>
@@ -29,7 +29,7 @@ const AddDataModel = () => {
           rules={[{ required: true, message: '请选择数据项名称' }]}
           fieldKey={[field.name, 'itemName']}
         >
-          <Input />
+          <Input allowClear />
         </Form.Item>
         <Form.Item
           {...field}
@@ -38,7 +38,7 @@ const AddDataModel = () => {
           rules={[{ required: true, message: '请选择数据项编码' }]}
           fieldKey={[field.name, 'itemCode']}
         >
-          <Input />
+          <Input allowClear />
         </Form.Item>
         <Form.Item
           {...field}
@@ -63,7 +63,7 @@ const AddDataModel = () => {
           name={[field.name, 'isNull']}
           fieldKey={[field.name, 'isNull']}
         >
-          <Select style={{ width: 120 }}>
+          <Select style={{ width: 120 }} allowClear>
             <Select.Option value="true">是</Select.Option>
             <Select.Option value="false">否</Select.Option>
           </Select>
@@ -90,13 +90,111 @@ const AddDataModel = () => {
           name={[field.name, 'defaultValue']}
           fieldKey={[field.name, 'defaultValue']}
         >
-          <Input />
+          <Input allowClear />
+        </Form.Item>
+      </>
+    );
+  };
+  const renderBehavior = (field: FormListFieldData, index: number) => {
+    return (
+      <>
+        <Form.Item
+          {...field}
+          label={index === 0 ? '名称' : undefined}
+          name={[field.name, 'name']}
+          rules={[{ required: true, message: '请选择行为名称' }]}
+          fieldKey={[field.name, 'name']}
+        >
+          <Input allowClear />
+        </Form.Item>
+        <Form.Item
+          {...field}
+          label={index === 0 ? '编码' : undefined}
+          name={[field.name, 'code']}
+          rules={[{ required: true, message: '请填写行为编码' }]}
+          fieldKey={[field.name, 'code']}
+        >
+          <Input allowClear />
+        </Form.Item>
+        <ProFormSelect
+          {...field}
+          allowClear
+          width={120}
+          label={index === 0 ? '输入类型' : undefined}
+          name={[field.name, 'inputType']}
+          rules={[{ required: false, message: '请选择行为输入类型' }]}
+          initialValue={'void'}
+          options={[
+            {
+              label: '无',
+              value: 'void',
+            },
+            {
+              label: '值',
+              value: 'value',
+            },
+            {
+              label: '对象',
+              value: 'object',
+            },
+          ]}
+        />
+        <Form.Item
+          {...field}
+          label={index === 0 ? '输入类型值' : undefined}
+          name={[field.name, 'inputValue']}
+          rules={[{ required: false, message: '请填写行为输入类型值' }]}
+          fieldKey={[field.name, 'inputValue']}
+        >
+          <Input allowClear />
+        </Form.Item>
+        <ProFormSelect
+          {...field}
+          allowClear
+          width={120}
+          label={index === 0 ? '输出类型' : undefined}
+          name={[field.name, 'outputType']}
+          rules={[{ required: false, message: '请选择行为输出类型' }]}
+          initialValue={'void'}
+          options={[
+            {
+              label: '无',
+              value: 'void',
+            },
+            {
+              label: '值',
+              value: 'value',
+            },
+            {
+              label: '对象',
+              value: 'object',
+            },
+          ]}
+        />
+        <Form.Item
+          {...field}
+          label={index === 0 ? '输出类型值' : undefined}
+          name={[field.name, 'outputValue']}
+          rules={[{ required: false, message: '请填写行为输出类型具体值' }]}
+          fieldKey={[field.name, 'outputValue']}
+        >
+          <Input allowClear />
+        </Form.Item>
+        <Form.Item
+          {...field}
+          label={index === 0 ? '描述' : undefined}
+          name={[field.name, 'description']}
+          rules={[{ required: false, message: '请填写行为描述' }]}
+          fieldKey={[field.name, 'description']}
+        >
+          <Input allowClear />
         </Form.Item>
       </>
     );
   };
   return (
     <ModalForm
+      {...props}
       title="新建数据模型"
       layout="vertical"
       form={form}
@@ -222,8 +320,44 @@ const AddDataModel = () => {
           )}
         </Form.List>
       </Form.Item>
+      <Form.Item label="行为">
+        <Form.List name="behaviors">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map((field, index) => (
+                <Space key={field.key} align="baseline">
+                  {renderBehavior(field, index)}
+                  <MinusCircleOutlined
+                    key={`${field.key}_button`}
+                    style={{
+                      position: 'relative',
+                      top: index === 0 ? 40 : 5,
+                      margin: '0 8px',
+                      color: '#999',
+                      fontSize: 24,
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                    }}
+                    onClick={() => remove(field.name)}
+                  />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => add({ items: [] })}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  添加行为
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+      </Form.Item>
     </ModalForm>
   );
 };
 
-export default AddDataModel;
+export default AddDataModelModal;

@@ -18,7 +18,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
  
 
-const AddModal = (props:  ModalFormProps) => {
+const AddCollectionModal = (props:  ModalFormProps) => {
   const [form] = Form.useForm();
   return (
     <ModalForm
@@ -103,4 +103,4 @@ const AddModal = (props:  ModalFormProps) => {
   );
 };
 
-export default AddModal;
+export default AddCollectionModal;

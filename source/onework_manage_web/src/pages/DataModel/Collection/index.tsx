@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-18 18:06:31
+ * @LastEditTime: 2021-02-19 10:06:35
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\index.tsx
@@ -13,8 +13,8 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
 import * as collectionService from '@/services/model/collection';
-import AddModal from './components/AddModal';
-import EditModal from './components/EditModal';
+import AddCollectionModal from './components/AddCollectionModal';
+import EditCollectionModal from './components/EditCollectionModal';
 
 export default () => {
   const tabRef = useRef<ActionType>();
@@ -122,7 +122,7 @@ export default () => {
           },
         }}
         toolBarRender={() => [
-          <AddModal
+          <AddCollectionModal
             onFinish={async (values) => {
               const result = await collectionService.insert(values);
               if (result.success) {
@@ -156,7 +156,7 @@ export default () => {
           };
         }}
       />
-      <EditModal
+      <EditCollectionModal
         visible={visible}
         collection={currentCollection}
         onClose={() => {

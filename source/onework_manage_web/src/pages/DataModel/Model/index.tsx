@@ -1,19 +1,20 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-18 21:46:46
+ * @LastEditTime: 2021-02-19 10:08:12
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
 import * as modelService from '@/services/model/dataModel';
 import TableDetails from './components/TableDetails';
-import AddDataModel from './components/AddDataModel';
+import AddDataModelModal from './components/AddDataModelModal';
+import { EditDataModelModal } from './components/EditDataModelModal';
 
 const typeValueEnum = {
   clsss: { text: '类' },
@@ -27,6 +28,8 @@ const statusValueEnum = {
 
 export default () => {
   const tabRef = useRef<ActionType>();
+  const [currentModal, setCurrentModal] = useState<API.Model.DataModel | undefined>();
+  const [visible, setVisible] = useState(false);
   const columns: ProColumns<API.Model.DataModel>[] = [
     {
       title: '编码',
@@ -120,6 +123,15 @@ export default () => {
         >
           编辑
         </a>,
+        <a
+          key="show"
+          onClick={() => {
+            setCurrentModal(record);
+            setVisible(true);
+          }}
+        >
+          查看详情
+        </a>,
       ],
     },
   ];
@@ -149,7 +161,31 @@ export default () => {
             return modelService.remove([row.uid]);
           },
         }}
-        toolBarRender={() => [<AddDataModel />]}
+        toolBarRender={() => [
+          <AddDataModelModal
+            onFinish={async (values) => {
+              let items = values.items || [];
+              let behaviors = values.behaviors || [];
+              items = items.map((t: any) => {
+                return {
+                  ...t,
+                  isNull: Boolean(t.isNull),
+                };
+              });
+              behaviors = behaviors.map((t: any) => {
+                return {
+                  ...t,
+                  inputs: t.inputType ? [{ type: t.inputType, value: t.inputValue }] : undefined,
+                };
+              });
+              const result = await modelService.insert({ ...values, items, behaviors });
+              if (result.success) {
+                tabRef.current?.reload();
+              }
+              return result.success;
+            }}
+          />,
+        ]}
         columns={columns}
         request={async (params, sort, filter) => {
           let orderValue = 'id';
@@ -173,6 +209,16 @@ export default () => {
             success: result.success,
             total: result.data.total,
           };
+        }}
+      />
+      <EditDataModelModal
+        visible={visible}
+        model={currentModal}
+        onClose={() => {
+          setVisible(false);
+        }}
+        onFinish={() => {
+          tabRef.current?.reload();
         }}
       />
     </PageContainer>
