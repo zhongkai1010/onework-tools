@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 12:10:16
- * @LastEditTime: 2021-02-18 21:55:07
+ * @LastEditTime: 2021-02-21 17:52:26
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\EditModal.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\EditCollectionModal.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import React, { useState } from 'react';
@@ -17,21 +17,13 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import ItemSelect from '@/pages/DataModel/components/ItemSelect';
 import * as collectionServices from '@/services/model/collection';
 import { useRequest } from 'umi';
+import { ItemTypeEnum } from '../../common';
 
 interface Props {
   collection: API.Model.Collection | undefined;
   onClose: () => void;
   onFinish: () => void;
 }
-
-const typeValueEnum = {
-  character: { text: '文本' },
-  integer: { text: '整型' },
-  digital: { text: '数字' },
-  boolean: { text: '布尔' },
-  enumerate: { text: '枚举' },
-  date: { text: '日期' },
-};
 
 const EditModal = (props: Props & ModalProps) => {
   const [isEditState, setIsEditState] = useState(false);
@@ -51,10 +43,10 @@ const EditModal = (props: Props & ModalProps) => {
       }}
       onOk={() => {
         if (isEditState) {
-          form.validateFields().then((values) => {           
+          form.validateFields().then((values) => {
             updateOperate.run({ ...props.collection, ...values }).then(() => {
               setIsEditState(false);
-              props.onClose();             
+              props.onClose();
               props.onFinish();
             });
           });
@@ -202,7 +194,7 @@ const EditModal = (props: Props & ModalProps) => {
                   dataIndex: 'type',
                   valueType: 'select',
                   width: 150,
-                  valueEnum: typeValueEnum,
+                  valueEnum: ItemTypeEnum,
                 },
               ]}
             />

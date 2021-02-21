@@ -1,24 +1,22 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 12:09:51
- * @LastEditTime: 2021-02-18 13:00:04
+ * @LastEditTime: 2021-02-21 17:54:27
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\AddModal.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\AddCollectionModal.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import type { ModalFormProps } from '@ant-design/pro-form';
 import { ModalForm } from '@ant-design/pro-form';
 import React from 'react';
- 
+
 import { Button, Form, Input } from 'antd';
 import { Translate } from '@/utils/translate';
 import ItemSelect from '@/pages/DataModel/components/ItemSelect';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
- 
-
-const AddCollectionModal = (props:  ModalFormProps) => {
+const AddCollectionModal = (props: ModalFormProps) => {
   const [form] = Form.useForm();
   return (
     <ModalForm
@@ -38,11 +36,12 @@ const AddCollectionModal = (props:  ModalFormProps) => {
       labelCol={{ span: 3 }}
       wrapperCol={{ span: 20 }}
       form={form}
-    
       trigger={<Button type="primary">新建</Button>}
     >
       <Form.Item label="名称" name="name" rules={[{ required: true, message: '请输入数据集名称' }]}>
         <Input.Search
+          placeholder="请输入数据集名称"
+          autoFocus
           onSearch={(value) => {
             Translate.to(value).then((data) => {
               if (data.trans_result) {
@@ -56,7 +55,7 @@ const AddCollectionModal = (props:  ModalFormProps) => {
         />
       </Form.Item>
       <Form.Item label="编码" name="code" rules={[{ required: true, message: '请输入数据集编码' }]}>
-        <Input />
+        <Input placeholder="请输入数据集编码" />
       </Form.Item>
 
       <Form.List name="items">
@@ -65,7 +64,7 @@ const AddCollectionModal = (props:  ModalFormProps) => {
             {fields.map((field, index) => (
               <Form.Item label={index === 0 ? '数据项' : '数据项'} required={true} key={field.key}>
                 <Form.Item {...field} rules={[{ required: true, message: '请选择数据项' }]} noStyle>
-                  <ItemSelect key={field.key} style={{ width: '90%' }} />
+                  <ItemSelect key={field.key} style={{ width: '90%' }} placeholder="请选择数据项" />
                 </Form.Item>
                 {fields.length > 1 ? (
                   <MinusCircleOutlined

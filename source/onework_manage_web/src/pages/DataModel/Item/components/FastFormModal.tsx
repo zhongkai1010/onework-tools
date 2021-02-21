@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-17 13:01:56
- * @LastEditTime: 2021-02-17 20:33:14
+ * @LastEditTime: 2021-02-21 17:44:20
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Item\components\FastFormModal.tsX
+ * @FilePath: \onework_manage_web\src\pages\DataModel\Item\components\FastFormModal.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
@@ -14,6 +14,7 @@ import { Button, Col, Form, Input, Modal, Row, Select, Space } from 'antd';
 import React, { useState } from 'react';
 import * as itemService from '@/services/model/item';
 import { useRequest } from 'umi';
+import { ItemTypeOption } from '../../common';
 
 interface Props {
   onSubmit: (data: any) => void;
@@ -122,14 +123,7 @@ const FastFormModal = (props: Props) => {
                       fieldKey={[field.fieldKey, 'type']}
                       rules={[{ required: true }]}
                     >
-                      <Select style={{ width: 180 }}>
-                        <Select.Option value="character">文本</Select.Option>
-                        <Select.Option value="integer">整数</Select.Option>
-                        <Select.Option value="digital">数字</Select.Option>
-                        <Select.Option value="boolean">布尔</Select.Option>
-                        <Select.Option value="enumerate">枚举</Select.Option>
-                        <Select.Option value="date">时间</Select.Option>
-                      </Select>
+                      <Select style={{ width: 180 }} options={ItemTypeOption} />
                     </Form.Item>
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </Space>

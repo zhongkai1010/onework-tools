@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-17 20:43:51
+ * @LastEditTime: 2021-02-21 17:53:31
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
@@ -17,19 +17,7 @@ import { Translate } from '@/utils/translate';
 import { ModalForm, ProFormText, ProFormSelect } from '@ant-design/pro-form';
 import * as itemService from '@/services/model/item';
 import FastFormModal from './components/FastFormModal';
-
-const typeValueEnum = {
-  character: { text: '文本' },
-  integer: { text: '整型' },
-  digital: { text: '数字' },
-  boolean: { text: '布尔' },
-  enumerate: { text: '枚举' },
-  date: { text: '日期' },
-};
-const statusValueEnum = {
-  enable: { text: '启用' },
-  disable: { text: '停用' },
-};
+import { ItemTypeEnum, StatusEnum, ItemTypeOption } from '@/pages/DataModel/common';
 
 export default () => {
   const [form] = Form.useForm();
@@ -53,14 +41,14 @@ export default () => {
       initialValue: 'character',
       filters: true,
       width: 150,
-      valueEnum: typeValueEnum,
+      valueEnum: ItemTypeEnum,
     },
     {
       title: '状态',
       dataIndex: 'status',
       valueType: 'select',
       filters: true,
-      valueEnum: statusValueEnum,
+      valueEnum: StatusEnum,
       width: 100,
     },
     {
@@ -125,7 +113,7 @@ export default () => {
           },
         }}
         pagination={{
-          defaultPageSize:10
+          defaultPageSize: 10,
         }}
         toolBarRender={() => [
           <ModalForm
@@ -147,6 +135,8 @@ export default () => {
               rules={[{ required: true, message: '请输入数据项名称!' }]}
             >
               <Input.Search
+                autoFocus
+                placeholder="请输入数据项名称"
                 onSearch={(value) => {
                   Translate.to(value).then((data) => {
                     if (data.trans_result) {
@@ -162,6 +152,7 @@ export default () => {
             <ProFormText
               label="编码"
               name="code"
+              placeholder="请输入数据项名称"
               rules={[
                 {
                   required: true,
@@ -172,40 +163,15 @@ export default () => {
             <ProFormSelect
               label="类型"
               name="type"
+              placeholder="请选择数据项类型"
               rules={[
                 {
                   required: true,
                   message: '请选择数据项类型',
                 },
               ]}
-              initialValue={'character'}
-              // 数据项类型，1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间
-              options={[
-                {
-                  label: '文本',
-                  value: 'character',
-                },
-                {
-                  label: '整数',
-                  value: 'integer',
-                },
-                {
-                  label: '数字',
-                  value: 'digital',
-                },
-                {
-                  label: '布尔',
-                  value: 'boolean',
-                },
-                {
-                  label: '枚举',
-                  value: 'enumerate',
-                },
-                {
-                  label: '时间',
-                  value: 'date',
-                },
-              ]}
+              initialValue={ItemTypeOption[0].value}
+              options={ItemTypeOption}
             />
           </ModalForm>,
           <FastFormModal
@@ -222,7 +188,7 @@ export default () => {
           if (entries.length > 0) {
             orderValue = entries[0][0] as string;
             sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
-          }      
+          }
           const query = {
             page: params.current,
             limit: params.pageSize,
