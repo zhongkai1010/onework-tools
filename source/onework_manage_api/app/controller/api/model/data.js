@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-02-18 17:27:00
+ * @LastEditTime: 2021-02-21 17:13:21
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\controller\api\model\data.js
+ * @FilePath: \onework_manage_api\app\controller\api\model\data.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -29,25 +29,20 @@ class DataController extends Controller {
     const rule = {
       name: 'string',
       code: 'string',
-      type: Object.values(app.appCode.model.dataModelType),
+      use: Object.values(app.appCode.model.modelUse),
       items: { type: 'array', min: 1, required: true, itemType: 'object', rule: {
-        itemName: 'string',
-        itemCode: 'string',
+        name: 'string',
+        code: 'string',
         itemType: Object.values(app.appCode.model.itemType),
-        isNull: 'boolean',
+        isNull: 'boolean?',
         length: 'int?',
         precision: 'int?',
         defaultValue: 'string?',
+        isUnique: 'boolean?',
       } },
       behaviors: { type: 'array', required: false, itemType: 'object', rule: {
         name: 'string',
         code: 'string',
-        inputs: { type: 'array', required: false, itemType: 'object', rule: {
-          type: Object.values(app.appCode.model.behaviorParamType),
-          value: 'string?',
-        } },
-        outputType: Object.values(app.appCode.model.behaviorParamType),
-        outputValue: 'string?',
         description: 'string?',
       } },
       description: 'string?',
@@ -65,23 +60,21 @@ class DataController extends Controller {
   async getlist() {
     const ctx = this.ctx;
     const app = this.app;
-    const typeRule = Object.values(app.appCode.model.dataModelType);
-    const statusRule = Object.values(app.appCode.common.status);
     const rule = {
       status: {
         type: 'array',
         required: false,
         itemType: 'enum',
         rule: {
-          values: statusRule,
+          values: Object.values(app.appCode.common.status),
         },
       },
-      type: {
+      use: {
         type: 'array',
         required: false,
         itemType: 'enum',
         rule: {
-          values: typeRule,
+          values: Object.values(app.appCode.model.modelUse),
         },
       },
     };
@@ -107,25 +100,18 @@ class DataController extends Controller {
       code: 'string',
       type: Object.values(app.appCode.model.dataModelType),
       items: { type: 'array', min: 1, required: true, itemType: 'object', rule: {
-        itemName: 'string',
-        itemCode: 'string',
+        name: 'string',
+        code: 'string',
         itemType: Object.values(app.appCode.model.itemType),
         isNull: 'boolean',
         length: 'int?',
         precision: 'int?',
         defaultValue: 'string?',
+        isUnique: 'boolean?',
       } },
       behaviors: { type: 'array', required: false, itemType: 'object', rule: {
         name: 'string',
         code: 'string',
-        input: { type: 'array', required: false, itemType: 'object', rule: {
-          type: Object.values(app.appCode.model.behaviorParamType),
-          valueUid: 'string?',
-        } },
-        output: { type: 'array', required: false, itemType: 'object', rule: {
-          type: Object.values(app.appCode.model.behaviorParamType),
-          valueUid: 'string?',
-        } },
         description: 'string?',
       } },
       description: 'string?',

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-18 18:44:11
+ * @LastEditTime: 2021-02-21 17:02:23
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\data.js
+ * @FilePath: \onework_manage_api\app\service\model\data.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -32,7 +32,7 @@ class DataService extends Service {
     data = {
       name: params.name,
       code: params.code,
-      type: params.type,
+      use: params.use,
       description: params.description,
     };
     data = await DataModel.create(data);
@@ -42,17 +42,18 @@ class DataService extends Service {
       const element = params.items[index];
       let dataItem = {
         dataUid: data.uid,
-        itemName: element.itemName,
-        itemCode: element.itemCode,
-        itemCoitemTypede: element.itemType,
+        name: element.name,
+        code: element.code,
+        item_type: element.itemType,
         isNull: element.isNull,
         length: element.length,
         precision: element.precision,
         defaultValue: element.defaultValue,
+        isUnique: element.isUnique,
       };
-      const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.itemName }, defaults: {
-        name: dataItem.itemName,
-        code: dataItem.itemCode,
+      const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.name }, defaults: {
+        name: dataItem.name,
+        code: dataItem.code,
         type: dataItem.itemType,
         status: ctx.app.appCode.common.status.enable,
         cumulate: 0,
@@ -69,11 +70,10 @@ class DataService extends Service {
       const element = params.behaviors[index];
       let dataBehavior = {
         dataUid: data.uid,
-        behaviorName: element.name,
-        behaviorCode: element.code,
-        inputs: element.inputs,
-        outputType: element.outputType,
-        outputValue: element.outputValue,
+        name: element.name,
+        code: element.code,
+        inputs: [],
+        operationType: element.operationType,
         description: element.description,
       };
       dataBehavior = await DataBehaviorModel.create(dataBehavior);
@@ -171,13 +171,16 @@ class DataService extends Service {
     data.name = params.name;
     data.code = params.code;
     data.description = params.description;
-    data.type = params.type;
+    data.use = params.use;
     data = await data.save();
     // 处理数据项
     const dataItems = await DataItemModel.findAll({ where: { dataUid: data.uid } });
-    for (let index = 0; index < dataItems.length; index++) {
+    const itemNames = (params.items || []).map(t => t.name);
+    // 处理本次修改中需要移除的数据项
+    const deleteItems = dataItems.filter(t => !itemNames.includes(t.name));
+    for (let index = 0; index < deleteItems.length; index++) {
       // 移除旧的数据项
-      const element = dataItems[index];
+      const element = deleteItems[index];
       element.destroy();
       // 更新数据项计数
       const item = await ItemModel.findOne({ where: { uid: element.itemUid } });
@@ -185,53 +188,59 @@ class DataService extends Service {
         await item.subCumulate();
       }
     }
-    // 更新数据项
+    // 处理本次中需要修改或新增的数据项
     const newDataItems = [];
     for (let index = 0; index < params.items.length; index++) {
       const element = params.items[index];
       let dataItem = {
         dataUid: data.uid,
-        itemName: element.itemName,
-        itemCode: element.itemCode,
-        itemCoitemTypede: element.itemType,
+        name: element.name,
+        code: element.code,
+        itemType: element.itemType,
         isNull: element.isNull,
         length: element.length,
         precision: element.precision,
         defaultValue: element.defaultValue,
+        isUnique: element.isUnique,
       };
-      const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.itemName }, defaults: {
-        name: dataItem.itemName,
-        code: dataItem.itemCode,
+      const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.name }, defaults: {
+        name: dataItem.name,
+        code: dataItem.code,
         type: dataItem.itemType,
         status: ctx.app.appCode.common.status.enable,
         cumulate: 0,
       } });
       dataItem.itemUid = item.uid;
-      dataItem = await DataItemModel.create(dataItem);
+      dataItem = await DataItemModel.findOrCreate({ where: { name: dataItem.name, dataUid: data.uid }, defaults: dataItem });
+      dataItem = await dataItem.save(dataItem);
       newDataItems.push(dataItem.dataValues);
       // 记录数据项计数
       await item.plusCumulate();
     }
-    // 处理旧行为数据
+    // 处理行为
     const dataBehaviors = await DataBehaviorModel.findAll({ where: { dataUid: data.uid } });
-    for (let index = 0; index < dataBehaviors.length; index++) {
-      const element = dataBehaviors[index];
+    // 处理本次修改中需要移除的行为
+    const behaviorNames = (params.behaviors || []).map(t => t.name);
+    const deleteBehaviorNames = dataItems.filter(t => !behaviorNames.includes(t.name));
+    for (let index = 0; index < deleteBehaviorNames.length; index++) {
+      const element = deleteBehaviorNames[index];
       await element.destroy();
     }
-    // 更新行为数据
+    // 处理本次中需要修改或新增的行为
     const newDataBehaviors = [];
     for (let index = 0; index < params.behaviors.length; index++) {
       const element = params.behaviors[index];
       let dataBehavior = {
         dataUid: data.uid,
-        behaviorName: element.name,
-        behaviorCode: element.code,
+        name: element.name,
+        code: element.code,
         inputs: element.inputs,
         outputType: element.outputType,
         outputValue: element.outputValue,
         description: element.description,
       };
-      dataBehavior = await DataBehaviorModel.create(dataBehavior);
+      dataBehavior = await DataBehaviorModel.findOrCreate({ where: { name: dataBehavior.name, dataUid: data.uid }, defaults: dataBehavior });
+      dataBehavior = await dataBehavior.save(dataBehavior);
       dataBehaviors.push(dataBehavior.dataValues);
       // 返回结果
       return { ...data.dataValues, items: newDataItems, behaviors: newDataBehaviors };

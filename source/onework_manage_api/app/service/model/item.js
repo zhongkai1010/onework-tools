@@ -1,17 +1,17 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-02-17 20:29:28
+ * @LastEditTime: 2021-02-21 15:45:33
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\item.js
+ * @FilePath: \onework_manage_api\app\service\model\item.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
 
 const Service = require('egg').Service;
 const AppError = require('../../core/appError');
-const AppCode = require('../../core/appCode');
+// const AppCode = require('../../core/appCode');
 
 class ItemService extends Service {
 
@@ -54,7 +54,7 @@ class ItemService extends Service {
       where: {},
     };
     // 排序
-    const sort = params.sort === AppCode.common.order.desc ? 'DESC' : 'ASC';
+    const sort = params.sort === ctx.app.appCode.common.order.desc ? 'DESC' : 'ASC';
     if (params.order) {
       queryParmas.order = [[ params.order, sort ]];
     }

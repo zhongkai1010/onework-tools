@@ -32,15 +32,16 @@ const appCode = {
       boolean: 'boolean', // 布尔
       integer: 'integer', // 整数
     },
-    dataModelType: {
-      clsss: 'clsss', // 类
-      abstract: 'abstract', // 抽象
-      interface: 'interface', // 接口
+    modelUse: {
+      universal: 'universal', // 类
+      input: 'input', // 抽象
+      output: 'output', // 接口
     },
-    behaviorParamType: {
-      void: 'void', // 无
-      value: 'value', // 值
-      object: 'object', // 对象
+    behaviorType: { // 行为类型
+      read: 'read',
+      add: 'add',
+      update: 'update',
+      delete: 'delete',
     },
   },
 };
