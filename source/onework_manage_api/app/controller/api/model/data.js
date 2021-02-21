@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-02-21 17:13:21
+ * @LastEditTime: 2021-02-21 23:21:13
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\controller\api\model\data.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\controller\api\model\data.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -98,7 +98,7 @@ class DataController extends Controller {
       uid: 'string',
       name: 'string',
       code: 'string',
-      type: Object.values(app.appCode.model.dataModelType),
+      use: Object.values(app.appCode.model.modelUse),
       items: { type: 'array', min: 1, required: true, itemType: 'object', rule: {
         name: 'string',
         code: 'string',

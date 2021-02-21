@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-21 17:33:43
- * @LastEditTime: 2021-02-21 17:42:09
+ * @LastEditTime: 2021-02-21 22:58:12
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\common.ts
@@ -30,3 +30,33 @@ export const ItemTypeOption = [
   { label: '布尔', value: 'boolean' },
   { label: '整数', value: 'integer' },
 ];
+
+export const ModelUseOption = [
+  { label: '通用', value: 'universal' },
+  { label: '输出', value: 'input' },
+  { label: '输入', value: 'output' },
+];
+
+export const ModelUseEnum = {
+  universal: { text: '通用' },
+  input: { text: '输出' },
+  output: { text: '输入' },
+};
+
+export const BoolTypeOption = [
+  { label: '是', value: 'true' },
+  { label: '否', value: 'false' },
+];
+
+export const BehaviorOperationTypeOption = [
+  { label: '查询', value: 'read' },
+  { label: '新增', value: 'add' },
+  { label: '修改', value: 'update' },
+  { label: '删除', value: 'delete' },
+];
+export const BehaviorOperationTypeEnum = {
+  read:{ text: '查询', value: 'read' },
+  add: { text: '修改', value: 'add' },
+  update: { text: '修改', value: 'update' },
+  delete: { text: '删除', value: 'delete' },
+};

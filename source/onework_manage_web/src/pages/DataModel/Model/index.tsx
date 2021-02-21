@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-19 10:08:12
+ * @LastEditTime: 2021-02-21 23:00:36
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
@@ -15,16 +15,7 @@ import * as modelService from '@/services/model/dataModel';
 import TableDetails from './components/TableDetails';
 import AddDataModelModal from './components/AddDataModelModal';
 import { EditDataModelModal } from './components/EditDataModelModal';
-
-const typeValueEnum = {
-  clsss: { text: '类' },
-  abstract: { text: '抽象' },
-  interface: { text: '接口' },
-};
-const statusValueEnum = {
-  enable: { text: '启用' },
-  disable: { text: '停用' },
-};
+import { ModelUseEnum, StatusEnum } from '../common';
 
 export default () => {
   const tabRef = useRef<ActionType>();
@@ -44,49 +35,23 @@ export default () => {
       width: 150,
     },
     {
-      title: '类型',
-      dataIndex: 'type',
+      title: '用途',
+      dataIndex: 'use',
       valueType: 'select',
       sorter: true,
       initialValue: 'clsss',
       filters: true,
       width: 120,
-      valueEnum: typeValueEnum,
+      valueEnum: ModelUseEnum,
     },
     {
       title: '状态',
       dataIndex: 'status',
       valueType: 'select',
       filters: true,
-      valueEnum: statusValueEnum,
+      valueEnum: StatusEnum,
       width: 100,
     },
-    // {
-    //   title: '数据项',
-    //   dataIndex: 'cumulate',
-    //   editable: false,
-    //   render: (_text, record: API.Model.DataModel) => {
-    //     return record.items.map((t) => (
-    //       <span key={`${t.uid}_name`}>
-    //         {t.itemName}
-    //         <br />
-    //       </span>
-    //     ));
-    //   },
-    // },
-    // {
-    //   title: '行为',
-    //   dataIndex: 'cumulate',
-    //   editable: false,
-    //   render: (_text, record: API.Model.DataModel) => {
-    //     return (record.behaviors || []).map((t) => (
-    //       <span key={`${t.uid}_name`}>
-    //         {t.behaviorName}
-    //         <br />
-    //       </span>
-    //     ));
-    //   },
-    // },
     {
       title: '描述',
       dataIndex: 'description',
@@ -170,6 +135,7 @@ export default () => {
                 return {
                   ...t,
                   isNull: Boolean(t.isNull),
+                  isUnique: Boolean(t.isNull),
                 };
               });
               behaviors = behaviors.map((t: any) => {

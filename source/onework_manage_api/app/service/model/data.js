@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-21 17:02:23
+ * @LastEditTime: 2021-02-21 23:44:20
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\model\data.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\data.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -211,8 +211,8 @@ class DataService extends Service {
         cumulate: 0,
       } });
       dataItem.itemUid = item.uid;
-      dataItem = await DataItemModel.findOrCreate({ where: { name: dataItem.name, dataUid: data.uid }, defaults: dataItem });
-      dataItem = await dataItem.save(dataItem);
+      const [ newDataItem ] = await DataItemModel.findOrCreate({ where: { name: dataItem.name, dataUid: data.uid }, defaults: dataItem });
+      dataItem = await newDataItem.save(dataItem);
       newDataItems.push(dataItem.dataValues);
       // 记录数据项计数
       await item.plusCumulate();
@@ -221,7 +221,7 @@ class DataService extends Service {
     const dataBehaviors = await DataBehaviorModel.findAll({ where: { dataUid: data.uid } });
     // 处理本次修改中需要移除的行为
     const behaviorNames = (params.behaviors || []).map(t => t.name);
-    const deleteBehaviorNames = dataItems.filter(t => !behaviorNames.includes(t.name));
+    const deleteBehaviorNames = dataBehaviors.filter(t => !behaviorNames.includes(t.name));
     for (let index = 0; index < deleteBehaviorNames.length; index++) {
       const element = deleteBehaviorNames[index];
       await element.destroy();
@@ -239,12 +239,12 @@ class DataService extends Service {
         outputValue: element.outputValue,
         description: element.description,
       };
-      dataBehavior = await DataBehaviorModel.findOrCreate({ where: { name: dataBehavior.name, dataUid: data.uid }, defaults: dataBehavior });
-      dataBehavior = await dataBehavior.save(dataBehavior);
-      dataBehaviors.push(dataBehavior.dataValues);
-      // 返回结果
-      return { ...data.dataValues, items: newDataItems, behaviors: newDataBehaviors };
+      const [ newDataBehavior ] = await DataBehaviorModel.findOrCreate({ where: { name: dataBehavior.name, dataUid: data.uid }, defaults: dataBehavior });
+      dataBehavior = await newDataBehavior.save(dataBehavior);
+      newDataBehaviors.push(dataBehavior.dataValues);
     }
+    // 返回结果
+    return { ...data.dataValues, items: newDataItems, behaviors: newDataBehaviors };
   }
 
   /**

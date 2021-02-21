@@ -361,3 +361,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /source/demo/java/.idea
+/source/onework_manage_api/.github
+source/onework_manage_api/app/service/model/data.js
+source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx

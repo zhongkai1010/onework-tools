@@ -1,13 +1,13 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 21:41:50
- * @LastEditTime: 2021-02-19 09:20:50
+ * @LastEditTime: 2021-02-21 22:57:04
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\AddDataModel.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\AddDataModelModal.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import type { ModalFormProps} from '@ant-design/pro-form';
+import type { ModalFormProps } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import { Button, Form, Input, InputNumber, Select, Space } from 'antd';
 import { Translate } from '@/utils/translate';
@@ -16,6 +16,13 @@ import React from 'react';
 import type { LabeledValue } from 'antd/lib/select';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import type { FormListFieldData } from 'antd/lib/form/FormList';
+import {
+  BehaviorOperationTypeEnum,
+  BehaviorOperationTypeOption,
+  BoolTypeOption,
+  ItemTypeOption,
+  ModelUseOption,
+} from '../../common';
 
 const AddDataModelModal = (props: ModalFormProps) => {
   const [form] = Form.useForm();
@@ -25,20 +32,20 @@ const AddDataModelModal = (props: ModalFormProps) => {
         <Form.Item
           {...field}
           label={index === 0 ? '名称' : undefined}
-          name={[field.name, 'itemName']}
-          rules={[{ required: true, message: '请选择数据项名称' }]}
-          fieldKey={[field.name, 'itemName']}
+          name={[field.name, 'name']}
+          rules={[{ required: true, message: '请填写数据项名称' }]}
+          fieldKey={[field.name, 'name']}
         >
-          <Input allowClear />
+          <Input allowClear autoFocus placeholder="请填写数据项名称" />
         </Form.Item>
         <Form.Item
           {...field}
           label={index === 0 ? '编码' : undefined}
-          name={[field.name, 'itemCode']}
-          rules={[{ required: true, message: '请选择数据项编码' }]}
-          fieldKey={[field.name, 'itemCode']}
+          name={[field.name, 'code']}
+          rules={[{ required: true, message: '请填写数据项编码' }]}
+          fieldKey={[field.name, 'code']}
         >
-          <Input allowClear />
+          <Input allowClear placeholder="请填写数据项编码" />
         </Form.Item>
         <Form.Item
           {...field}
@@ -47,26 +54,16 @@ const AddDataModelModal = (props: ModalFormProps) => {
           name={[field.name, 'itemType']}
           fieldKey={[field.name, 'itemType']}
         >
-          <Select style={{ width: 120 }}>
-            <Select.Option value="character">文本</Select.Option>
-            <Select.Option value="integer">整数</Select.Option>
-            <Select.Option value="digital">数字</Select.Option>
-            <Select.Option value="boolean">布尔</Select.Option>
-            <Select.Option value="enumerate">枚举</Select.Option>
-            <Select.Option value="date">时间</Select.Option>
-          </Select>
+          <Select style={{ width: 120 }} options={ItemTypeOption} placeholder="请选择数据项类型" />
         </Form.Item>
         <Form.Item
           {...field}
           label={index === 0 ? '是否为空' : undefined}
-          rules={[{ required: true, message: '请选择数据项是否为空' }]}
+          rules={[{ required: false, message: '请选择数据项是否为空' }]}
           name={[field.name, 'isNull']}
           fieldKey={[field.name, 'isNull']}
         >
-          <Select style={{ width: 120 }} allowClear>
-            <Select.Option value="true">是</Select.Option>
-            <Select.Option value="false">否</Select.Option>
-          </Select>
+          <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
         </Form.Item>
         <Form.Item
           {...field}
@@ -92,6 +89,14 @@ const AddDataModelModal = (props: ModalFormProps) => {
         >
           <Input allowClear />
         </Form.Item>
+        <Form.Item
+          {...field}
+          label={index === 0 ? '是否标识' : undefined}
+          name={[field.name, 'isUnique']}
+          fieldKey={[field.name, 'isUnique']}
+        >
+          <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
+        </Form.Item>
       </>
     );
   };
@@ -116,70 +121,18 @@ const AddDataModelModal = (props: ModalFormProps) => {
         >
           <Input allowClear />
         </Form.Item>
+
         <ProFormSelect
           {...field}
           allowClear
           width={120}
-          label={index === 0 ? '输入类型' : undefined}
-          name={[field.name, 'inputType']}
-          rules={[{ required: false, message: '请选择行为输入类型' }]}
+          label={index === 0 ? '操作类型' : undefined}
+          name={[field.name, 'operationType']}
+          rules={[{ required: false, message: '请选择行为操作类型' }]}
           initialValue={'void'}
-          options={[
-            {
-              label: '无',
-              value: 'void',
-            },
-            {
-              label: '值',
-              value: 'value',
-            },
-            {
-              label: '对象',
-              value: 'object',
-            },
-          ]}
+          options={BehaviorOperationTypeOption}
         />
-        <Form.Item
-          {...field}
-          label={index === 0 ? '输入类型值' : undefined}
-          name={[field.name, 'inputValue']}
-          rules={[{ required: false, message: '请填写行为输入类型值' }]}
-          fieldKey={[field.name, 'inputValue']}
-        >
-          <Input allowClear />
-        </Form.Item>
-        <ProFormSelect
-          {...field}
-          allowClear
-          width={120}
-          label={index === 0 ? '输出类型' : undefined}
-          name={[field.name, 'outputType']}
-          rules={[{ required: false, message: '请选择行为输出类型' }]}
-          initialValue={'void'}
-          options={[
-            {
-              label: '无',
-              value: 'void',
-            },
-            {
-              label: '值',
-              value: 'value',
-            },
-            {
-              label: '对象',
-              value: 'object',
-            },
-          ]}
-        />
-        <Form.Item
-          {...field}
-          label={index === 0 ? '输出类型值' : undefined}
-          name={[field.name, 'outputValue']}
-          rules={[{ required: false, message: '请填写行为输出类型具体值' }]}
-          fieldKey={[field.name, 'outputValue']}
-        >
-          <Input allowClear />
-        </Form.Item>
+
         <Form.Item
           {...field}
           label={index === 0 ? '描述' : undefined}
@@ -209,7 +162,7 @@ const AddDataModelModal = (props: ModalFormProps) => {
       <Form.Item
         label="名称"
         name="name"
-        rules={[{ required: true, message: '请输入数据模型名称!' }]}
+        rules={[{ required: true, message: '请输入数据模型名称' }]}
       >
         <Input.Search
           onSearch={(value) => {
@@ -222,6 +175,8 @@ const AddDataModelModal = (props: ModalFormProps) => {
             });
           }}
           autoComplete="new-password"
+          autoFocus
+          placeholder="请输入数据模型名称"
         />
       </Form.Item>
       <ProFormText
@@ -233,31 +188,20 @@ const AddDataModelModal = (props: ModalFormProps) => {
             message: '请填写数据模型编码',
           },
         ]}
+        placeholder="请填写数据模型编码"
       />
       <ProFormSelect
         label="类型"
-        name="type"
+        name="use"
         rules={[
           {
             required: true,
             message: '请选择数据模型类型',
           },
         ]}
-        initialValue={'clsss'}
-        options={[
-          {
-            label: '类',
-            value: 'clsss',
-          },
-          {
-            label: '抽象',
-            value: 'abstract',
-          },
-          {
-            label: '接口',
-            value: 'interface',
-          },
-        ]}
+        placeholder="请选择数据模型类型"
+        initialValue={ModelUseOption[0].value}
+        options={ModelUseOption}
       />
       <Form.Item label="数据集">
         <CollectionSelect
@@ -265,17 +209,19 @@ const AddDataModelModal = (props: ModalFormProps) => {
           onChange={(_value, option: any) => {
             const values = form.getFieldsValue();
             const items = values.items || [];
+            // 获取选中的数据集
             const collections = option as (API.Model.Collection & LabeledValue)[];
             for (let i = 0; i < collections.length; i += 1) {
               const collection = collections[i];
+              // 遍历选中的数据集中的数据项
               for (let j = 0; j < collection.items.length; j += 1) {
                 const item = collection.items[j];
-                if (items.filter((t: any) => t.itemName === item.name).length === 0) {
+                // 判断表单中数据项名称是否出现重复，不重复加入表单中
+                if (items.filter((t: any) => t.name === item.name).length === 0) {
                   items.push({
-                    itemName: item.name,
-                    itemCode: item.code,
+                    name: item.name,
+                    code: item.code,
                     itemType: item.type,
-                    isNull: 'true',
                   });
                 }
               }
@@ -309,7 +255,15 @@ const AddDataModelModal = (props: ModalFormProps) => {
               <Form.Item>
                 <Button
                   type="dashed"
-                  onClick={() => add({ items: [] })}
+                  onClick={() =>
+                    add({
+                      itemType: ItemTypeOption[0].value,
+                      isNull: BoolTypeOption[0].value,
+                      length: 0,
+                      precision: 0,
+                      isUnique: BoolTypeOption[1].value,
+                    })
+                  }
                   block
                   icon={<PlusOutlined />}
                 >
@@ -321,7 +275,15 @@ const AddDataModelModal = (props: ModalFormProps) => {
         </Form.List>
       </Form.Item>
       <Form.Item label="行为">
-        <Form.List name="behaviors">
+        <Form.List
+          name="behaviors"
+          initialValue={[
+            { name: '查询', code: 'GetList', operationType: BehaviorOperationTypeEnum.read.value },
+            { name: '新增', code: 'Insert', operationType: BehaviorOperationTypeEnum.add.value },
+            { name: '修改', code: 'Update', operationType: BehaviorOperationTypeEnum.update.value },
+            { name: '移除', code: 'Remove', operationType: BehaviorOperationTypeEnum.delete.value },
+          ]}
+        >
           {(fields, { add, remove }) => (
             <>
               {fields.map((field, index) => (
@@ -345,7 +307,7 @@ const AddDataModelModal = (props: ModalFormProps) => {
               <Form.Item>
                 <Button
                   type="dashed"
-                  onClick={() => add({ items: [] })}
+                  onClick={() => add({ operationType: BehaviorOperationTypeOption[0].value })}
                   block
                   icon={<PlusOutlined />}
                 >

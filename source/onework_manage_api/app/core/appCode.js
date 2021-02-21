@@ -33,9 +33,9 @@ const appCode = {
       integer: 'integer', // 整数
     },
     modelUse: {
-      universal: 'universal', // 类
-      input: 'input', // 抽象
-      output: 'output', // 接口
+      universal: 'universal', // 通用
+      input: 'input', // 输出
+      output: 'output', // 输入
     },
     behaviorType: { // 行为类型
       read: 'read',

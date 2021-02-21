@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 18:10:26
- * @LastEditTime: 2021-02-19 09:47:58
+ * @LastEditTime: 2021-02-21 23:49:57
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\TableDetails.tsx
@@ -11,39 +11,26 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
+import { BehaviorOperationTypeEnum, ItemTypeEnum, ModelUseEnum } from '../../common';
 
 interface Props {
   data: API.Model.DataModel;
 }
 
-const typeValueEnum = {
-  character: { text: '文本' },
-  integer: { text: '整型' },
-  digital: { text: '数字' },
-  boolean: { text: '布尔' },
-  enumerate: { text: '枚举' },
-  date: { text: '日期' },
-};
-const outputTypeEnum = {
-  void: { text: '无' },
-  value: { text: '值' },
-  object: { text: '对象' },
-};
-
 const TableDetails = (props: Props) => {
   const itemColumns: ProColumns<API.Model.DataModelItem>[] = [
     {
       title: '编码',
-      dataIndex: 'itemCode',
+      dataIndex: 'code',
     },
     {
       title: '名称',
-      dataIndex: 'itemName',
+      dataIndex: 'name',
     },
     {
       title: '类型',
       dataIndex: 'itemType',
-      valueEnum: typeValueEnum,
+      valueEnum: ItemTypeEnum,
     },
     {
       title: '是否为空',
@@ -60,42 +47,32 @@ const TableDetails = (props: Props) => {
       title: '精度',
       dataIndex: 'precision',
     },
+    {
+      title: '是否标识',
+      dataIndex: 'isUnique',
+      renderText: (text: any) => {
+        return text ? '是' : '否';
+      },
+    },
   ];
   const behaviorColumns: ProColumns<API.Model.DataModelBehavior>[] = [
     {
       title: '名称',
-      dataIndex: 'behaviorName',
+      dataIndex: 'name',
     },
     {
       title: '名称',
-      dataIndex: 'behaviorCode',
+      dataIndex: 'code',
     },
     {
-      title: '输入类型',
+      title: '用途',
       dataIndex: 'outputType',
-      render: (text: any, record: any) => {
-        const inputs = record.inputs || [];
-        if (inputs === 0) return null;
-        return outputTypeEnum[inputs[0].type].text;
-      },
+      valueEnum: ModelUseEnum,
     },
     {
-      title: '输入类型值',
-      dataIndex: 'outputValue',
-      render: (text: any, record: any) => {
-        const inputs = record.inputs || [];
-        if (inputs === 0) return null;
-        return inputs[0].value;
-      },
-    },
-    {
-      title: '输出类型',
-      dataIndex: 'outputType',
-      valueEnum: outputTypeEnum,
-    },
-    {
-      title: '输出类型值',
-      dataIndex: 'outputValue',
+      title: '操作类型',
+      dataIndex: 'operationType',
+      valueEnum: BehaviorOperationTypeEnum,
     },
     {
       title: '描述',
