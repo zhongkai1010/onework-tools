@@ -1,9 +1,9 @@
 ﻿/*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-17 20:46:20
+ * @LastEditTime: 2021-02-22 18:14:24
  * @LastEditors: 钟凯
- * @Description: 
+ * @Description:
  * @FilePath: \onework_manage_web\config\routes.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
@@ -73,13 +73,19 @@ export default [
         path: '/model/model',
         name: 'model',
         icon: 'smile',
-        component: './DataModel/Model',
+        component: './DataModel/Model',      
       },
       {
-        path: '/model/behavior',
-        name: 'behavior',
+        path: '/model/model-item',
+        name: 'model-item',
         icon: 'smile',
-        component: './DataModel/Behavior',
+        component: './DataModel/Model/item',
+      },
+      {
+        path: '/model/model-behavior',
+        name: 'model-behavior',
+        icon: 'smile',
+        component: './DataModel/Model/behavior',
       },
     ],
   },

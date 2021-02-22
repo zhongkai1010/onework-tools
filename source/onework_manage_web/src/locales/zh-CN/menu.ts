@@ -1,9 +1,9 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-17 20:46:41
+ * @LastEditTime: 2021-02-22 18:05:46
  * @LastEditors: 钟凯
- * @Description: 
+ * @Description:
  * @FilePath: \onework_manage_web\src\locales\zh-CN\menu.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
@@ -62,5 +62,6 @@ export default {
   'menu.model.item': '数据项',
   'menu.model.collection': '数据集',
   'menu.model.model': '数据模型',
-  'menu.model.behavior': '模型行为',
+  'menu.model.model-item': '模型数据项',
+  'menu.model.model-behavior': '模型行为',
 };
