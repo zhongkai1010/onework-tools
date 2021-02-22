@@ -18,8 +18,8 @@ export const ItemTypeEnum = {
 };
 
 export const StatusEnum = {
-  enable: { text: '启用' },
-  disable: { text: '停用' },
+  enable: { text: '启用',value:'enable' },
+  disable: { text: '停用' ,value:'disable'},
 };
 
 export const ItemTypeOption = [

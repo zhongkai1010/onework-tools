@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-17 13:01:56
- * @LastEditTime: 2021-02-21 17:44:20
+ * @LastEditTime: 2021-02-22 15:34:09
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\components\FastFormModal.tsx
@@ -14,7 +14,7 @@ import { Button, Col, Form, Input, Modal, Row, Select, Space } from 'antd';
 import React, { useState } from 'react';
 import * as itemService from '@/services/model/item';
 import { useRequest } from 'umi';
-import { ItemTypeOption } from '../../common';
+import { ItemTypeOption, StatusEnum } from '../../common';
 
 interface Props {
   onSubmit: (data: any) => void;
@@ -24,7 +24,7 @@ const FastFormModal = (props: Props) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [generateLoding, setGenerateLoding] = useState(false);
-  const saveOperate = useRequest(itemService.save, { manual: true });
+  const saveOperate = useRequest(itemService.save, { manual: true, throwOnError: true });
   const onAddClick = () => {
     setIsModalVisible(true);
   };
@@ -53,12 +53,17 @@ const FastFormModal = (props: Props) => {
         }}
       >
         <Form name="dynamic_form_item" form={form}>
-          <Form.Item label="数据项" name="names">
+          <Form.Item
+            label="数据项"
+            name="names"
+            rules={[{ required: true, message: '请输入数据项名称，多条数据以换行进行添加' }]}
+          >
             <Row gutter={8}>
               <Col span={20}>
                 <Input.TextArea
+                  autoFocus
+                  allowClear
                   placeholder="请输入数据项名称，多条数据以换行进行添加"
-                  style={{ height: 200 }}
                 />
               </Col>
               <Col span={4}>
@@ -77,8 +82,8 @@ const FastFormModal = (props: Props) => {
                             return {
                               name: t.src,
                               code: t.dst,
-                              type: 'character',
-                              status: 'enable',
+                              type: ItemTypeOption[0].value,
+                              status: StatusEnum.enable.value,
                             } as API.Model.AddItem;
                           });
                           form.setFieldsValue({ items });

@@ -90,7 +90,7 @@ const errorHandler = (error: ResponseError) => {
     response.json().then((value) => {
       notification.error({
         message: `操作失败`,
-        description: value.error.message,
+        description: value.error ? value.error.message : '未知异常',
       });
     });
   }

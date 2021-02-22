@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 21:41:50
- * @LastEditTime: 2021-02-21 22:57:04
+ * @LastEditTime: 2021-02-22 16:35:09
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\AddDataModelModal.tsx
@@ -207,6 +207,7 @@ const AddDataModelModal = (props: ModalFormProps) => {
         <CollectionSelect
           mode="multiple"
           onChange={(_value, option: any) => {
+             
             const values = form.getFieldsValue();
             const items = values.items || [];
             // 获取选中的数据集

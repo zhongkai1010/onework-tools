@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-21 23:44:20
+ * @LastEditTime: 2021-02-22 17:18:38
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\data.js
@@ -27,7 +27,7 @@ class DataService extends Service {
     const DataBehaviorModel = ctx.model.DataBehavior;
     // 验证名称是否重复
     let data = await DataModel.findOne({ where: { name: params.name } });
-    if (data) throw new AppError(`${params.name},已存在无法进行添加！`);
+    if (data) throw new AppError(`该数据模型“${params.name}”名称已存在，无法进行添加！`);
     // 新增数据模型
     data = {
       name: params.name,
@@ -40,6 +40,9 @@ class DataService extends Service {
     const dataItems = [];
     for (let index = 0; index < params.items.length; index++) {
       const element = params.items[index];
+      if (dataItems.filter(t => t.name === element.name).length > 0) {
+        throw new AppError(`该数据项“${element.name}”名称已存在，无法进行重复添加！`);
+      }
       let dataItem = {
         dataUid: data.uid,
         name: element.name,
@@ -58,6 +61,9 @@ class DataService extends Service {
         status: ctx.app.appCode.common.status.enable,
         cumulate: 0,
       } });
+      if (item.status === ctx.app.appCode.common.status.disable) {
+        throw new AppError(`该数据项“${item.name}”状态已禁用，无法进行操作！`);
+      }
       dataItem.itemUid = item.uid;
       dataItem = await DataItemModel.create(dataItem);
       dataItems.push(dataItem.dataValues);
@@ -166,7 +172,7 @@ class DataService extends Service {
     const count = await DataModel.count({ where: { name: params.name, uid: {
       [Op.ne]: data.uid,
     } } });
-    if (count > 0) throw new AppError(5100);
+    if (count > 0) throw new AppError(`该数据模型“${params.name}”名称已存在，无法进行修改！`);
     // 修改数据模型
     data.name = params.name;
     data.code = params.code;
@@ -192,27 +198,44 @@ class DataService extends Service {
     const newDataItems = [];
     for (let index = 0; index < params.items.length; index++) {
       const element = params.items[index];
-      let dataItem = {
-        dataUid: data.uid,
+      if (newDataItems.filter(t => t.name === element.name).length > 0) {
+        throw new AppError(`该数据项“${element.name}”名称已存在，无法进行重复添加！`);
+      }
+      const [ item ] = await ItemModel.findOrCreate({ where: { name: element.name }, defaults: {
         name: element.name,
         code: element.code,
-        itemType: element.itemType,
-        isNull: element.isNull,
-        length: element.length,
-        precision: element.precision,
-        defaultValue: element.defaultValue,
-        isUnique: element.isUnique,
-      };
-      const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.name }, defaults: {
-        name: dataItem.name,
-        code: dataItem.code,
-        type: dataItem.itemType,
+        type: element.itemType,
         status: ctx.app.appCode.common.status.enable,
         cumulate: 0,
       } });
-      dataItem.itemUid = item.uid;
-      const [ newDataItem ] = await DataItemModel.findOrCreate({ where: { name: dataItem.name, dataUid: data.uid }, defaults: dataItem });
-      dataItem = await newDataItem.save(dataItem);
+      if (item.status === ctx.app.appCode.common.status.disable) {
+        throw new AppError(`该数据项“${item.name}”状态已禁用，无法进行操作！`);
+      }
+      const [ dataItem, created ] = await DataItemModel.findOrCreate({
+        where: { name: element.name, dataUid: data.uid },
+        defaults: {
+          dataUid: data.uid,
+          itemUid: item.uid,
+          name: element.name,
+          code: element.code,
+          itemType: element.itemType,
+          isNull: element.isNull,
+          length: element.length,
+          precision: element.precision,
+          defaultValue: element.defaultValue,
+          isUnique: element.isUnique,
+        },
+      });
+      if (!created) {
+        dataItem.code = element.code;
+        dataItem.itemType = element.itemType;
+        dataItem.isNull = element.isNull;
+        dataItem.length = element.length;
+        dataItem.precision = element.precision;
+        dataItem.defaultValue = element.defaultValue;
+        dataItem.isUnique = element.isUnique;
+        await dataItem.save(dataItem);
+      }
       newDataItems.push(dataItem.dataValues);
       // 记录数据项计数
       await item.plusCumulate();
@@ -230,18 +253,22 @@ class DataService extends Service {
     const newDataBehaviors = [];
     for (let index = 0; index < params.behaviors.length; index++) {
       const element = params.behaviors[index];
-      let dataBehavior = {
-        dataUid: data.uid,
-        name: element.name,
-        code: element.code,
-        inputs: element.inputs,
-        outputType: element.outputType,
-        outputValue: element.outputValue,
-        description: element.description,
-      };
-      const [ newDataBehavior ] = await DataBehaviorModel.findOrCreate({ where: { name: dataBehavior.name, dataUid: data.uid }, defaults: dataBehavior });
-      dataBehavior = await newDataBehavior.save(dataBehavior);
-      newDataBehaviors.push(dataBehavior.dataValues);
+      const [ behavior, created ] = await DataBehaviorModel.findOrCreate({
+        where: { name: element.name, dataUid: data.uid },
+        defaults: {
+          dataUid: data.uid,
+          name: element.name,
+          code: element.code,
+          description: element.description,
+        },
+      });
+      if (!created) {
+        behavior.name = element.name;
+        behavior.code = element.code;
+        behavior.description = element.description;
+        await behavior.save();
+      }
+      newDataBehaviors.push(behavior.dataValues);
     }
     // 返回结果
     return { ...data.dataValues, items: newDataItems, behaviors: newDataBehaviors };

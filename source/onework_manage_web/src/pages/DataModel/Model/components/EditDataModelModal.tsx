@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-19 09:51:03
- * @LastEditTime: 2021-02-21 23:22:32
+ * @LastEditTime: 2021-02-22 17:25:19
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\EditDataModelModal.tsx
@@ -39,7 +39,7 @@ interface Props {
 
 export const EditDataModelModal = (props: Props & ModalProps) => {
   const [isEditState, setIsEditState] = useState(false);
-  const updateOperate = useRequest(modelServices.update, { manual: true });
+  const updateOperate = useRequest(modelServices.update, { manual: true, throwOnError: true });
   const [form] = Form.useForm();
   const renderItem = (field: FormListFieldData, index: number) => {
     return (
@@ -202,7 +202,7 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
       dataIndex: 'name',
     },
     {
-      title: '名称',
+      title: '编码',
       dataIndex: 'code',
     },
     {
@@ -226,21 +226,26 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
         setIsEditState(false);
       }}
       onOk={() => {
-        form.validateFields().then((values) => {
-          const dataModel = { ...props.model, ...values };
-          dataModel.items = values.items.map((t: any) => {
-            return { ...t, isNull: Boolean(t.isNull), isUnique: Boolean(t.isUnique) };
+        if (isEditState) {
+          form.validateFields().then((values) => {
+            const dataModel = { ...props.model, ...values };
+
+            dataModel.items = values.items.map((t: any) => {
+              return { ...t, isNull: t.isNull === 'true', isUnique: t.isUnique === 'true' };
+            });
+            dataModel.behaviors = values.behaviors.map((t: any) => {
+              return {
+                ...t,
+              };
+            });
+            updateOperate.run(dataModel).then(() => {
+              setIsEditState(false);
+              props.onFinish();
+            });
           });
-          dataModel.behaviors = values.behaviors.map((t: any) => {
-            return {
-              ...t,
-            };
-          });
-          updateOperate.run(dataModel).then(() => {
-            setIsEditState(false);
-            props.onFinish();
-          });
-        });
+        } else {
+          props.onClose();
+        }
       }}
       okButtonProps={{
         loading: updateOperate.loading,
@@ -399,10 +404,21 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
               )}
             </Form.List>
           </Form.Item>
+          <ProFormText
+            label="描述"
+            name="description"
+            rules={[
+              {
+                required: false,
+                message: '请填写数据模型描述',
+              },
+            ]}
+            placeholder="请填写数据模型描述"
+          />
         </Form>
       ) : (
         <Descriptions
-          title="数据集"
+          title="数据模型"
           bordered
           extra={
             <Button

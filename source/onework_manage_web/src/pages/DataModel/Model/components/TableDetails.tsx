@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 18:10:26
- * @LastEditTime: 2021-02-21 23:49:57
+ * @LastEditTime: 2021-02-22 16:40:25
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\TableDetails.tsx
@@ -11,7 +11,7 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { BehaviorOperationTypeEnum, ItemTypeEnum, ModelUseEnum } from '../../common';
+import { BehaviorOperationTypeEnum, ItemTypeEnum } from '../../common';
 
 interface Props {
   data: API.Model.DataModel;
@@ -65,11 +65,6 @@ const TableDetails = (props: Props) => {
       dataIndex: 'code',
     },
     {
-      title: '用途',
-      dataIndex: 'outputType',
-      valueEnum: ModelUseEnum,
-    },
-    {
       title: '操作类型',
       dataIndex: 'operationType',
       valueEnum: BehaviorOperationTypeEnum,
@@ -85,6 +80,7 @@ const TableDetails = (props: Props) => {
       <Col span={24}>
         <ProTable<API.Model.DataModelItem>
           key={`${props.data.id}_item_table`}
+          rowKey="uid"
           tableStyle={{ padding: 10 }}
           size="middle"
           headerTitle="数据项"
@@ -99,6 +95,7 @@ const TableDetails = (props: Props) => {
       <Col span={24}>
         <ProTable<API.Model.DataModelBehavior>
           tableStyle={{ padding: 10 }}
+          rowKey="uid"
           key={`${props.data.id}_behavior_table`}
           headerTitle="行为"
           dataSource={props.data.behaviors || []}

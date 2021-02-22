@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 21:55:44
- * @LastEditTime: 2021-02-18 23:18:13
+ * @LastEditTime: 2021-02-22 16:38:13
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\components\collectionSelect.tsx
@@ -40,9 +40,11 @@ const CollectionSelect = (props: Props & SelectProps<any>) => {
           setOptions(
             data.map((t: API.Model.Collection) => {
               return {
-                 ...t,
+                //  ...t,
                 label: t.name,
                 value: t.uid,
+                // 用于选择数据集的时候读取数据集中的数据项
+                items: t.items,
               };
             }),
           );

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 12:10:16
- * @LastEditTime: 2021-02-21 17:52:26
+ * @LastEditTime: 2021-02-22 15:38:22
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\EditCollectionModal.tsx
@@ -27,7 +27,7 @@ interface Props {
 
 const EditModal = (props: Props & ModalProps) => {
   const [isEditState, setIsEditState] = useState(false);
-  const updateOperate = useRequest(collectionServices.update, { manual: true });
+  const updateOperate = useRequest(collectionServices.update, { manual: true, throwOnError: true });
   const [form] = Form.useForm();
   return (
     <Modal
@@ -175,11 +175,11 @@ const EditModal = (props: Props & ModalProps) => {
           </Descriptions.Item>
           <Descriptions.Item label="数据项">
             <ProTable<API.Model.Item>
-              key={props.collection?.uid}
               dataSource={props.collection?.items || []}
               pagination={false}
               options={false}
               search={false}
+              rowKey="uid"
               columns={[
                 {
                   title: '编码',

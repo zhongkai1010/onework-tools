@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-21 23:00:36
+ * @LastEditTime: 2021-02-22 17:27:19
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
@@ -134,8 +134,8 @@ export default () => {
               items = items.map((t: any) => {
                 return {
                   ...t,
-                  isNull: Boolean(t.isNull),
-                  isUnique: Boolean(t.isNull),
+                  isNull: t.isNull === 'true',
+                  isUnique: t.isUnique === 'true',
                 };
               });
               behaviors = behaviors.map((t: any) => {

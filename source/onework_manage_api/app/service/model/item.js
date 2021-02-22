@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-02-21 15:45:33
+ * @LastEditTime: 2021-02-22 15:39:58
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\model\item.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\item.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -31,7 +31,7 @@ class ItemService extends Service {
       },
     });
     if (amount > 0) {
-      throw new AppError(`${params.name},已存在无法进行添加！`);
+      throw new AppError(`该数据项“${params.name}”，已存在无法进行重复添加！`);
     }
     item = await ItemModel.create(item);
     return item.dataValues;
@@ -98,7 +98,7 @@ class ItemService extends Service {
     const Op = ctx.app.Sequelize.Op;
     // 验证数据
     let item = await ItemModel.findOne({ where: { uid: params.uid } });
-    if (item == null) throw new AppError(5101);
+    if (item == null) throw new AppError('该数据项数据已不存在，无法进行修改！');
     // 名称重复验证
     const amount = await ItemModel.count({
       where: {
@@ -109,7 +109,7 @@ class ItemService extends Service {
       },
     });
     if (amount > 0) {
-      throw new AppError(5100);
+      throw new AppError(`该数据项“${params.name}”，已存在无法进行重复修改！`);
     }
     // 更新字段
     item.name = params.name;
@@ -138,7 +138,7 @@ class ItemService extends Service {
     // 删除数据
     for (let index = 0; index < items.length; index++) {
       const element = items[index];
-      if (element.cumulate > 0) { throw new AppError(5102); }
+      if (element.cumulate > 0) { throw new AppError('该数据项已在其它功能使用，无法进行移除！'); }
       await element.destroy();
     }
   }
@@ -185,6 +185,7 @@ class ItemService extends Service {
           code: {
             [Op.substring]: params.keyword,
           } }],
+        status: ctx.app.appCode.common.status.enable,
       },
     };
     let result = await ItemModel.findAll(queryParmas);

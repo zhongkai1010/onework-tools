@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:25
- * @LastEditTime: 2021-02-18 22:05:32
+ * @LastEditTime: 2021-02-22 14:39:05
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\collection.js
@@ -33,13 +33,21 @@ class CollectionService extends Service {
       },
     });
     if (amount > 0) {
-      throw new AppError(5100);
+      throw new AppError(`该数据集“${params.name}”，已存在无法进行重复添加！`);
     }
     // 处理数据项
     let collection = params;
-    const items = await ItemModel.findAll({ where: { uid: {
-      [Op.in]: params.items,
-    } } });
+    const items = await ItemModel.findAll({
+      where: {
+        uid: {
+          [Op.in]: params.items,
+        },
+        status: ctx.app.appCode.common.status.enable,
+      },
+    });
+    if (items.length !== params.items.length) {
+      throw new AppError('该数据集中数据项数据不正确，无法进行添加！');
+    }
     collection.items = items.map(t => t.dataValues);
     // 创建数据集
     collection = await CollectionModel.create(collection);
@@ -115,7 +123,7 @@ class CollectionService extends Service {
       },
     });
     if (amount > 0) {
-      throw new AppError(5100);
+      throw new AppError(`该数据集“${params.name}”，已存在无法进行重复修改！`);
     }
     // 减除旧数据项计数
     const itemUIDs = collection.items.map(t => t.uid);
@@ -127,9 +135,17 @@ class CollectionService extends Service {
       await item.subCumulate();
     }
     // 增加新数据项计数
-    const items = await ItemModel.findAll({ where: { uid: {
-      [Op.in]: params.items,
-    } } });
+    const items = await ItemModel.findAll({
+      where: {
+        uid: {
+          [Op.in]: params.items,
+        },
+        status: ctx.app.appCode.common.status.enable,
+      },
+    });
+    if (items.length !== params.items.length) {
+      throw new AppError('该数据集中数据项数据不正确，无法进行修改！');
+    }
     for (let index = 0; index < items.length; index++) {
       const item = items[index];
       await item.plusCumulate();
@@ -139,7 +155,7 @@ class CollectionService extends Service {
     collection.code = params.code;
     collection.description = params.description;
     collection.items = items.map(t => t.dataValues);
-    collection = await collection.save({ fields: [ 'name', 'code', 'items', 'description' ] });
+    collection = await collection.save();
     return collection.dataValues;
   }
 

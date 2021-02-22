@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 08:16:02
- * @LastEditTime: 2021-02-18 23:00:16
+ * @LastEditTime: 2021-02-22 16:37:43
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\components\ItemSelect.tsx
@@ -40,9 +40,10 @@ const ItemSelect = (props: Props & SelectProps<any>) => {
           setOptions(
             data.map((t: API.Model.Item) => {
               return {
-                ...t,
+                // ...t,
                 label: t.name,
                 value: t.uid,
+               
               };
             }),
           );
