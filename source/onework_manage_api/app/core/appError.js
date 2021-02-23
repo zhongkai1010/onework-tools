@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 22:00:56
- * @LastEditTime: 2021-02-17 20:26:06
+ * @LastEditTime: 2021-02-23 14:38:03
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\core\appError.js
@@ -10,8 +10,18 @@
 'use strict';
 const errorCode = require('../core/errorCode');
 
+/**
+ * @description:  应用异常处理
+ * @param {*}
+ * @return {*}
+ */
 class AppError extends Error {
+  /**
+   * @description: 异常构造函数
+   * @param {*} code 文本或编码
+   */
   constructor(code) {
+    // TODO 考虑异常文本动态参数嵌入
     const names = Object.getOwnPropertyNames(errorCode);
     let message = '未知异常';
     if (names.includes(String(code))) {
