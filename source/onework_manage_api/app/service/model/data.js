@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-23 17:22:22
+ * @LastEditTime: 2021-02-24 17:27:07
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\data.js
+ * @FilePath: \onework_manage_api\app\service\model\data.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -47,23 +47,16 @@ class DataService extends Service {
         dataUid: data.uid,
         name: element.name,
         code: element.code,
-        item_type: element.itemType,
+        itemType: element.itemType,
         isNull: element.isNull,
-        length: element.length,
-        precision: element.precision,
-        defaultValue: element.defaultValue,
         isUnique: element.isUnique,
       };
       const [ item ] = await ItemModel.findOrCreate({ where: { name: dataItem.name }, defaults: {
         name: dataItem.name,
         code: dataItem.code,
         type: dataItem.itemType,
-        status: ctx.app.appCode.common.status.enable,
-        cumulate: 0,
+
       } });
-      if (item.status === ctx.app.appCode.common.status.disable) {
-        throw new AppError(`该数据项“${item.name}”状态已禁用，无法进行操作！`);
-      }
       dataItem.itemUid = item.uid;
       dataItem = await DataItemModel.create(dataItem);
       dataItems.push(dataItem.dataValues);
@@ -78,7 +71,6 @@ class DataService extends Service {
         dataUid: data.uid,
         name: element.name,
         code: element.code,
-        inputs: [],
         operationType: element.operationType,
         description: element.description,
       };
@@ -108,7 +100,6 @@ class DataService extends Service {
       where: {},
     };
     // 排序
-
     const sort = params.sort === ctx.app.appCode.common.order.desc ? 'DESC' : 'ASC';
     if (params.order) {
       queryParmas.order = [[ params.order, sort ]];
@@ -129,9 +120,9 @@ class DataService extends Service {
           } }],
       };
     }
-    if (params.type) {
-      queryParmas.where.type = {
-        [Op.in]: params.type,
+    if (params.use) {
+      queryParmas.where.use = {
+        [Op.in]: params.use,
       };
     }
     if (params.status) {
@@ -220,9 +211,6 @@ class DataService extends Service {
           code: element.code,
           itemType: element.itemType,
           isNull: element.isNull,
-          length: element.length,
-          precision: element.precision,
-          defaultValue: element.defaultValue,
           isUnique: element.isUnique,
         },
       });
@@ -230,9 +218,6 @@ class DataService extends Service {
         dataItem.code = element.code;
         dataItem.itemType = element.itemType;
         dataItem.isNull = element.isNull;
-        dataItem.length = element.length;
-        dataItem.precision = element.precision;
-        dataItem.defaultValue = element.defaultValue;
         dataItem.isUnique = element.isUnique;
         await dataItem.save(dataItem);
       }

@@ -36,5 +36,10 @@ module.exports = app => {
   router.patch('/api/model/data/update', controller.api.model.data.update);
   router.post('/api/model/data/remove', controller.api.model.data.remove);
   router.get('/api/model/data/search', controller.api.model.data.search);
+
+  router.post('/api/model/data/getModelItemList', controller.api.model.data.getModelItemList);
+  router.post('/api/model/data/updateModelItem', controller.api.model.data.updateModelItem);
+  router.post('/api/model/data/removeModelItem', controller.api.model.data.removeModelItem);
+
   // router.post('/api/model/data/improt', controller.api.model.data.improt);
 };

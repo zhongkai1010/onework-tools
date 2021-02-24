@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 21:41:50
- * @LastEditTime: 2021-02-22 16:35:09
+ * @LastEditTime: 2021-02-24 17:30:19
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\AddDataModelModal.tsx
@@ -9,7 +9,7 @@
  */
 import type { ModalFormProps } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-form';
-import { Button, Form, Input, InputNumber, Select, Space } from 'antd';
+import { Button, Form, Input, Select, Space } from 'antd';
 import { Translate } from '@/utils/translate';
 import CollectionSelect from '@/pages/DataModel/components/collectionSelect';
 import React from 'react';
@@ -58,42 +58,18 @@ const AddDataModelModal = (props: ModalFormProps) => {
         </Form.Item>
         <Form.Item
           {...field}
-          label={index === 0 ? '是否为空' : undefined}
-          rules={[{ required: false, message: '请选择数据项是否为空' }]}
-          name={[field.name, 'isNull']}
-          fieldKey={[field.name, 'isNull']}
+          label={index === 0 ? '是否标识' : undefined}
+          name={[field.name, 'isUnique']}
+          fieldKey={[field.name, 'isUnique']}
         >
           <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
         </Form.Item>
         <Form.Item
           {...field}
-          label={index === 0 ? '长度' : undefined}
-          name={[field.name, 'length']}
-          fieldKey={[field.name, 'length']}
-        >
-          <InputNumber min={0} max={255} precision={0} />
-        </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '精度' : undefined}
-          name={[field.name, 'precision']}
-          fieldKey={[field.name, 'precision']}
-        >
-          <InputNumber min={0} max={32} precision={0} />
-        </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '默认值' : undefined}
-          name={[field.name, 'defaultValue']}
-          fieldKey={[field.name, 'defaultValue']}
-        >
-          <Input allowClear />
-        </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '是否标识' : undefined}
-          name={[field.name, 'isUnique']}
-          fieldKey={[field.name, 'isUnique']}
+          label={index === 0 ? '是否为空' : undefined}
+          rules={[{ required: false, message: '请选择数据项是否为空' }]}
+          name={[field.name, 'isNull']}
+          fieldKey={[field.name, 'isNull']}
         >
           <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
         </Form.Item>
@@ -207,7 +183,6 @@ const AddDataModelModal = (props: ModalFormProps) => {
         <CollectionSelect
           mode="multiple"
           onChange={(_value, option: any) => {
-             
             const values = form.getFieldsValue();
             const items = values.items || [];
             // 获取选中的数据集

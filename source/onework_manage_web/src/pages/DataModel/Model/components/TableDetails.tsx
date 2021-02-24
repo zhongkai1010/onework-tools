@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 18:10:26
- * @LastEditTime: 2021-02-22 16:40:25
+ * @LastEditTime: 2021-02-24 17:33:08
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\TableDetails.tsx
@@ -32,24 +32,17 @@ const TableDetails = (props: Props) => {
       dataIndex: 'itemType',
       valueEnum: ItemTypeEnum,
     },
+
     {
-      title: '是否为空',
-      dataIndex: 'isNull',
+      title: '是否标识',
+      dataIndex: 'isUnique',
       renderText: (text: any) => {
         return text ? '是' : '否';
       },
     },
     {
-      title: '长度',
-      dataIndex: 'length',
-    },
-    {
-      title: '精度',
-      dataIndex: 'precision',
-    },
-    {
-      title: '是否标识',
-      dataIndex: 'isUnique',
+      title: '是否为空',
+      dataIndex: 'isNull',
       renderText: (text: any) => {
         return text ? '是' : '否';
       },

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 19:22:50
- * @LastEditTime: 2021-02-21 17:03:29
+ * @LastEditTime: 2021-02-24 15:28:56
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\model\item.js
@@ -39,16 +39,7 @@ class ItemController extends Controller {
     const ctx = this.ctx;
     const app = this.app;
     const typeRule = Object.values(app.appCode.model.itemType);
-    const statusRule = Object.values(app.appCode.common.status);
     const rule = {
-      status: {
-        type: 'array',
-        required: false,
-        itemType: 'enum',
-        rule: {
-          values: statusRule,
-        },
-      },
       type: {
         type: 'array',
         required: false,
@@ -77,7 +68,6 @@ class ItemController extends Controller {
     const rule = {
       uid: 'string',
       name: 'string',
-      status: Object.values(app.appCode.common.status),
       code: 'string',
       type: Object.values(app.appCode.model.itemType),
     };
@@ -103,7 +93,6 @@ class ItemController extends Controller {
           uid: 'string?',
           name: 'string',
           code: 'string',
-          status: Object.values(app.appCode.common.status),
           type: Object.values(app.appCode.model.itemType),
         },
       },

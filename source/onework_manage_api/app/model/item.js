@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 22:37:45
- * @LastEditTime: 2021-02-21 15:14:01
+ * @LastEditTime: 2021-02-24 15:27:17
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\model\item.js
@@ -17,7 +17,6 @@ module.exports = app => {
   const Item = app.model.define('item', {
     ...baseModel,
     type: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.itemType.string, comment: '数据项类型' },
-    status: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.common.status.enable, comment: '状态' },
     cumulate: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0, comment: '使用累计总数' },
   }, {
     tableName: 'model_items',

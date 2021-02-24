@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-19 09:51:03
- * @LastEditTime: 2021-02-22 17:25:19
+ * @LastEditTime: 2021-02-24 17:32:52
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\EditDataModelModal.tsx
@@ -12,7 +12,7 @@ import { ProFormSelect, ProFormText } from '@ant-design/pro-form';
 import type { ModalProps } from 'antd';
 import { Descriptions } from 'antd';
 import { Button, Space } from 'antd';
-import { Form, Input, InputNumber, Modal, Select } from 'antd';
+import { Form, Input, Modal, Select } from 'antd';
 import type { FormListFieldData } from 'antd/lib/form/FormList';
 import type { LabeledValue } from 'antd/lib/select';
 import React, { useState } from 'react';
@@ -73,42 +73,18 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
         </Form.Item>
         <Form.Item
           {...field}
-          label={index === 0 ? '是否为空' : undefined}
-          rules={[{ required: false, message: '请选择数据项是否为空' }]}
-          name={[field.name, 'isNull']}
-          fieldKey={[field.name, 'isNull']}
+          label={index === 0 ? '是否标识' : undefined}
+          name={[field.name, 'isUnique']}
+          fieldKey={[field.name, 'isUnique']}
         >
           <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
         </Form.Item>
         <Form.Item
           {...field}
-          label={index === 0 ? '长度' : undefined}
-          name={[field.name, 'length']}
-          fieldKey={[field.name, 'length']}
-        >
-          <InputNumber min={0} max={255} precision={0} />
-        </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '精度' : undefined}
-          name={[field.name, 'precision']}
-          fieldKey={[field.name, 'precision']}
-        >
-          <InputNumber min={0} max={32} precision={0} />
-        </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '默认值' : undefined}
-          name={[field.name, 'defaultValue']}
-          fieldKey={[field.name, 'defaultValue']}
-        >
-          <Input allowClear />
-        </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '是否标识' : undefined}
-          name={[field.name, 'isUnique']}
-          fieldKey={[field.name, 'isUnique']}
+          label={index === 0 ? '是否为空' : undefined}
+          rules={[{ required: false, message: '请选择数据项是否为空' }]}
+          name={[field.name, 'isNull']}
+          fieldKey={[field.name, 'isNull']}
         >
           <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
         </Form.Item>
@@ -174,23 +150,15 @@ export const EditDataModelModal = (props: Props & ModalProps) => {
       valueEnum: ItemTypeEnum,
     },
     {
-      title: '是否为空',
-      dataIndex: 'isNull',
+      title: '是否标识',
+      dataIndex: 'isUnique',
       renderText: (text: any) => {
         return text ? '是' : '否';
       },
     },
     {
-      title: '长度',
-      dataIndex: 'length',
-    },
-    {
-      title: '精度',
-      dataIndex: 'precision',
-    },
-    {
-      title: '是否标识',
-      dataIndex: 'isUnique',
+      title: '是否为空',
+      dataIndex: 'isNull',
       renderText: (text: any) => {
         return text ? '是' : '否';
       },

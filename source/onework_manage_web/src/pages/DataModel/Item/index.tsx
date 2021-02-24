@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-21 17:53:31
+ * @LastEditTime: 2021-02-24 16:43:43
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
@@ -42,15 +42,7 @@ export default () => {
       filters: true,
       width: 150,
       valueEnum: ItemTypeEnum,
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      valueType: 'select',
-      filters: true,
-      valueEnum: StatusEnum,
-      width: 100,
-    },
+    },    
     {
       title: '计数',
       dataIndex: 'cumulate',

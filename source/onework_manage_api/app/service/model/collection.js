@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:25
- * @LastEditTime: 2021-02-22 14:39:05
+ * @LastEditTime: 2021-02-24 17:00:08
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\collection.js
+ * @FilePath: \onework_manage_api\app\service\model\collection.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -42,13 +42,12 @@ class CollectionService extends Service {
         uid: {
           [Op.in]: params.items,
         },
-        status: ctx.app.appCode.common.status.enable,
       },
     });
     if (items.length !== params.items.length) {
       throw new AppError('该数据集中数据项数据不正确，无法进行添加！');
     }
-    collection.items = items.map(t => t.dataValues);
+    collection.items = items.map(t => t.uid);
     // 创建数据集
     collection = await CollectionModel.create(collection);
     // 记录数据项使用率
@@ -56,7 +55,9 @@ class CollectionService extends Service {
       const item = items[index];
       await item.plusCumulate();
     }
-    return collection.dataValues;
+    const result = collection.dataValues;
+    result.items = items.map(t => t.dataValues);
+    return result;
   }
 
   /**
@@ -68,6 +69,7 @@ class CollectionService extends Service {
     // 初始化参数
     const ctx = this.ctx;
     const CollectionModel = ctx.model.Collection;
+    const ItemModel = ctx.model.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'id', 'desc' ]],
@@ -95,8 +97,20 @@ class CollectionService extends Service {
       };
     }
     // 查询
-    const result = await CollectionModel.findAndCountAll(queryParmas);
-    return { total: result.count, rows: result.rows.map(t => t.dataValues) };
+    const { count, rows } = await CollectionModel.findAndCountAll(queryParmas);
+    const result = [];
+    for (let i = 0; i < rows.length; i++) {
+      const element = rows[i].dataValues;
+      // 补充数据项其它数据
+      const items = await ItemModel.findAll({ where: {
+        uid: {
+          [Op.in]: element.items,
+        },
+      } });
+      element.items = items.map(t => t.dataValues);
+      result.push(element);
+    }
+    return { total: count, rows: result };
   }
 
   /**
@@ -126,9 +140,8 @@ class CollectionService extends Service {
       throw new AppError(`该数据集“${params.name}”，已存在无法进行重复修改！`);
     }
     // 减除旧数据项计数
-    const itemUIDs = collection.items.map(t => t.uid);
     const oldItems = await ItemModel.findAll({ where: { uid: {
-      [Op.in]: itemUIDs,
+      [Op.in]: collection.items || [],
     } } });
     for (let index = 0; index < oldItems.length; index++) {
       const item = oldItems[index];
@@ -140,7 +153,6 @@ class CollectionService extends Service {
         uid: {
           [Op.in]: params.items,
         },
-        status: ctx.app.appCode.common.status.enable,
       },
     });
     if (items.length !== params.items.length) {
@@ -154,9 +166,12 @@ class CollectionService extends Service {
     collection.name = params.name;
     collection.code = params.code;
     collection.description = params.description;
-    collection.items = items.map(t => t.dataValues);
+    collection.items = items.map(t => t.uid);
     collection = await collection.save();
-    return collection.dataValues;
+    // 返回结果
+    const result = collection.dataValues;
+    result.items = items.map(t => t.dataValues);
+    return result;
   }
 
   /**
@@ -168,6 +183,7 @@ class CollectionService extends Service {
     // 初始化参数
     const ctx = this.ctx;
     const CollectionModel = ctx.model.Collection;
+    const ItemModel = ctx.model.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'id', 'desc' ]],
@@ -180,8 +196,19 @@ class CollectionService extends Service {
         ],
       },
     };
-    let result = await CollectionModel.findAll(queryParmas);
-    result = result.map(t => t.dataValues);
+    const rows = await CollectionModel.findAll(queryParmas);
+    const result = [];
+    for (let i = 0; i < rows.length; i++) {
+      const element = rows[i].dataValues;
+      // 补充数据项其它数据
+      const items = await ItemModel.findAll({ where: {
+        uid: {
+          [Op.in]: element.items,
+        },
+      } });
+      element.items = items.map(t => t.dataValues);
+      result.push(element);
+    }
     return result;
   }
 
@@ -214,7 +241,7 @@ class CollectionService extends Service {
     // 更新关联数据项计数
     // TODO sequelize的Model操作中forEach导致事务异常 https://stackoverflow.com/questions/61369310/sequelize-transactions-inside-foreach-issue
     for (let index = 0; index < items.length; index++) {
-      const uid = items[index].uid;
+      const uid = items[index];
       await ctx.service.model.item.subCumulate(uid);
     }
   }

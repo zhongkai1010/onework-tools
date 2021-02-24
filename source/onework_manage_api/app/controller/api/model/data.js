@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-02-21 23:21:13
+ * @LastEditTime: 2021-02-24 17:46:29
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\controller\api\model\data.js
+ * @FilePath: \onework_manage_api\app\controller\api\model\data.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -35,15 +35,13 @@ class DataController extends Controller {
         code: 'string',
         itemType: Object.values(app.appCode.model.itemType),
         isNull: 'boolean?',
-        length: 'int?',
-        precision: 'int?',
-        defaultValue: 'string?',
         isUnique: 'boolean?',
       } },
       behaviors: { type: 'array', required: false, itemType: 'object', rule: {
         name: 'string',
         code: 'string',
         description: 'string?',
+        operationType: Object.values(app.appCode.model.behaviorType),
       } },
       description: 'string?',
     };
@@ -104,9 +102,6 @@ class DataController extends Controller {
         code: 'string',
         itemType: Object.values(app.appCode.model.itemType),
         isNull: 'boolean',
-        length: 'int?',
-        precision: 'int?',
-        defaultValue: 'string?',
         isUnique: 'boolean?',
       } },
       behaviors: { type: 'array', required: false, itemType: 'object', rule: {
@@ -157,20 +152,19 @@ class DataController extends Controller {
     this.success(data);
   }
 
-  // /**
-  //  * @description: 数据模型JSON导入
-  //  * @param {*}
-  //  * @return {*}
-  //  */
-  // async improt() {
-  //   const ctx = this.ctx;
-  //   const rule = {
-  //     json: 'string',
-  //   };
-  //   ctx.validate(rule, ctx.request.body);
-  //   const data = await ctx.service.model.data.improt(ctx.request.body);
-  //   this.success(data);
-  // }
+  async getModelItemList() {
+    const ctx = this.ctx;
+    const pageParams = this.validatePage();
+    const data = await this.service.model.data.queryItem(pageParams, ctx.body);
+    this.success(data);
+  }
+
+  async updateModelItem() {
+    this.failure();
+  }
+  async removeModelItem() {
+    this.failure();
+  }
 }
 
 module.exports = DataController;

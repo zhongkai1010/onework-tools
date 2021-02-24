@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 22:34:45
- * @LastEditTime: 2021-02-21 15:22:52
+ * @LastEditTime: 2021-02-24 17:23:00
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\model\dataBehavior.js
@@ -17,8 +17,8 @@ module.exports = app => {
   const DataBehavior = app.model.define('behavior', {
     ...baseModel,
     dataUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型uid' },
-    inputs: { type: DataTypes.JSON, allowNull: true, comment: '输入参数，多条记录，[{type:AppCode.model.itemType,valueValue:"",value:""}]' },
-    outpus: { type: DataTypes.JSON, allowNull: true, comment: '输出参数,单条记录， {type:AppCode.model.itemType,valueValue:"",value:""}]' },
+    inputs: { type: DataTypes.JSON, allowNull: true, defaultValue: [], comment: '输入参数，多条记录，[{type:AppCode.model.itemType,valueValue:"",value:""}]' },
+    outputs: { type: DataTypes.JSON, allowNull: true, defaultValue: null, comment: '输出参数,单条记录， {type:AppCode.model.itemType,valueValue:"",value:""}]' },
     operationType: { type: DataTypes.STRING, allowNull: true, comment: '操作类型' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
