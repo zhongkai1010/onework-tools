@@ -365,3 +365,4 @@ FodyWeavers.xsd
 source/onework_manage_api/app/service/model/data.js
 source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx
 /source/onework_manage_api/.vscode
+/source/onework-hexo/*.lock
