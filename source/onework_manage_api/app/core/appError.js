@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 22:00:56
- * @LastEditTime: 2021-02-24 21:50:17
+ * @LastEditTime: 2021-02-24 21:53:02
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\core\appError.js
@@ -27,7 +27,7 @@ class AppError extends Error {
     if (names.includes(String(code))) {
       message = errorCode[code];
     } else {
-      message = code; 
+      message = code;    
     }
     super(message);
     this.code = code;
