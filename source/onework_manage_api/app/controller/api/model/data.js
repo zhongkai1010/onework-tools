@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-02-24 17:46:29
+ * @LastEditTime: 2021-02-24 18:23:15
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\model\data.js
@@ -152,6 +152,11 @@ class DataController extends Controller {
     this.success(data);
   }
 
+  /**
+   * @description:  查询数据模型数据项
+   * @param {*}
+   * @return {*}
+   */
   async getModelItemList() {
     const ctx = this.ctx;
     const pageParams = this.validatePage();
@@ -159,10 +164,115 @@ class DataController extends Controller {
     this.success(data);
   }
 
+  /**
+   * @description: 新增数据模型数据项
+   * @param {*}
+   * @return {*}
+   */
+  async insertModelItem() {
+    const ctx = this.ctx;
+    const rule = {
+      dataUid: 'string',
+      name: 'string',
+      code: 'string',
+      itemType: 'string',
+      typeValue: 'string?',
+      subType: 'string?',
+      objectRef: 'string?',
+      defaultValue: 'string?',
+      isNull: 'boolean?',
+      length: 'int?',
+      precision: 'int?',
+      isUnique: 'boolean?',
+    };
+    ctx.validate(rule, ctx.request.body);
+    const data = await ctx.service.model.data.addItem(ctx.request.body);
+    this.success(data);
+  }
+
+  /**
+   * @description: 修改数据模型数据项
+   * @param {*}
+   * @return {*}
+   */
   async updateModelItem() {
+    const ctx = this.ctx;
+    const rule = {
+      uid: 'string',
+      name: 'string',
+      code: 'string',
+      itemType: 'string',
+      typeValue: 'string?',
+      subType: 'string?',
+      objectRef: 'string?',
+      defaultValue: 'string?',
+      isNull: 'boolean?',
+      length: 'int?',
+      precision: 'int?',
+      isUnique: 'boolean?',
+    };
+    ctx.validate(rule, ctx.request.body);
+    const data = await ctx.service.model.data.updateBehavior(ctx.request.body);
+    this.success(data);
+  }
+
+  /**
+   * @description: 移除数据模型数据项
+   * @param {*}
+   * @return {*}
+   */
+  async removeModelItem() {
+    const ctx = this.ctx;
+    const rule = {
+      params: {
+        type: 'array',
+        required: true,
+        itemType: 'string',
+      },
+    };
+    ctx.validate(rule, {
+      params: ctx.request.body,
+    });
+    const data = await ctx.service.model.data.removeItem(ctx.request.body);
+    this.success(data);
+  }
+
+  /**
+   * @description: 新增数据模型行为
+   * @param {*}
+   * @return {*}
+   */
+  async insertModelBehavior() {
     this.failure();
   }
-  async removeModelItem() {
+
+  /**
+   * @description: 查询数据模型行为
+   * @param {*}
+   * @return {*}
+   */
+  async getModelBehaviorList() {
+    const ctx = this.ctx;
+    const pageParams = this.validatePage();
+    const data = await this.service.model.data.queryBehavior(pageParams, ctx.body);
+    this.success(data);
+  }
+
+  /**
+   * @description: 修改数据模型行为
+   * @param {*}
+   * @return {*}
+   */
+  async updateModelBehavior() {
+    this.failure();
+  }
+
+  /**
+   * @description: 移除数据模型行为
+   * @param {*}
+   * @return {*}
+   */
+  async removeModelBehavior() {
     this.failure();
   }
 }

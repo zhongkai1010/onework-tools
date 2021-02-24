@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-24 17:27:07
+ * @LastEditTime: 2021-02-24 18:18:35
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\data.js
@@ -343,6 +343,15 @@ class DataService extends Service {
   }
 
   /**
+   * @description:  添加数据模型数据项
+   * @param {*} params
+   * @return {*}
+   */
+  async addItem(params) {
+
+  }
+
+  /**
    * @description: 查询数据模型数据项
    * @param {*} pageParams
    * @param {*} queryParams
@@ -458,6 +467,22 @@ class DataService extends Service {
     dataItem = await dataItem.save();
     // 返回结果
     return dataItem.dataValues;
+  }
+
+  async removeItem(params) {
+
+  }
+
+  async queryBehavior(pageParams, queryParams) {
+
+  }
+
+  async updateBehavior(params) {
+
+  }
+
+  async removeBehavior(params) {
+
   }
 }
 

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-02-17 11:43:24
+ * @LastEditTime: 2021-02-24 18:20:36
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\router.js
+ * @FilePath: \onework_manage_api\app\router.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -40,6 +40,16 @@ module.exports = app => {
   router.post('/api/model/data/getModelItemList', controller.api.model.data.getModelItemList);
   router.post('/api/model/data/updateModelItem', controller.api.model.data.updateModelItem);
   router.post('/api/model/data/removeModelItem', controller.api.model.data.removeModelItem);
+
+  router.post('/api/model/data/isnertModelItem', controller.api.model.data.insertModelItem);
+  router.post('/api/model/data/getModelItemList', controller.api.model.data.getModelItemList);
+  router.post('/api/model/data/updateModelItem', controller.api.model.data.updateModelItem);
+  router.post('/api/model/data/removeModelItem', controller.api.model.data.removeModelItem);
+
+  router.post('/api/model/data/isnertModelItem', controller.api.model.data.insertModelBehavior);
+  router.post('/api/model/data/getModelBehaviorList', controller.api.model.data.getModelBehaviorList);
+  router.post('/api/model/data/updateModelBehavior', controller.api.model.data.updateModelBehavior);
+  router.post('/api/model/data/removeModelBehavior', controller.api.model.data.removeModelBehavior);
 
   // router.post('/api/model/data/improt', controller.api.model.data.improt);
 };
