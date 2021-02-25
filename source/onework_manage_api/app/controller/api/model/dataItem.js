@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-24 21:55:32
- * @LastEditTime: 2021-02-25 14:12:53
+ * @LastEditTime: 2021-02-25 23:18:37
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\model\dataItem.js
@@ -9,7 +9,8 @@
  */
 'use strict';
 
-const Controller = require('egg').Controller;
+const Controller = require('../../../core/base_controller');
+
 
 class DataItemController extends Controller {
   /**
@@ -20,7 +21,7 @@ class DataItemController extends Controller {
   async getList() {
     const ctx = this.ctx;
     const pageParams = this.validatePage();
-    const data = await this.service.model.data.queryItem(pageParams, ctx.body);
+    const data = await this.service.model.dataItem.query(pageParams, ctx.body);
     this.success(data);
   }
 
@@ -46,7 +47,7 @@ class DataItemController extends Controller {
       isUnique: 'boolean?',
     };
     ctx.validate(rule, ctx.request.body);
-    const data = await ctx.service.model.data.addItem(ctx.request.body);
+    const data = await ctx.service.model.dataItem.add(ctx.request.body);
     this.success(data);
   }
 
@@ -72,7 +73,7 @@ class DataItemController extends Controller {
       isUnique: 'boolean?',
     };
     ctx.validate(rule, ctx.request.body);
-    const data = await ctx.service.model.data.updateBehavior(ctx.request.body);
+    const data = await ctx.service.model.dataItem.update(ctx.request.body);
     this.success(data);
   }
 
@@ -93,7 +94,7 @@ class DataItemController extends Controller {
     ctx.validate(rule, {
       params: ctx.request.body,
     });
-    const data = await ctx.service.model.data.removeItem(ctx.request.body);
+    const data = await ctx.service.model.dataItem.remove(ctx.request.body);
     this.success(data);
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-25 14:17:10
- * @LastEditTime: 2021-02-25 18:26:32
+ * @LastEditTime: 2021-02-25 23:20:39
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\dataItem.js
@@ -58,7 +58,6 @@ class DataItemService extends Service {
       isUnique: params.isUnique,
     };
     dataItem = await DataItemModel.create(dataItem);
-
     // 返回结果
     return dataItem.dataValues;
   }
@@ -70,13 +69,13 @@ class DataItemService extends Service {
  * @return {*}
  */
   async query(pageParams, queryParams) {
-  // 初始化参数
+    // 初始化参数
     const ctx = this.ctx;
     const DataModel = ctx.model.Data;
     const DataItemModel = ctx.model.DataItem;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
-      order: [[ 'id', 'desc' ]],
+      order: [[ 'createdAt', 'desc' ]],
       offset: pageParams.limit * (pageParams.page - 1),
       limit: pageParams.limit,
       where: {},
@@ -103,7 +102,7 @@ class DataItemService extends Service {
     }
     // 查询
     const { count, rows } = await DataItemModel.findAndCountAll(queryParmas);
-    const dataModels = [];
+    const datas = [];
     const modelUids = rows.map(t => t.uid);
     const models = await DataModel.findAll({ where: {
       uid: {
@@ -116,9 +115,9 @@ class DataItemService extends Service {
       if (model) {
         dataModel.dataName = model.name;
       }
-      dataModels.push(dataModel);
+      datas.push(dataModel);
     }
-    return { total: count, rows };
+    return { total: count, rows: datas };
   }
 
   /**
@@ -132,19 +131,19 @@ class DataItemService extends Service {
     const ItemModel = ctx.model.Item;
     const Op = ctx.app.Sequelize.Op;
     // 验证所属数据模型是否正常
-    const dataItemModel = await DataItemModel.findByPk(params.uid);
-    if (!dataItemModel) throw new AppError('该数据模型的数据项不存在，无法进行添加！');
+    const dataItem = await DataItemModel.findByPk(params.uid);
+    if (!dataItem) throw new AppError('该数据模型的数据项不存在，无法进行修改！');
     // 验证名称是否重复
-    const count = await DataItemModel.findOne({ where: { name: params.name, dataUid: dataItemModel.dataUid, uid: {
-      [Op.ne]: dataItemModel.uid,
+    const count = await DataItemModel.findOne({ where: { name: params.name, dataUid: dataItem.dataUid, uid: {
+      [Op.ne]: dataItem.uid,
     } } });
-    if (count) throw new AppError(`该数据模型中数据项“${params.name}”名称已存在，无法进行添加！`);
+    if (count) throw new AppError(`该数据模型中数据项“${params.name}”名称已存在，无法进行修改！`);
     // 验证参数
     await this._verifyParams(params);
     // 数据项计数
-    if (params.name !== dataItemModel.name) {
+    if (params.name !== dataItem.name) {
       const oldItem = await ItemModel.findOne({ where: {
-        name: dataItemModel.name,
+        name: dataItem.name,
       } });
       if (oldItem) {
         await oldItem.subCumulate();
@@ -158,21 +157,21 @@ class DataItemService extends Service {
       } });
       await item.plusCumulate();
     }
-    // 新增数据模型
-    dataItemModel.name = params.name;
-    dataItemModel.code = params.code;
-    dataItemModel.itemType = params.itemType;
-    dataItemModel.typeValue = params.typeValue;
-    dataItemModel.subType = params.subType;
-    dataItemModel.objectRef = params.objectRef;
-    dataItemModel.defaultValue = params.defaultValue;
-    dataItemModel.isNull = params.isNull;
-    dataItemModel.length = params.length;
-    dataItemModel.precision = params.precision;
-    dataItemModel.isUnique = params.isUnique;
-    await dataItemModel.save();
+    // 修改数据
+    dataItem.name = params.name;
+    dataItem.code = params.code;
+    dataItem.itemType = params.itemType;
+    dataItem.typeValue = params.typeValue;
+    dataItem.subType = params.subType;
+    dataItem.objectRef = params.objectRef;
+    dataItem.defaultValue = params.defaultValue;
+    dataItem.isNull = params.isNull;
+    dataItem.length = params.length;
+    dataItem.precision = params.precision;
+    dataItem.isUnique = params.isUnique;
+    await dataItem.save();
     // 返回结果
-    return dataItemModel.dataValues;
+    return dataItem.dataValues;
   }
 
   async remove(params) {
@@ -191,8 +190,10 @@ class DataItemService extends Service {
     for (let i = 0; i < dataItems.length; i++) {
       const dataItem = dataItems[i];
       // 移除数据模型的数据项
-
-
+      const item = await ItemModel.findByPk(dataItem.itemUid);
+      if (item !== null) {
+        await item.subCumulate();
+      }
       await dataItem.destroy();
     }
   }

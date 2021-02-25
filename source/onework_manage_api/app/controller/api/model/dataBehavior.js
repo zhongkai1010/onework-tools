@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-24 21:55:40
- * @LastEditTime: 2021-02-25 14:13:30
+ * @LastEditTime: 2021-02-25 22:24:35
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\model\dataBehavior.js
@@ -9,7 +9,8 @@
  */
 'use strict';
 
-const Controller = require('egg').Controller;
+const Controller = require('../../../core/base_controller');
+
 
 class DataBehaviorController extends Controller {
 
@@ -19,7 +20,31 @@ class DataBehaviorController extends Controller {
    * @return {*}
    */
   async insert() {
-    this.failure();
+    const ctx = this.ctx;
+    const rule = {
+      dataUid: 'string',
+      name: 'string',
+      code: 'string',
+      inputs: {
+        type: 'array', required: false, itemType: 'object', rule: {
+          type: Object.values(ctx.app.appCode.model.itemType),
+          subType: 'string?',
+          value: 'string?',
+        },
+      },
+      outputs: {
+        type: 'object', required: false, rule: {
+          type: Object.values(ctx.app.appCode.model.itemType),
+          subType: 'string?',
+          value: 'string?',
+        },
+      },
+      operationType: Object.values(ctx.app.appCode.model.behaviorType),
+      description: 'string?',
+    };
+    ctx.validate(rule, ctx.request.body);
+    const data = await ctx.service.model.dataBehavior.add(ctx.request.body);
+    this.success(data);
   }
 
   /**
@@ -30,7 +55,7 @@ class DataBehaviorController extends Controller {
   async getList() {
     const ctx = this.ctx;
     const pageParams = this.validatePage();
-    const data = await this.service.model.data.queryBehavior(pageParams, ctx.body);
+    const data = await this.service.model.dataBehavior.query(pageParams, ctx.body);
     this.success(data);
   }
 
@@ -40,7 +65,31 @@ class DataBehaviorController extends Controller {
    * @return {*}
    */
   async update() {
-    this.failure();
+    const ctx = this.ctx;
+    const rule = {
+      uid: 'string',
+      name: 'string',
+      code: 'string',
+      inputs: {
+        type: 'array', required: false, itemType: 'object', rule: {
+          type: Object.values(ctx.app.appCode.model.itemType),
+          subType: 'string?',
+          value: 'string?',
+        },
+      },
+      outputs: {
+        type: 'object', required: false, rule: {
+          type: Object.values(ctx.app.appCode.model.itemType),
+          subType: 'string?',
+          value: 'string?',
+        },
+      },
+      operationType: Object.values(ctx.app.appCode.model.behaviorType),
+      description: 'string?',
+    };
+    ctx.validate(rule, ctx.request.body);
+    const data = await ctx.service.model.dataBehavior.update(ctx.request.body);
+    this.success(data);
   }
 
   /**
@@ -49,7 +98,19 @@ class DataBehaviorController extends Controller {
    * @return {*}
    */
   async remove() {
-    this.failure();
+    const ctx = this.ctx;
+    const rule = {
+      params: {
+        type: 'array',
+        required: true,
+        itemType: 'string',
+      },
+    };
+    ctx.validate(rule, {
+      params: ctx.request.body,
+    });
+    const data = await ctx.service.model.dataBehavior.remove(ctx.request.body);
+    this.success(data);
   }
 }
 
