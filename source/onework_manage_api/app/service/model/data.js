@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-24 18:18:35
+ * @LastEditTime: 2021-02-25 14:18:25
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\data.js
@@ -196,7 +196,6 @@ class DataService extends Service {
         name: element.name,
         code: element.code,
         type: element.itemType,
-        status: ctx.app.appCode.common.status.enable,
         cumulate: 0,
       } });
       if (item.status === ctx.app.appCode.common.status.disable) {
@@ -340,149 +339,6 @@ class DataService extends Service {
       dataModels.push(dataModel);
     }
     return dataModels;
-  }
-
-  /**
-   * @description:  添加数据模型数据项
-   * @param {*} params
-   * @return {*}
-   */
-  async addItem(params) {
-
-  }
-
-  /**
-   * @description: 查询数据模型数据项
-   * @param {*} pageParams
-   * @param {*} queryParams
-   * @return {*}
-   */
-  async queryItem(pageParams, queryParams) {
-    // 初始化参数
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const Op = ctx.app.Sequelize.Op;
-    const queryParmas = {
-      order: [[ 'id', 'desc' ]],
-      offset: pageParams.limit * (pageParams.page - 1),
-      limit: pageParams.limit,
-      where: {},
-    };
-    // 排序
-    const sort = pageParams.sort === ctx.app.appCode.common.order.desc ? 'DESC' : 'ASC';
-    if (pageParams.order) {
-      queryParmas.order = [[ pageParams.order, sort ]];
-    }
-    // 条件
-    for (const key in queryParams) {
-      if (Object.hasOwnProperty.call(queryParams, key)) {
-        queryParmas.where[key] = queryParams[key];
-      }
-    }
-    if (pageParams.keyword) {
-      queryParmas.where = {
-        ...queryParmas.where,
-        [Op.or]: [
-          { name: { [Op.substring]: pageParams.keyword } },
-          { code: { [Op.substring]: pageParams.keyword } },
-        ],
-      };
-    }
-    // 查询
-    const { count, rows } = await DataItemModel.findAndCountAll(queryParmas);
-    const dataModels = [];
-    const modelUids = rows.map(t => t.uid);
-    const models = await DataModel.findAll({ where: {
-      uid: {
-        [Op.in]: modelUids,
-      },
-    } });
-    for (let i = 0; i < rows.length; i++) {
-      const dataModel = rows[i].dataValues;
-      const model = models.find(t => t.uid === dataModel.dataUid);
-      if (model) {
-        dataModel.dataName = model.name;
-      }
-      dataModels.push(dataModel);
-    }
-    return { total: count, rows };
-  }
-
-  /**
-   * @description:
-   * @param {*} params
-   * @return {*}
-   */
-  async updateItem(params) {
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const ItemModel = ctx.model.Item;
-    const Op = ctx.app.Sequelize.Op;
-    // 验证数据是否正确
-    let dataItem = await DataItemModel.findOne({ where: { uid: params.uid } });
-    if (!dataItem) throw new AppError('该数据模型的数据项不存在，无法进行修改！');
-    // 验证修改名称是否存在重复
-    const count = await DataModel.count({ where: { name: params.name, uid: {
-      [Op.ne]: dataItem.uid,
-    } } });
-    if (count > 0) throw new AppError(`该数据模型中数据项名称为“${params.name}”已存在，无法进行修改！`);
-    // 验证数据项的名称引用
-    const [ item, created ] = await ItemModel.findOrCreate({
-      where: params.name,
-    }, {
-      defaults: {
-        name: params.name,
-        code: params.code,
-        type: params.itemType,
-      },
-    });
-    // 数据项的计数
-    if (created) {
-      await item.plusCumulate();
-    } else {
-      // 判断数据项名称是改过，改过需要重新计数,同时给旧的减法
-      if (params.name !== dataItem.name) {
-        const oldItems = await ItemModel.findOne({ where: { name: dataItem.name } });
-        if (oldItems) {
-          await oldItems.subCumulate();
-        }
-        await item.plusCumulate();
-      }
-    }
-    // 修改数据模型
-    dataItem.itemUid = item.uid;
-    dataItem.name = params.name;
-    dataItem.code = params.code;
-    dataItem.itemType = params.itemType;
-    dataItem.typeValue = params.typeValue;
-    dataItem.subType = params.subType;
-    dataItem.objectRef = params.objectRef;
-    dataItem.defaultValue = params.defaultValue;
-    dataItem.isNull = params.isNull;
-    dataItem.length = params.length;
-    dataItem.precision = params.precision;
-    dataItem.isUnique = params.isUnique;
-    dataItem = await dataItem.save();
-    // 返回结果
-    return dataItem.dataValues;
-  }
-
-  async removeItem(params) {
-
-  }
-
-  async queryBehavior(pageParams, queryParams) {
-
-  }
-
-  async updateBehavior(params) {
-
-  }
-
-  async removeBehavior(params) {
-
   }
 }
 
