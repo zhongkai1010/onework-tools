@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-24 16:43:43
+ * @LastEditTime: 2021-02-26 14:18:54
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
@@ -17,7 +17,7 @@ import { Translate } from '@/utils/translate';
 import { ModalForm, ProFormText, ProFormSelect } from '@ant-design/pro-form';
 import * as itemService from '@/services/model/item';
 import FastFormModal from './components/FastFormModal';
-import { ItemTypeEnum, StatusEnum, ItemTypeOption } from '@/pages/DataModel/common';
+import { ItemTypeEnum, ItemTypeOption } from '@/pages/DataModel/common';
 
 export default () => {
   const [form] = Form.useForm();
@@ -174,7 +174,7 @@ export default () => {
         ]}
         columns={columns}
         request={async (params, sort, filter) => {
-          let orderValue = 'id';
+          let orderValue = 'createdAt';
           let sortValue = 'desc';
           const entries = Object.entries(sort);
           if (entries.length > 0) {

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-24 21:55:32
- * @LastEditTime: 2021-02-25 23:18:37
+ * @LastEditTime: 2021-02-26 15:03:55
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\model\dataItem.js
@@ -21,7 +21,7 @@ class DataItemController extends Controller {
   async getList() {
     const ctx = this.ctx;
     const pageParams = this.validatePage();
-    const data = await this.service.model.dataItem.query(pageParams, ctx.body);
+    const data = await this.service.model.dataItem.query(pageParams, ctx.request.body);
     this.success(data);
   }
 

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-02-22 15:39:58
+ * @LastEditTime: 2021-02-26 14:22:44
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\model\item.js
+ * @FilePath: \onework_manage_api\app\service\model\item.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -48,7 +48,7 @@ class ItemService extends Service {
     const ItemModel = ctx.model.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
-      order: [[ 'id', 'desc' ]],
+      order: [[ 'createdAt', 'desc' ]],
       offset: params.limit * (params.page - 1),
       limit: params.limit,
       where: {},
@@ -175,7 +175,7 @@ class ItemService extends Service {
     const ItemModel = ctx.model.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
-      order: [[ 'id', 'desc' ]],
+      order: [[ 'createdAt', 'desc' ]],
       limit: 10,
       where: {
         [Op.or]: [{
@@ -185,7 +185,6 @@ class ItemService extends Service {
           code: {
             [Op.substring]: params.keyword,
           } }],
-        status: ctx.app.appCode.common.status.enable,
       },
     };
     let result = await ItemModel.findAll(queryParmas);

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-15 21:46:13
- * @LastEditTime: 2021-02-19 17:38:12
+ * @LastEditTime: 2021-02-26 16:15:25
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\services\API.d.ts
@@ -58,8 +58,6 @@ declare namespace API {
     };
 
     export type Item = {
-      /** ID */
-      id: string;
       /** 唯一值 */
       uid: string;
       /** 名称 */
@@ -68,8 +66,6 @@ declare namespace API {
       code: string;
       /** 数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、 */
       type: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
-      /** 状态，1：启用 ，2：禁用 */
-      status: 'enable' | 'disable';
       /** 创建时间 */
       created_at: string;
       /** 修改时间 */
@@ -77,8 +73,6 @@ declare namespace API {
     };
 
     export type Collection = {
-      /** ID */
-      id: number;
       /** 唯一值 */
       uid: string;
       /** 名称 */
@@ -103,21 +97,31 @@ declare namespace API {
       /** 数据项唯一值 */
       itemUid: string;
       /** 名称 */
-      itemName: string;
+      name: string;
       /** 编码 */
-      itemCode: string;
+      code: string;
       /** 类型 */
       itemType: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
       /** 唯一值 */
-      itemUid: string | undefined;
+      typeValue: string | undefined;
       /** 是否可未空 */
-      isNull: boolean;
+      subType: string | undefined;
       /** 长度 */
-      length?: number | undefined;
+      objectRef?: string | undefined;
       /** 小数位数 */
+      defaultValue?: string | undefined;
+      /** 默认值 */
+      isNull?: boolean | undefined;
+      /** 默认值 */
+      length?: number | undefined;
+      /** 默认值 */
       precision?: number | undefined;
       /** 默认值 */
-      defaultValue?: string | undefined;
+      isUnique?: boolean | undefined;
+      /** 默认值 */
+      createdAt?: string | undefined;
+      /** 默认值 */
+      updatedAt?: string | undefined;
     };
 
     export type DataModelBehavior = {

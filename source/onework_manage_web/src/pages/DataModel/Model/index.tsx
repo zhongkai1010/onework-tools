@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-22 17:27:19
+ * @LastEditTime: 2021-02-26 14:24:54
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
@@ -154,7 +154,7 @@ export default () => {
         ]}
         columns={columns}
         request={async (params, sort, filter) => {
-          let orderValue = 'id';
+          let orderValue = 'createdAt';
           let sortValue = 'desc';
           const entries = Object.entries(sort);
           if (entries.length > 0) {

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-25 14:18:25
+ * @LastEditTime: 2021-02-26 14:25:57
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\data.js
@@ -316,7 +316,7 @@ class DataService extends Service {
     const DataBehaviorModel = ctx.model.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
-      order: [[ 'id', 'desc' ]],
+      order: [[ 'createdAt', 'desc' ]],
       limit: 10,
       where: {
         [Op.or]: [{

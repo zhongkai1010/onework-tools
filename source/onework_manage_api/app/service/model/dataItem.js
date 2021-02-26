@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-25 14:17:10
- * @LastEditTime: 2021-02-25 23:20:39
+ * @LastEditTime: 2021-02-26 17:02:25
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\dataItem.js
@@ -88,7 +88,10 @@ class DataItemService extends Service {
     // 条件
     for (const key in queryParams) {
       if (Object.hasOwnProperty.call(queryParams, key)) {
-        queryParmas.where[key] = queryParams[key];
+        const value = queryParams[key];
+        if (value) {
+          queryParmas.where[key] = queryParams[key];
+        }
       }
     }
     if (pageParams.keyword) {
@@ -103,7 +106,7 @@ class DataItemService extends Service {
     // 查询
     const { count, rows } = await DataItemModel.findAndCountAll(queryParmas);
     const datas = [];
-    const modelUids = rows.map(t => t.uid);
+    const modelUids = rows.map(t => t.dataUid);
     const models = await DataModel.findAll({ where: {
       uid: {
         [Op.in]: modelUids,

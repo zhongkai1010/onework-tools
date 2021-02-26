@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:25
- * @LastEditTime: 2021-02-24 17:00:08
+ * @LastEditTime: 2021-02-26 14:26:42
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\collection.js
@@ -186,7 +186,7 @@ class CollectionService extends Service {
     const ItemModel = ctx.model.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
-      order: [[ 'id', 'desc' ]],
+      order: [[ 'createdAt', 'desc' ]],
       limit: 10,
       where: {
         [Op.or]: [
