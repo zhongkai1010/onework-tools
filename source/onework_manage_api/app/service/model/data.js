@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-26 14:25:57
+ * @LastEditTime: 2021-02-28 00:21:57
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\data.js
@@ -209,15 +209,11 @@ class DataService extends Service {
           name: element.name,
           code: element.code,
           itemType: element.itemType,
-          isNull: element.isNull,
-          isUnique: element.isUnique,
         },
       });
       if (!created) {
         dataItem.code = element.code;
         dataItem.itemType = element.itemType;
-        dataItem.isNull = element.isNull;
-        dataItem.isUnique = element.isUnique;
         await dataItem.save(dataItem);
       }
       newDataItems.push(dataItem.dataValues);

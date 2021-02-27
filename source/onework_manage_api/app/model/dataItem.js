@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 17:59:30
- * @LastEditTime: 2021-02-21 15:13:16
+ * @LastEditTime: 2021-02-27 11:31:06
  * @LastEditors: 钟凯
  * @Description: 数据模型
  * @FilePath: \onework_manage_api\app\model\dataItem.js
@@ -19,9 +19,10 @@ module.exports = app => {
     dataUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型uid' },
     itemUid: { type: DataTypes.UUID, allowNull: false, comment: '数据项uid' },
     itemType: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.itemType.string, comment: '数据项类型' },
-    typeValue: { type: DataTypes.STRING, allowNull: true, comment: '数据项类型值' },
-    subType: { type: DataTypes.STRING, allowNull: true, defaultValue: AppCode.model.itemType.string, comment: '数组类型子类型' },
+    arrayType: { type: DataTypes.STRING, allowNull: true, defaultValue: AppCode.model.itemType.string, comment: '数组类型子类型' },
+    arrayDepth: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 0, comment: '数组类型子类型' },
     objectRef: { type: DataTypes.STRING, allowNull: true, comment: '对象类型引用值' },
+    typeValue: { type: DataTypes.STRING, allowNull: true, comment: '数据项类型值' },
     defaultValue: { type: DataTypes.STRING, allowNull: true, comment: '默认值' },
     isNull: { type: DataTypes.BOOLEAN, allowNull: true, comment: '是否为空' },
     length: { type: DataTypes.INTEGER, allowNull: true, comment: '长度' },

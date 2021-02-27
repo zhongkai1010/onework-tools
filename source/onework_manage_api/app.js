@@ -4,7 +4,7 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-10-18 16:08:43
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-02-25 15:59:49
+ * @LastEditTime: 2021-02-27 11:27:42
  * @Description:
  * @FilePath: \onework_manage_api\app.js
  */
@@ -62,7 +62,7 @@ class AppBootHook {
     // this.app.validator.addRule('phone', /^1[345789]\d{9}$/);
     // model同步
     if (this.app.config.env === "local" || this.app.config.env === "unittest") {
-      // await this.app.model.sync({ alter: true });
+      await this.app.model.sync({ alter: true });
       // await this.app.model.sync({ force: true });
     }
   }

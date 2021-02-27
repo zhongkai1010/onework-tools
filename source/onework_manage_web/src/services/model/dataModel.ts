@@ -1,9 +1,9 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 16:57:16
- * @LastEditTime: 2021-02-18 16:57:52
+ * @LastEditTime: 2021-02-28 00:03:59
  * @LastEditors: 钟凯
- * @Description: 
+ * @Description:
  * @FilePath: \onework_manage_web\src\services\model\dataModel.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
@@ -18,14 +18,14 @@ export async function getlist(query: any, body: any) {
 }
 
 export async function insert(body: any) {
-  return request<API.ResponseResult<API.Model.Item>>('/api/model/data/insert', {
+  return request<API.ResponseResult<API.Model.DataModel>>('/api/model/data/insert', {
     method: 'POST',
     data: body,
   });
 }
 
 export async function update(body: any) {
-  return request('/api/model/data/update', {
+  return request<API.ResponseResult<API.Model.DataModel>>('/api/model/data/update', {
     method: 'PATCH',
     data: body,
   });

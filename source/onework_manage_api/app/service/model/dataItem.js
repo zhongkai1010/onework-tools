@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-25 14:17:10
- * @LastEditTime: 2021-02-26 17:02:25
+ * @LastEditTime: 2021-02-27 22:13:17
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\dataItem.js
@@ -49,7 +49,7 @@ class DataItemService extends Service {
       code: params.code,
       itemType: params.itemType,
       typeValue: params.typeValue,
-      subType: params.subType,
+      arrayType: params.arrayType,
       objectRef: params.objectRef,
       defaultValue: params.defaultValue,
       isNull: params.isNull,
@@ -107,16 +107,21 @@ class DataItemService extends Service {
     const { count, rows } = await DataItemModel.findAndCountAll(queryParmas);
     const datas = [];
     const modelUids = rows.map(t => t.dataUid);
+    const objectRefUids = rows.map(t => t.objectRef).filter(t => t != null);
     const models = await DataModel.findAll({ where: {
       uid: {
-        [Op.in]: modelUids,
+        [Op.in]: [ ...modelUids, ...objectRefUids ],
       },
     } });
     for (let i = 0; i < rows.length; i++) {
       const dataModel = rows[i].dataValues;
-      const model = models.find(t => t.uid === dataModel.dataUid);
-      if (model) {
-        dataModel.dataName = model.name;
+      const objectModel = models.find(t => t.uid === dataModel.dataUid);
+      if (objectModel) {
+        dataModel.dataName = objectModel.name;
+      }
+      const refModel = models.find(t => t.uid === dataModel.objectRef);
+      if (refModel) {
+        dataModel.objectRefName = refModel.name;
       }
       datas.push(dataModel);
     }
@@ -165,7 +170,8 @@ class DataItemService extends Service {
     dataItem.code = params.code;
     dataItem.itemType = params.itemType;
     dataItem.typeValue = params.typeValue;
-    dataItem.subType = params.subType;
+    dataItem.arrayType = params.arrayType;
+    dataItem.arrayDepth = params.arrayDepth;
     dataItem.objectRef = params.objectRef;
     dataItem.defaultValue = params.defaultValue;
     dataItem.isNull = params.isNull;
@@ -206,16 +212,12 @@ class DataItemService extends Service {
     const DataModel = ctx.model.Data;
     // 判断是否是数组类型
     if (params.itemType === ctx.app.appCode.model.itemType.array) {
-      if (!params.subType) {
+      if (!params.arrayType) {
         throw new AppError('请填写该数据项数组类型中得具体类型！');
       }
-      if (params.subType === ctx.app.appCode.model.itemType.object) {
-        if (!params.objectRef) {
-          throw new AppError('请填写该数据项对象类型中具体引用具体关联对象');
-        } else {
-          const dataModel = await DataModel.findByPk({ where: {
-            uid: params.objectRef,
-          } });
+      if (params.arrayType === ctx.app.appCode.model.itemType.object) {
+        if (params.objectRef) {
+          const dataModel = await DataModel.findByPk(params.objectRef);
           if (dataModel == null) {
             throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
           } else {
@@ -228,12 +230,8 @@ class DataItemService extends Service {
     }
     // 判断是否是对象类型，需要填写引用的数据模型
     if (params.itemType === ctx.app.appCode.model.itemType.object) {
-      if (!params.objectRef) {
-        throw new AppError('请填写该数据项对象类型中具体引用具体关联对象');
-      } else {
-        const dataModel = await DataModel.findByPk({ where: {
-          uid: params.objectRef,
-        } });
+      if (params.objectRef) {
+        const dataModel = await DataModel.findByPk(params.objectRef);
         if (dataModel == null) {
           throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
         } else {
@@ -243,7 +241,6 @@ class DataItemService extends Service {
         }
       }
     }
-
   }
 }
 

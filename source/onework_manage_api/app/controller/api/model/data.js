@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-02-25 14:12:17
+ * @LastEditTime: 2021-02-28 00:21:24
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\model\data.js
@@ -101,8 +101,6 @@ class DataController extends Controller {
         name: 'string',
         code: 'string',
         itemType: Object.values(app.appCode.model.itemType),
-        isNull: 'boolean',
-        isUnique: 'boolean?',
       } },
       behaviors: { type: 'array', required: false, itemType: 'object', rule: {
         name: 'string',

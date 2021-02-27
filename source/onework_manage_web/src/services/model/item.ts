@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-16 20:49:39
- * @LastEditTime: 2021-02-17 20:51:57
+ * @LastEditTime: 2021-02-27 23:45:13
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\services\model\item.ts
@@ -25,7 +25,7 @@ export async function insert(body: API.Model.AddItem) {
 }
 
 export async function update(body: any) {
-  return request('/api/model/item/update', {
+  return request<API.ResponseResult<API.Model.Item>>('/api/model/item/update', {
     method: 'PATCH',
     data: body,
   });

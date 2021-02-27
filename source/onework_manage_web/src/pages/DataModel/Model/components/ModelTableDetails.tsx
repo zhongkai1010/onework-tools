@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 18:10:26
- * @LastEditTime: 2021-02-24 17:33:08
+ * @LastEditTime: 2021-02-28 01:10:31
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\TableDetails.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\ModelTableDetails.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import React from 'react';
@@ -17,7 +17,7 @@ interface Props {
   data: API.Model.DataModel;
 }
 
-const TableDetails = (props: Props) => {
+const ModelTableDetails = (props: Props) => {
   const itemColumns: ProColumns<API.Model.DataModelItem>[] = [
     {
       title: '编码',
@@ -32,31 +32,17 @@ const TableDetails = (props: Props) => {
       dataIndex: 'itemType',
       valueEnum: ItemTypeEnum,
     },
-
-    {
-      title: '是否标识',
-      dataIndex: 'isUnique',
-      renderText: (text: any) => {
-        return text ? '是' : '否';
-      },
-    },
-    {
-      title: '是否为空',
-      dataIndex: 'isNull',
-      renderText: (text: any) => {
-        return text ? '是' : '否';
-      },
-    },
   ];
   const behaviorColumns: ProColumns<API.Model.DataModelBehavior>[] = [
+    {
+      title: '编码',
+      dataIndex: 'code',
+    },
     {
       title: '名称',
       dataIndex: 'name',
     },
-    {
-      title: '名称',
-      dataIndex: 'code',
-    },
+
     {
       title: '操作类型',
       dataIndex: 'operationType',
@@ -104,4 +90,4 @@ const TableDetails = (props: Props) => {
   );
 };
 
-export default TableDetails;
+export default ModelTableDetails;

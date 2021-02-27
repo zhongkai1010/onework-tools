@@ -31,6 +31,7 @@ const appCode = {
       object: 'object', // 对象
       boolean: 'boolean', // 布尔
       integer: 'integer', // 整数
+      other: 'other', // 其他
     },
     modelUse: {
       universal: 'universal', // 通用

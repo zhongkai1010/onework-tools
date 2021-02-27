@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-15 21:46:13
- * @LastEditTime: 2021-02-26 16:15:25
+ * @LastEditTime: 2021-02-27 22:32:11
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\services\API.d.ts
@@ -48,13 +48,22 @@ declare namespace API {
   };
 
   declare namespace Model {
+    export type ItemType =
+      | 'string'
+      | 'number'
+      | 'array'
+      | 'object'
+      | 'boolean'
+      | 'integer'
+      | 'other';
+
     export type AddItem = {
       /** 名称 */
       name: string;
       /** 代码 */
       code: string;
       /** 数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、 */
-      type: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
+      type: ItemType;
     };
 
     export type Item = {
@@ -65,7 +74,7 @@ declare namespace API {
       /** 代码 */
       code: string;
       /** 数据项类型，0：无、1：字符、2：整型、3：数字、4：布尔、5：日期、6：时间、 */
-      type: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
+      type: ItemType;
       /** 创建时间 */
       created_at: string;
       /** 修改时间 */
@@ -94,6 +103,8 @@ declare namespace API {
       uid: string;
       /** 数据模型唯一值 */
       dataUid: string;
+      // 模型名称
+      dataName?: string;
       /** 数据项唯一值 */
       itemUid: string;
       /** 名称 */
@@ -101,23 +112,25 @@ declare namespace API {
       /** 编码 */
       code: string;
       /** 类型 */
-      itemType: 'character' | 'integer' | 'digital' | 'boolean' | 'enumerate' | 'date';
+      itemType: ItemType;
       /** 唯一值 */
       typeValue: string | undefined;
       /** 是否可未空 */
-      subType: string | undefined;
+      arrayType: ItemType | null;
+      arrayDepth: number | null;
       /** 长度 */
-      objectRef?: string | undefined;
+      objectRef: string | null;
+      objectRefName?: string | undefined;
       /** 小数位数 */
-      defaultValue?: string | undefined;
+      defaultValue: string | null;
       /** 默认值 */
-      isNull?: boolean | undefined;
+      isNull: boolean | string | null;
       /** 默认值 */
-      length?: number | undefined;
+      length: number | null;
       /** 默认值 */
-      precision?: number | undefined;
+      precision: number | null;
       /** 默认值 */
-      isUnique?: boolean | undefined;
+      isUnique: boolean | string | null;
       /** 默认值 */
       createdAt?: string | undefined;
       /** 默认值 */
@@ -134,18 +147,19 @@ declare namespace API {
       /** 行为编码 */
       behaviorCode: string;
       /** 行为输入参数集合 */
-      inputs: DataModelBehaviorInput[];
-      /** 输出类型  */
-      outputType: 'void' | 'value' | 'object';
-      /** 输出值 */
-      outputValue?: string | undefined;
+      inputs: DataModelBehaviorParams[] | null;
+      /** 行为输入参数集合 */
+      outputs: DataModelBehaviorParams[] | null;
+      /** 行为操作类型  */
+      operationType: 'read' | 'add' | 'update' | 'delete';
       /** 行为描述 */
       description?: string | undefined;
     };
 
-    export type DataModelBehaviorInput = {
+    export type DataModelBehaviorParams = {
       /** 类型  */
-      type: 'void' | 'value' | 'object';
+      type: ItemType;
+      arrayType?: ItemType;
       /** 类型  */
       value?: string | undefined;
     };
@@ -153,6 +167,7 @@ declare namespace API {
     export type DataModel = {
       /** 名称 */
       name: string;
+
       /** 编码 */
       code: string;
       /** 数据项集合 */
@@ -162,7 +177,7 @@ declare namespace API {
       /** 描述 */
       description?: string | undefined;
       /** 类型  */
-      type: 'clsss' | 'abstract' | 'interface';
+      use: 'universal' | 'input' | 'output';
       /** ID */
       id: number;
       /** 唯一值 */

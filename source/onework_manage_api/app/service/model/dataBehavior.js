@@ -171,10 +171,10 @@ class DataBehaviorService extends Service {
       for (let i = 0; i < params.inputs.length; i++) {
         const input = params.inputs[i];
         if (input.itemType === ctx.app.appCode.model.itemType.array) {
-          if (!input.subType) {
+          if (!input.arrayType) {
             throw new AppError('请填写输入参数中数组类型的具体类型');
           }
-          if (input.subType === ctx.app.appCode.model.itemType.object) {
+          if (input.arrayType === ctx.app.appCode.model.itemType.object) {
             if (!input.value) {
               throw new AppError('请填写输入参数中数组类型的对象应用类型');
             }
@@ -202,7 +202,7 @@ class DataBehaviorService extends Service {
     // 验证输出
     if (params.outputs) {
       if (params.outputs.type === ctx.app.appCode.model.itemType.array) {
-        if (params.outputs.subType === ctx.app.appCode.model.itemType.object) {
+        if (params.outputs.arrayType === ctx.app.appCode.model.itemType.object) {
           if (!params.outputs.value) {
             throw new AppError('请填写输入参数中数组类型的对象应用类型');
           }

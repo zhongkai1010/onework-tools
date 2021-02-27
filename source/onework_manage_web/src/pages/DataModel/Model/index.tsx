@@ -1,26 +1,24 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-26 14:24:54
+ * @LastEditTime: 2021-02-28 00:57:25
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
 import * as modelService from '@/services/model/dataModel';
-import TableDetails from './components/TableDetails';
+import ModelTableDetails from './components/ModelTableDetails';
 import AddDataModelModal from './components/AddDataModelModal';
-import { EditDataModelModal } from './components/EditDataModelModal';
 import { ModelUseEnum, StatusEnum } from '../common';
+import { EditDataModelModal } from './components/EditDataModelModal';
 
 export default () => {
   const tabRef = useRef<ActionType>();
-  const [currentModal, setCurrentModal] = useState<API.Model.DataModel | undefined>();
-  const [visible, setVisible] = useState(false);
   const columns: ProColumns<API.Model.DataModel>[] = [
     {
       title: '编码',
@@ -88,15 +86,35 @@ export default () => {
         >
           编辑
         </a>,
-        <a
-          key="show"
-          onClick={() => {
-            setCurrentModal(record);
-            setVisible(true);
+        <EditDataModelModal
+          key={`${record.uid}_EditDataModelModal`}
+          data={record}
+          modalFormProps={{
+            onFinish: async (values) => {
+              if (Object.keys(values).length > 0) {
+                const dataModel = { ...record, ...values };
+                const result = await modelService.update(dataModel);
+                if (result.success) {
+                  tabRef.current?.reload();
+                }
+                return result.success;
+              }
+              return Promise.resolve(true);
+
+              // if (isEditState) {
+              //   const values = await form.validateFields();
+
+              //   const dataModel = { ...props.data, ...values };
+              //   const result = await modelServices.update(dataModel);
+              //   if (result.success) {
+              //     setIsEditState(false);
+              //     props.onSuccessFinish();
+              //   }
+              //   return result.success;
+              // }
+            },
           }}
-        >
-          查看详情
-        </a>,
+        />,
       ],
     },
   ];
@@ -113,7 +131,7 @@ export default () => {
           },
         }}
         expandable={{
-          expandedRowRender: (record) => <TableDetails data={record} />,
+          expandedRowRender: (record) => <ModelTableDetails data={record} />,
         }}
         search={false}
         debounceTime={800}
@@ -129,15 +147,8 @@ export default () => {
         toolBarRender={() => [
           <AddDataModelModal
             onFinish={async (values) => {
-              let items = values.items || [];
+              const items = values.items || [];
               let behaviors = values.behaviors || [];
-              items = items.map((t: any) => {
-                return {
-                  ...t,
-                  isNull: t.isNull === 'true',
-                  isUnique: t.isUnique === 'true',
-                };
-              });
               behaviors = behaviors.map((t: any) => {
                 return {
                   ...t,
@@ -175,17 +186,6 @@ export default () => {
             success: result.success,
             total: result.data.total,
           };
-        }}
-      />
-      <EditDataModelModal
-        visible={visible}
-        model={currentModal}
-        onClose={() => {
-          setVisible(false);
-        }}
-        onFinish={() => {
-          setVisible(false);
-          tabRef.current?.reload();
         }}
       />
     </PageContainer>

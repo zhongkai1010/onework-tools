@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 21:41:50
- * @LastEditTime: 2021-02-24 17:30:19
+ * @LastEditTime: 2021-02-27 23:22:04
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\AddDataModelModal.tsx
@@ -56,23 +56,6 @@ const AddDataModelModal = (props: ModalFormProps) => {
         >
           <Select style={{ width: 120 }} options={ItemTypeOption} placeholder="请选择数据项类型" />
         </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '是否标识' : undefined}
-          name={[field.name, 'isUnique']}
-          fieldKey={[field.name, 'isUnique']}
-        >
-          <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
-        </Form.Item>
-        <Form.Item
-          {...field}
-          label={index === 0 ? '是否为空' : undefined}
-          rules={[{ required: false, message: '请选择数据项是否为空' }]}
-          name={[field.name, 'isNull']}
-          fieldKey={[field.name, 'isNull']}
-        >
-          <Select style={{ width: 120 }} allowClear options={BoolTypeOption} />
-        </Form.Item>
       </>
     );
   };
@@ -126,9 +109,9 @@ const AddDataModelModal = (props: ModalFormProps) => {
       {...props}
       title="新建数据模型"
       layout="vertical"
-      form={form}
-      width="80%"
+      form={form}           
       modalProps={{
+        width:'60%',
         onCancel: () => {
           form.setFieldsValue({ name: '', code: '', items: [] });
         },

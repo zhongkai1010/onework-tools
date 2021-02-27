@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-21 17:33:43
- * @LastEditTime: 2021-02-21 22:58:12
+ * @LastEditTime: 2021-02-26 23:03:40
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\common.ts
@@ -15,11 +15,17 @@ export const ItemTypeEnum = {
   object: { text: '对象' },
   boolean: { text: '布尔' },
   integer: { text: '整数' },
+  other: { text: '其他' },
 };
 
 export const StatusEnum = {
-  enable: { text: '启用',value:'enable' },
-  disable: { text: '停用' ,value:'disable'},
+  enable: { text: '启用', value: 'enable' },
+  disable: { text: '停用', value: 'disable' },
+};
+
+export const BoolEnum = {
+  true: { text: '是', value: 'true' },
+  false: { text: '否', value: 'false' },
 };
 
 export const ItemTypeOption = [
@@ -29,6 +35,7 @@ export const ItemTypeOption = [
   { label: '对象', value: 'object' },
   { label: '布尔', value: 'boolean' },
   { label: '整数', value: 'integer' },
+  { label: '其他', value: 'other' },
 ];
 
 export const ModelUseOption = [
@@ -55,7 +62,7 @@ export const BehaviorOperationTypeOption = [
   { label: '删除', value: 'delete' },
 ];
 export const BehaviorOperationTypeEnum = {
-  read:{ text: '查询', value: 'read' },
+  read: { text: '查询', value: 'read' },
   add: { text: '修改', value: 'add' },
   update: { text: '修改', value: 'update' },
   delete: { text: '删除', value: 'delete' },

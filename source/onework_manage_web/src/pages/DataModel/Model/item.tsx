@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-26 17:17:54
+ * @LastEditTime: 2021-02-27 23:06:12
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\item.tsx
@@ -12,21 +12,17 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
 import * as modelItemService from '@/services/model/modelItem';
-import TableDetails from './components/TableDetails';
-import AddDataModelModal from './components/AddDataModelModal';
-import { EditDataModelModal } from './components/EditDataModelModal';
-import { ItemTypeEnum, ModelUseEnum, StatusEnum } from '../common';
+import { BoolEnum, ItemTypeEnum } from '../common';
+import { Button } from 'antd';
+import ModelSelect from '../components/modelSelect';
+import ModelItemTypeButton from './components/ModelItemTypeButton';
+import * as modelItemServices from '@/services/model/modelItem';
 
 export default () => {
   const tabRef = useRef<ActionType>();
-  const [currentModal, setCurrentModal] = useState<API.Model.DataModel | undefined>();
-  const [visible, setVisible] = useState(false);
-  const columns: ProColumns<API.Model.DataModel>[] = [
-    {
-      title: '数据模型',
-      sorter: true,
-      dataIndex: 'dataName',
-    },
+  const [searchModelValue, setSearchModelValue] = useState();
+
+  const columns: ProColumns<API.Model.DataModelItem>[] = [
     {
       title: '编码',
       sorter: true,
@@ -38,41 +34,87 @@ export default () => {
       dataIndex: 'name',
     },
     {
+      title: '数据模型uid',
+      sorter: true,
+      dataIndex: 'dataUid',
+      hideInTable: true,
+    },
+
+    {
+      title: '是否标识',
+      dataIndex: 'isUnique',
+      filters: true,
+      valueType: 'select',
+      valueEnum: BoolEnum,
+      width: 120,
+    },
+    {
+      title: '是否为空',
+      dataIndex: 'isNull',
+      filters: true,
+      valueType: 'select',
+      valueEnum: BoolEnum,
+      width: 120,
+    },
+    {
+      title: '默认值',
+      dataIndex: 'defaultValue',
+      width: '10%',
+    },
+    {
       title: '类型',
       dataIndex: 'itemType',
       valueType: 'select',
-      sorter: true,
       initialValue: 'character',
       filters: true,
       valueEnum: ItemTypeEnum,
+      editable: false,
+      render: (text, record) => {
+        return (
+          <ModelItemTypeButton
+            data={{
+              ...record,
+              isUnique: record.isUnique === 'true',
+              isNull: record.isNull === 'true',
+            }}
+            modalFormProps={{
+              onFinish: async (values) => {
+                const result = await modelItemServices.update({
+                  ...record,
+                  ...values,
+                  isNull: record.isNull === 'true',
+                  isUnique: record.isUnique === 'true',
+                });
+                if (result.success) {
+                  tabRef.current?.reload();
+                }
+                return result.success;
+              },
+            }}
+          />
+        );
+      },
+      width: '10%',
     },
-    // {
-    //   title: '子类型',
-    //   sorter: true,
-    //   dataIndex: 'subType',
-    //   valueEnum: ItemTypeEnum,
-    // },
     {
-      title: '是否为空',
-      sorter: true,
-      dataIndex: 'isNull',
+      title: '数据模型',
+      dataIndex: 'dataUid',
+      render: (text, record) => (
+        <Button type="link" onClick={() => {}}>
+          {record.dataName}
+        </Button>
+      ),
+      width: '10%',
+      editable: false,
     },
-    {
-      title: '是否标识',
-      sorter: true,
-      dataIndex: 'isUnique',
-    },
-    // {
-    //   title: '对象引用',
-    //   sorter: true,
-    //   dataIndex: 'objectRef',
-    // },
+
     {
       title: '创建时间',
       dataIndex: 'createdAt',
       editable: false,
       valueType: 'date',
       sorter: true,
+      width: '10%',
     },
     {
       title: '修改时间',
@@ -80,11 +122,12 @@ export default () => {
       valueType: 'date',
       editable: false,
       sorter: true,
+      width: '10%',
     },
     {
       title: '操作',
       valueType: 'option',
-      width: 200,
+      width: '10%',
       render: (_text, record, _, action) => [
         <a
           key="editable"
@@ -94,65 +137,60 @@ export default () => {
         >
           编辑
         </a>,
-        <a
-          key="show"
-          onClick={() => {
-            setCurrentModal(record);
-            setVisible(true);
-          }}
-        >
-          查看详情
-        </a>,
       ],
     },
   ];
   return (
     <PageContainer content="构建数据模型集成元素">
-      <EditableProTable<API.Model.DataModel>
+      <EditableProTable<API.Model.DataModelItem>
         rowKey="uid"
         actionRef={tabRef}
+        postData={(data: API.Model.DataModelItem[]) => {
+          return data.map((t) => {
+            return {
+              ...t,
+              isNull: (t.isNull ?? false).toString(),
+              isUnique: (t.isUnique ?? false).toString(),
+            };
+          });
+        }}
         options={{
           density: true,
-          
+          search: (
+            <ModelSelect
+              showSearch
+              onChange={(value) => {
+                setSearchModelValue(value);
+                tabRef.current?.reload();
+              }}
+              showArrow
+              style={{ width: '220px' }}
+              allowClear
+              placeholder="请输入数据模型"
+              autoFocus
+            />
+          ),
         }}
-       
         debounceTime={800}
         editable={{
           type: 'multiple',
           onSave: (_key, row) => {
-            return modelItemService.update(row);
+            const updateData = {
+              ...row,
+              objectRef: row.objectRef === '' || !row.objectRef ? null : row.objectRef,
+              isNull: row.isNull === 'true',
+              isUnique: row.isUnique === 'true',
+            };
+            return modelItemService.update(updateData);
           },
-          onDelete: (_, row: API.Model.DataModel) => {
+          onDelete: (_, row: API.Model.DataModelItem) => {
             return modelItemService.remove([row.uid]);
           },
         }}
-        toolBarRender={() => [
-          // <AddDataModelModal
-          //   onFinish={async (values) => {
-          //     let items = values.items || [];
-          //     let behaviors = values.behaviors || [];
-          //     items = items.map((t: any) => {
-          //       return {
-          //         ...t,
-          //         isNull: t.isNull === 'true',
-          //         isUnique: t.isUnique === 'true',
-          //       };
-          //     });
-          //     behaviors = behaviors.map((t: any) => {
-          //       return {
-          //         ...t,
-          //         inputs: t.inputType ? [{ type: t.inputType, value: t.inputValue }] : undefined,
-          //       };
-          //     });
-          //     const result = await modelService.insert({ ...values, items, behaviors });
-          //     if (result.success) {
-          //       tabRef.current?.reload();
-          //     }
-          //     return result.success;
-          //   }}
-          // />,
-        ]}
+        search={false}
         columns={columns}
+        bordered
+        pagination={{ pageSize: 10 }}
         request={async (params, sort, filter) => {
           let orderValue = 'createdAt';
           let sortValue = 'desc';
@@ -168,24 +206,13 @@ export default () => {
             sort: sortValue,
             keyword: params.keyword,
           };
-
-          const result = await modelItemService.getlist(query, filter);
+          const newFilter = { ...filter, dataUid: searchModelValue };
+          const result = await modelItemService.getlist(query, newFilter);
           return {
             data: result.data.rows,
             success: result.success,
             total: result.data.total,
           };
-        }}
-      />
-      <EditDataModelModal
-        visible={visible}
-        model={currentModal}
-        onClose={() => {
-          setVisible(false);
-        }}
-        onFinish={() => {
-          setVisible(false);
-          tabRef.current?.reload();
         }}
       />
     </PageContainer>

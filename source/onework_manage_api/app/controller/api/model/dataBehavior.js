@@ -28,14 +28,14 @@ class DataBehaviorController extends Controller {
       inputs: {
         type: 'array', required: false, itemType: 'object', rule: {
           type: Object.values(ctx.app.appCode.model.itemType),
-          subType: 'string?',
+          arrayType: 'string?',
           value: 'string?',
         },
       },
       outputs: {
         type: 'object', required: false, rule: {
           type: Object.values(ctx.app.appCode.model.itemType),
-          subType: 'string?',
+          arrayType: 'string?',
           value: 'string?',
         },
       },
@@ -73,14 +73,14 @@ class DataBehaviorController extends Controller {
       inputs: {
         type: 'array', required: false, itemType: 'object', rule: {
           type: Object.values(ctx.app.appCode.model.itemType),
-          subType: 'string?',
+          arrayType: 'string?',
           value: 'string?',
         },
       },
       outputs: {
         type: 'object', required: false, rule: {
           type: Object.values(ctx.app.appCode.model.itemType),
-          subType: 'string?',
+          arrayType: 'string?',
           value: 'string?',
         },
       },

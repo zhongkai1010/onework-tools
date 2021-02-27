@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-26 16:20:15
- * @LastEditTime: 2021-02-26 16:20:16
+ * @LastEditTime: 2021-02-27 22:05:19
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\services\model\modelItem.js
+ * @FilePath: \onework_manage_web\src\services\model\modelItem.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { request } from 'umi';
@@ -30,14 +30,6 @@ export async function update(body: any) {
     data: body,
   });
 }
-
-export async function save(body: any) {
-  return request<API.ResponseResult<API.Model.DataModelItem>>('/api/model/data/item/save', {
-    method: 'POST',
-    data: body,
-  });
-}
-
 export async function remove(body: any) {
   return request<API.ResponseResult<API.Model.DataModelItem>>('/api/model/data/item/remove', {
     method: 'POST',
