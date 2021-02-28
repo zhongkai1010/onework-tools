@@ -1,13 +1,20 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 16:57:16
- * @LastEditTime: 2021-02-28 00:03:59
+ * @LastEditTime: 2021-02-28 09:51:47
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\services\model\dataModel.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { request } from 'umi';
+
+export async function get(query: any) {
+  return request<API.ResponseResult<API.Model.DataModel>>('/api/model/data/get', {
+    method: 'GET',
+    params: { uid: query },
+  });
+}
 
 export async function getlist(query: any, body: any) {
   return request('/api/model/data/getlist', {

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 18:10:26
- * @LastEditTime: 2021-02-28 01:10:31
+ * @LastEditTime: 2021-02-28 09:37:14
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\ModelTableDetails.tsx
@@ -20,13 +20,14 @@ interface Props {
 const ModelTableDetails = (props: Props) => {
   const itemColumns: ProColumns<API.Model.DataModelItem>[] = [
     {
-      title: '编码',
-      dataIndex: 'code',
-    },
-    {
       title: '名称',
       dataIndex: 'name',
     },
+    {
+      title: '编码',
+      dataIndex: 'code',
+    },
+   
     {
       title: '类型',
       dataIndex: 'itemType',
@@ -35,14 +36,13 @@ const ModelTableDetails = (props: Props) => {
   ];
   const behaviorColumns: ProColumns<API.Model.DataModelBehavior>[] = [
     {
-      title: '编码',
-      dataIndex: 'code',
-    },
-    {
       title: '名称',
       dataIndex: 'name',
     },
-
+    {
+      title: '编码',
+      dataIndex: 'code',
+    },   
     {
       title: '操作类型',
       dataIndex: 'operationType',

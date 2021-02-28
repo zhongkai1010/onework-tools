@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-28 00:57:25
+ * @LastEditTime: 2021-02-28 09:57:13
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
@@ -21,15 +21,15 @@ export default () => {
   const tabRef = useRef<ActionType>();
   const columns: ProColumns<API.Model.DataModel>[] = [
     {
-      title: '编码',
-      sorter: true,
-      dataIndex: 'code',
-      width: 150,
-    },
-    {
       title: '名称',
       sorter: true,
       dataIndex: 'name',
+      width: 150,
+    },
+    {
+      title: '编码',
+      sorter: true,
+      dataIndex: 'code',
       width: 150,
     },
     {
@@ -89,6 +89,7 @@ export default () => {
         <EditDataModelModal
           key={`${record.uid}_EditDataModelModal`}
           data={record}
+          uid={record.uid}
           modalFormProps={{
             onFinish: async (values) => {
               if (Object.keys(values).length > 0) {
@@ -122,6 +123,7 @@ export default () => {
     <PageContainer content="构建数据模型集成元素">
       <EditableProTable<API.Model.DataModel>
         rowKey="uid"
+        bordered
         actionRef={tabRef}
         options={{
           density: true,

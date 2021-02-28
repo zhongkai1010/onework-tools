@@ -24,15 +24,16 @@ export default () => {
 
   const columns: ProColumns<API.Model.DataModelItem>[] = [
     {
-      title: '编码',
-      sorter: true,
-      dataIndex: 'code',
-    },
-    {
       title: '名称',
       sorter: true,
       dataIndex: 'name',
     },
+    {
+      title: '编码',
+      sorter: true,
+      dataIndex: 'code',
+    },
+   
     {
       title: '数据模型uid',
       sorter: true,

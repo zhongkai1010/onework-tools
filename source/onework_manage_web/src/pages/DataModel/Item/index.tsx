@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-26 14:18:54
+ * @LastEditTime: 2021-02-28 09:39:07
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
@@ -24,14 +24,14 @@ export default () => {
   const tabRef = useRef<ActionType>();
   const columns: ProColumns<API.Model.Item>[] = [
     {
-      title: '编码',
-      sorter: true,
-      dataIndex: 'code',
-    },
-    {
       title: '名称',
       sorter: true,
       dataIndex: 'name',
+    },
+    {
+      title: '编码',
+      sorter: true,
+      dataIndex: 'code',
     },
     {
       title: '类型',
@@ -42,7 +42,7 @@ export default () => {
       filters: true,
       width: 150,
       valueEnum: ItemTypeEnum,
-    },    
+    },
     {
       title: '计数',
       dataIndex: 'cumulate',
@@ -85,6 +85,7 @@ export default () => {
     <PageContainer content="构建数据模型集成元素">
       <EditableProTable<API.Model.Item>
         rowKey="uid"
+        bordered
         actionRef={tabRef}
         options={{
           density: true,

@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-26 14:19:10
+ * @LastEditTime: 2021-02-28 09:38:51
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\index.tsx
@@ -22,17 +22,17 @@ export default () => {
   const [visible, setVisible] = useState(false);
   const columns: ProColumns<API.Model.Collection>[] = [
     {
-      title: '编码',
-      sorter: true,
-      dataIndex: 'code',
-      width: 220,
-    },
-    {
       title: '名称',
       sorter: true,
       dataIndex: 'name',
       width: 220,
     },
+    {
+      title: '编码',
+      sorter: true,
+      dataIndex: 'code',
+      width: 220,
+    },  
     // {
     //   title: '数据项',
     //   sorter: true,
@@ -99,6 +99,7 @@ export default () => {
     <PageContainer content="公共数据由多项公共数据项组合而成，分离在模型创建中常用的数据，例如：用户、组织等，便于创建模型过程中，快速构建常用的数据项，不需要重复创建，例如：基础模板、数据模板、状态模板、模型模板组合。">
       <EditableProTable<API.Model.Collection>
         rowKey="uid"
+        bordered
         actionRef={tabRef}
         options={{
           density: true,

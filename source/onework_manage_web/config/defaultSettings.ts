@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-18 13:11:36
+ * @LastEditTime: 2021-02-28 10:56:04
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\config\defaultSettings.ts
@@ -23,18 +23,22 @@ const Settings: LayoutSettings & {
   pwa?: boolean;
   logo?: string;
 } & OwConfig = {
-  navTheme: 'light',
-  // 拂晓蓝
+  navTheme: 'dark',
   primaryColor: '#1890ff',
-  layout: 'mix',
+  layout: 'top',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
+  pwa: false,
+  iconfontUrl: '',
+  menu: {
+    locale: true,
+  },
+  headerHeight: 48,
+  splitMenus: false,
   colorWeak: false,
   title: 'OneWork',
-  pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
-  iconfontUrl: '',
   baidu_translate_appId: '20210206000692404',
   baidu_translate_aecretkey: '26ZZ7HwrFuxiOcAQ_inQ',
   baidu_translate_url: '/api/trans/vip/translate',

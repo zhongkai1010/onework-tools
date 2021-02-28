@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-19 09:51:03
- * @LastEditTime: 2021-02-28 01:11:01
+ * @LastEditTime: 2021-02-28 10:05:42
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Model\components\EditDataModelModal.tsx
@@ -30,7 +30,8 @@ import {
 } from '../../common';
 
 interface Props {
-  data: API.Model.DataModel | undefined;
+  data: API.Model.DataModel;
+  uid: string;
   modalFormProps: ModalFormProps;
 }
 
@@ -172,7 +173,6 @@ export const EditDataModelModal = (props: Props) => {
     >
       {isEditState ? (
         <>
-         
           <Form.Item
             label="名称"
             name="name"
