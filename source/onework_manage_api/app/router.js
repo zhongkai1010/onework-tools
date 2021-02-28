@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-02-25 14:16:18
+ * @LastEditTime: 2021-02-28 14:59:22
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\router.js
@@ -31,6 +31,7 @@ module.exports = app => {
   router.post('/api/model/collection/remove', controller.api.model.collection.remove);
   router.get('/api/model/collection/search', controller.api.model.collection.search);
 
+  router.get('/api/model/data/get', controller.api.model.data.get);
   router.post('/api/model/data/insert', controller.api.model.data.insert);
   router.post('/api/model/data/getlist', controller.api.model.data.getlist);
   router.patch('/api/model/data/update', controller.api.model.data.update);
@@ -47,5 +48,6 @@ module.exports = app => {
   router.post('/api/model/data/behavior/update', controller.api.model.dataBehavior.update);
   router.post('/api/model/data/behavior/remove', controller.api.model.dataBehavior.remove);
 
-  // router.post('/api/model/data/improt', controller.api.model.data.improt);
+  router.get('/api/database/scheme/database/getlist', controller.api.database.scheme.getDataBases);
+
 };

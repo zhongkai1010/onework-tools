@@ -19,7 +19,7 @@ module.exports = app => {
     type: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.model.itemType.string, comment: '数据项类型' },
     cumulate: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0, comment: '使用累计总数' },
   }, {
-    tableName: 'model_items',
+    tableName: 'ow_model_items',
     paranoid: true,
   });
 

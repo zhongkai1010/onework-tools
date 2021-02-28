@@ -19,7 +19,7 @@ module.exports = app => {
     modelUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型uid' },
     moduleUid: { type: DataTypes.UUID, allowNull: false, comment: '模块uid' },
   }, {
-    tableName: 'module_models',
+    tableName: 'ow_module_models',
     paranoid: true,
   });
 

@@ -29,7 +29,7 @@ module.exports = app => {
     precision: { type: DataTypes.INTEGER, allowNull: true, comment: '精确度' },
     isUnique: { type: DataTypes.BOOLEAN, allowNull: true, comment: '是否唯一' },
   }, {
-    tableName: 'model_data_items',
+    tableName: 'ow_model_data_items',
     paranoid: true,
   });
 

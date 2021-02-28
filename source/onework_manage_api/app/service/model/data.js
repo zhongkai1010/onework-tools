@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-28 00:21:57
+ * @LastEditTime: 2021-02-28 09:50:28
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\data.js
@@ -13,6 +13,24 @@ const Service = require('egg').Service;
 const AppError = require('../../core/appError');
 
 class DataService extends Service {
+
+  async get(params) {
+    const ctx = this.ctx;
+    const DataModel = ctx.model.Data;
+    const DataItemModel = ctx.model.DataItem;
+    const DataBehaviorModel = ctx.model.DataBehavior;
+
+    let dataModel = await DataModel.findByPk(params.uid);
+    if (dataModel == null) { return dataModel; }
+
+    dataModel = dataModel.dataValues;
+    const dataItems = await DataItemModel.findAll({ where: { dataUid: dataModel.uid } });
+    dataModel.items = dataItems.map(t => t.dataValues);
+    const dataBehaviors = await DataBehaviorModel.findAll({ where: { dataUid: dataModel.uid } });
+    dataModel.behaviors = dataBehaviors.map(t => t.dataValues);
+
+    return dataModel;
+  }
 
   /**
    * @description: 添加数据集

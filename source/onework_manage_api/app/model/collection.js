@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 22:37:45
- * @LastEditTime: 2021-02-21 15:13:51
+ * @LastEditTime: 2021-02-28 11:23:02
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\model\collection.js
@@ -19,7 +19,7 @@ module.exports = app => {
     items: { type: DataTypes.JSON, allowNull: false, defaultValue: [], comment: '数据项集合' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
-    tableName: 'model_collections',
+    tableName: 'ow_model_collections',
     paranoid: true,
   });
 

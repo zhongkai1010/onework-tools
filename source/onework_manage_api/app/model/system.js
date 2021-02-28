@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 22:37:45
- * @LastEditTime: 2021-02-21 15:27:47
+ * @LastEditTime: 2021-02-28 11:20:36
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\model\system.js
@@ -18,7 +18,7 @@ module.exports = app => {
     ...baseModel,
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
-    tableName: 'systems',
+    tableName: 'ow_systems',
     paranoid: true,
   });
 

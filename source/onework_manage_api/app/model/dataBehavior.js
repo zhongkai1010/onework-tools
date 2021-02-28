@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 22:34:45
- * @LastEditTime: 2021-02-24 17:23:00
+ * @LastEditTime: 2021-02-28 11:21:27
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\model\dataBehavior.js
@@ -22,7 +22,7 @@ module.exports = app => {
     operationType: { type: DataTypes.STRING, allowNull: true, comment: '操作类型' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
-    tableName: 'model_data_behaviors',
+    tableName: 'ow_model_data_behaviors',
     paranoid: true,
   });
 

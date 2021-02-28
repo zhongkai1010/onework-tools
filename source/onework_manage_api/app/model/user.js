@@ -1,15 +1,15 @@
 /*
  * @Author: 钟凯
- * @Date: 2021-02-21 15:29:15
- * @LastEditTime: 2021-02-28 11:21:01
+ * @Date: 2021-02-28 11:19:27
+ * @LastEditTime: 2021-02-28 11:20:44
  * @LastEditors: 钟凯
- * @Description: 系统模块
- * @FilePath: \onework_manage_api\app\model\systemModule.js
+ * @Description:
+ * @FilePath: \onework_manage_api\app\model\user.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
 
-const baseModel = require('./base_name_code');
+const baseModel = require('./base');
 
 module.exports = app => {
   const { DataTypes } = app.Sequelize;
@@ -19,7 +19,7 @@ module.exports = app => {
     systemUid: { type: DataTypes.UUID, allowNull: false, comment: '系统uid' },
     moduleUid: { type: DataTypes.UUID, allowNull: false, comment: '模块uid' },
   }, {
-    tableName: 'ow_system_modules',
+    tableName: 'ow_users',
     paranoid: true,
   });
 

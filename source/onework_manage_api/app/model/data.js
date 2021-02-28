@@ -20,7 +20,7 @@ module.exports = app => {
     status: { type: DataTypes.STRING, allowNull: false, defaultValue: AppCode.common.status.enable, comment: '状态' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
-    tableName: 'model_datas',
+    tableName: 'ow_model_datas',
     paranoid: true,
   });
 

@@ -19,7 +19,7 @@ module.exports = app => {
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
 
   }, {
-    tableName: 'modules',
+    tableName: 'ow_modules',
     paranoid: true,
   });
 

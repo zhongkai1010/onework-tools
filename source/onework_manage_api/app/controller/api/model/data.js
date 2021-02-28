@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-02-28 00:21:24
+ * @LastEditTime: 2021-02-28 09:45:47
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\model\data.js
@@ -17,6 +17,17 @@ const Controller = require('../../../core/base_controller');
  * @return {*}
  */
 class DataController extends Controller {
+
+  /**
+   * @description: 构建uid获取数据模型
+   * @param {*}
+   * @return {*}
+   */
+  async get() {
+    const ctx = this.ctx;
+    const data = await ctx.service.model.data.get(ctx.request.query);
+    this.success(data);
+  }
 
   /**
    * @description: 添加数据模型
