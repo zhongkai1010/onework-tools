@@ -17,6 +17,7 @@ module.exports = app => {
   const Connection = app.model.define('connection', {
     ...baseModel,
     dbType: { type: DataTypes.STRING, allowNull: false, comment: '数据库类型' },
+    database: { type: DataTypes.STRING, allowNull: true, comment: '默认数据库' },
     username: { type: DataTypes.STRING, allowNull: false, comment: '连接用户名' },
     password: { type: DataTypes.STRING, allowNull: false, comment: '连接密码' },
     host: { type: DataTypes.STRING, allowNull: false, comment: '主机地址' },
