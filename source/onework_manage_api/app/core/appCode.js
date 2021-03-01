@@ -23,6 +23,66 @@ const appCode = {
       minpage: 1, // 最小页数
     },
   },
+  sql: {
+    /**
+     *  -- 获取数据库
+     *  SELECT name FROM Master..SysDatabases ORDER BY name
+     *
+     *  -- 获取表
+     *  SELECT name FROM sysobjects WHERE type = 'U' ORDER BY name
+     *
+     *  -- 获取字段 name：字段名称、type：类型、isUnique：主键、length：长度
+     *  SELECT
+     *     a. colorder AS 'order',a.name AS 'code',b.name AS 'type' ,
+     *    case when exists( SELECT 1 FROM sysobjects where xtype ='PK' and name in (
+     *      SELECT name FROM sysindexes WHERE indid in(
+     *      SELECT indid FROM sysindexkeys WHERE id = a .id AND colid =a. colid
+     *    ))) then 1 else 0 end AS 'isUnique',
+     *    COLUMNPROPERTY( a.id ,a. name,'PRECISION' ) AS 'length',
+     *    isnull( COLUMNPROPERTY(a .id, a.name ,'Scale'), 0) AS 'precision',
+     *    case when a .isnullable= 1 then 1 else 0 end AS 'isNull',
+     *    isnull( e.text ,'') AS 'name',
+     *    isnull( g.[value] ,'') AS 'defaultValue'
+     *  FROM syscolumns AS a
+     *    LEFT JOIN systypes b on a.xusertype=b.xusertype
+     *    LEFT JOIN syscomments e on a.cdefault=e.id
+     *    LEFT JOIN sys. extended_properties g on a.id =g.major_id and a.colid =g.minor_id
+     *  WHERE
+     *    a.id = OBJECT_ID('PRP_Device_Additio1')
+    **/
+    mssql: {
+      // name：数据库名称
+      database: 'SELECT name FROM Master..SysDatabases ORDER BY name', // ok
+      // code：表名、name：注释
+      table: "SELECT obj.name AS [code], pro.value AS [name] FROM sys.objects obj LEFT JOIN sys.extended_properties pro ON obj.object_id = pro.major_id WHERE obj.type= 'u' ORDER BY [code]",
+      // order：顺序、 code：字段名称、type：类型、isUnique：主键、length：长度、precision：精度、isNull：是否未空、name：字段描述、defaultValue：默认值
+      column: "SELECT a.colorder AS 'order', a.name AS 'code', b.name AS 'type', CASE WHEN EXISTS( SELECT 1 FROM sysobjects WHERE xtype = 'PK' AND name IN ( SELECT name FROM sysindexes WHERE indid IN ( SELECT indid FROM sysindexkeys WHERE id = a.id AND colid = a.colid) ) ) THEN 1 ELSE 0 END AS 'isUnique', COLUMNPROPERTY( a.id , a.name, 'PRECISION' ) AS 'length', isnull( COLUMNPROPERTY( a.id, a.name , 'Scale' ), 0 ) AS 'precision', CASE WHEN a.isnullable= 1 THEN 1 ELSE 0 END AS 'isNull', isnull( e.text , '' ) AS 'name', isnull( g.[value], '' ) AS 'defaultValue' FROM syscolumns AS a LEFT JOIN systypes b ON a.xusertype= b.xusertype LEFT JOIN syscomments e ON a.cdefault= e.id LEFT JOIN sys.extended_properties g ON a.id = g.major_id AND a.colid = g.minor_id WHERE a.id = OBJECT_ID( '${table}' );",
+    },
+    /**
+     *
+     *  SELECT
+     *  a.COLUMN_NAME as code,
+     *   a.COLUMN_TYPE as type,
+     *   a.COLUMN_KEY as  isUnique,
+     *   a.CHARACTER_MAXIMUM_LENGTH as length,
+     *   a.NUMERIC_PRECISION as 'precision',
+     *   a.IS_NULLABLE as isNull,
+     *   a.COLUMN_COMMENT as name,
+     *   a.COLUMN_DEFAULT as defaultValue
+     * FROM
+     *  INFORMATION_SCHEMA.COLUMNS a
+     *  WHERE
+     *   a.TABLE_NAME = '${table}' AND a.TABLE_SCHEMA = '${database}'
+     */
+    mysql: {
+      // name：数据库名称
+      database: 'SELECT SCHEMA_NAME AS `name` FROM INFORMATION_SCHEMA.SCHEMATA ORDER BY name;',
+      // code：表名、name：注释
+      table: "SELECT a.TABLE_NAME as name, TABLE_COMMENT as code FROM information_schema.tables as a WHERE  a.TABLE_SCHEMA = '${database}';",
+      // order：顺序、 code：字段名称、type：类型、isUnique：主键、length：长度、precision：精度、isNull：是否未空、name：字段描述、defaultValue：默认值
+      column: "SELECT a.ORDINAL_POSITION AS 'order' a.COLUMN_NAME AS 'code', a.COLUMN_TYPE AS type, a.COLUMN_KEY AS isUnique, a.CHARACTER_MAXIMUM_LENGTH AS length, a.NUMERIC_PRECISION AS 'precision', a.IS_NULLABLE AS isNull, a.COLUMN_COMMENT AS NAME, a.COLUMN_DEFAULT AS defaultValue FROM INFORMATION_SCHEMA.COLUMNS a WHERE a.TABLE_NAME = '${table}' AND a.TABLE_SCHEMA = '${database}';",
+    },
+  },
   model: {
     itemType: { // 数据项类型
       string: 'string', // 文本

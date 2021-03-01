@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:14:42
- * @LastEditTime: 2021-03-01 14:36:14
+ * @LastEditTime: 2021-03-01 14:57:23
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\model\database\connection.js
@@ -16,8 +16,13 @@ module.exports = app => {
 
   const Connection = app.model.define('connection', {
     ...baseModel,
+    dbType: { type: DataTypes.STRING, allowNull: false, comment: '数据库类型' },
+    username: { type: DataTypes.STRING, allowNull: false, comment: '连接用户名' },
+    password: { type: DataTypes.STRING, allowNull: false, comment: '连接密码' },
+    host: { type: DataTypes.STRING, allowNull: false, comment: '主机地址' },
+    port: { type: DataTypes.STRING, allowNull: false, comment: '端口' },
+    config: { type: DataTypes.JSON, allowNull: true, comment: '其它配置' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
-
   }, {
     tableName: 'ow_database_connections',
     paranoid: true,
