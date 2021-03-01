@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:25
- * @LastEditTime: 2021-02-26 14:26:42
+ * @LastEditTime: 2021-03-01 14:27:32
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\collection.js
@@ -23,8 +23,8 @@ class CollectionService extends Service {
   async add(params) {
     // 初始化对象
     const ctx = this.ctx;
-    const CollectionModel = ctx.model.Collection;
-    const ItemModel = ctx.model.Item;
+    const CollectionModel = ctx.model.Data.Collection;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     // 名称重复验证
     const amount = await CollectionModel.count({
@@ -68,8 +68,8 @@ class CollectionService extends Service {
   async query(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const CollectionModel = ctx.model.Collection;
-    const ItemModel = ctx.model.Item;
+    const CollectionModel = ctx.model.Data.Collection;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'id', 'desc' ]],
@@ -121,8 +121,8 @@ class CollectionService extends Service {
   async update(params) {
   // 初始化参数
     const ctx = this.ctx;
-    const CollectionModel = ctx.model.Collection;
-    const ItemModel = ctx.model.Item;
+    const CollectionModel = ctx.model.Data.Collection;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     // 验证数据
     let collection = await CollectionModel.findOne({ where: { uid: params.uid } });
@@ -182,8 +182,8 @@ class CollectionService extends Service {
   async search(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const CollectionModel = ctx.model.Collection;
-    const ItemModel = ctx.model.Item;
+    const CollectionModel = ctx.model.Data.Collection;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'createdAt', 'desc' ]],
@@ -220,7 +220,7 @@ class CollectionService extends Service {
   async remove(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const CollectionModel = ctx.model.Collection;
+    const CollectionModel = ctx.model.Data.Collection;
 
     const Op = ctx.app.Sequelize.Op;
     // 查询需要删除数据

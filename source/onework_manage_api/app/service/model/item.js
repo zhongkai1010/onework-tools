@@ -22,7 +22,7 @@ class ItemService extends Service {
    */
   async add(params) {
     const ctx = this.ctx;
-    const ItemModel = ctx.model.Item;
+    const ItemModel = ctx.model.Data.Item;
     let item = { ...params };
     // 名称重复验证
     const amount = await ItemModel.count({
@@ -45,7 +45,7 @@ class ItemService extends Service {
   async query(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const ItemModel = ctx.model.Item;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'createdAt', 'desc' ]],
@@ -94,7 +94,7 @@ class ItemService extends Service {
   async update(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const ItemModel = ctx.model.Item;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     // 验证数据
     let item = await ItemModel.findOne({ where: { uid: params.uid } });
@@ -127,7 +127,7 @@ class ItemService extends Service {
   async remove(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const ItemModel = ctx.model.Item;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     // 查询需要删除数据
     const items = await ItemModel.findAll({ where: {
@@ -172,7 +172,7 @@ class ItemService extends Service {
   async search(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const ItemModel = ctx.model.Item;
+    const ItemModel = ctx.model.Data.Item;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'createdAt', 'desc' ]],
@@ -198,7 +198,7 @@ class ItemService extends Service {
    * @return {*}
    */
   async subCumulate(uid) {
-    const item = await this.ctx.model.Item.findOne({
+    const item = await this.ctx.model.Data.Item.findOne({
       where: {
         uid,
       },

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-02-28 09:50:28
+ * @LastEditTime: 2021-03-01 14:30:12
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\model\data.js
@@ -16,9 +16,9 @@ class DataService extends Service {
 
   async get(params) {
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataItemModel = ctx.model.Data.DataItem;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
 
     let dataModel = await DataModel.findByPk(params.uid);
     if (dataModel == null) { return dataModel; }
@@ -39,10 +39,10 @@ class DataService extends Service {
    */
   async add(params) {
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const ItemModel = ctx.model.Item;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataItemModel = ctx.model.Data.DataItem;
+    const ItemModel = ctx.model.Data.Item;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     // 验证名称是否重复
     let data = await DataModel.findOne({ where: { name: params.name } });
     if (data) throw new AppError(`该数据模型“${params.name}”名称已存在，无法进行添加！`);
@@ -107,9 +107,9 @@ class DataService extends Service {
   async query(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataItemModel = ctx.model.Data.DataItem;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'id', 'desc' ]],
@@ -169,10 +169,10 @@ class DataService extends Service {
    */
   async update(params) {
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const ItemModel = ctx.model.Item;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataItemModel = ctx.model.Data.DataItem;
+    const ItemModel = ctx.model.Data.Item;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     // 验证数据是否正确
     let data = await DataModel.findOne({ where: { uid: params.uid } });
@@ -280,10 +280,10 @@ class DataService extends Service {
   async remove(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const ItemModel = ctx.model.Item;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataItemModel = ctx.model.Data.DataItem;
+    const ItemModel = ctx.model.Data.Item;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     // 查询需要删除数据
     const datas = await DataModel.findAll({ where: {
@@ -325,9 +325,9 @@ class DataService extends Service {
   async search(params) {
     // 初始化参数
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataItemModel = ctx.model.DataItem;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataItemModel = ctx.model.Data.DataItem;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'createdAt', 'desc' ]],

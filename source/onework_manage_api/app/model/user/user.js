@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const baseModel = require('./base');
+const baseModel = require('../base');
 
 module.exports = app => {
   const { DataTypes } = app.Sequelize;

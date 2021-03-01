@@ -21,8 +21,8 @@ class DataBehaviorService extends Service {
    */
   async add(params) {
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     // 验证所属数据模型是否正常
     const dataModel = await DataModel.findByPk(params.dataUid);
     if (dataModel) throw new AppError('该指定所属的数据模型数据不存在，无法进行添加！');
@@ -55,8 +55,8 @@ class DataBehaviorService extends Service {
   async query(pageParams, queryParams) {
     // 初始化参数
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataModel = ctx.model.Data.Data;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'id', 'desc' ]],
@@ -111,7 +111,7 @@ class DataBehaviorService extends Service {
    */
   async update(params) {
     const ctx = this.ctx;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     // 验证所属数据是否存在
     const dataBehavior = await DataBehaviorModel.findByPk(params.uid);
@@ -142,7 +142,7 @@ class DataBehaviorService extends Service {
    */
   async remove(params) {
     const ctx = this.ctx;
-    const DataBehaviorModel = ctx.model.DataBehavior;
+    const DataBehaviorModel = ctx.model.Data.DataBehavior;
     const Op = ctx.app.Sequelize.Op;
     // 查询需要删除数据
     const datas = await DataBehaviorModel.findAll({ where: {
@@ -165,7 +165,7 @@ class DataBehaviorService extends Service {
    */
   async _verifyParams(params) {
     const ctx = this.ctx;
-    const DataModel = ctx.model.Data;
+    const DataModel = ctx.model.Data.Data;
     // 验证输入
     if (params.inputs) {
       for (let i = 0; i < params.inputs.length; i++) {

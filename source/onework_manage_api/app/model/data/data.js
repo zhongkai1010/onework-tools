@@ -8,8 +8,8 @@
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
-const AppCode = require('../core/appCode');
-const baseModel = require('./base_name_code');
+const AppCode = require('../../core/appCode');
+const baseModel = require('../base_name_code');
 
 module.exports = app => {
   const { DataTypes } = app.Sequelize;
