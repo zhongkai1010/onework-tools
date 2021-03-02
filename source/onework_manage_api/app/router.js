@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-02-28 14:59:22
+ * @LastEditTime: 2021-03-02 17:04:41
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\router.js
@@ -49,5 +49,10 @@ module.exports = app => {
   router.post('/api/model/data/behavior/remove', controller.api.model.dataBehavior.remove);
 
   router.get('/api/database/scheme/database/getlist', controller.api.database.scheme.getDataBases);
+
+  router.post('/api/database/connection/insert', controller.api.database.connection.insert);
+  router.post('/api/database/connection/getlist', controller.api.database.connection.getlist);
+  router.post('/api/database/connection/update', controller.api.database.connection.update);
+  router.post('/api/database/connection/remove', controller.api.database.connection.remove);
 
 };

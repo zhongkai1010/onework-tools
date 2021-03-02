@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-28 11:26:30
- * @LastEditTime: 2021-03-01 21:40:05
+ * @LastEditTime: 2021-03-02 13:47:02
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\database\scheme.js
@@ -28,6 +28,8 @@ class SchemeController extends Controller {
     ctx.validate(rule, ctx.request.query);
     const data = await ctx.service.database.scheme.getSchemeData(ctx.request.query);
     this.success(data);
+
+
     // // mssql
     // const sequelize = new Sequelize({
     //   dialect: 'mssql',

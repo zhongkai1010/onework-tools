@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 20:16:52
- * @LastEditTime: 2021-03-01 21:43:14
+ * @LastEditTime: 2021-03-02 14:26:57
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\database\scheme.js
@@ -60,16 +60,25 @@ class SchemeService extends Service {
     if (connection == null) {
       throw new AppError('该连接信息不存在，无法获取数据库信息');
     }
-    // 查询数据
-    const sequelize = new Sequelize({
+    // TODO TLS版本
+    // Connection lost - 3540:error:1425F102:SSL routines:ssl_choose_client_version:unsupported protocol:c:\ws\deps\openssl\openssl\ssl\statem\statem_lib.c:1922:
+    // 需要设置  encrypt: false,
+    const config = {
+      ...connection.config,
       dialect: connection.dbType,
       database: typeof (database) === 'string' ? database : (connection.database || ''),
       username: connection.username,
       password: connection.password,
       host: connection.host,
       port: connection.port,
-      ...connection.config,
-    });
+      dialectOptions: {
+        options: {
+          encrypt: false,
+        },
+      },
+    };
+    // 查询数据
+    const sequelize = new Sequelize(config.database, config.username, config.password, config);
     let result;
     if (typeof (database) === 'function') {
       result = await database(connection, sequelize);
