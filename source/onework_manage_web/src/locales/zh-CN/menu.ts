@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-22 18:05:46
+ * @LastEditTime: 2021-03-03 16:12:17
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\locales\zh-CN\menu.ts
@@ -64,4 +64,5 @@ export default {
   'menu.model.model': '数据模型',
   'menu.model.model-item': '模型数据项',
   'menu.model.model-behavior': '模型行为',
+  'menu.db': '数据库',
 };

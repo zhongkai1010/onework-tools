@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-28 09:38:51
+ * @LastEditTime: 2021-03-03 16:38:35
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\index.tsx
@@ -12,7 +12,7 @@ import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
-import * as collectionService from '@/services/model/collection';
+import * as collectionService from '@/pages/DataModel/services/collection';
 import AddCollectionModal from './components/AddCollectionModal';
 import EditCollectionModal from './components/EditCollectionModal';
 
@@ -32,7 +32,7 @@ export default () => {
       sorter: true,
       dataIndex: 'code',
       width: 220,
-    },  
+    },
     // {
     //   title: '数据项',
     //   sorter: true,
@@ -109,7 +109,7 @@ export default () => {
           },
         }}
         pagination={{
-          defaultPageSize:10
+          defaultPageSize: 10,
         }}
         search={false}
         debounceTime={800}

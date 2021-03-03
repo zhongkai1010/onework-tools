@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 21:55:44
- * @LastEditTime: 2021-02-22 16:38:13
+ * @LastEditTime: 2021-03-03 16:39:04
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\components\collectionSelect.tsx
@@ -12,7 +12,7 @@ import { Spin } from 'antd';
 import { Select } from 'antd';
 import React, { useState } from 'react';
 import { useRequest } from 'umi';
-import * as collectionServices from '@/services/model/collection';
+import * as collectionServices from '@/pages/DataModel/services/collection';
 import debounce from 'debounce';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

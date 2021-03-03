@@ -2,10 +2,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-28 09:39:07
+ * @LastEditTime: 2021-03-03 16:43:04
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Item\index.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\item\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import React, { useRef } from 'react';
@@ -15,7 +15,7 @@ import EditableProTable from '@ant-design/pro-table';
 import { Button, Form, Input } from 'antd';
 import { Translate } from '@/utils/translate';
 import { ModalForm, ProFormText, ProFormSelect } from '@ant-design/pro-form';
-import * as itemService from '@/services/model/item';
+import * as itemService from '@/pages/DataModel/services/item';
 import FastFormModal from './components/FastFormModal';
 import { ItemTypeEnum, ItemTypeOption } from '@/pages/DataModel/common';
 

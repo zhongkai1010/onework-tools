@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 12:10:16
- * @LastEditTime: 2021-02-22 15:38:22
+ * @LastEditTime: 2021-03-03 16:37:47
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\EditCollectionModal.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\collection\components\EditCollectionModal.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import React, { useState } from 'react';
@@ -15,7 +15,7 @@ import ProTable from '@ant-design/pro-table';
 import { Translate } from '@/utils/translate';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import ItemSelect from '@/pages/DataModel/components/ItemSelect';
-import * as collectionServices from '@/services/model/collection';
+import * as collectionServices from '@/pages/DataModel/services/collection';
 import { useRequest } from 'umi';
 import { ItemTypeEnum } from '../../common';
 

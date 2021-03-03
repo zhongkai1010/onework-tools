@@ -1,17 +1,17 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-28 09:57:13
+ * @LastEditTime: 2021-03-03 16:45:18
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Model\index.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\model\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
-import * as modelService from '@/services/model/dataModel';
+import * as modelService from '@/pages/DataModel/services/dataModel';
 import ModelTableDetails from './components/ModelTableDetails';
 import AddDataModelModal from './components/AddDataModelModal';
 import { ModelUseEnum, StatusEnum } from '../common';

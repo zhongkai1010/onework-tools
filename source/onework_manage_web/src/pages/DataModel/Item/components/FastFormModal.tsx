@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-17 13:01:56
- * @LastEditTime: 2021-02-22 15:34:09
+ * @LastEditTime: 2021-03-03 16:40:55
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Item\components\FastFormModal.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\item\components\FastFormModal.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
@@ -12,7 +12,7 @@ import { Translate } from '@/utils/translate';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Modal, Row, Select, Space } from 'antd';
 import React, { useState } from 'react';
-import * as itemService from '@/services/model/item';
+import * as itemService from '@/pages/DataModel/services/item';
 import { useRequest } from 'umi';
 import { ItemTypeOption, StatusEnum } from '../../common';
 

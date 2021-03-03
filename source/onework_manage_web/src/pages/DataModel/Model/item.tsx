@@ -1,22 +1,22 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-02-27 23:06:12
+ * @LastEditTime: 2021-03-03 16:47:34
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Model\item.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\model\item.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import EditableProTable from '@ant-design/pro-table';
-import * as modelItemService from '@/services/model/modelItem';
+import * as modelItemService from '@/pages/DataModel/services/modelItem';
 import { BoolEnum, ItemTypeEnum } from '../common';
 import { Button } from 'antd';
 import ModelSelect from '../components/modelSelect';
 import ModelItemTypeButton from './components/ModelItemTypeButton';
-import * as modelItemServices from '@/services/model/modelItem';
+import * as modelItemServices from '@/pages/DataModel/services/modelItem';
 
 export default () => {
   const tabRef = useRef<ActionType>();

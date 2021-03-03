@@ -1,7 +1,7 @@
 ﻿/*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-02-28 10:37:19
+ * @LastEditTime: 2021-03-03 16:08:14
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\config\routes.ts
@@ -73,7 +73,7 @@ export default [
         path: '/model/model',
         name: 'model',
         icon: 'smile',
-        component: './DataModel/Model',      
+        component: './DataModel/Model',
       },
       {
         path: '/model/model-item',
@@ -88,6 +88,13 @@ export default [
         component: './DataModel/Model/behavior',
       },
     ],
+  },
+  {
+    path: '/db',
+    name: 'db',
+    icon: 'crown',
+    access: 'canAdmin',
+    component: './DataBase',
   },
   {
     path: '/',
