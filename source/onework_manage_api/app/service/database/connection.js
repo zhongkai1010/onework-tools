@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-02 14:37:02
- * @LastEditTime: 2021-03-02 16:13:30
+ * @LastEditTime: 2021-03-03 15:34:17
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\service\database\connection.js
@@ -62,7 +62,7 @@ class ConnectionService extends Service {
     if (connection === null) { throw new AppError('该数据连接数据不存在，无法修改'); }
     const count = await ConnectionModel.count({ where: {
       name: params.name,
-      id: {
+      uid: {
         [Op.ne]: connection.uid,
       },
     } });

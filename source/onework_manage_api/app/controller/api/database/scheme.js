@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-28 11:26:30
- * @LastEditTime: 2021-03-02 13:47:02
+ * @LastEditTime: 2021-03-03 15:28:46
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\database\scheme.js
@@ -17,7 +17,7 @@ class SchemeController extends Controller {
    * @param {*}
    * @return {*}
    */
-  async getDataBases() {
+  async getList() {
     const ctx = this.ctx;
     const rule = {
       uid: 'string',

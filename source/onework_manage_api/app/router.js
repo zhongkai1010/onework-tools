@@ -48,7 +48,7 @@ module.exports = app => {
   router.post('/api/model/data/behavior/update', controller.api.model.dataBehavior.update);
   router.post('/api/model/data/behavior/remove', controller.api.model.dataBehavior.remove);
 
-  router.get('/api/database/scheme/database/getlist', controller.api.database.scheme.getDataBases);
+  router.get('/api/database/scheme/getlist', controller.api.database.scheme.getList);
 
   router.post('/api/database/connection/insert', controller.api.database.connection.insert);
   router.post('/api/database/connection/getlist', controller.api.database.connection.getlist);

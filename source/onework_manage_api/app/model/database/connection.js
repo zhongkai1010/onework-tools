@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:14:42
- * @LastEditTime: 2021-03-02 14:44:32
+ * @LastEditTime: 2021-03-03 15:40:15
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\model\database\connection.js
@@ -22,7 +22,7 @@ module.exports = app => {
     username: { type: DataTypes.STRING, allowNull: false, comment: '连接用户名' },
     password: { type: DataTypes.STRING, allowNull: false, comment: '连接密码' },
     host: { type: DataTypes.STRING, allowNull: false, comment: '主机地址' },
-    port: { type: DataTypes.STRING, allowNull: false, comment: '端口' },
+    port: { type: DataTypes.INTEGER, allowNull: false, comment: '端口' },
     config: { type: DataTypes.JSON, allowNull: true, comment: '其它配置' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {

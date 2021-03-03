@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:08:45
- * @LastEditTime: 2021-03-02 17:02:38
+ * @LastEditTime: 2021-03-03 15:33:02
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\database\connection.js
@@ -27,7 +27,7 @@ class ConnectionController extends Controller {
       username: 'string',
       password: 'string',
       host: 'string',
-      port: 'string',
+      port: 'int',
       config: 'string?',
       description: 'string?',
     };
@@ -62,7 +62,7 @@ class ConnectionController extends Controller {
       username: 'string',
       password: 'string',
       host: 'string',
-      port: 'string',
+      port: 'int',
       config: 'string?',
       description: 'string?',
     };
