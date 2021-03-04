@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-03-04 10:19:50
+ * @LastEditTime: 2021-03-04 21:22:29
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\config\proxy.ts
@@ -20,11 +20,11 @@ export default {
       target: 'http://api.fanyi.baidu.com',
       changeOrigin: true,
     },
-    '/api/model': {
+    '/api/model/': {
       target: 'http://127.0.0.1:7001',
       changeOrigin: true,
     },
-    '/api/database': {
+    '/api/database/': {
       target: 'http://127.0.0.1:7001',
       changeOrigin: true,
     },

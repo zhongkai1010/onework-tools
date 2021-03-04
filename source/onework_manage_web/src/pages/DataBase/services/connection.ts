@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 10:00:56
- * @LastEditTime: 2021-03-04 11:16:55
+ * @LastEditTime: 2021-03-04 21:20:59
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\services\connection.ts
@@ -17,12 +17,7 @@ export async function insert(body: any) {
 }
 
 export async function getlist() {
-  return request<API.ResponseResult<API.DataBase.Connection[]>>(
-    '/api/database/connection/getlist',
-    {
-      method: 'POST',
-    },
-  );
+  return request<API.ResponseResult<API.DataBase.Connection[]>>('/api/database/connection/getlist');
 }
 
 export async function update(body: any) {

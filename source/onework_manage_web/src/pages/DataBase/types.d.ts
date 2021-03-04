@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 10:03:58
- * @LastEditTime: 2021-03-04 14:52:27
+ * @LastEditTime: 2021-03-04 22:11:24
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\types.d.ts
@@ -18,7 +18,7 @@ declare namespace API {
       host: string;
       username: string;
       updatedAt: string;
-      uid?: string;
+      uid: string;
       name: string;
       description: string | null;
       createdAt: string;

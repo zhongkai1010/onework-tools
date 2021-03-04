@@ -5,7 +5,7 @@ import { useRequest } from 'umi';
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 14:30:36
- * @LastEditTime: 2021-03-04 18:00:37
+ * @LastEditTime: 2021-03-04 22:33:54
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\treeHandle.ts
@@ -21,12 +21,16 @@ export interface SchemeNode extends DataNode {
     database?: any;
     table?: any;
   };
+  parentKey?: string;
   isLoad: boolean;
+  isExpand: boolean;
 }
 
 export default () => {
-  const getlistOperate = useRequest(connectionServices.getlist);
-  const schemeOperate = useRequest(schemeServices.getlist, { manual: true });
+  const getlistOperate = useRequest(connectionServices.getlist, {
+    throwOnError: true,
+  });
+  const schemeOperate = useRequest(schemeServices.getlist, { manual: true, throwOnError: true });
   const [nodeList, setNodeList] = useState<(DataNode & SchemeNode)[]>([]);
 
   const transformNode = (
@@ -42,34 +46,40 @@ export default () => {
             const element = data[i] as API.DataBase.Connection;
             result.push({
               type: 'connection',
-              key: element.uid || element.name,
+              key: element.uid,
               source: { connection: element },
               title: `${element.name}(${element.host})`,
               isLeaf: false,
               isLoad: false,
+              isExpand: false,
             });
             break;
           }
           case 'database': {
             const element = data[i] as API.DataBase.Database;
             result.push({
-              key: `${node?.key}|${element.name}`,
+              key: `${node?.key}_${element.name}`,
+              parentKey: node?.key.toString(),
               type: 'database',
               source: { ...node?.source, database: element },
               title: `${element.name}`,
               isLeaf: false,
               isLoad: false,
+              isExpand: false,
             });
             break;
           }
           case 'table': {
             const element = data[i] as API.DataBase.Table;
             result.push({
-              key: ` ${node?.key}|${element.code}`,
-              type: 'database',
+              key: `${node?.key}_${element.name}`,
+              parentKey: node?.key.toString(),
+              type: 'table',
               source: { ...node?.source, table: element },
-              title: `${element.code}${element.name}`,
-              isLoad: true,
+              title: element.name,
+              isLoad: false,
+              isLeaf: true,
+              isExpand: false,
             });
             break;
           }
@@ -82,36 +92,55 @@ export default () => {
   };
 
   const loadDatabase = async (node: SchemeNode) => {
-    const data = await schemeOperate.run({ uid: node.source.connection.uid, type: 'database' });
-    const databaseNodes = transformNode('database', data, node);
-    setNodeList([...nodeList, ...databaseNodes]);
+    if (!node.isLoad) {
+      const data = await schemeOperate.run({ uid: node.source.connection.uid, type: 'database' });
+      const databaseNodes = transformNode('database', data, node);
+      const temp = nodeList.map((t) => {
+        const item = t;
+        if (t.key === node.key) {
+          item.isLoad = true;
+        }
+        return item;
+      });
+      setNodeList([...temp, ...databaseNodes]);
+    }
   };
 
   const loadTable = async (node: SchemeNode) => {
-    const data = await schemeOperate.run({
-      uid: node.source?.connection.uid,
-      type: 'table',
-      database: node?.source.database.name,
-    });
-    const databaseNodes = transformNode('table', data, node);
-    setNodeList([...nodeList, ...databaseNodes]);
+    if (!node.isLoad) {
+      const data = await schemeOperate.run({
+        uid: node.source?.connection.uid,
+        type: 'table',
+        database: node?.source.database.name,
+      });
+      const databaseNodes = transformNode('table', data, node);
+      const temp = nodeList.map((t) => {
+        const item = t;
+        if (t.key === node.key) {
+          item.isLoad = true;
+        }
+        return item;
+      });
+      setNodeList([...temp, ...databaseNodes]);
+    }
   };
 
   const getTreeData = () => {
+    console.log(nodeList);
     const root = nodeList.filter((t) => t.type === 'connection');
     const newNodeList = [];
     for (let i = 0; i < root.length; i += 1) {
       const connection = root[i];
-      const children = nodeList.filter(
-        (t) => t.type === 'database' && t.source.connection?.uid === element.source.connection.uid,
-      );
-      for (let j = 0; j < children.length; j++) {
-        const element = children[j];
-        
+      connection.children = [];
+      const temp_children = nodeList.filter((t) => t.parentKey === connection.key);
+      for (let j = 0; j < temp_children.length; j += 1) {
+        const database = temp_children[j];
+        database.children = nodeList.filter((t) => t.parentKey === database.key);
+        connection.children.push(database);
       }
-      newNodeList.push({ ...element, children });
+      newNodeList.push(connection);
     }
-    return nodeList;
+    return newNodeList;
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-03 16:06:46
- * @LastEditTime: 2021-03-04 17:42:33
+ * @LastEditTime: 2021-03-04 22:26:10
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\index.tsx
@@ -16,7 +16,7 @@ import type { SchemeNode } from './treeHandle';
 import treeHandle from './treeHandle';
 
 const DataBase = () => {
-  const { nodeList, loading, loadDatabase, loadTable } = treeHandle();
+  const { loading, loadDatabase, getTreeData, loadTable } = treeHandle();
 
   const renderIcon = (node: any) => {
     switch (node.type) {
@@ -33,8 +33,8 @@ const DataBase = () => {
 
   return (
     <PageContainer content="公共数据由多项公共数据项组合而成，分离在模型创建中常用的数据，例如：用户、组织等，便于创建模型过程中，快速构建常用的数据项，不需要重复创建，例如：基础模板、数据模板、状态模板、模型模板组合。">
-      <Row gutter={16}>
-        <Col span={4}>
+      <Row gutter={18}>
+        <Col span={6}>
           <Card
             title="数据库连接"
             bordered={false}
@@ -43,9 +43,10 @@ const DataBase = () => {
           >
             <Tree
               showIcon
+              blockNode
               icon={renderIcon}
               loadData={async (node: EventDataNode) => {
-                const schemeNode = node as SchemeNode;
+                const schemeNode = node as unknown as SchemeNode;
                 if (schemeNode.type === 'connection') {
                   await loadDatabase(schemeNode);
                 }
@@ -54,11 +55,11 @@ const DataBase = () => {
                 }
                 Promise.resolve();
               }}
-              treeData={nodeList}
+              treeData={getTreeData()}
             />
           </Card>
         </Col>
-        <Col span={20}>
+        <Col span={18}>
           <Card title="数据库" bordered={false}>
             Card content
           </Card>
