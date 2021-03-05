@@ -5,7 +5,7 @@ import { useRequest } from 'umi';
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 14:30:36
- * @LastEditTime: 2021-03-04 22:33:54
+ * @LastEditTime: 2021-03-05 10:58:17
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\treeHandle.ts
@@ -126,7 +126,7 @@ export default () => {
   };
 
   const getTreeData = () => {
-    console.log(nodeList);
+   
     const root = nodeList.filter((t) => t.type === 'connection');
     const newNodeList = [];
     for (let i = 0; i < root.length; i += 1) {
