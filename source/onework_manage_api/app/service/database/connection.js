@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-02 14:37:02
- * @LastEditTime: 2021-03-03 15:34:17
+ * @LastEditTime: 2021-03-05 16:16:53
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\database\connection.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\database\connection.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -16,6 +16,9 @@ class ConnectionService extends Service {
   constructor(ctx) {
     super(ctx);
     this.ConnectionModel = this.ctx.model.Database.Connection;
+    this.DbModel = this.ctx.model.Database.Db;
+    this.TableModel = this.ctx.model.Database.Table;
+    this.ColumnModel = this.ctx.model.Database.Column;
   }
 
   /**
@@ -115,6 +118,10 @@ class ConnectionService extends Service {
     // 删除数据
     for (let i = 0; i < datas.length; i++) {
       const element = datas[i];
+      await this.DbModel.destroy({ where: { cnUid: element.uid } });
+      await this.Db.destroy({ where: { cnUid: element.uid } });
+      await this.TableModel.destroy({ where: { cnUid: element.uid } });
+      await this.ColumnModel.destroy({ where: { cnUid: element.uid } });
       await element.destroy();
     }
   }
