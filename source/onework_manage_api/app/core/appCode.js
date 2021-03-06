@@ -80,7 +80,7 @@ const appCode = {
       // code：表名、name：注释
       table: "SELECT a.TABLE_NAME AS 'name', CASE a.TABLE_COMMENT WHEN '' THEN a.TABLE_NAME ELSE a.TABLE_COMMENT END AS 'code' FROM information_schema.TABLES AS a WHERE a.TABLE_SCHEMA = '${database}';",
       // order：顺序、 code：字段名称、type：类型、isUnique：主键、length：长度、precision：精度、isNull：是否未空、name：字段描述、defaultValue：默认值
-      column: "SELECT a.ORDINAL_POSITION AS 'order' a.COLUMN_NAME AS 'code', a.COLUMN_TYPE AS type, a.COLUMN_KEY AS isUnique, a.CHARACTER_MAXIMUM_LENGTH AS length, a.NUMERIC_PRECISION AS 'precision', a.IS_NULLABLE AS isNull, a.COLUMN_COMMENT AS NAME, a.COLUMN_DEFAULT AS defaultValue FROM INFORMATION_SCHEMA.COLUMNS a WHERE a.TABLE_NAME = '${table}' AND a.TABLE_SCHEMA = '${database}';",
+      column: "SELECT a.ORDINAL_POSITION AS 'order', a.COLUMN_NAME AS 'code', a.COLUMN_TYPE AS type, a.COLUMN_KEY AS isUnique, a.CHARACTER_MAXIMUM_LENGTH AS length, a.NUMERIC_PRECISION AS 'precision', a.IS_NULLABLE AS isNull, a.COLUMN_COMMENT AS 'name', a.COLUMN_DEFAULT AS defaultValue FROM INFORMATION_SCHEMA.COLUMNS a WHERE a.TABLE_NAME = '${table}' AND a.TABLE_SCHEMA = '${database}';",
     },
   },
   model: {

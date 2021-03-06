@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-28 11:26:30
- * @LastEditTime: 2021-03-03 15:28:46
+ * @LastEditTime: 2021-03-06 18:50:20
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\database\scheme.js
@@ -17,7 +17,7 @@ class SchemeController extends Controller {
    * @param {*}
    * @return {*}
    */
-  async getList() {
+  async getSchemeData() {
     const ctx = this.ctx;
     const rule = {
       uid: 'string',
@@ -26,23 +26,79 @@ class SchemeController extends Controller {
       table: 'string?',
     };
     ctx.validate(rule, ctx.request.query);
-    const data = await ctx.service.database.scheme.getSchemeData(ctx.request.query);
+    const params = ctx.request.query;
+    const { connection, scheme } = ctx.service.database;
+    const conn = await connection.get(params.uid);
+    const data = await scheme.getSchemeData(conn, params.type, params.database, params.table);
     this.success(data);
+  }
 
+  /**
+   * @description:
+   * @param {*}
+   * @return {*}
+   */
+  async getDatabases() {
+    const ctx = this.ctx;
+    const rule = {
+      uid: 'string',
+    };
+    ctx.validate(rule, ctx.request.query);
+    const params = ctx.request.query;
+    const { connection, scheme } = ctx.service.database;
+    const conn = await connection.get(params.uid);
+    const data = await scheme.getDataBase(conn);
+    this.success(data);
+  }
 
-    // // mssql
-    // const sequelize = new Sequelize({
-    //   dialect: 'mssql',
-    //   database: 'v3',
-    //   username: 'sa',
-    //   password: '123qwe!@#',
-    //   host: '127.0.0.1',
-    //   logging: (sql, timing) => { console.log(sql, timing); },
-    // });
-    // // await sequelize.authenticate();
-    // result = await sequelize.query(ctx.app.appCode.sql.mssql.table, { type: Sequelize.QueryTypes.SELECT });
-    // await sequelize.close();
-    // this.success(result);
+  /**
+   * @description:
+   * @param {*}
+   * @return {*}
+   */
+  async getTables() {
+    const ctx = this.ctx;
+    const rule = {
+      uid: 'string',
+      database: 'string?',
+    };
+    ctx.validate(rule, ctx.request.query);
+    const params = ctx.request.query;
+    const { connection, scheme } = ctx.service.database;
+    const conn = await connection.get(params.uid);
+    const data = await scheme.getTables(conn, params.database);
+    this.success(data);
+  }
+
+  async syncDataBase() {
+    const ctx = this.ctx;
+    const rule = {
+      uid: 'string',
+      database: 'string',
+    };
+    const params = ctx.request.body;
+    ctx.validate(rule, params);
+    const { connection, scheme } = ctx.service.database;
+    const conn = await connection.get(params.uid);
+    const data = await scheme.asyncDataBase(conn, params.database);
+    this.success(data);
+  }
+
+  /**
+   * @description:
+   * @param {*}
+   * @return {*}
+   */
+  async getTable() {
+    const ctx = this.ctx;
+    const rule = {
+      uid: 'string',
+    };
+    ctx.validate(rule, ctx.request.query);
+    const params = ctx.request.query;
+    const { scheme } = ctx.service.database;
+    const data = await scheme.getTable(params.uid);
+    this.success(data);
   }
 }
 

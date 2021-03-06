@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-02 14:37:02
- * @LastEditTime: 2021-03-05 16:16:53
+ * @LastEditTime: 2021-03-06 11:58:07
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\service\database\connection.js
+ * @FilePath: \onework_manage_api\app\service\database\connection.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -19,6 +19,17 @@ class ConnectionService extends Service {
     this.DbModel = this.ctx.model.Database.Db;
     this.TableModel = this.ctx.model.Database.Table;
     this.ColumnModel = this.ctx.model.Database.Column;
+  }
+
+  /**
+   * @description: 根据uid获取数据库连接对象
+   * @param {*} uid
+   * @return {*}
+   */
+  async get(uid) {
+    const connection = await this.ConnectionModel.findByPk(uid);
+    if (connection == null) { throw new AppError('该数据库连接信息不存在，操作失败'); }
+    return connection.dataValues;
   }
 
   /**

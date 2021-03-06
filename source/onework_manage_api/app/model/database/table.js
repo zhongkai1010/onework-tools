@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:58:18
- * @LastEditTime: 2021-03-05 15:30:43
+ * @LastEditTime: 2021-03-06 09:45:36
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\model\database\table.js
+ * @FilePath: \onework_manage_api\app\model\database\table.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -17,7 +17,6 @@ module.exports = app => {
   const Table = app.model.define('table', {
     ...baseModel,
     cnUid: { type: DataTypes.STRING, allowNull: true, comment: '连接uid' },
-    dbUid: { type: DataTypes.STRING, allowNull: true, comment: '数据库uid' },
     dbName: { type: DataTypes.STRING, allowNull: true, comment: '数据库名称' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {

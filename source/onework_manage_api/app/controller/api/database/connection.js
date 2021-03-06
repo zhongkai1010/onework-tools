@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:08:45
- * @LastEditTime: 2021-03-03 15:33:02
+ * @LastEditTime: 2021-03-06 11:33:07
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_api\app\controller\api\database\connection.js
@@ -42,6 +42,7 @@ class ConnectionController extends Controller {
    * @return {*}
    */
   async getlist() {
+    // TODO 需要将数据库密码屏蔽下，不能直接返回
     const ctx = this.ctx;
     const data = await ctx.service.database.connection.getList();
     this.success(data);

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 18:45:01
- * @LastEditTime: 2021-03-04 21:21:12
+ * @LastEditTime: 2021-03-06 20:05:31
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\router.js
+ * @FilePath: \onework_manage_api\app\router.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
@@ -48,11 +48,15 @@ module.exports = app => {
   router.post('/api/model/data/behavior/update', controller.api.model.dataBehavior.update);
   router.post('/api/model/data/behavior/remove', controller.api.model.dataBehavior.remove);
 
-  router.get('/api/database/scheme/getlist', controller.api.database.scheme.getList);
+  router.get('/api/database/scheme/getData', controller.api.database.scheme.getSchemeData);
+  router.get('/api/database/scheme/getDatabases', controller.api.database.scheme.getDatabases);
+  router.get('/api/database/scheme/getTable', controller.api.database.scheme.getTable);
+  router.post('/api/database/scheme/syncDataBase', controller.api.database.scheme.syncDataBase);
 
   router.post('/api/database/connection/insert', controller.api.database.connection.insert);
   router.get('/api/database/connection/getlist', controller.api.database.connection.getlist);
   router.post('/api/database/connection/update', controller.api.database.connection.update);
   router.post('/api/database/connection/remove', controller.api.database.connection.remove);
 
+  router.get('/api/database/table/get', controller.api.database.table.get);
 };
