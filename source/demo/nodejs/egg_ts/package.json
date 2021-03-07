@@ -28,6 +28,7 @@
     "egg-sequelize": "^6.0.0",
     "egg-validate": "^2.0.2",
     "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0",
     "tedious": "^11.0.5"
   },
   "devDependencies": {

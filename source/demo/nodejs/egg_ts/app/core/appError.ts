@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 22:00:56
- * @LastEditTime: 2021-03-07 00:10:38
+ * @LastEditTime: 2021-03-07 22:26:03
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\core\appError.ts
@@ -14,12 +14,12 @@ import errorCode from './errorCode';
  * @param {*}
  * @return {*}
  */
-class AppError extends Error {
+export default class AppError extends Error {
   /**
    * @description  异常构造函数
    * @param {*} code 文本或编码
    */
-  constructor(code: any) {
+  constructor(code: any = undefined) {
     // TODO 考虑异常文本动态参数嵌入
     const names = Object.getOwnPropertyNames(errorCode);
     let message = '未知异常';
@@ -33,4 +33,4 @@ class AppError extends Error {
     this.name = 'apperror';
   }
 }
-module.exports = AppError;
+
