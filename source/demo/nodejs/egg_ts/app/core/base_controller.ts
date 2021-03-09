@@ -3,7 +3,7 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-10-15 02:56:11
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-03-09 11:32:47
+ * @LastEditTime: 2021-03-09 14:40:18
  * @description
  * @FilePath: \egg_ts\app\core\base_controller.ts
  */
@@ -55,11 +55,11 @@ export default class BaseController extends Controller {
    */
   protected validatePage(rule: object = {}) {
     const defaultPageRule = {
-      page: { type: 'int', required: true, min: this.app.appCode.common.page.minpage },
-      limit: { type: 'int', required: true, min: 1, max: this.app.appCode.common.page.maxlimit },
+      page: { type: 'int', required: true, min: appCode.common.page.minpage },
+      limit: { type: 'int', required: true, min: 1, max: appCode.common.page.maxlimit },
       keyword: 'string?',
       order: 'string?',
-      sort: Object.values(this.app.appCode.common.order),
+      sort: Object.values(appCode.common.order),
     };
     const params = this.getPageParmas();
     const temp_rule = { ...defaultPageRule, ...rule };
@@ -93,7 +93,6 @@ export default class BaseController extends Controller {
     if (!str) throw new Error('参数异常');
     return parseInt(str, 10) || 0;
   }
-
 
   /**
    * @description 字符串参数转数字类型，当值为null或undefined时直接返回默认值

@@ -1,19 +1,21 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:14:42
- * @LastEditTime: 2021-03-09 10:06:28
+ * @LastEditTime: 2021-03-09 17:48:34
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\model\database\connection.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
+import { Application, Ow, SequelizeModel } from 'egg';
 import { DataTypes } from 'sequelize';
-import { Application } from 'egg';
-import baseModel from '../base';
+
+import baseModel from '../base_name_code';
+
 
 export default (app:Application) => {
 
-  const Connection = app.model.define('connection', {
+  const Connection = app.model.define<SequelizeModel.Database.Connection, Ow.Database.Connection>('connection', {
     ...baseModel,
     name: { type: DataTypes.STRING, allowNull: true, comment: '连接名称' },
     dbType: { type: DataTypes.STRING, allowNull: false, comment: '数据库类型' },

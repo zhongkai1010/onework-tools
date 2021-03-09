@@ -9,12 +9,12 @@
  */
 
 import { DataTypes } from 'sequelize';
-import { Application } from 'egg';
+import { Application, Ow, SequelizeModel } from 'egg';
 import baseModel from '../base';
 
 export default (app:Application) => {
 
-  const ModuleModel = app.model.define('moduleModel', {
+  const ModuleModel = app.model.define<SequelizeModel.Module.ModuleModel, Ow.Module.ModuleModel>('moduleModel', {
     ...baseModel,
     modelUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型uid' },
     moduleUid: { type: DataTypes.UUID, allowNull: false, comment: '模块uid' },

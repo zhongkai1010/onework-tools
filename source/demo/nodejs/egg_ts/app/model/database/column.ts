@@ -8,12 +8,12 @@
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { DataTypes } from 'sequelize';
-import { Application } from 'egg';
+import { Application, Ow, SequelizeModel } from 'egg';
 import baseModel from '../base_name_code';
 
 export default (app:Application) => {
 
-  const Column = app.model.define('column', {
+  const Column = app.model.define<SequelizeModel.Database.Column, Ow.Database.Column>('column', {
     ...baseModel,
     cnUid: { type: DataTypes.STRING, allowNull: false, comment: '连接uid' },
     tbUid: { type: DataTypes.STRING, allowNull: false, comment: '数据库表uid' },
