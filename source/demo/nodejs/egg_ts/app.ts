@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-06 23:25:28
- * @LastEditTime: 2021-03-07 22:20:57
+ * @LastEditTime: 2021-03-09 10:13:25
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app.ts
@@ -13,7 +13,7 @@ import { Boot } from 'egg';
 class AppBootHoos extends Boot {
 
   async serverDidReady() {
-    // await this.app.model.sync({ alter: true });
+    await this.app.model.sync({ alter: true });
     // await this.app.model.sync({ force: true });
   }
 }

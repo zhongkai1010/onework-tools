@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-06 23:21:22
- * @LastEditTime: 2021-03-07 22:59:27
+ * @LastEditTime: 2021-03-09 10:25:53
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\config\config.default.ts
@@ -31,9 +31,9 @@ export default (appInfo: EggAppInfo) => {
     sequelize: {
       dialect: 'mysql',
       port: 8806,
-      username: 'onework_ts_dev',
-      password: 'W2MREnzpc37a2jmR',
-      database: 'onework_ts_dev',
+      username: 'onework_dev',
+      password: 'akT7RCmZ26PCEy7L',
+      database: 'onework_dev',
       host: '101.37.81.183',
       timezone: '+08:00', // for writing to database
     },
