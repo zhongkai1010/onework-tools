@@ -8,14 +8,14 @@
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { DataTypes } from 'sequelize';
-import { Application, Ow, SequelizeModel } from 'egg';
+import { Application, Ow, Sequelize } from 'egg';
 import baseModel from '../base_name_code';
 
 
 export default (app:Application) => {
 
 
-  const Collection = app.model.define<SequelizeModel.Data.Collection, Ow.Data.Collection>('collection', {
+  const Collection = app.model.define<Sequelize.Data.Collection, Ow.Data.Collection>('collection', {
     ...baseModel,
     items: { type: DataTypes.JSON, allowNull: false, defaultValue: [], comment: '数据项集合' },
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },

@@ -8,13 +8,13 @@
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { DataTypes } from 'sequelize';
-import { Application, Ow, SequelizeModel } from 'egg';
+import { Application, Ow, Sequelize } from 'egg';
 import baseModel from '../base_name_code';
 import appCode from '../../core/appCode';
 
 export default (app:Application) => {
 
-  const DataItem = app.model.define<SequelizeModel.Data.DataItem, Ow.Data.DataItem>('dataItem', {
+  const DataItem = app.model.define<Sequelize.Data.DataItem, Ow.Data.DataItem>('dataItem', {
     ...baseModel,
     dataUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型uid' },
     itemUid: { type: DataTypes.UUID, allowNull: false, comment: '数据项uid' },
