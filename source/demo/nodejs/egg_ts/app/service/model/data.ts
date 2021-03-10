@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-03-10 18:33:17
+ * @LastEditTime: 2021-03-10 23:59:18
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\data.ts
@@ -11,7 +11,6 @@ import { Service } from 'egg';
 import { FindAndCountOptions, Op } from 'sequelize';
 import AppError from '../../core/appError';
 import AppCode from '../../core/appCode';
-import { default } from '../../model/data/item';
 
 interface GetFunResult extends Egg.Sequelize.Data.Data
 {
@@ -36,24 +35,26 @@ export default class DataService extends Service {
   }
 
   /**
-   * @description: 添加数据集
-   * @param {*} params
-   * @return {*}
+   * @description 添加数据模型
+   * @param {Egg} params 参数
+   * @return {*} 返回数据模型
    */
   public async add(params:Egg.Ow.Data.Data):Promise<Egg.Sequelize.Data.Data> {
     // 验证是否重复
-    let  [data, created] = await this.DataModel.findOrCreate({ where: { name: params.name },defaults:{
+    const [ data, created ] = await this.DataModel.findOrCreate({ where: { name: params.name }, defaults: {
       name: params.name,
       code: params.code,
       use: params.use,
       description: params.description,
-    } } );
+    } });
+    data.items = [] as Egg.Sequelize.Data.DataItem[];
+    data.behaviors = [] as Egg.Sequelize.Data.DataBehavior[];
+    const items = params.items || [];
     if (!created) throw new AppError(`该数据模型“${params.name}”名称已存在，无法进行添加！`);
     // 新增数据项
-    const dataItems = [] as Egg.Sequelize.Data.DataItem[];
-    for (let index = 0; index < params.items.length; index++) {
-      const element = params.items[index];
-      if (dataItems.filter(t => t.name === element.name).length > 0) {
+    for (let index = 0; index < items.length; index++) {
+      const element = items[index];
+      if (data.items.filter(t => t.name === element.name).length > 0) {
         throw new AppError(`该数据项“${element.name}”名称已存在，无法进行重复添加！`);
       }
       const [ item ] = await this.ItemModel.findOrCreate({ where: { name: element.name }, defaults: {
@@ -61,117 +62,86 @@ export default class DataService extends Service {
         code: element.code,
         type: element.itemType,
       } });
-     const  dataItem = await this.DataItemModel.create({
-      dataUid: data.uid,
-      name: element.name,
-      code: element.code,
-      itemType: element.itemType,
-      isNull: element.isNull,
-      isUnique: element.isUnique,
-      itemUid = item.uid
-     });
-      dataItems.push(dataItem);
+      const dataItem = await this.DataItemModel.create({
+        dataUid: data.uid,
+        name: element.name,
+        code: element.code,
+        itemType: element.itemType,
+        isNull: element.isNull,
+        isUnique: element.isUnique,
+        itemUid: item.uid,
+      });
+      data.items.push(dataItem);
       // 记录数据项计数
       await item.plusCumulate();
     }
     // 新增行为
-    const dataBehaviors = [];
-    for (let index = 0; index < params.behaviors.length; index++) {
-      const element = params.behaviors[index];
-      let dataBehavior = {
+    const behaviors = params.behaviors || [];
+    for (let index = 0; index < behaviors.length; index++) {
+      const element = behaviors[index];
+      const dataBehavior = await this.DataBehaviorModel.create({
         dataUid: data.uid,
         name: element.name,
         code: element.code,
         operationType: element.operationType,
         description: element.description,
-      };
-      dataBehavior = await DataBehaviorModel.create(dataBehavior);
-      dataBehaviors.push(dataBehavior.dataValues);
+      });
+      data.behaviors.push(dataBehavior);
     }
     // 返回结果
-    return { ...data.dataValues, items: dataItems, behaviors: dataBehaviors };
+    return data;
   }
 
   /**
-   * @description: 查询数据模型
-   * @param {*} params
-   * @return {*}
+   * @description 查询数据模型
+   * @param {*} params 查询条件
+   * @return {*} 查询结果
    */
-  async query(params) {
+  public async query(params: any): Promise<{rows:Egg.Sequelize.Data.Data[], count:number}> {
     // 初始化参数
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data.Data;
-    const DataItemModel = ctx.model.Data.DataItem;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
-    const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
-      order: [[ 'id', 'desc' ]],
+      order: [[ params.order || 'createdAt', (params.sort || AppCode.common.order.desc) ]],
       offset: params.limit * (params.page - 1),
       limit: params.limit,
-      where: {},
-    };
-    // 排序
-    const sort = params.sort === ctx.app.appCode.common.order.desc ? 'DESC' : 'ASC';
-    if (params.order) {
-      queryParmas.order = [[ params.order, sort ]];
-    }
-    // 条件
-    if (params.keyword) {
-      queryParmas.where = {
-        ...queryParmas.where,
-        [Op.or]: [{
+      where: {
+        [Op.or]: params.keyword ? [{
           name: {
-            [Op.substring]: params.keyword,
-          } }, {
-          description: {
             [Op.substring]: params.keyword,
           } }, {
           code: {
             [Op.substring]: params.keyword,
-          } }],
-      };
-    }
-    if (params.use) {
-      queryParmas.where.use = {
-        [Op.in]: params.use,
-      };
-    }
-    if (params.status) {
-      queryParmas.where.status = {
-        [Op.in]: params.status,
-      };
-    }
+          } }] : undefined,
+        use: params.use ? {
+          [Op.in]: params.use,
+        } : undefined,
+        status: params.status ? {
+          [Op.in]: params.status,
+        } : undefined,
+      },
+    } as FindAndCountOptions<Egg.Sequelize.Data.Data>;
     // 查询
-    const result = await DataModel.findAndCountAll(queryParmas);
-    const dataModels = [];
+    const result = await this.DataModel.findAndCountAll(queryParmas);
+    const dataModels = [] as Egg.Sequelize.Data.Data[];
     for (let i = 0; i < result.rows.length; i++) {
-      const dataModel = result.rows[i].dataValues;
-      dataModel.items = await DataItemModel.findAll({ where: { dataUid: dataModel.uid } });
-      dataModel.items = dataModel.items.map(t => t.dataValues);
-      dataModel.behaviors = await DataBehaviorModel.findAll({ where: { dataUid: dataModel.uid } });
-      dataModel.behaviors = dataModel.behaviors.map(t => t.dataValues);
+      const dataModel = result.rows[i];
+      dataModel.items = await this.DataItemModel.findAll({ where: { dataUid: dataModel.uid } });
+      dataModel.behaviors = await this.DataBehaviorModel.findAll({ where: { dataUid: dataModel.uid } });
       dataModels.push(dataModel);
     }
-    return { total: result.count, rows: dataModels };
+    return { count: result.count, rows: dataModels };
   }
 
   /**
-   * @description: 修改数据模型
-   * @param {*} params
-   * @return {*}
+   * @description 修改数据模型
+   * @param {*} params 数据模型
+   * @return {*} 返回数据模型
    */
-  async update(params) {
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data.Data;
-    const DataItemModel = ctx.model.Data.DataItem;
-    const ItemModel = ctx.model.Data.Item;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
-    const Op = ctx.app.Sequelize.Op;
+  public async update(params:Egg.Sequelize.Data.Data):Promise<Egg.Sequelize.Data.Data> {
     // 验证数据是否正确
-    let data = await DataModel.findOne({ where: { uid: params.uid } });
+    let data = await this.DataModel.findOne({ where: { uid: params.uid } });
     if (!data) throw new AppError(5101);
     // 验证修改名称是否存在重复
-    const count = await DataModel.count({ where: { name: params.name, uid: {
+    const count = await this.DataModel.count({ where: { name: params.name, uid: {
       [Op.ne]: data.uid,
     } } });
     if (count > 0) throw new AppError(`该数据模型“${params.name}”名称已存在，无法进行修改！`);
@@ -181,38 +151,38 @@ export default class DataService extends Service {
     data.description = params.description;
     data.use = params.use;
     data = await data.save();
+    data.items = [] as Egg.Sequelize.Data.DataItem[];
+    data.behaviors = [] as Egg.Sequelize.Data.DataBehavior[];
     // 处理数据项
-    const dataItems = await DataItemModel.findAll({ where: { dataUid: data.uid } });
+    const dataItems = await this.DataItemModel.findAll({ where: { dataUid: data.uid } });
     const itemNames = (params.items || []).map(t => t.name);
     // 处理本次修改中需要移除的数据项
+    // TODO 可能数据项得计数有问题，新增得数据项需要加一，旧的数据需要减一
     const deleteItems = dataItems.filter(t => !itemNames.includes(t.name));
     for (let index = 0; index < deleteItems.length; index++) {
       // 移除旧的数据项
       const element = deleteItems[index];
       element.destroy();
       // 更新数据项计数
-      const item = await ItemModel.findOne({ where: { uid: element.itemUid } });
+      const item = await this.ItemModel.findOne({ where: { uid: element.itemUid } });
       if (item) {
         await item.subCumulate();
       }
     }
     // 处理本次中需要修改或新增的数据项
-    const newDataItems = [];
-    for (let index = 0; index < params.items.length; index++) {
-      const element = params.items[index];
-      if (newDataItems.filter(t => t.name === element.name).length > 0) {
+    const items = params.items || [];
+    for (let index = 0; index < items.length; index++) {
+      const element = items[index] as Egg.Sequelize.Data.DataItem;
+      if (data.items.filter(t => t.name === element.name).length > 0) {
         throw new AppError(`该数据项“${element.name}”名称已存在，无法进行重复添加！`);
       }
-      const [ item ] = await ItemModel.findOrCreate({ where: { name: element.name }, defaults: {
+      const [ item ] = await this.ItemModel.findOrCreate({ where: { name: element.name }, defaults: {
         name: element.name,
         code: element.code,
         type: element.itemType,
         cumulate: 0,
       } });
-      if (item.status === ctx.app.appCode.common.status.disable) {
-        throw new AppError(`该数据项“${item.name}”状态已禁用，无法进行操作！`);
-      }
-      const [ dataItem, created ] = await DataItemModel.findOrCreate({
+      const [ dataItem, created ] = await this.DataItemModel.findOrCreate({
         where: { name: element.name, dataUid: data.uid },
         defaults: {
           dataUid: data.uid,
@@ -225,14 +195,14 @@ export default class DataService extends Service {
       if (!created) {
         dataItem.code = element.code;
         dataItem.itemType = element.itemType;
-        await dataItem.save(dataItem);
+        await dataItem.save();
       }
-      newDataItems.push(dataItem.dataValues);
+      data.items.push(dataItem);
       // 记录数据项计数
       await item.plusCumulate();
     }
     // 处理行为
-    const dataBehaviors = await DataBehaviorModel.findAll({ where: { dataUid: data.uid } });
+    const dataBehaviors = await this.DataBehaviorModel.findAll({ where: { dataUid: data.uid } });
     // 处理本次修改中需要移除的行为
     const behaviorNames = (params.behaviors || []).map(t => t.name);
     const deleteBehaviorNames = dataBehaviors.filter(t => !behaviorNames.includes(t.name));
@@ -241,10 +211,10 @@ export default class DataService extends Service {
       await element.destroy();
     }
     // 处理本次中需要修改或新增的行为
-    const newDataBehaviors = [];
-    for (let index = 0; index < params.behaviors.length; index++) {
-      const element = params.behaviors[index];
-      const [ behavior, created ] = await DataBehaviorModel.findOrCreate({
+    const behaviors = params.behaviors || [];
+    for (let index = 0; index < behaviors.length; index++) {
+      const element = behaviors[index];
+      const [ behavior, created ] = await this.DataBehaviorModel.findOrCreate({
         where: { name: element.name, dataUid: data.uid },
         defaults: {
           dataUid: data.uid,
@@ -259,27 +229,20 @@ export default class DataService extends Service {
         behavior.description = element.description;
         await behavior.save();
       }
-      newDataBehaviors.push(behavior.dataValues);
+      data.behaviors.push(behavior);
     }
     // 返回结果
-    return { ...data.dataValues, items: newDataItems, behaviors: newDataBehaviors };
+    return data;
   }
 
+
   /**
-   * @description: 移除数据集
-   * @param {*} 移除uid集合
-   * @return {*}
+   * @description 移除数据集
+   * @param {string} params 移除uid集合
    */
-  async remove(params) {
-    // 初始化参数
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data.Data;
-    const DataItemModel = ctx.model.Data.DataItem;
-    const ItemModel = ctx.model.Data.Item;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
-    const Op = ctx.app.Sequelize.Op;
+  public async remove(params:string[]):Promise<void> {
     // 查询需要删除数据
-    const datas = await DataModel.findAll({ where: {
+    const datas = await this.DataModel.findAll({ where: {
       uid: {
         [Op.in]: params,
       },
@@ -289,18 +252,18 @@ export default class DataService extends Service {
     for (let i = 0; i < datas.length; i++) {
       const data = datas[i];
       // 移除数据模型的数据项
-      const dataItems = await DataItemModel.findAll({ where: { dataUid: data.uid } });
+      const dataItems = await this.DataItemModel.findAll({ where: { dataUid: data.uid } });
       for (let j = 0; j < dataItems.length; j++) {
         const dataItem = dataItems[j];
         // 记录数据项计数
-        const item = await ItemModel.findOne({ where: { uid: dataItem.itemUid } });
+        const item = await this.ItemModel.findOne({ where: { uid: dataItem.itemUid } });
         if (item) {
           await item.subCumulate();
         }
         dataItem.destroy();
       }
       // 移除数据模型的行为
-      const dataBehaviors = await DataBehaviorModel.findAll({ where: { dataUid: data.uid } });
+      const dataBehaviors = await this.DataBehaviorModel.findAll({ where: { dataUid: data.uid } });
       for (let j = 0; j < dataBehaviors.length; j++) {
         const dataBehavior = dataBehaviors[j];
         dataBehavior.destroy();
@@ -311,17 +274,12 @@ export default class DataService extends Service {
   }
 
   /**
-   * @description: 检索数据项
-   * @param {*} 关键字
-   * @return {*}
+   * @description 检索数据项
+   * @param {object} params 关键字
+   * @return {*} 数据模型集合
    */
-  async search(params) {
+  public async search(params:{keyword:string}):Promise<Egg.Sequelize.Data.Data[]> {
     // 初始化参数
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data.Data;
-    const DataItemModel = ctx.model.Data.DataItem;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
-    const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'createdAt', 'desc' ]],
       limit: 10,
@@ -334,15 +292,13 @@ export default class DataService extends Service {
             [Op.substring]: params.keyword,
           } }],
       },
-    };
-    const result = await DataModel.findAll(queryParmas);
-    const dataModels = [];
+    } as FindAndCountOptions<Egg.Sequelize.Data.Data>;
+    const result = await this.DataModel.findAll(queryParmas);
+    const dataModels = [] as Egg.Sequelize.Data.Data[];
     for (let i = 0; i < result.length; i++) {
-      const dataModel = result[i].dataValues;
-      dataModel.items = await DataItemModel.findAll({ where: { dataUid: dataModel.uid } });
-      dataModel.items = dataModel.items.map(t => t.dataValues);
-      dataModel.behaviors = await DataBehaviorModel.findAll({ where: { dataUid: dataModel.uid } });
-      dataModel.behaviors = dataModel.behaviors.map(t => t.dataValues);
+      const dataModel = result[i];
+      dataModel.items = await this.DataItemModel.findAll({ where: { dataUid: dataModel.uid } });
+      dataModel.behaviors = await this.DataBehaviorModel.findAll({ where: { dataUid: dataModel.uid } });
       dataModels.push(dataModel);
     }
     return dataModels;

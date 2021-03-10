@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-10 11:33:58
- * @LastEditTime: 2021-03-10 18:28:16
+ * @LastEditTime: 2021-03-10 23:57:04
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\typings\ow.d.ts
@@ -62,17 +62,26 @@ declare module "egg" {
       name: string;
       code: string;
       use: "universal" | "input" | "output";
-      status: boolean;
+      status: string;
       description?: string | null;
-      items: Egg.Ow.Data.DataItem[]
+      items?: Egg.Ow.Data.DataItem[];
+      behaviors?: Egg.Ow.Data.DataBehavior[];
     }
     interface DataBehavior {
       uid?: string;
       name: string;
       code: string;
       dataUid: string;
-      inputs: Array<any> | null;
-      outputs: Array<any> | null;
+      inputs: Array<{
+        type: string;
+        arrayType?: string | null;
+        value?: string | null;
+      }> | null;
+      outputs: {
+        type: string;
+        arrayType?: string | null;
+        value?: string | null;
+      } | null;
       operationType: "read" | "add" | "update" | "delete" | null;
       description: string | null;
     }

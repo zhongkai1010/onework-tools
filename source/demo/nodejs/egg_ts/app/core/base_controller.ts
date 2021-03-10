@@ -3,7 +3,7 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-10-15 02:56:11
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-03-09 14:40:18
+ * @LastEditTime: 2021-03-11 00:17:27
  * @description
  * @FilePath: \egg_ts\app\core\base_controller.ts
  */
@@ -15,10 +15,10 @@ import appCode from './appCode';
 
 export default class BaseController extends Controller {
 
-  protected async execPageService({ parmas = {}, rule = {}, service }: { parmas: object; rule: object; service: any; }) {
+  protected async execPageService({ params = {}, rule = {}, service }: { params: object; rule: object; service: any; }) {
     const temp_parmas = {
       ...this.getPageParmas(),
-      ...parmas,
+      ...params,
     };
     const temp_rule = {
       page: { type: 'int', required: true, min: appCode.common.page.minpage },
@@ -29,7 +29,7 @@ export default class BaseController extends Controller {
       ...rule,
     };
     this.ctx.validate(temp_rule, temp_parmas);
-    const reult = await service.call(this, temp_parmas);
+    const reult = await service(temp_parmas);
     return reult;
   }
 

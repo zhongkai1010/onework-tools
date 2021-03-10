@@ -1,38 +1,36 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-25 14:17:14
- * @LastEditTime: 2021-02-25 22:48:45
+ * @LastEditTime: 2021-03-10 23:23:57
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\model\dataBehavior.js
+ * @FilePath: \egg_ts\app\service\model\dataBehavior.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
-'use strict';
+import { Service } from 'egg';
+import { Op } from 'sequelize';
+import AppError from '../../core/appError';
+import AppCode from '../../core/appCode';
 
-const Service = require('egg').Service;
-const AppError = require('../../core/appError');
-
-class DataBehaviorService extends Service {
-
+export default class DataBehaviorService extends Service {
+  protected DataModel = this.ctx.model.Data.Data;
+  protected DataBehaviorModel = this.ctx.model.Data.DataBehavior;
   /**
-   * @description: 添加数据模型行为
-   * @param {*} 参数
-   * @return {*}
+   * @description 添加数据模型行为
+   * @param {*} params 参数
+   * @return {*} 返回数据模型行为
    */
-  async add(params) {
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data.Data;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
+  public async add(params:Egg.Ow.Data.DataBehavior):Promise<Egg.Sequelize.Data.DataBehavior> {
     // 验证所属数据模型是否正常
-    const dataModel = await DataModel.findByPk(params.dataUid);
-    if (dataModel) throw new AppError('该指定所属的数据模型数据不存在，无法进行添加！');
+    const dataModel = await this.DataModel.findByPk(params.dataUid);
+    if (dataModel == null) throw new AppError('该指定所属的数据模型数据不存在，无法进行添加！');
     // 验证名称是否重复
-    let dataBehavior = await DataBehaviorModel.findOne({ where: { name: params.name, dataUid: dataModel.uid } });
+    let dataBehavior = await this.DataBehaviorModel.findOne({ where: { name: params.name, dataUid: dataModel.uid } });
     if (dataBehavior === null) throw new AppError(`该数据模型中行为“${params.name}”名称已存在，无法进行添加！`);
     // 验证参数
-    await this._verifyParams(params);
+    await this.verifyParams(params);
     // 新增数据
-    dataBehavior = {
+    dataBehavior = await this.DataBehaviorModel.create({
       dataUid: dataModel.uid,
       name: params.name,
       code: params.code,
@@ -40,32 +38,27 @@ class DataBehaviorService extends Service {
       outputs: params.outputs,
       operationType: params.operationType,
       description: params.description,
-    };
-    dataBehavior = await DataBehaviorModel.create(dataBehavior);
+    });
     // 返回结果
-    return dataBehavior.dataValues;
+    return dataBehavior;
   }
 
   /**
-   * @description:
-   * @param {*} pageParams
-   * @param {*} queryParams
-   * @return {*}
+   * @description 查询数据模型行为
+   * @param {*} pageParams 分页参数
+   * @param {*} queryParams 筛选参数
+   * @return {*} 数据模型行为
    */
-  async query(pageParams, queryParams) {
+  public async query(pageParams:any, queryParams:any):Promise<{rows:Egg.Sequelize.Data.DataBehavior[], count:number}> {
     // 初始化参数
-    const ctx = this.ctx;
-    const DataModel = ctx.model.Data.Data;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
-    const Op = ctx.app.Sequelize.Op;
     const queryParmas = {
       order: [[ 'id', 'desc' ]],
       offset: pageParams.limit * (pageParams.page - 1),
       limit: pageParams.limit,
       where: {},
-    };
+    } as any;
     // 排序
-    const sort = pageParams.sort === ctx.app.appCode.common.order.desc ? 'DESC' : 'ASC';
+    const sort = pageParams.sort === AppCode.common.order.desc ? 'DESC' : 'ASC';
     if (pageParams.order) {
       queryParmas.order = [[ pageParams.order, sort ]];
     }
@@ -85,44 +78,41 @@ class DataBehaviorService extends Service {
       };
     }
     // 查询
-    const { count, rows } = await DataBehaviorModel.findAndCountAll(queryParmas);
-    const datas = [];
+    const { count, rows } = await this.DataBehaviorModel.findAndCountAll(queryParmas);
+    const datas = [] as Egg.Sequelize.Data.DataBehavior[];
     const modelUids = rows.map(t => t.uid);
-    const models = await DataModel.findAll({ where: {
+    const models = await this.DataModel.findAll({ where: {
       uid: {
         [Op.in]: modelUids,
       },
     } });
     for (let i = 0; i < rows.length; i++) {
-      const dataModel = rows[i].dataValues;
+      const dataModel = rows[i];
       const model = models.find(t => t.uid === dataModel.dataUid);
       if (model) {
         dataModel.dataName = model.name;
       }
       datas.push(dataModel);
     }
-    return { total: count, rows: datas };
+    return { count, rows: datas };
   }
 
   /**
-   * @description:
-   * @param {*} params
-   * @return {*}
+   * @description 修改数据模型行为
+   * @param {*} params 数据模型行为
+   * @return {*} 返回数据模型行为
    */
-  async update(params) {
-    const ctx = this.ctx;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
-    const Op = ctx.app.Sequelize.Op;
+  public async update(params:Egg.Sequelize.Data.DataBehavior):Promise<Egg.Sequelize.Data.DataBehavior> {
     // 验证所属数据是否存在
-    const dataBehavior = await DataBehaviorModel.findByPk(params.uid);
+    const dataBehavior = await this.DataBehaviorModel.findByPk(params.uid);
     if (!dataBehavior) throw new AppError('该数据模型的行为不存在，无法进行修改！');
     // 验证名称是否重复
-    const count = await DataBehaviorModel.findOne({ where: { name: params.name, dataUid: dataBehavior.dataUid, uid: {
+    const count = await this.DataBehaviorModel.findOne({ where: { name: params.name, dataUid: dataBehavior.dataUid, uid: {
       [Op.ne]: dataBehavior.uid,
     } } });
     if (count) throw new AppError(`该数据模型中行为“${params.name}”名称已存在，无法进行修改！`);
     // 验证参数
-    await this._verifyParams(params);
+    await this.verifyParams(params);
     // 修改数据
     dataBehavior.name = params.name;
     dataBehavior.code = params.code;
@@ -132,20 +122,16 @@ class DataBehaviorService extends Service {
     dataBehavior.description = params.description;
     await dataBehavior.save();
     // 返回结果
-    return dataBehavior.dataValues;
+    return dataBehavior;
   }
 
   /**
-   * @description:
-   * @param {*} params
-   * @return {*}
+   * @description 移除数据模型行为
+   * @param {*} params 数据模型行为uid集合
    */
-  async remove(params) {
-    const ctx = this.ctx;
-    const DataBehaviorModel = ctx.model.Data.DataBehavior;
-    const Op = ctx.app.Sequelize.Op;
+  public async remove(params:string[]):Promise<void> {
     // 查询需要删除数据
-    const datas = await DataBehaviorModel.findAll({ where: {
+    const datas = await this.DataBehaviorModel.findAll({ where: {
       uid: {
         [Op.in]: params,
       },
@@ -159,40 +145,35 @@ class DataBehaviorService extends Service {
   }
 
   /**
-   * @description:
-   * @param {*} params
-   * @return {*}
+   * @description 验证数据模型行为参数
+   * @param {*} params 数据模型参数
    */
-  async _verifyParams(params) {
+  protected async verifyParams(params:Egg.Sequelize.Data.DataBehavior|Egg.Ow.Data.DataBehavior): Promise<void> {
     const ctx = this.ctx;
     const DataModel = ctx.model.Data.Data;
     // 验证输入
     if (params.inputs) {
       for (let i = 0; i < params.inputs.length; i++) {
         const input = params.inputs[i];
-        if (input.itemType === ctx.app.appCode.model.itemType.array) {
+        if (input.type === AppCode.model.itemType.array) {
           if (!input.arrayType) {
             throw new AppError('请填写输入参数中数组类型的具体类型');
           }
-          if (input.arrayType === ctx.app.appCode.model.itemType.object) {
+          if (input.arrayType === AppCode.model.itemType.object) {
             if (!input.value) {
               throw new AppError('请填写输入参数中数组类型的对象应用类型');
             }
-            const dataModel = await DataModel.findByPk({ where: {
-              uid: input.value,
-            } });
+            const dataModel = await DataModel.findByPk(input.value);
             if (dataModel == null) {
               throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
             }
           }
         }
-        if (input.itemType === ctx.app.appCode.model.itemType.object) {
+        if (input.type === AppCode.model.itemType.object) {
           if (!input.value) {
             throw new AppError('请填写输入参数中数组类型的对象应用类型');
           }
-          const dataModel = await DataModel.findByPk({ where: {
-            uid: input.value,
-          } });
+          const dataModel = await DataModel.findByPk(input.value);
           if (dataModel == null) {
             throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
           }
@@ -201,26 +182,22 @@ class DataBehaviorService extends Service {
     }
     // 验证输出
     if (params.outputs) {
-      if (params.outputs.type === ctx.app.appCode.model.itemType.array) {
-        if (params.outputs.arrayType === ctx.app.appCode.model.itemType.object) {
+      if (params.outputs.type === AppCode.model.itemType.array) {
+        if (params.outputs.arrayType === AppCode.model.itemType.object) {
           if (!params.outputs.value) {
             throw new AppError('请填写输入参数中数组类型的对象应用类型');
           }
-          const dataModel = await DataModel.findByPk({ where: {
-            uid: params.outputs.value,
-          } });
+          const dataModel = await DataModel.findByPk(params.outputs.value);
           if (dataModel == null) {
             throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
           }
         }
       }
-      if (params.outputs.type === ctx.app.appCode.model.itemType.object) {
+      if (params.outputs.type === AppCode.model.itemType.object) {
         if (!params.outputs.value) {
           throw new AppError('请填写输入参数中数组类型的对象应用类型');
         }
-        const dataModel = await DataModel.findByPk({ where: {
-          uid: params.outputs.value,
-        } });
+        const dataModel = await DataModel.findByPk(params.outputs.value);
         if (dataModel == null) {
           throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
         }

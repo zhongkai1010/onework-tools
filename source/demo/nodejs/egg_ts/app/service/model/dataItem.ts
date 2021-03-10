@@ -1,39 +1,39 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-25 14:17:10
- * @LastEditTime: 2021-02-27 22:13:17
+ * @LastEditTime: 2021-03-10 23:35:27
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\service\model\dataItem.js
+ * @FilePath: \egg_ts\app\service\model\dataItem.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
-'use strict';
-
-const Service = require('egg').Service;
-const AppError = require('../../core/appError');
-
-
-class DataItemService extends Service {
-
+import { Service } from 'egg';
+import { Op } from 'sequelize';
+import AppError from '../../core/appError';
+import AppCode from '../../core/appCode';
+export default class DataItemService extends Service {
+  protected DataModel = this.ctx.model.Data.Data;
+  protected ItemModel = this.ctx.model.Data.Item;
+  protected DataItemModel = this.ctx.model.Data.DataItem;
   /**
-   * @description:  添加数据模型数据项
-   * @param {*} params
-   * @return {*}
+   * @description  添加数据模型数据项
+   * @param {*} params  数据模型数据项
+   * @return {*} 返回数据模型数据项
    */
-  async add(params) {
+  public async add(params:Egg.Ow.Data.DataItem):Promise<Egg.Sequelize.Data.DataItem> {
     const ctx = this.ctx;
     const DataModel = ctx.model.Data.Data;
     const ItemModel = ctx.model.Data.Item;
     const DataItemModel = ctx.model.Data.DataItem;
     // 验证所属数据模型是否正常
     const dataModel = await DataModel.findByPk(params.dataUid);
-    if (dataModel) throw new AppError('该指定所属的数据模型数据不存在，无法进行添加！');
+    if (dataModel == null) throw new AppError('该指定所属的数据模型数据不存在，无法进行添加！');
     // 验证名称是否重复
-    let dataItem = await DataItemModel.findOne({ where: { name: params.name, dataUid: dataModel.uid } });
-    if (dataItem) throw new AppError(`该数据模型中数据项“${params.name}”名称已存在，无法进行添加！`);
+    const count = await DataItemModel.count({ where: { name: params.name, dataUid: dataModel.uid } });
+    if (count > 0) throw new AppError(`该数据模型中数据项“${params.name}”名称已存在，无法进行添加！`);
     // 验证参数
-    await this._verifyParams(params);
+    await this.verifyParams(params);
     // 计算数据项计算
     const [ item ] = await ItemModel.findOrCreate({ where: { name: params.name }, defaults: {
       name: params.name,
@@ -42,7 +42,7 @@ class DataItemService extends Service {
     } });
     await item.plusCumulate();
     // 新增数据模型
-    dataItem = {
+    const dataItem = await DataItemModel.create({
       dataUid: dataModel.uid,
       itemUid: item.uid,
       name: params.name,
@@ -56,19 +56,18 @@ class DataItemService extends Service {
       length: params.length,
       precision: params.precision,
       isUnique: params.isUnique,
-    };
-    dataItem = await DataItemModel.create(dataItem);
+    });
     // 返回结果
-    return dataItem.dataValues;
+    return dataItem;
   }
 
   /**
- * @description: 查询数据模型数据项
- * @param {*} pageParams
- * @param {*} queryParams
- * @return {*}
+ * @description 查询数据模型数据项
+ * @param {*} pageParams 分页参数
+ * @param {*} queryParams 查询参数
+ * @return {*} 返回数据模型数据项集合和总个数
  */
-  async query(pageParams, queryParams) {
+  public async query(pageParams:any, queryParams:any):Promise<{rows:Egg.Sequelize.Data.DataItem[], count:number}> {
     // 初始化参数
     const ctx = this.ctx;
     const DataModel = ctx.model.Data.Data;
@@ -79,9 +78,9 @@ class DataItemService extends Service {
       offset: pageParams.limit * (pageParams.page - 1),
       limit: pageParams.limit,
       where: {},
-    };
+    } as any;
     // 排序
-    const sort = pageParams.sort === ctx.app.appCode.common.order.desc ? 'DESC' : 'ASC';
+    const sort = pageParams.sort === AppCode.common.order.desc ? 'DESC' : 'ASC';
     if (pageParams.order) {
       queryParmas.order = [[ pageParams.order, sort ]];
     }
@@ -105,16 +104,16 @@ class DataItemService extends Service {
     }
     // 查询
     const { count, rows } = await DataItemModel.findAndCountAll(queryParmas);
-    const datas = [];
+    const datas = [] as Egg.Sequelize.Data.DataItem[];
     const modelUids = rows.map(t => t.dataUid);
-    const objectRefUids = rows.map(t => t.objectRef).filter(t => t != null);
+    const objectRefUids = rows.map(t => t.objectRef).filter(t => t != null) as string[];
     const models = await DataModel.findAll({ where: {
       uid: {
         [Op.in]: [ ...modelUids, ...objectRefUids ],
       },
     } });
     for (let i = 0; i < rows.length; i++) {
-      const dataModel = rows[i].dataValues;
+      const dataModel = rows[i];
       const objectModel = models.find(t => t.uid === dataModel.dataUid);
       if (objectModel) {
         dataModel.dataName = objectModel.name;
@@ -125,39 +124,35 @@ class DataItemService extends Service {
       }
       datas.push(dataModel);
     }
-    return { total: count, rows: datas };
+    return { count, rows: datas };
   }
 
   /**
- * @description:
- * @param {*} params
- * @return {*}
+ * @description 修改数据模型数据项
+ * @param {*} params 数据模型数据项
+ * @return {*} 返回数据模型数据项
  */
-  async update(params) {
-    const ctx = this.ctx;
-    const DataItemModel = ctx.model.Data.DataItem;
-    const ItemModel = ctx.model.Data.Item;
-    const Op = ctx.app.Sequelize.Op;
+  public async update(params:Egg.Ow.Data.DataItem):Promise<Egg.Sequelize.Data.DataItem> {
     // 验证所属数据模型是否正常
-    const dataItem = await DataItemModel.findByPk(params.uid);
+    const dataItem = await this.DataItemModel.findByPk(params.uid);
     if (!dataItem) throw new AppError('该数据模型的数据项不存在，无法进行修改！');
     // 验证名称是否重复
-    const count = await DataItemModel.findOne({ where: { name: params.name, dataUid: dataItem.dataUid, uid: {
+    const count = await this.DataItemModel.findOne({ where: { name: params.name, dataUid: dataItem.dataUid, uid: {
       [Op.ne]: dataItem.uid,
     } } });
     if (count) throw new AppError(`该数据模型中数据项“${params.name}”名称已存在，无法进行修改！`);
     // 验证参数
-    await this._verifyParams(params);
+    await this.verifyParams(params);
     // 数据项计数
     if (params.name !== dataItem.name) {
-      const oldItem = await ItemModel.findOne({ where: {
+      const oldItem = await this.ItemModel.findOne({ where: {
         name: dataItem.name,
       } });
       if (oldItem) {
         await oldItem.subCumulate();
       }
     } else {
-      const [ item ] = await ItemModel.findOrCreate({ where: { name: params.name }, defaults: {
+      const [ item ] = await this.ItemModel.findOrCreate({ where: { name: params.name }, defaults: {
         name: params.name,
         code: params.code,
         type: params.itemType,
@@ -180,16 +175,12 @@ class DataItemService extends Service {
     dataItem.isUnique = params.isUnique;
     await dataItem.save();
     // 返回结果
-    return dataItem.dataValues;
+    return dataItem;
   }
 
-  async remove(params) {
-    const ctx = this.ctx;
-    const DataItemModel = ctx.model.Data.DataItem;
-    const ItemModel = ctx.model.Data.Item;
-    const Op = ctx.app.Sequelize.Op;
+  public async remove(params:string[]):Promise<void> {
     // 查询需要删除数据
-    const dataItems = await DataItemModel.findAll({ where: {
+    const dataItems = await this.DataItemModel.findAll({ where: {
       uid: {
         [Op.in]: params,
       },
@@ -199,7 +190,7 @@ class DataItemService extends Service {
     for (let i = 0; i < dataItems.length; i++) {
       const dataItem = dataItems[i];
       // 移除数据模型的数据项
-      const item = await ItemModel.findByPk(dataItem.itemUid);
+      const item = await this.ItemModel.findByPk(dataItem.itemUid);
       if (item !== null) {
         await item.subCumulate();
       }
@@ -207,21 +198,21 @@ class DataItemService extends Service {
     }
   }
 
-  async _verifyParams(params) {
+  protected async verifyParams(params:Egg.Sequelize.Data.DataItem|Egg.Ow.Data.DataItem) {
     const ctx = this.ctx;
     const DataModel = ctx.model.Data.Data;
     // 判断是否是数组类型
-    if (params.itemType === ctx.app.appCode.model.itemType.array) {
+    if (params.itemType === AppCode.model.itemType.array) {
       if (!params.arrayType) {
         throw new AppError('请填写该数据项数组类型中得具体类型！');
       }
-      if (params.arrayType === ctx.app.appCode.model.itemType.object) {
+      if (params.arrayType === AppCode.model.itemType.object) {
         if (params.objectRef) {
           const dataModel = await DataModel.findByPk(params.objectRef);
           if (dataModel == null) {
             throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
           } else {
-            if (dataModel.status === ctx.app.appCode.common.status.disable) {
+            if (dataModel.status === AppCode.common.status.disable) {
               throw new AppError('请填写该数据项对象类型中具体引用具体数据模型状态已禁用');
             }
           }
@@ -229,13 +220,13 @@ class DataItemService extends Service {
       }
     }
     // 判断是否是对象类型，需要填写引用的数据模型
-    if (params.itemType === ctx.app.appCode.model.itemType.object) {
+    if (params.itemType === AppCode.model.itemType.object) {
       if (params.objectRef) {
         const dataModel = await DataModel.findByPk(params.objectRef);
         if (dataModel == null) {
           throw new AppError('请填写该数据项对象类型中具体引用具体数据模型不存在');
         } else {
-          if (dataModel.status === ctx.app.appCode.common.status.disable) {
+          if (dataModel.status === AppCode.common.status.disable) {
             throw new AppError('请填写该数据项对象类型中具体引用具体数据模型状态已禁用');
           }
         }
@@ -243,5 +234,3 @@ class DataItemService extends Service {
     }
   }
 }
-
-module.exports = DataItemService;

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-03-10 17:08:23
+ * @LastEditTime: 2021-03-11 00:19:44
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\item.ts
@@ -62,7 +62,7 @@ export default class ItemService extends Service {
       },
     } as FindAndCountOptions<Egg.Sequelize.Data.Item>;
     // 查询
-    const result = await this.ItemModel.findAndCountAll(queryParmas);
+    const result = await this.ctx.model.Data.Item.findAndCountAll(queryParmas);
     return result;
   }
 
