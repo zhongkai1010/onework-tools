@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:14:42
- * @LastEditTime: 2021-03-09 17:48:34
+ * @LastEditTime: 2021-03-11 09:16:29
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\model\database\connection.ts
@@ -10,7 +10,7 @@
 import { Application, Ow, Sequelize } from 'egg';
 import { DataTypes } from 'sequelize';
 
-import baseModel from '../base_name_code';
+import baseModel from '../base';
 
 
 export default (app:Application) => {

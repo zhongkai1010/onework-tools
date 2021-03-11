@@ -3,7 +3,7 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-10-15 02:56:11
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-03-11 00:17:27
+ * @LastEditTime: 2021-03-11 11:02:34
  * @description
  * @FilePath: \egg_ts\app\core\base_controller.ts
  */
@@ -53,7 +53,7 @@ export default class BaseController extends Controller {
    * @description  验证分页参数
    * @param {Object} rule 自定义验证规则
    */
-  protected validatePage(rule: object = {}) {
+  protected validatePage(rule: object = {}): { page:number, limit:number, keyword?:string, order:string, sort:string } {
     const defaultPageRule = {
       page: { type: 'int', required: true, min: appCode.common.page.minpage },
       limit: { type: 'int', required: true, min: 1, max: appCode.common.page.maxlimit },
@@ -64,7 +64,7 @@ export default class BaseController extends Controller {
     const params = this.getPageParmas();
     const temp_rule = { ...defaultPageRule, ...rule };
     this.ctx.validate(temp_rule, params);
-
+    return params;
   }
 
   /**

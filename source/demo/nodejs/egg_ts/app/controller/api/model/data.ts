@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-03-10 23:52:21
+ * @LastEditTime: 2021-03-11 16:27:39
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\model\data.ts
@@ -75,11 +75,9 @@ export default class DataController extends Controller {
         },
       },
     };
-    const data = await this.execPageService(
-      { params: ctx.request.body,
-        rule,
-        service: ctx.service.model.data.query },
-    );
+    const pageParams = this.getPageParmas();
+    ctx.validate(rule, ctx.request.body);
+    const data = await ctx.service.model.data.query({ ...pageParams, ...ctx.request.body });
     this.success(data);
   }
 

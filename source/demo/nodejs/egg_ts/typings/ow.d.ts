@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-10 11:33:58
- * @LastEditTime: 2021-03-10 23:57:04
+ * @LastEditTime: 2021-03-11 15:37:32
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\typings\ow.d.ts
@@ -13,13 +13,12 @@ declare module "egg" {
     interface Connection {
       uid?: string;
       name: string;
-      code: string;
       dbType: string;
       database: string | null;
       username: string;
       password: string;
       host: string;
-      port: string;
+      port: number;
       config: any;
       description: string | null;
     }
@@ -30,7 +29,7 @@ declare module "egg" {
       cnUid: string;
       dbName: string;
       description: string;
-      columns?: Array<Egg.Sequelize.Database.Column>;
+      columns?: Egg.Sequelize.Database.Column[];
     }
     interface Column {
       uid?: string;
@@ -51,14 +50,13 @@ declare module "egg" {
   }
   namespace Ow.Data {
     interface Collection {
-      uid?: string;
       name: string;
       code: string;
-      items: Egg.Sequelize.Data.Item[];
+      itemUids?: string[];
+      items?: Egg.Sequelize.Data.Item[];
       description?: string | null;
     }
     interface Data {
-      uid?: string;
       name: string;
       code: string;
       use: "universal" | "input" | "output";
@@ -68,7 +66,6 @@ declare module "egg" {
       behaviors?: Egg.Ow.Data.DataBehavior[];
     }
     interface DataBehavior {
-      uid?: string;
       name: string;
       code: string;
       dataUid: string;

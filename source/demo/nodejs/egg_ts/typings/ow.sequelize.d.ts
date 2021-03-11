@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-10 11:38:17
- * @LastEditTime: 2021-03-10 23:56:49
+ * @LastEditTime: 2021-03-11 10:36:41
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\typings\ow.sequelize.d.ts
@@ -17,6 +17,7 @@ declare module "egg" {
       uid: string;
       createdAt?: string;
       updatedAt?: string;
+      dataValues: ReturnType<this>;
     }
 
     interface BaseNameModel extends BaseModel {
@@ -31,22 +32,22 @@ declare module "egg" {
   }
   namespace Sequelize.Data {
     interface Collection extends BaseModel, Egg.Ow.Data.Collection {
-      items: Egg.Sequelize.Data.Item[]
+      items: Egg.Sequelize.Data.Item[];
     }
     interface Data extends BaseModel, Egg.Ow.Data.Data {
-        items?: Egg.Sequelize.Data.DataItem[];
-        behaviors?: Egg.Sequelize.Data.DataBehavior[];
+      items?: Egg.Sequelize.Data.DataItem[];
+      behaviors?: Egg.Sequelize.Data.DataBehavior[];
     }
     interface DataBehavior extends BaseModel, Egg.Ow.Data.DataBehavior {
-      dataName?:string
+      dataName?: string;
     }
     interface DataItem extends BaseModel, Egg.Ow.Data.DataItem {
-      dataName?:string
-      objectRefName?:string
+      dataName?: string;
+      objectRefName?: string;
     }
     interface Item extends BaseModel, Egg.Ow.Data.Item {
-      plusCumulate:()=>Promise<void>
-      subCumulate:()=>Promise<void>
+      plusCumulate: () => Promise<void>;
+      subCumulate: () => Promise<void>;
     }
   }
 

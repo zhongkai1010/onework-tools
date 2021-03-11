@@ -1,14 +1,14 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-03-10 23:59:18
+ * @LastEditTime: 2021-03-11 16:31:13
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\data.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { Service } from 'egg';
-import { FindAndCountOptions, Op } from 'sequelize';
+import { FindAndCountOptions, Op, WhereValue } from 'sequelize';
 import AppError from '../../core/appError';
 import AppCode from '../../core/appCode';
 
@@ -89,7 +89,7 @@ export default class DataService extends Service {
       data.behaviors.push(dataBehavior);
     }
     // 返回结果
-    return data;
+    return { ...data.dataValues, items: data.items, behaviors: data.behaviors };
   }
 
   /**
@@ -99,31 +99,35 @@ export default class DataService extends Service {
    */
   public async query(params: any): Promise<{rows:Egg.Sequelize.Data.Data[], count:number}> {
     // 初始化参数
-    const queryParmas = {
-      order: [[ params.order || 'createdAt', (params.sort || AppCode.common.order.desc) ]],
-      offset: params.limit * (params.page - 1),
-      limit: params.limit,
-      where: {
-        [Op.or]: params.keyword ? [{
+    const where = {} as WhereValue<Egg.Ow.Data.Data>;
+    if (params.keyword) {
+      Object.assign(where, {
+        [Op.and]: [{
           name: {
             [Op.substring]: params.keyword,
           } }, {
           code: {
             [Op.substring]: params.keyword,
-          } }] : undefined,
-        use: params.use ? {
-          [Op.in]: params.use,
-        } : undefined,
-        status: params.status ? {
-          [Op.in]: params.status,
-        } : undefined,
-      },
+          } }],
+      });
+    }
+    if (params.use) {
+      Object.assign(where, { use: { [Op.in]: params.use } });
+    }
+    if (params.status) {
+      Object.assign(where, { status: { [Op.in]: params.status } });
+    }
+    const queryParmas = {
+      order: [[ params.order || 'createdAt', (params.sort || AppCode.common.order.desc) ]],
+      offset: params.limit * (params.page - 1),
+      limit: params.limit,
+      where,
     } as FindAndCountOptions<Egg.Sequelize.Data.Data>;
     // 查询
     const result = await this.DataModel.findAndCountAll(queryParmas);
     const dataModels = [] as Egg.Sequelize.Data.Data[];
     for (let i = 0; i < result.rows.length; i++) {
-      const dataModel = result.rows[i];
+      const dataModel = result.rows[i].dataValues;
       dataModel.items = await this.DataItemModel.findAll({ where: { dataUid: dataModel.uid } });
       dataModel.behaviors = await this.DataBehaviorModel.findAll({ where: { dataUid: dataModel.uid } });
       dataModels.push(dataModel);
@@ -232,7 +236,7 @@ export default class DataService extends Service {
       data.behaviors.push(behavior);
     }
     // 返回结果
-    return data;
+    return { ...data.dataValues, items: data.items, behaviors: data.behaviors };
   }
 
 
@@ -296,7 +300,7 @@ export default class DataService extends Service {
     const result = await this.DataModel.findAll(queryParmas);
     const dataModels = [] as Egg.Sequelize.Data.Data[];
     for (let i = 0; i < result.length; i++) {
-      const dataModel = result[i];
+      const dataModel = result[i].dataValues;
       dataModel.items = await this.DataItemModel.findAll({ where: { dataUid: dataModel.uid } });
       dataModel.behaviors = await this.DataBehaviorModel.findAll({ where: { dataUid: dataModel.uid } });
       dataModels.push(dataModel);

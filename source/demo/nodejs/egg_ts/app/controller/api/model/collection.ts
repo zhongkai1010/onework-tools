@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:13
- * @LastEditTime: 2021-03-10 23:46:22
+ * @LastEditTime: 2021-03-11 16:12:43
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\model\collection.ts
@@ -19,7 +19,7 @@ export default class CollectionController extends Controller {
     const rule = {
       name: 'string',
       code: 'string',
-      items: { type: 'array', itemType: 'string' },
+      itemUids: { type: 'array', itemType: 'string' },
       description: 'string?',
     };
     ctx.validate(rule, ctx.request.body);
@@ -32,12 +32,8 @@ export default class CollectionController extends Controller {
    */
   async getlist() {
     const ctx = this.ctx;
-    const rule = {};
-    const data = await this.execPageService({
-      params: ctx.request.body,
-      rule,
-      service: ctx.service.model.collection.query,
-    });
+    const pageParams = this.validatePage();
+    const data = await ctx.service.model.collection.query({ ...pageParams });
     this.success(data);
   }
 
@@ -50,7 +46,7 @@ export default class CollectionController extends Controller {
       uid: 'string',
       name: 'string',
       code: 'string',
-      items: { type: 'array', rule: 'string' },
+      itemUids: { type: 'array', rule: 'string' },
       description: 'string?',
     };
     ctx.validate(rule, ctx.request.body);

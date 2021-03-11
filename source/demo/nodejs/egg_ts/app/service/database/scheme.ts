@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 20:16:52
- * @LastEditTime: 2021-03-10 16:15:35
+ * @LastEditTime: 2021-03-11 10:26:37
  * @LastEditors: 钟凯
  * @description:
  * @FilePath: \egg_ts\app\service\database\scheme.ts
@@ -103,7 +103,7 @@ export default class SchemeService extends Service {
    * @param {*} dbName 数据库名称
    * @return {*} 同步结果
    */
-  async asyncDataBase(connection:Egg.Sequelize.Database.Connection, dbName:string): Promise<any> {
+  async asyncDataBase(connection:Egg.Sequelize.Database.Connection, dbName:string): Promise<Egg.Sequelize.Database.Table[] > {
     // 初始化对象
     if (connection == null) {
       throw new AppError('该数据库连接信息不存在，无法同步数据库结构');
@@ -113,7 +113,7 @@ export default class SchemeService extends Service {
     }
     // 创建连接
     const sequelize = this.createSequelize(connection);
-    const result:Egg.Ow.Database.Table[] = [];
+    const result:Egg.Sequelize.Database.Table[] = [];
     // 查询表
     let tabSql = AppCode.sql[connection.dbType].table;
     tabSql = tabSql.replace('${database}', dbName);
@@ -133,7 +133,8 @@ export default class SchemeService extends Service {
         dbName,
         description: dbTable.name,
       });
-      table.columns = [];
+      const columns = [] as Egg.Sequelize.Database.Column[];
+      table.setAttributes('columns', columns);
       // 查询字段
       let columnSql = AppCode.sql[connection.dbType].column;
       columnSql = columnSql.replace('${database}', dbName);
@@ -156,9 +157,10 @@ export default class SchemeService extends Service {
           defaultValue: dbColumn.defaultValue,
           description: dbColumn.name,
         });
-        table.columns.push(column);
+        columns.push(column);
       }
-      result.push(table);
+      // table.;
+      result.push({ ...table.dataValues, columns });
     }
     // 关闭连接
     await sequelize.close();

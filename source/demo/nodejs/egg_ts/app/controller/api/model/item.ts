@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 19:22:50
- * @LastEditTime: 2021-03-10 23:55:26
+ * @LastEditTime: 2021-03-11 15:47:46
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\model\item.ts
@@ -42,12 +42,12 @@ export default class ItemController extends Controller {
         },
       },
     };
-    const data = await this.execPageService(
-      { params: ctx.request.body,
-        rule,
-        service: ctx.service.model.item.query },
-    );
-    this.success(data);
+
+    const pageParams = this.validatePage();
+    const bodyParams = ctx.request.body;
+    ctx.validate(rule, bodyParams);
+    const result = await ctx.service.model.item.query(pageParams, bodyParams);
+    this.success(result);
   }
 
   /**

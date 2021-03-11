@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:08:45
- * @LastEditTime: 2021-03-10 23:42:11
+ * @LastEditTime: 2021-03-11 09:43:08
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\database\connection.ts
@@ -36,10 +36,14 @@ export default class ConnectionController extends Controller {
    * @description   获取数据库连接列表（分页、排序、关键字）
    */
   async getlist() {
-    // TODO 需要将数据库密码屏蔽下，不能直接返回
     const ctx = this.ctx;
     const data = await ctx.service.database.connection.getList();
-    this.success(data);
+    const result = data.map(t => {
+      const temp = t;
+      temp.password = '******';
+      return t;
+    });
+    this.success(result);
   }
 
   /**

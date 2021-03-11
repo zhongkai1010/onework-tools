@@ -1,14 +1,14 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-03-11 00:19:44
+ * @LastEditTime: 2021-03-11 16:09:42
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\item.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { Service } from 'egg';
-import { FindAndCountOptions, Op } from 'sequelize';
+import { FindAndCountOptions, Op, WhereValue } from 'sequelize';
 import AppError from '../../core/appError';
 import AppCode from '../../core/appCode';
 
@@ -36,30 +36,39 @@ export default class ItemService extends Service {
 
   /**
    * @description  查询数据项
-   * @param {*} params 查询参数
+   * @param {*} pageParams 查询参数
+   * @param {*} queryParams 查询参数
    * @return {*} 返回数据项结果，包括总数、数据项集合
    */
-  public async query(params: any): Promise<{rows:Egg.Sequelize.Data.Item[], count:number}> {
+  public async query(
+    pageParams: {page:number, limit:number, keyword?:string, order:string, sort:string },
+    queryParams:{type:string[]})
+    : Promise<{rows:Egg.Sequelize.Data.Item[], count:number}> {
     // 初始化参数
-    const queryParmas = {
-      order: [[ params.order || 'createdAt', (params.sort || AppCode.common.order.desc) ]],
-      offset: params.limit * (params.page - 1),
-      limit: params.limit,
-      where: {
-        type: params.type ? {
-          [Op.in]: params.type,
-        } : undefined,
-        status: params.status ? {
-          [Op.in]: params.status,
-        } : undefined,
-        [Op.or]: params.keyword ? [{
+    const where = {} as WhereValue<Egg.Ow.Data.Item>;
+    if (pageParams.keyword) {
+      Object.assign(where, {
+        [Op.and]: [{
           name: {
-            [Op.substring]: params.keyword,
+            [Op.substring]: pageParams.keyword,
           } }, {
           code: {
-            [Op.substring]: params.keyword,
-          } }] : undefined,
-      },
+            [Op.substring]: pageParams.keyword,
+          } }],
+      });
+    }
+    if (queryParams.type) {
+      Object.assign(where, {
+        type: {
+          [Op.in]: queryParams.type,
+        },
+      });
+    }
+    const queryParmas = {
+      order: [[ pageParams.order || 'createdAt', (pageParams.sort || AppCode.common.order.desc) ]],
+      offset: pageParams.limit * (pageParams.page - 1),
+      limit: pageParams.limit,
+      where,
     } as FindAndCountOptions<Egg.Sequelize.Data.Item>;
     // 查询
     const result = await this.ctx.model.Data.Item.findAndCountAll(queryParmas);
