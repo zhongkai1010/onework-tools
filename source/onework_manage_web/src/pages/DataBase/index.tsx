@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-03 16:06:46
- * @LastEditTime: 2021-03-05 11:30:46
+ * @LastEditTime: 2021-03-12 17:55:45
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\index.tsx
@@ -14,7 +14,6 @@ import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
-  PlusSquareOutlined,
   ShrinkOutlined,
   SyncOutlined,
   TableOutlined,
@@ -26,6 +25,7 @@ import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
 import type { SchemeNode } from './treeHandle';
 import treeHandle from './treeHandle';
+import AddConnectionModal from './components/AddConnectionModal';
 
 const DataBase = () => {
   const { loading, loadDatabase, getTreeData, loadTable } = treeHandle();
@@ -63,7 +63,7 @@ const DataBase = () => {
           }}
           onContextMenu={(e) => {
             e.preventDefault();
-           
+
             return false;
           }}
         >
@@ -72,7 +72,7 @@ const DataBase = () => {
               title="数据库连接"
               bordered={false}
               loading={loading}
-              extra={<PlusSquareOutlined title="添加连接" style={{ cursor: 'pointer' }} />}
+              extra={<AddConnectionModal />}
             >
               <Tree
                 showIcon

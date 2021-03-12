@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-03-03 16:45:18
+ * @LastEditTime: 2021-03-12 10:06:25
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\model\index.tsx
@@ -166,7 +166,7 @@ export default () => {
           />,
         ]}
         columns={columns}
-        request={async (params, sort, filter) => {
+        request={async (params, sort = {}, filter) => {
           let orderValue = 'createdAt';
           let sortValue = 'desc';
           const entries = Object.entries(sort);
@@ -186,7 +186,7 @@ export default () => {
           return {
             data: result.data.rows,
             success: result.success,
-            total: result.data.total,
+            total: result.data.count,
           };
         }}
       />

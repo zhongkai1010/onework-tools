@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 12:10:16
- * @LastEditTime: 2021-03-03 16:37:47
+ * @LastEditTime: 2021-03-12 09:59:32
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\collection\components\EditCollectionModal.tsx
@@ -89,7 +89,7 @@ const EditModal = (props: Props & ModalProps) => {
           >
             <Input />
           </Form.Item>
-          <Form.List name="items">
+          <Form.List name="itemUids">
             {(fields, { add, remove }) => (
               <>
                 {fields.map((field, index) => (

@@ -125,6 +125,10 @@ export default () => {
     }
   };
 
+  const addConnection = async (connection: API.DataBase.Connection ) =>{
+   
+  }
+
   const getTreeData = () => {
    
     const root = nodeList.filter((t) => t.type === 'connection');

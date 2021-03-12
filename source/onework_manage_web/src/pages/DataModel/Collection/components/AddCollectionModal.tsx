@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-18 12:09:51
- * @LastEditTime: 2021-02-21 17:54:27
+ * @LastEditTime: 2021-03-12 09:55:05
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\Collection\components\AddCollectionModal.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\collection\components\AddCollectionModal.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import type { ModalFormProps } from '@ant-design/pro-form';
@@ -58,7 +58,7 @@ const AddCollectionModal = (props: ModalFormProps) => {
         <Input placeholder="请输入数据集编码" />
       </Form.Item>
 
-      <Form.List name="items">
+      <Form.List name="itemUids">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (

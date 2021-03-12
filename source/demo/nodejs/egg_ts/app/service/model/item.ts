@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-03-11 16:09:42
+ * @LastEditTime: 2021-03-12 09:52:01
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\item.ts
@@ -48,7 +48,7 @@ export default class ItemService extends Service {
     const where = {} as WhereValue<Egg.Ow.Data.Item>;
     if (pageParams.keyword) {
       Object.assign(where, {
-        [Op.and]: [{
+        [Op.or]: [{
           name: {
             [Op.substring]: pageParams.keyword,
           } }, {

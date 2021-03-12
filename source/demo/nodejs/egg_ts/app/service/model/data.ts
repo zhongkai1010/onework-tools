@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:38
- * @LastEditTime: 2021-03-11 16:31:13
+ * @LastEditTime: 2021-03-12 10:07:16
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\data.ts
@@ -102,7 +102,7 @@ export default class DataService extends Service {
     const where = {} as WhereValue<Egg.Ow.Data.Data>;
     if (params.keyword) {
       Object.assign(where, {
-        [Op.and]: [{
+        [Op.or]: [{
           name: {
             [Op.substring]: params.keyword,
           } }, {

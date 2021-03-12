@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:03:25
- * @LastEditTime: 2021-03-11 16:14:30
+ * @LastEditTime: 2021-03-12 10:07:37
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\collection.ts
@@ -69,7 +69,7 @@ export default class CollectionService extends Service {
     const where = {} as WhereValue<Egg.Ow.Data.Collection>;
     if (params.keyword) {
       Object.assign(where, {
-        [Op.and]: [{
+        [Op.or]: [{
           name: {
             [Op.substring]: params.keyword,
           } }, {
@@ -88,7 +88,8 @@ export default class CollectionService extends Service {
     } as FindAndCountOptions<Egg.Sequelize.Data.Collection>;
     // 查询
     const result = await this.CollectionModel.findAndCountAll(queryParmas);
-    return result;
+    // 返回结果
+    return { count: result.count, rows: result.rows.map(t => { return { ...t.dataValues, itemUids: (t.items || []).map(o => o.uid) }; }) };
   }
 
   /**
