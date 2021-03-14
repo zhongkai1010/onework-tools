@@ -4,7 +4,7 @@ import { useRequest } from 'umi';
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 14:30:36
- * @LastEditTime: 2021-03-14 17:15:07
+ * @LastEditTime: 2021-03-15 00:01:50
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\treeHandleHook.ts
@@ -32,12 +32,13 @@ export interface TreeHandleHook {
   loadDatabase: (node: SchemeNode) => Promise<void>;
   loadTable: (node: SchemeNode) => Promise<void>;
   getTreeData: () => SchemeNode[];
-  addConnection: (connection: API.DataBase.Connection) => Promise<void>;
+  addConnection: (connection: API.DataBase.Connection) => Promise<boolean>;
   closeConnection: (node: SchemeNode) => Promise<void>;
-  refreshConnection: () => void;
+  refreshConnection: () => Promise<void>;
   handleError: (node: SchemeNode) => void;
   getExpandedKeys: () => string[];
   expandNode: (node: SchemeNode, expanded: boolean) => void;
+  getLoadedKeys: () => string[];
 }
 
 const handleConnection = (connection: API.DataBase.Connection) => {
@@ -120,10 +121,8 @@ const expandSchemeNode = (
 ): SchemeNode[] => {
   // 收起控制只需要设置isExpand属性，展开需要考虑连接与数据库上下级展开
   if (!expanded) {
-    const index = nodes.findIndex((t) => t.key === node.key);
-    const newNode = node;
-    newNode.isExpand = false;
-    nodes.splice(index, 1, newNode);
+    const connIndex = nodes.findIndex((t) => t.key === node.key);
+    nodes.splice(connIndex, 1, { ...node, isExpand: expanded });
     return nodes;
   }
   const tempNodeList = nodes.map((t) => {
@@ -162,6 +161,10 @@ export default (): TreeHandleHook => {
     manual: true,
     throwOnError: true,
   });
+  const addConnectionOperate = useRequest(connectionServices.insert, {
+    manual: true,
+    throwOnError: true,
+  });
   const [nodeList, setNodeList] = useState<(DataNode & SchemeNode)[]>([]);
   /**
    * @description: 加载接口服务中返回的数据库连接集合数据，写入节点列表
@@ -185,10 +188,16 @@ export default (): TreeHandleHook => {
     } else {
       tempNodeList = nodeList;
     }
-    tempNodeList = tempNodeList.map((t) => {
-      return { ...t, isLoad: t.key === node.key ? true : t.isLoad };
-    });
+    // 将其他节点收起，展开加载的节点
     tempNodeList = expandSchemeNode(tempNodeList, node, true);
+    // 设置当前节为已加载过
+    tempNodeList = tempNodeList.map((t) => {
+      return {
+        ...t,
+        isLoad: t.key === node.key ? true : t.isLoad,
+      };
+    });
+
     setNodeList(tempNodeList);
   };
   /**
@@ -207,10 +216,15 @@ export default (): TreeHandleHook => {
       const connectionNodes = transformNode('table', data, node);
       tempNodeList = [...nodeList, ...connectionNodes];
     }
-    tempNodeList = tempNodeList.map((t) => {
-      return { ...t, isLoad: t.key === node.key ? true : t.isLoad };
-    });
+    // 将其他节点收起，展开加载的节点
     tempNodeList = expandSchemeNode(tempNodeList, node, true);
+    // 设置当前节为已加载过
+    tempNodeList = tempNodeList.map((t) => {
+      return {
+        ...t,
+        isLoad: t.key === node.key ? true : t.isLoad,
+      };
+    });
     setNodeList(tempNodeList);
   };
   /**
@@ -218,8 +232,8 @@ export default (): TreeHandleHook => {
    * @param {*}
    * @return {*}
    */
-  const refreshConnection = (): void => {
-    connectionGetListOperate.data = undefined;
+  const refreshConnection = async (): Promise<void> => {
+    await connectionGetListOperate.run();
   };
   /**
    * @description: 关闭连接
@@ -240,11 +254,13 @@ export default (): TreeHandleHook => {
    * @param {*} async
    * @return {*}
    */
-  const addConnection = async (connection: API.DataBase.Connection) => {
+  const addConnection = async (data: API.DataBase.Connection): Promise<boolean> => {
+    const connection = await addConnectionOperate.run(data);
     const seachemNode = handleConnection(connection);
     const tempNodes = nodeList;
     tempNodes.push(seachemNode);
     setNodeList(tempNodes);
+    return Promise.resolve(true);
   };
   /**
    * @description: 加载失败设置展开状态和子节点
@@ -261,7 +277,6 @@ export default (): TreeHandleHook => {
     nodeList.splice(index, 0, temp);
     setNodeList(nodeList.slice());
   };
-
   /**
    * @description: 获取数据结构的树形结构数据
    * @param {*}
@@ -301,9 +316,24 @@ export default (): TreeHandleHook => {
     const keys = nodeList.filter((t) => t.isExpand).map((t) => t.key.toString());
     return keys;
   };
+  const getLoadedKeys = () => {
+    const keys = nodeList.filter((t) => t.isLoad).map((t) => t.key.toString());
+    return keys;
+  };
   const expandNode = (node: SchemeNode, expanded: boolean): void => {
-    const newNodeList = expandSchemeNode(nodeList, node, expanded);
-    setNodeList(newNodeList);
+    // 展开前，将同类型节点收起
+    let tempNodeList = nodeList;
+    if (expanded) {
+      tempNodeList = nodeList.map((t) => {
+        const temp = t;
+        if (temp.type === node.type) {
+          temp.isExpand = false;
+        }
+        return { ...temp };
+      });
+    }
+    const newNodeList = expandSchemeNode(tempNodeList, node, expanded);
+    setNodeList(newNodeList.slice());
   };
   useEffect(() => {
     const datas = connectionGetListOperate.data || [];
@@ -319,6 +349,7 @@ export default (): TreeHandleHook => {
     loading: connectionGetListOperate.loading,
     refreshConnection,
     closeConnection,
+    getLoadedKeys,
     addConnection,
     handleError,
     getExpandedKeys,

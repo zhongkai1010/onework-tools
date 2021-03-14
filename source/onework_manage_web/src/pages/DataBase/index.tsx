@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-03 16:06:46
- * @LastEditTime: 2021-03-14 16:16:11
+ * @LastEditTime: 2021-03-14 21:55:22
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\index.tsx
@@ -65,12 +65,18 @@ const DataBase = () => {
             loading={treeHandle.loading}
             extra={
               <Space>
-                <AddConnectionModal />
+                <AddConnectionModal
+                  onFinish={async (data) => {
+                    await treeHandle.addConnection(data as API.DataBase.Connection);
+                    await treeHandle.refreshConnection();
+                    return Promise.resolve(true);
+                  }}
+                />
                 <RefreshConnectionButton
                   disabled={treeHandle.loading}
-                  onClick={() => {
+                  onClick={async () => {
                     setSelectNode(undefined);
-                    treeHandle.refreshConnection();
+                    await treeHandle.refreshConnection();
                   }}
                 />
               </Space>

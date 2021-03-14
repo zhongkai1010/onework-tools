@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-05 11:40:24
- * @LastEditTime: 2021-03-14 17:05:13
+ * @LastEditTime: 2021-03-15 00:20:15
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\components\SchemeTree.tsx
@@ -18,8 +18,9 @@ import {
   SyncOutlined,
   TableOutlined,
 } from '@ant-design/icons';
-import { Menu, Tree } from 'antd';
+import { Menu } from 'antd';
 import type { EventDataNode, TreeProps } from 'antd/lib/tree';
+import DirectoryTree from 'antd/lib/tree/DirectoryTree';
 import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
 import type { SchemeNode, TreeHandleHook } from '../treeHandleHook';
@@ -49,20 +50,36 @@ const SchemeTree = (props: Props & TreeProps) => {
         return <></>;
     }
   };
+  const loadingData = (node: SchemeNode) => {};
   return (
     <>
-      <Tree
+      <DirectoryTree 
         showIcon
+        expandAction="doubleClick"
         blockNode
-        onSelect={(_keys, { node }) => {
-          setMenuStyle({
-            ...menuStyle,
-            display: 'none',
-          });
+        onSelect={async (_keys, { node }) => {
+          // const schemeNode = (node as unknown) as SchemeNode;
+          // 隐藏菜单
+          setMenuStyle({ ...menuStyle, display: 'none' });
+          // 设置选中
           setSelectNode(node);
+          // 选中后，未加载的节点，进行加载
+          // if (!schemeNode.isLoad) {
+          //   try {
+          //     if (schemeNode.type === 'connection') {
+          //       await props.treeHandle.loadDatabase(schemeNode);
+          //     }
+          //     if (schemeNode.type === 'database') {
+          //       await props.treeHandle.loadTable(schemeNode);
+          //     }
+          //   } catch (error) {
+          //     props.treeHandle.expandNode(schemeNode, false);
+          //   }
+          // }
         }}
         selectedKeys={selectNode ? [selectNode.key.toString()] : []}
         expandedKeys={props.treeHandle.getExpandedKeys()}
+        loadedKeys={props.treeHandle.getLoadedKeys()}
         onRightClick={({ event, node }) => {
           event.preventDefault();
           setMenuStyle({
