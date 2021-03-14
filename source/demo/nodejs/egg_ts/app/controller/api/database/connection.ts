@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:08:45
- * @LastEditTime: 2021-03-11 09:43:08
+ * @LastEditTime: 2021-03-14 09:27:57
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\database\connection.ts
@@ -44,6 +44,7 @@ export default class ConnectionController extends Controller {
       return t;
     });
     this.success(result);
+
   }
 
   /**

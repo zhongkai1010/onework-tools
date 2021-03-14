@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-25 14:17:10
- * @LastEditTime: 2021-03-10 23:35:27
+ * @LastEditTime: 2021-03-13 10:15:15
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\dataItem.ts
@@ -113,7 +113,7 @@ export default class DataItemService extends Service {
       },
     } });
     for (let i = 0; i < rows.length; i++) {
-      const dataModel = rows[i];
+      const dataModel = rows[i].dataValues;
       const objectModel = models.find(t => t.uid === dataModel.dataUid);
       if (objectModel) {
         dataModel.dataName = objectModel.name;

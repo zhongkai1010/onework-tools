@@ -3,7 +3,7 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-10-15 02:56:11
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-03-11 11:02:34
+ * @LastEditTime: 2021-03-14 09:29:42
  * @description
  * @FilePath: \egg_ts\app\core\base_controller.ts
  */
@@ -105,5 +105,6 @@ export default class BaseController extends Controller {
     if (!str) return defalutValue;
     return parseInt(str, 10) || 0;
   }
+
 }
 

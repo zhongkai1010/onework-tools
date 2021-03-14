@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-10 21:11:42
- * @LastEditTime: 2021-03-12 18:00:24
+ * @LastEditTime: 2021-03-14 14:16:19
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\router.ts
@@ -44,6 +44,8 @@ export default (app: Application) => {
 
   router.get('/api/database/scheme/getData', controller.api.database.scheme.getSchemeData);
   router.get('/api/database/scheme/getDatabases', controller.api.database.scheme.getDatabases);
+  router.get('/api/database/scheme/getTables', controller.api.database.scheme.getTables);
+
   router.get('/api/database/scheme/getTable', controller.api.database.scheme.getTable);
   router.post('/api/database/scheme/syncDataBase', controller.api.database.scheme.syncDataBase);
 

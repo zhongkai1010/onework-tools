@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 10:03:58
- * @LastEditTime: 2021-03-04 22:11:24
+ * @LastEditTime: 2021-03-13 11:24:32
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\types.d.ts
@@ -28,8 +28,13 @@ declare namespace API {
       name: string;
     };
     export type Table = {
+      uid: string;
       name: string;
       code: string;
+      cnUid: string;
+      dbName: string;
+      description: string;
+      columns?: Api.DataBase.Column[];
     };
     export type Column = {
       uid?: string;

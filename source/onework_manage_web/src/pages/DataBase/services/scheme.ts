@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 10:03:17
- * @LastEditTime: 2021-03-04 17:35:39
+ * @LastEditTime: 2021-03-14 14:18:58
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\services\scheme.ts
@@ -9,8 +9,15 @@
  */
 import { request } from 'umi';
 
-export async function getlist(query: any) {
-  return request<API.ResponseResult<any>>('/api/database/scheme/getlist', {
+export async function getDatabases(query: any) {
+  return request<API.ResponseResult<any>>('/api/database/scheme/getDatabases', {
+    method: 'GET',
+    params: query,
+  });
+}
+
+export async function getTables(query: any) {
+  return request<API.ResponseResult<any>>('/api/database/scheme/getTables', {
     method: 'GET',
     params: query,
   });

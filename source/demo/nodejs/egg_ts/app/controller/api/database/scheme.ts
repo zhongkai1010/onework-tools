@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-28 11:26:30
- * @LastEditTime: 2021-03-11 10:00:51
+ * @LastEditTime: 2021-03-14 14:15:44
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\database\scheme.ts
@@ -53,7 +53,7 @@ export default class SchemeController extends Controller {
     const ctx = this.ctx;
     const rule = {
       uid: 'string',
-      database: 'string?',
+      database: 'string',
     };
     ctx.validate(rule, ctx.request.query);
     const params = ctx.request.query;

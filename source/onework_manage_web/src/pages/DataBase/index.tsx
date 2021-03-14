@@ -1,142 +1,91 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-03 16:06:46
- * @LastEditTime: 2021-03-12 17:55:45
+ * @LastEditTime: 2021-03-14 16:16:11
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\index.tsx
  * 可以输入预定的版权声明、个性签名、空行等
  */
-import {
-  ArrowsAltOutlined,
-  CloudOutlined,
-  DatabaseOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  ShrinkOutlined,
-  SyncOutlined,
-  TableOutlined,
-} from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Col, Menu, Row, Tree } from 'antd';
-import type { EventDataNode } from 'antd/lib/tree';
-import type { CSSProperties } from 'react';
+import { Card, Col, Row, Space } from 'antd';
 import React, { useState } from 'react';
-import type { SchemeNode } from './treeHandle';
-import treeHandle from './treeHandle';
+import type { SchemeNode } from './treeHandleHook';
+
 import AddConnectionModal from './components/AddConnectionModal';
+import RefreshConnectionButton from './components/RefreshConnectionButton';
+import DbDataBaseList from './components/DbDataBaseList';
+import DbTableList from './components/DbTableList';
+import DbColumnList from './components/DbColumnList';
+import DbConnectionList from './components/DbConnectionList';
+import SchemeTree from './components/SchemeTree';
+import treeHandleHook from './treeHandleHook';
 
 const DataBase = () => {
-  const { loading, loadDatabase, getTreeData, loadTable } = treeHandle();
-  const [menuStyle, setMenuStyle] = useState<CSSProperties>({
-    width: '160px',
-    position: 'fixed',
-    display: 'none',
-    border: '1px solid #ccc',
-  });
-  const [selectNode, setSelectNode] = useState<EventDataNode>();
-  const renderIcon = (node: any) => {
-    const schemeNode = node as SchemeNode;
-    switch (schemeNode.type) {
+  const treeHandle = treeHandleHook();
+  const [selectNode, setSelectNode] = useState<SchemeNode>();
+  const renderList = () => {
+    if (!selectNode) return <DbConnectionList data={treeHandle.nodeList} />;
+    switch (selectNode.type) {
       case 'connection':
-        return <CloudOutlined style={{ color: schemeNode.isLoad ? 'green' : '#000' }} />;
+        return (
+          <>
+            {selectNode.source?.connection ? (
+              <DbDataBaseList data={selectNode.source?.connection} />
+            ) : (
+              <></>
+            )}
+          </>
+        );
       case 'database':
-        return <DatabaseOutlined style={{ color: schemeNode.isLoad ? 'green' : '#000' }} />;
+        return (
+          <>
+            {selectNode.source?.database ? (
+              <DbTableList data={selectNode.source?.database} />
+            ) : (
+              <></>
+            )}
+          </>
+        );
       case 'table':
-        return <TableOutlined />;
+        return (
+          <>{selectNode.source?.table ? <DbColumnList data={selectNode.source?.table} /> : <></>}</>
+        );
       default:
-        return <></>;
+        return <DbConnectionList data={treeHandle.nodeList} />;
     }
   };
-
   return (
-    <>
-      <PageContainer content="公共数据由多项公共数据项组合而成，分离在模型创建中常用的数据，例如：用户、组织等，便于创建模型过程中，快速构建常用的数据项，不需要重复创建，例如：基础模板、数据模板、状态模板、模型模板组合。">
-        <Row
-          gutter={18}
-          onClick={() => {
-            setMenuStyle({
-              ...menuStyle,
-              display: 'none',
-            });
-          }}
-          onContextMenu={(e) => {
-            e.preventDefault();
-
-            return false;
-          }}
-        >
-          <Col span={6}>
-            <Card
-              title="数据库连接"
-              bordered={false}
-              loading={loading}
-              extra={<AddConnectionModal />}
-            >
-              <Tree
-                showIcon
-                blockNode
-                onSelect={(_keys, { node }) => {
-                  setMenuStyle({
-                    ...menuStyle,
-                    display: 'none',
-                  });
-                  setSelectNode(node);
-                }}
-                selectedKeys={selectNode ? [selectNode.key.toString()] : []}
-                onRightClick={({ event, node }) => {
-                  event.preventDefault();
-                  setMenuStyle({
-                    ...menuStyle,
-                    display: 'block',
-                    top: event.pageY,
-                    left: event.pageX,
-                  });
-                  setSelectNode(node);
-                }}
-                icon={renderIcon}
-                loadData={async (node: EventDataNode) => {
-                  try {
-                    const schemeNode = (node as unknown) as SchemeNode;
-                    if (schemeNode.type === 'connection') {
-                      await loadDatabase(schemeNode);
-                    }
-                    if (schemeNode.type === 'database') {
-                      await loadTable(schemeNode);
-                    }
-                  } catch (error) {
-                    Promise.resolve();
-                  }
-                }}
-                treeData={getTreeData()}
-              />
-            </Card>
-          </Col>
-          <Col span={18}>
-            <Card title="数据库" bordered={false}></Card>
-          </Col>
-        </Row>
-      </PageContainer>
-      <Menu style={menuStyle}>
-        <Menu.Item style={{ borderBottom: '1px solid #ccc' }} icon={<ShrinkOutlined />}>
-          打开连接
-        </Menu.Item>
-        <Menu.Item style={{ borderBottom: '1px solid #ccc' }} icon={<ArrowsAltOutlined />}>
-          关闭连接
-        </Menu.Item>
-        <Menu.Item style={{ borderBottom: '1px solid #ccc' }} icon={<PlusOutlined />}>
-          新建连接
-        </Menu.Item>
-        <Menu.Item style={{ borderBottom: '1px solid #ccc' }} icon={<SyncOutlined />}>
-          同步连接
-        </Menu.Item>
-        <Menu.Item style={{ borderBottom: '1px solid #ccc' }} icon={<EditOutlined />}>
-          修改连接
-        </Menu.Item>
-        <Menu.Item icon={<DeleteOutlined />}>删除连接</Menu.Item>
-      </Menu>
-    </>
+    <PageContainer content="公共数据由多项公共数据项组合而成，分离在模型创建中常用的数据，例如：用户、组织等，便于创建模型过程中，快速构建常用的数据项，不需要重复创建，例如：基础模板、数据模板、状态模板、模型模板组合。">
+      <Row gutter={18}>
+        <Col span={6} onContextMenu={(e) => e.preventDefault()}>
+          <Card
+            title="数据库连接"
+            bordered={false}
+            loading={treeHandle.loading}
+            extra={
+              <Space>
+                <AddConnectionModal />
+                <RefreshConnectionButton
+                  disabled={treeHandle.loading}
+                  onClick={() => {
+                    setSelectNode(undefined);
+                    treeHandle.refreshConnection();
+                  }}
+                />
+              </Space>
+            }
+          >
+            <SchemeTree treeHandle={treeHandle} />
+          </Card>
+        </Col>
+        <Col span={18}>
+          <Card title="数据库" bordered={false}>
+            {/* {renderList()} */}
+          </Card>
+        </Col>
+      </Row>
+    </PageContainer>
   );
 };
 

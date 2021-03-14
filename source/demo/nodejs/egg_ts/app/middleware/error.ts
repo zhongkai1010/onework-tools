@@ -3,7 +3,7 @@
  * @Github: https://github.com/zhongkai1010
  * @Date: 2019-10-15 02:56:11
  * @LastEditors: 钟凯
- * @LastEditTime: 2021-03-07 00:55:27
+ * @LastEditTime: 2021-03-14 09:30:04
  * @Description:
  * @FilePath: \egg_ts\app\middleware\error.ts
  */
@@ -13,6 +13,7 @@ import { Context } from 'egg';
 export default function errorMiddleWare(): any {
   return async (ctx: Context, next: () => Promise<any>) => {
     try {
+      await ctx.helper.sleep(1000);
       await next();
     } catch (err) {
       // 异常捕获后，判断是否开启事务，如果开启事务后，就进行事务回滚

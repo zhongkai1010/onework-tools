@@ -1,24 +1,34 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-05 11:40:24
- * @LastEditTime: 2021-03-05 11:54:51
+ * @LastEditTime: 2021-03-14 17:05:13
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\components\SchemeTree.tsx
  * 可以输入预定的版权声明、个性签名、空行等
  */
-import { ArrowsAltOutlined, CloudOutlined, DatabaseOutlined, DeleteOutlined, EditOutlined, PlusOutlined, ShrinkOutlined, SyncOutlined, TableOutlined } from '@ant-design/icons';
+import {
+  ArrowsAltOutlined,
+  CloudOutlined,
+  DatabaseOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+  ShrinkOutlined,
+  SyncOutlined,
+  TableOutlined,
+} from '@ant-design/icons';
 import { Menu, Tree } from 'antd';
-import type { EventDataNode } from 'antd/lib/tree';
-import type { CSSProperties} from 'react';
+import type { EventDataNode, TreeProps } from 'antd/lib/tree';
+import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
-import type { SchemeNode } from '../treeHandle';
-import treeHandle from '../treeHandle';
+import type { SchemeNode, TreeHandleHook } from '../treeHandleHook';
 
-interface Props {}
+interface Props {
+  treeHandle: TreeHandleHook;
+}
 
-const SchemeTree = (props: Props) => {
-  const { loading, loadDatabase, getTreeData, loadTable } = treeHandle();
+const SchemeTree = (props: Props & TreeProps) => {
   const [menuStyle, setMenuStyle] = useState<CSSProperties>({
     width: '160px',
     position: 'fixed',
@@ -52,6 +62,7 @@ const SchemeTree = (props: Props) => {
           setSelectNode(node);
         }}
         selectedKeys={selectNode ? [selectNode.key.toString()] : []}
+        expandedKeys={props.treeHandle.getExpandedKeys()}
         onRightClick={({ event, node }) => {
           event.preventDefault();
           setMenuStyle({
@@ -63,20 +74,25 @@ const SchemeTree = (props: Props) => {
           setSelectNode(node);
         }}
         icon={renderIcon}
+        onExpand={(_expandedKeys, { expanded, node }) => {
+          const schemeNode = (node as unknown) as SchemeNode;
+          props.treeHandle.expandNode(schemeNode, expanded);
+        }}
         loadData={async (node: EventDataNode) => {
+          const schemeNode = (node as unknown) as SchemeNode;
           try {
-            const schemeNode = (node as unknown) as SchemeNode;
             if (schemeNode.type === 'connection') {
-              await loadDatabase(schemeNode);
+              await props.treeHandle.loadDatabase(schemeNode);
             }
             if (schemeNode.type === 'database') {
-              await loadTable(schemeNode);
+              await props.treeHandle.loadTable(schemeNode);
             }
           } catch (error) {
-            Promise.resolve();
+            props.treeHandle.expandNode(schemeNode, false);
           }
         }}
-        treeData={getTreeData()}
+        treeData={props.treeHandle.getTreeData()}
+        {...props}
       />
       <Menu style={menuStyle}>
         <Menu.Item style={{ borderBottom: '1px solid #ccc' }} icon={<ShrinkOutlined />}>

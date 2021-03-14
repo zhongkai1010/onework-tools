@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-03-03 16:47:34
+ * @LastEditTime: 2021-03-13 10:15:58
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataModel\model\item.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataModel\Model\item.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import React, { useRef, useState } from 'react';
@@ -33,14 +33,6 @@ export default () => {
       sorter: true,
       dataIndex: 'code',
     },
-   
-    {
-      title: '数据模型uid',
-      sorter: true,
-      dataIndex: 'dataUid',
-      hideInTable: true,
-    },
-
     {
       title: '是否标识',
       dataIndex: 'isUnique',
@@ -212,7 +204,7 @@ export default () => {
           return {
             data: result.data.rows,
             success: result.success,
-            total: result.data.total,
+            total: result.data.count,
           };
         }}
       />

@@ -37,7 +37,17 @@ function prefixInteger(num:number, n:number) {
   return (Array(n).join('0') + num).slice(-n);
 }
 
+
+function sleep(time: number) {
+  return new Promise<void>(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, time || 1000);
+  });
+}
+
 export default {
+  sleep,
   getRequestWrapper,
   getResponseErrorCode,
   prefixInteger,

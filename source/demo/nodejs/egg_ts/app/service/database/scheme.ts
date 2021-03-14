@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 20:16:52
- * @LastEditTime: 2021-03-11 10:26:37
+ * @LastEditTime: 2021-03-14 15:26:01
  * @LastEditors: 钟凯
  * @description:
  * @FilePath: \egg_ts\app\service\database\scheme.ts
@@ -112,19 +112,24 @@ export default class SchemeService extends Service {
       throw new AppError('请指定数据名称');
     }
     // 创建连接
-    const sequelize = this.createSequelize(connection);
+    const sequelize = this.createSequelize(connection, dbName);
     const result:Egg.Sequelize.Database.Table[] = [];
+    // 删除历史数据表
+    this.TableModel.destroy({ where: {
+      cnUid: connection.uid,
+      dbName,
+    } });
+    // 删除所属数据库的所有字段
+    this.ColumnModel.destroy({ where: {
+      cnUid: connection.uid,
+      dbName,
+    } });
     // 查询表
     let tabSql = AppCode.sql[connection.dbType].table;
     tabSql = tabSql.replace('${database}', dbName);
     const dbTables = await sequelize.query<Egg.Ow.DbTable>(tabSql, { type: QueryTypes.SELECT });
     for (let i = 0; i < dbTables.length; i++) {
       const dbTable = dbTables[i];
-      // 删除历史数据表
-      this.TableModel.destroy({ where: {
-        cnUid: connection.uid,
-        dbName,
-      } });
       // 创建表
       const table = await this.TableModel.create({
         name: dbTable.name,

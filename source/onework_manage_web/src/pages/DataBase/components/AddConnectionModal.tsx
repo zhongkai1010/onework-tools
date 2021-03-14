@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-12 10:35:01
- * @LastEditTime: 2021-03-12 17:37:05
+ * @LastEditTime: 2021-03-14 09:31:57
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\components\AddConnectionModal.tsx
@@ -10,7 +10,7 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
 import type { ModalFormProps } from '@ant-design/pro-form';
 import { ModalForm } from '@ant-design/pro-form';
-import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Col, Form, Input, InputNumber, Row, Select, Button } from 'antd';
 import React from 'react';
 
 const { Option } = Select;
@@ -19,7 +19,13 @@ const AddConnectionModal = (props: ModalFormProps) => {
   return (
     <ModalForm
       title="新增数据连接"
-      trigger={<PlusSquareOutlined title="添加连接" style={{ cursor: 'pointer' }} />}
+      trigger={
+        <Button
+          title="添加连接"
+          icon={<PlusSquareOutlined />}
+          style={{ cursor: 'pointer', border: 0 }}
+        ></Button>
+      }
       {...props}
     >
       <Row>
@@ -49,13 +55,25 @@ const AddConnectionModal = (props: ModalFormProps) => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="主机地址" name="host" rules={[{ required: true }]}>
+          <Form.Item
+            label="主机地址"
+            name="host"
+            rules={[{ required: true, message: '请填写主机地址!' }]}
+          >
             <Input placeholder="请填写主机地址" />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="端口" name="port" rules={[{ required: true }]}>
-            <InputNumber  placeholder="请填写数据库访问端口" precision={0} style={{width:'240px'}}/>
+          <Form.Item
+            label="端口"
+            name="port"
+            rules={[{ required: true, message: '请填写数据库访问端口!' }]}
+          >
+            <InputNumber
+              placeholder="请填写数据库访问端口"
+              precision={0}
+              style={{ width: '240px' }}
+            />
           </Form.Item>
         </Col>
       </Row>
