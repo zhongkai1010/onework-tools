@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-12 10:35:01
- * @LastEditTime: 2021-03-14 09:31:57
+ * @LastEditTime: 2021-03-15 10:48:19
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_web\src\pages\DataBase\components\AddConnectionModal.tsx
+ * @FilePath: \onework_manage_web\src\pages\DataBase\components\EditConnectionModal.tsx
  * 可以输入预定的版权声明、个性签名、空行等
  */
 import { PlusSquareOutlined } from '@ant-design/icons';
@@ -15,7 +15,11 @@ import React from 'react';
 
 const { Option } = Select;
 
-const AddConnectionModal = (props: ModalFormProps) => {
+interface Props {
+  data?: API.DataBase.Connection;
+}
+
+const EditConnectionModal = (props: Props & ModalFormProps) => {
   return (
     <ModalForm
       title="新增数据连接"
@@ -34,6 +38,7 @@ const AddConnectionModal = (props: ModalFormProps) => {
             label="连接名称"
             name="name"
             rules={[{ required: true, message: '请填写数据连接名称！' }]}
+            initialValue={props.data?.name}
           >
             <Input autoFocus placeholder="请填写数据连接名称" />
           </Form.Item>
@@ -45,6 +50,7 @@ const AddConnectionModal = (props: ModalFormProps) => {
             label="数据库类型"
             name="dbType"
             rules={[{ required: true, message: '请选择数据库类型！' }]}
+            initialValue={props.data?.dbType}
           >
             <Select placeholder="请选择数据库类型">
               <Option value="mysql">mysql</Option>
@@ -59,6 +65,7 @@ const AddConnectionModal = (props: ModalFormProps) => {
             label="主机地址"
             name="host"
             rules={[{ required: true, message: '请填写主机地址!' }]}
+            initialValue={props.data?.host}
           >
             <Input placeholder="请填写主机地址" />
           </Form.Item>
@@ -67,6 +74,7 @@ const AddConnectionModal = (props: ModalFormProps) => {
           <Form.Item
             label="端口"
             name="port"
+            initialValue={props.data?.port}
             rules={[{ required: true, message: '请填写数据库访问端口!' }]}
           >
             <InputNumber
@@ -83,6 +91,7 @@ const AddConnectionModal = (props: ModalFormProps) => {
             label="用户名"
             name="username"
             rules={[{ required: true, message: '请填写数据连接名称！' }]}
+            initialValue={props.data?.username}
           >
             <Input />
           </Form.Item>
@@ -92,6 +101,7 @@ const AddConnectionModal = (props: ModalFormProps) => {
             label="密码"
             name="password"
             rules={[{ required: true, message: '请填写数据连接名称！' }]}
+            initialValue={props.data?.password}
           >
             <Input.Password />
           </Form.Item>
@@ -100,7 +110,7 @@ const AddConnectionModal = (props: ModalFormProps) => {
 
       <Row>
         <Col span={24}>
-          <Form.Item label="默认数据库" name="database">
+          <Form.Item label="默认数据库" name="database" initialValue={props.data?.database}>
             <Input />
           </Form.Item>
         </Col>
@@ -108,14 +118,14 @@ const AddConnectionModal = (props: ModalFormProps) => {
 
       <Row>
         <Col span={24}>
-          <Form.Item label="配置" name="config">
+          <Form.Item label="配置" name="config" initialValue={props.data?.config}>
             <Input.TextArea />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Form.Item label="描述" name="description">
+          <Form.Item label="描述" name="description" initialValue={props.data?.description}>
             <Input.TextArea />
           </Form.Item>
         </Col>
@@ -124,4 +134,4 @@ const AddConnectionModal = (props: ModalFormProps) => {
   );
 };
 
-export default AddConnectionModal;
+export default EditConnectionModal;

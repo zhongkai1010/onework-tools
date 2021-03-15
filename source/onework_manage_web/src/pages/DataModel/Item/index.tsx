@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-03-12 09:49:39
+ * @LastEditTime: 2021-03-15 10:10:54
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\item\index.tsx
@@ -83,122 +83,124 @@ export default () => {
   ];
   return (
     <PageContainer content="构建数据模型集成元素">
-      <EditableProTable<API.Model.Item>
-        rowKey="uid"
-        bordered
-        actionRef={tabRef}
-        options={{
-          density: true,
-          search: {
-            allowClear: true,
-            enterButton: true,
-          },
-        }}
-        search={false}
-        debounceTime={800}
-        editable={{
-          type: 'multiple',
-          onSave: (_key, row) => {
-            return itemService.update(row);
-          },
-          onDelete: (_, row: API.Model.Item) => {
-            return itemService.remove([row.uid]);
-          },
-        }}
-        pagination={{
-          defaultPageSize: 10,
-        }}
-        toolBarRender={() => [
-          <ModalForm
-            title="新建数据项"
-            layout="horizontal"
-            form={form}
-            onFinish={async (values) => {
-              const result = await itemService.insert(values);
-              if (result.success) {
-                tabRef.current?.reload();
-              }
-              return result.success;
-            }}
-            trigger={<Button type="primary">新建</Button>}
-          >
-            <Form.Item
-              label="名称"
-              name="name"
-              rules={[{ required: true, message: '请输入数据项名称!' }]}
-            >
-              <Input.Search
-                autoFocus
-                placeholder="请输入数据项名称"
-                onSearch={(value) => {
-                  Translate.to(value).then((data) => {
-                    if (data.trans_result) {
-                      const code = data.trans_result.length > 0 ? data.trans_result[0].dst : '';
-                      const values = form.getFieldsValue();
-                      form.setFieldsValue({ ...values, code });
-                    }
-                  });
-                }}
-                autoComplete="new-password"
-              />
-            </Form.Item>
-            <ProFormText
-              label="编码"
-              name="code"
-              placeholder="请输入数据项名称"
-              rules={[
-                {
-                  required: true,
-                  message: '请选择数据项类型',
-                },
-              ]}
-            />
-            <ProFormSelect
-              label="类型"
-              name="type"
-              placeholder="请选择数据项类型"
-              rules={[
-                {
-                  required: true,
-                  message: '请选择数据项类型',
-                },
-              ]}
-              initialValue={ItemTypeOption[0].value}
-              options={ItemTypeOption}
-            />
-          </ModalForm>,
-          <FastFormModal
-            onSubmit={() => {
-              tabRef.current?.reload();
-            }}
-          />,
-        ]}
-        columns={columns}
-        request={async (params, sort = {}, filter) => {
     
-          let orderValue = 'createdAt';
-          let sortValue = 'desc';
-          const entries = Object.entries(sort);
-          if (entries.length > 0) {
-            orderValue = entries[0][0] as string;
-            sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
-          }
-          const query = {
-            page: params.current,
-            limit: params.pageSize,
-            order: orderValue,
-            sort: sortValue,
-            keyword: params.keyword,
-          };
+        <EditableProTable<API.Model.Item>
+          tableStyle={{paddingBottom:16}}
+          rowKey="uid"
+          bordered
+          actionRef={tabRef}
+          options={{
+            density: true,
+            search: {
+              allowClear: true,
+              enterButton: true,
+            },
+          }}
+          search={false}
+          debounceTime={800}
+          editable={{
+            type: 'multiple',
+            onSave: (_key, row) => {
+              return itemService.update(row);
+            },
+            onDelete: (_, row: API.Model.Item) => {
+              return itemService.remove([row.uid]);
+            },
+          }}
+          pagination={{
+            defaultPageSize: 10,
+          }}
+          toolBarRender={() => [
+            <ModalForm
+              title="新建数据项"
+              layout="horizontal"
+              form={form}
+              onFinish={async (values) => {
+                const result = await itemService.insert(values);
+                if (result.success) {
+                  tabRef.current?.reload();
+                }
+                return result.success;
+              }}
+              trigger={<Button type="primary">新建</Button>}
+            >
+              <Form.Item
+                label="名称"
+                name="name"
+                rules={[{ required: true, message: '请输入数据项名称!' }]}
+              >
+                <Input.Search
+                  autoFocus
+                  placeholder="请输入数据项名称"
+                  onSearch={(value) => {
+                    Translate.to(value).then((data) => {
+                      if (data.trans_result) {
+                        const code = data.trans_result.length > 0 ? data.trans_result[0].dst : '';
+                        const values = form.getFieldsValue();
+                        form.setFieldsValue({ ...values, code });
+                      }
+                    });
+                  }}
+                  autoComplete="new-password"
+                />
+              </Form.Item>
+              <ProFormText
+                label="编码"
+                name="code"
+                placeholder="请输入数据项名称"
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择数据项类型',
+                  },
+                ]}
+              />
+              <ProFormSelect
+                label="类型"
+                name="type"
+                placeholder="请选择数据项类型"
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择数据项类型',
+                  },
+                ]}
+                initialValue={ItemTypeOption[0].value}
+                options={ItemTypeOption}
+              />
+            </ModalForm>,
+            <FastFormModal
+              onSubmit={() => {
+                tabRef.current?.reload();
+              }}
+            />,
+          ]}
+          columns={columns}
+          request={async (params, sort = {}, filter) => {
+            let orderValue = 'createdAt';
+            let sortValue = 'desc';
+            const entries = Object.entries(sort);
+            if (entries.length > 0) {
+              orderValue = entries[0][0] as string;
+              sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
+            }
+            const query = {
+              page: params.current,
+              limit: params.pageSize,
+              order: orderValue,
+              sort: sortValue,
+              keyword: params.keyword,
+            };
 
-          const result = await itemService.getlist(query, filter);
-          return {
-            data: result.data.rows,
-            success: result.success,
-            total: result.data.count,
-          };
-        }}
-      />
+            const result = await itemService.getlist(query, filter);
+            return {
+              data: result.data.rows,
+              success: result.success,
+              total: result.data.count,
+            };
+          }}
+        />
+  
     </PageContainer>
   );
 };

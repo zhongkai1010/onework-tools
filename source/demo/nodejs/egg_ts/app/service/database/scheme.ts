@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 20:16:52
- * @LastEditTime: 2021-03-14 15:26:01
+ * @LastEditTime: 2021-03-15 17:31:17
  * @LastEditors: 钟凯
  * @description:
- * @FilePath: \egg_ts\app\service\database\scheme.ts
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\demo\nodejs\egg_ts\app\service\database\scheme.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { Service } from 'egg';
@@ -59,7 +59,7 @@ export default class SchemeService extends Service {
    * @param {*} connection 连接信息
    * @return {*} 数据库列表
    */
-  public async getDataBase(connection:Egg.Sequelize.Database.Connection):Promise<any> {
+  public async getConnectionDataBases(connection:Egg.Sequelize.Database.Connection):Promise<any> {
     // 初始化对象
     const sequelize = this.createSequelize(connection);
     const sql = AppCode.sql[connection.dbType].database;
@@ -74,7 +74,7 @@ export default class SchemeService extends Service {
    * @param {*} dbName 数据库名称
    * @return {*} 数据库表数据
    */
-  public async getTables(connection:Egg.Sequelize.Database.Connection, dbName:string): Promise<any> {
+  public async getDatabaseTables(connection:Egg.Sequelize.Database.Connection, dbName:string): Promise<any> {
     const tables = await this.TableModel.findAll({ where: {
       cnUid: connection.uid,
       dbName,
@@ -87,14 +87,12 @@ export default class SchemeService extends Service {
    * @param {string} uid 表uid
    * @return {Egg.Sequelize.Database.Table} 返回表信息
    */
-  public async getTable(uid:string):Promise<Egg.Sequelize.Database.Table> {
+  public async getTableColumns(uid:string):Promise<Egg.Sequelize.Database.Column[]> {
     const table = await this.TableModel.findByPk(uid);
     if (table == null) {
       throw new AppError('该数据库表数据不存在，无法获取详情信息');
     }
-    const columns = await this.ColumnModel.findAll({ where: { tbUid: table.uid } });
-    table.columns = columns;
-    return table;
+    return await this.ColumnModel.findAll({ where: { tbUid: table.uid } });
   }
 
   /**

@@ -4,7 +4,7 @@ import { useRequest } from 'umi';
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 14:30:36
- * @LastEditTime: 2021-03-15 00:01:50
+ * @LastEditTime: 2021-03-15 15:49:10
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\treeHandleHook.ts
@@ -32,8 +32,8 @@ export interface TreeHandleHook {
   loadDatabase: (node: SchemeNode) => Promise<void>;
   loadTable: (node: SchemeNode) => Promise<void>;
   getTreeData: () => SchemeNode[];
-  addConnection: (connection: API.DataBase.Connection) => Promise<boolean>;
-  closeConnection: (node: SchemeNode) => Promise<void>;
+  addConnection: (node: SchemeNode) => Promise<void>;
+  closeConnection: (node: SchemeNode) => void;
   refreshConnection: () => Promise<void>;
   handleError: (node: SchemeNode) => void;
   getExpandedKeys: () => string[];
@@ -41,7 +41,7 @@ export interface TreeHandleHook {
   getLoadedKeys: () => string[];
 }
 
-const handleConnection = (connection: API.DataBase.Connection) => {
+export const handleConnection = (connection: API.DataBase.Connection) => {
   return {
     type: 'connection',
     key: connection.uid,
@@ -80,7 +80,7 @@ const handleTabel = (database: SchemeNode, table: API.DataBase.Table) => {
   } as SchemeNode;
 };
 
-const transformNode = (
+export const transformNode = (
   type: 'connection' | 'database' | 'table',
   data: (API.DataBase.Connection | API.DataBase.Database | API.DataBase.Table)[],
   node?: SchemeNode,
@@ -161,10 +161,6 @@ export default (): TreeHandleHook => {
     manual: true,
     throwOnError: true,
   });
-  const addConnectionOperate = useRequest(connectionServices.insert, {
-    manual: true,
-    throwOnError: true,
-  });
   const [nodeList, setNodeList] = useState<(DataNode & SchemeNode)[]>([]);
   /**
    * @description: 加载接口服务中返回的数据库连接集合数据，写入节点列表
@@ -240,27 +236,24 @@ export default (): TreeHandleHook => {
    * @param {*} async
    * @return {*}
    */
-  const closeConnection = async (node: SchemeNode): Promise<void> => {
+  const closeConnection = (node: SchemeNode): void => {
     const temp = node;
     temp.isLoad = false;
     temp.isLeaf = false;
     delete temp.children;
     const index = nodeList.findIndex((t) => t.key === node.key);
-    const newNodes = nodeList.splice(index, 1, temp);
-    setNodeList(newNodes);
+    nodeList.splice(index, 1, temp);
+    setNodeList(nodeList.slice());
   };
   /**
    * @description:  添加连接
    * @param {*} async
    * @return {*}
    */
-  const addConnection = async (data: API.DataBase.Connection): Promise<boolean> => {
-    const connection = await addConnectionOperate.run(data);
-    const seachemNode = handleConnection(connection);
+  const addConnection = async (node: SchemeNode): Promise<void> => {
     const tempNodes = nodeList;
-    tempNodes.push(seachemNode);
+    tempNodes.push(node);
     setNodeList(tempNodes);
-    return Promise.resolve(true);
   };
   /**
    * @description: 加载失败设置展开状态和子节点
@@ -287,22 +280,13 @@ export default (): TreeHandleHook => {
     const newNodeList = [];
     for (let i = 0; i < root.length; i += 1) {
       const connection = root[i];
-      if (connection.isExpand) {
-        connection.children = [];
-        const temp_children = nodeList.filter((t) => t.parentKey === connection.key);
-        for (let j = 0; j < temp_children.length; j += 1) {
-          const database = temp_children[j];
-          if (database.isExpand) {
-            database.children = nodeList.filter((t) => t.parentKey === database.key);
-          } else {
-            database.children = undefined;
-          }
-          connection.children.push(database);
-        }
-      } else {
-        connection.children = undefined;
+      connection.children = [];
+      const temp_children = nodeList.filter((t) => t.parentKey === connection.key);
+      for (let j = 0; j < temp_children.length; j += 1) {
+        const database = temp_children[j];
+        database.children = nodeList.filter((t) => t.parentKey === database.key);
+        connection.children.push(database);
       }
-
       newNodeList.push(connection);
     }
     return newNodeList;
@@ -312,7 +296,7 @@ export default (): TreeHandleHook => {
    * @param {*}
    * @return {*}
    */
-  const getExpandedKeys = () => {
+  const getExpandedKeys = (): string[] => {
     const keys = nodeList.filter((t) => t.isExpand).map((t) => t.key.toString());
     return keys;
   };

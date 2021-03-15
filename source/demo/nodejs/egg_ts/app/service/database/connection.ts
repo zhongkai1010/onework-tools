@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-02 14:37:02
- * @LastEditTime: 2021-03-11 09:37:20
+ * @LastEditTime: 2021-03-15 10:24:12
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\database\connection.ts
@@ -96,7 +96,9 @@ export default class ConnectionService extends Service {
     // 初始化参数
     const ConnectionModel = this.ConnectionModel;
     // 处理数据
-    const result = await ConnectionModel.findAll();
+    const result = await ConnectionModel.findAll({
+      order: [[ 'createdAt', 'desc' ]],
+    });
     // 返回结果
     return result;
   }

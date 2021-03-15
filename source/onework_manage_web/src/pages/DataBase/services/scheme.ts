@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 10:03:17
- * @LastEditTime: 2021-03-14 14:18:58
+ * @LastEditTime: 2021-03-15 17:07:37
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\services\scheme.ts
@@ -22,3 +22,19 @@ export async function getTables(query: any) {
     params: query,
   });
 }
+
+export async function syncDataBase(body: any) {
+  return request<API.ResponseResult<any>>('/api/database/scheme/syncDataBase', {
+    method: 'POST',
+    data: body,
+  });
+}
+
+export async function getTableColumns(query: any) {
+  return request<API.ResponseResult<any>>('/api/database/scheme/getTableColumns', {
+    method: 'GET',
+    params: query,
+  });
+}
+
+

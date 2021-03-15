@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-10 21:11:42
- * @LastEditTime: 2021-03-14 14:16:19
+ * @LastEditTime: 2021-03-15 16:59:34
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \egg_ts\app\router.ts
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\demo\nodejs\egg_ts\app\router.ts
  * 可以输入预定的版权声明、个性签名、空行等
  */
 import { Application } from 'egg';
@@ -45,8 +45,7 @@ export default (app: Application) => {
   router.get('/api/database/scheme/getData', controller.api.database.scheme.getSchemeData);
   router.get('/api/database/scheme/getDatabases', controller.api.database.scheme.getDatabases);
   router.get('/api/database/scheme/getTables', controller.api.database.scheme.getTables);
-
-  router.get('/api/database/scheme/getTable', controller.api.database.scheme.getTable);
+  router.get('/api/database/scheme/getTableColumns', controller.api.database.scheme.getTableColumns);
   router.post('/api/database/scheme/syncDataBase', controller.api.database.scheme.syncDataBase);
 
   router.post('/api/database/connection/insert', controller.api.database.connection.insert);

@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:08:45
- * @LastEditTime: 2021-03-06 11:33:07
+ * @LastEditTime: 2021-03-15 12:03:15
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \onework_manage_api\app\controller\api\database\connection.js
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\onework_manage_api\app\controller\api\database\connection.js
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';

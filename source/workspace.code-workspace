@@ -4,7 +4,7 @@
 			"path": "onework_manage_web"
 		},
 		{
-			"path": "onework_manage_api"
+			"path": "demo\\nodejs\\egg_ts"
 		}
 	],
 	"settings": {}

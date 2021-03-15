@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-05 11:40:24
- * @LastEditTime: 2021-03-15 00:20:15
+ * @LastEditTime: 2021-03-15 15:09:21
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\components\SchemeTree.tsx
@@ -18,15 +18,16 @@ import {
   SyncOutlined,
   TableOutlined,
 } from '@ant-design/icons';
-import { Menu } from 'antd';
+import { Menu, Tree } from 'antd';
 import type { EventDataNode, TreeProps } from 'antd/lib/tree';
-import DirectoryTree from 'antd/lib/tree/DirectoryTree';
+
 import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
 import type { SchemeNode, TreeHandleHook } from '../treeHandleHook';
 
 interface Props {
   treeHandle: TreeHandleHook;
+  onNodeSelect?: (node: SchemeNode) => void;
 }
 
 const SchemeTree = (props: Props & TreeProps) => {
@@ -50,15 +51,16 @@ const SchemeTree = (props: Props & TreeProps) => {
         return <></>;
     }
   };
-  const loadingData = (node: SchemeNode) => {};
   return (
     <>
-      <DirectoryTree 
+      <Tree.DirectoryTree
         showIcon
         expandAction="doubleClick"
-        blockNode
         onSelect={async (_keys, { node }) => {
-          // const schemeNode = (node as unknown) as SchemeNode;
+          const schemeNode = (node as unknown) as SchemeNode;
+          if (props.onNodeSelect) {
+            props.onNodeSelect(schemeNode);
+          }
           // 隐藏菜单
           setMenuStyle({ ...menuStyle, display: 'none' });
           // 设置选中

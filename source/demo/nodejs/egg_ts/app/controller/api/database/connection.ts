@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:08:45
- * @LastEditTime: 2021-03-14 09:27:57
+ * @LastEditTime: 2021-03-15 12:03:31
  * @LastEditors: 钟凯
  * @description
- * @FilePath: \egg_ts\app\controller\api\database\connection.ts
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\demo\nodejs\egg_ts\app\controller\api\database\connection.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import Controller from '../../../core/base_controller';
@@ -40,8 +40,7 @@ export default class ConnectionController extends Controller {
     const data = await ctx.service.database.connection.getList();
     const result = data.map(t => {
       const temp = t;
-      temp.password = '******';
-      return t;
+      return temp;
     });
     this.success(result);
 

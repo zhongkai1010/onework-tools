@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-03-12 10:06:25
+ * @LastEditTime: 2021-03-15 10:11:00
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\model\index.tsx
@@ -121,75 +121,78 @@ export default () => {
   ];
   return (
     <PageContainer content="构建数据模型集成元素">
-      <EditableProTable<API.Model.DataModel>
-        rowKey="uid"
-        bordered
-        actionRef={tabRef}
-        options={{
-          density: true,
-          search: {
-            allowClear: true,
-            enterButton: true,
-          },
-        }}
-        expandable={{
-          expandedRowRender: (record) => <ModelTableDetails data={record} />,
-        }}
-        search={false}
-        debounceTime={800}
-        editable={{
-          type: 'multiple',
-          onSave: (_key, row) => {
-            return modelService.update(row);
-          },
-          onDelete: (_, row: API.Model.DataModel) => {
-            return modelService.remove([row.uid]);
-          },
-        }}
-        toolBarRender={() => [
-          <AddDataModelModal
-            onFinish={async (values) => {
-              const items = values.items || [];
-              let behaviors = values.behaviors || [];
-              behaviors = behaviors.map((t: any) => {
-                return {
-                  ...t,
-                  inputs: t.inputType ? [{ type: t.inputType, value: t.inputValue }] : undefined,
-                };
-              });
-              const result = await modelService.insert({ ...values, items, behaviors });
-              if (result.success) {
-                tabRef.current?.reload();
-              }
-              return result.success;
-            }}
-          />,
-        ]}
-        columns={columns}
-        request={async (params, sort = {}, filter) => {
-          let orderValue = 'createdAt';
-          let sortValue = 'desc';
-          const entries = Object.entries(sort);
-          if (entries.length > 0) {
-            orderValue = entries[0][0] as string;
-            sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
-          }
-          const query = {
-            page: params.current,
-            limit: params.pageSize,
-            order: orderValue,
-            sort: sortValue,
-            keyword: params.keyword,
-          };
+     
+        <EditableProTable<API.Model.DataModel>
+            tableStyle={{paddingBottom:16}}
+          rowKey="uid"
+          bordered
+          actionRef={tabRef}
+          options={{
+            density: true,
+            search: {
+              allowClear: true,
+              enterButton: true,
+            },
+          }}
+          expandable={{
+            expandedRowRender: (record) => <ModelTableDetails data={record} />,
+          }}
+          search={false}
+          debounceTime={800}
+          editable={{
+            type: 'multiple',
+            onSave: (_key, row) => {
+              return modelService.update(row);
+            },
+            onDelete: (_, row: API.Model.DataModel) => {
+              return modelService.remove([row.uid]);
+            },
+          }}
+          toolBarRender={() => [
+            <AddDataModelModal
+              onFinish={async (values) => {
+                const items = values.items || [];
+                let behaviors = values.behaviors || [];
+                behaviors = behaviors.map((t: any) => {
+                  return {
+                    ...t,
+                    inputs: t.inputType ? [{ type: t.inputType, value: t.inputValue }] : undefined,
+                  };
+                });
+                const result = await modelService.insert({ ...values, items, behaviors });
+                if (result.success) {
+                  tabRef.current?.reload();
+                }
+                return result.success;
+              }}
+            />,
+          ]}
+          columns={columns}
+          request={async (params, sort = {}, filter) => {
+            let orderValue = 'createdAt';
+            let sortValue = 'desc';
+            const entries = Object.entries(sort);
+            if (entries.length > 0) {
+              orderValue = entries[0][0] as string;
+              sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
+            }
+            const query = {
+              page: params.current,
+              limit: params.pageSize,
+              order: orderValue,
+              sort: sortValue,
+              keyword: params.keyword,
+            };
 
-          const result = await modelService.getlist(query, filter);
-          return {
-            data: result.data.rows,
-            success: result.success,
-            total: result.data.count,
-          };
-        }}
-      />
+            const result = await modelService.getlist(query, filter);
+            return {
+              data: result.data.rows,
+              success: result.success,
+              total: result.data.count,
+            };
+          }}
+        />
+    
     </PageContainer>
   );
 };

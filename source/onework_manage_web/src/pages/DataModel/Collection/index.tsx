@@ -2,7 +2,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 21:27:44
- * @LastEditTime: 2021-03-12 10:00:45
+ * @LastEditTime: 2021-03-15 10:10:46
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataModel\collection\index.tsx
@@ -97,76 +97,79 @@ export default () => {
   ];
   return (
     <PageContainer content="公共数据由多项公共数据项组合而成，分离在模型创建中常用的数据，例如：用户、组织等，便于创建模型过程中，快速构建常用的数据项，不需要重复创建，例如：基础模板、数据模板、状态模板、模型模板组合。">
-      <EditableProTable<API.Model.Collection>
-        rowKey="uid"
-        bordered
-        actionRef={tabRef}
-        options={{
-          density: true,
-          search: {
-            allowClear: true,
-            enterButton: true,
-          },
-        }}
-        pagination={{
-          defaultPageSize: 10,
-        }}
-        search={false}
-        debounceTime={800}
-        editable={{
-          type: 'multiple',
-          onSave: (_key, row) => {
-            return collectionService.update({ ...row, items: row.items.map((t) => t.uid) });
-          },
-          onDelete: (_, row: API.Model.Collection) => {
-            return collectionService.remove([row.uid]);
-          },
-        }}
-        toolBarRender={() => [
-          <AddCollectionModal
-            onFinish={async (values) => {
-              const result = await collectionService.insert(values);
-              if (result.success) {
-                tabRef.current?.reload();
-              }
-              return result.success;
-            }}
-          />,
-        ]}
-        columns={columns}
-        request={async (params, sort={}, filter) => {
-          let orderValue = 'createdAt';
-          let sortValue = 'desc';
-          const entries = Object.entries(sort);
-          if (entries.length > 0) {
-            orderValue = entries[0][0] as string;
-            sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
-          }
-          const query = {
-            page: params.current,
-            limit: params.pageSize,
-            order: orderValue,
-            sort: sortValue,
-            keyword: params.keyword,
-          };
-          const result = await collectionService.getlist(query, filter);
-          return {
-            data: result.data.rows,
-            success: result.success,
-            total: result.data.count,
-          };
-        }}
-      />
-      <EditCollectionModal
-        visible={visible}
-        collection={currentCollection}
-        onClose={() => {
-          setVisible(false);
-        }}
-        onFinish={() => {
-          tabRef.current?.reload();
-        }}
-      />
+      
+        <EditableProTable<API.Model.Collection>
+            tableStyle={{paddingBottom:16}}
+          rowKey="uid"
+          bordered
+          actionRef={tabRef}
+          options={{
+            density: true,
+            search: {
+              allowClear: true,
+              enterButton: true,
+            },
+          }}
+          pagination={{
+            defaultPageSize: 10,
+          }}
+          search={false}
+          debounceTime={800}
+          editable={{
+            type: 'multiple',
+            onSave: (_key, row) => {
+              return collectionService.update({ ...row, items: row.items.map((t) => t.uid) });
+            },
+            onDelete: (_, row: API.Model.Collection) => {
+              return collectionService.remove([row.uid]);
+            },
+          }}
+          toolBarRender={() => [
+            <AddCollectionModal
+              onFinish={async (values) => {
+                const result = await collectionService.insert(values);
+                if (result.success) {
+                  tabRef.current?.reload();
+                }
+                return result.success;
+              }}
+            />,
+          ]}
+          columns={columns}
+          request={async (params, sort = {}, filter) => {
+            let orderValue = 'createdAt';
+            let sortValue = 'desc';
+            const entries = Object.entries(sort);
+            if (entries.length > 0) {
+              orderValue = entries[0][0] as string;
+              sortValue = entries[0][1] === 'ascend' ? 'asc' : 'desc';
+            }
+            const query = {
+              page: params.current,
+              limit: params.pageSize,
+              order: orderValue,
+              sort: sortValue,
+              keyword: params.keyword,
+            };
+            const result = await collectionService.getlist(query, filter);
+            return {
+              data: result.data.rows,
+              success: result.success,
+              total: result.data.count,
+            };
+          }}
+        />
+        <EditCollectionModal
+          visible={visible}
+          collection={currentCollection}
+          onClose={() => {
+            setVisible(false);
+          }}
+          onFinish={() => {
+            tabRef.current?.reload();
+          }}
+        />
+    
     </PageContainer>
   );
 };
