@@ -366,3 +366,7 @@ source/onework_manage_api/app/service/model/data.js
 source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx
 /source/onework_manage_api/.vscode
 /source/onework-hexo/*.lock
+/source/demo/nodejs/egg_ts/.github
+/source/demo/nodejs/egg_ts/typings/app
+/source/demo/nodejs/egg_ts/typings/config
+/source/demo/nodejs/egg_ts/app/public/www

@@ -6,9 +6,7 @@
  * 用于存储系统状态值
  * Copyright (c) 2019 Your Company
  */
-
-
-export default {
+const AppCode = {
   common: {
     status: {
       enable: 'enable', // 启用
@@ -56,7 +54,7 @@ export default {
       // code：表名、name：注释
       table: "SELECT a.name AS 'code',  ISNULL(g.[value], a.name)  AS 'name' FROM sys.tables a LEFT JOIN sys.extended_properties g ON( a.object_id = g.major_id AND g.minor_id = 0) ORDER BY a.name",
       // order：顺序、 code：字段名称、type：类型、isUnique：主键、length：长度、precision：精度、isNull：是否未空、name：字段描述、defaultValue：默认值
-      column: "SELECT a.colorder AS 'order', a.name AS 'code', b.name AS 'type', CASE WHEN EXISTS( SELECT 1 FROM sysobjects WHERE xtype = 'PK' AND name IN ( SELECT name FROM sysindexes WHERE indid IN ( SELECT indid FROM sysindexkeys WHERE id = a.id AND colid = a.colid) ) ) THEN 1 ELSE 0 END AS 'isUnique', COLUMNPROPERTY( a.id , a.name, 'PRECISION' ) AS 'length', isnull( COLUMNPROPERTY( a.id, a.name , 'Scale' ), 0 ) AS 'precision', CASE WHEN a.isnullable= 1 THEN 1 ELSE 0 END AS 'isNull', isnull( e.text , '' ) AS 'name', isnull( g.[value], '' ) AS 'defaultValue' FROM syscolumns AS a LEFT JOIN systypes b ON a.xusertype= b.xusertype LEFT JOIN syscomments e ON a.cdefault= e.id LEFT JOIN sys.extended_properties g ON a.id = g.major_id AND a.colid = g.minor_id WHERE a.id = OBJECT_ID( '${table}' );",
+      column: "SELECT a.colorder AS 'order', a.NAME AS 'code', b.NAME AS 'type', CASE WHEN EXISTS( SELECT 1 FROM sysobjects WHERE xtype = 'PK' AND NAME IN ( SELECT NAME FROM sysindexes WHERE indid IN ( SELECT indid FROM sysindexkeys WHERE id = a.id AND colid = a.colid) ) ) THEN 1 ELSE 0 END AS 'isUnique', COLUMNPROPERTY ( a.id, a.NAME, 'PRECISION' ) AS 'length', isnull( COLUMNPROPERTY ( a.id, a.NAME, 'Scale' ), 0 ) AS 'precision', CASE WHEN a.isnullable = 1 THEN 1 ELSE 0 END AS 'isNull', isnull( e.text, '' ) AS 'defaultValue', isnull( g.VALUE, '' ) AS 'name' FROM syscolumns AS a LEFT JOIN systypes b ON a.xusertype = b.xusertype LEFT JOIN syscomments e ON a.cdefault = e.id LEFT JOIN sys.extended_properties g ON a.id = g.major_id AND a.colid = g.minor_id WHERE a.id = OBJECT_ID ( '${table}' );",
     },
     /**
      *
@@ -106,3 +104,5 @@ export default {
     },
   },
 };
+
+export default AppCode;

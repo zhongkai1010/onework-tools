@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-14 10:10:17
- * @LastEditTime: 2021-03-15 17:59:25
+ * @LastEditTime: 2021-03-19 10:16:45
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\components\DbColumnList.tsx
@@ -12,9 +12,12 @@ import * as schemeServices from '../services/scheme';
 import { useRequest } from 'umi';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
+import type TreeHandle from '../treeHandle';
+import type { SchemeNode } from '../treeHandle';
 
 interface Props {
-  table: API.DataBase.Table;
+  node: SchemeNode;
+  treeHandle: TreeHandle;
 }
 
 const DbColumnList = (props: Props) => {
@@ -24,22 +27,44 @@ const DbColumnList = (props: Props) => {
   const columns: ProColumns<API.DataBase.Column>[] = [
     {
       title: '名称',
-      sorter: true,
       dataIndex: 'name',
-      width: 220,
     },
     {
       title: '编码',
-      sorter: true,
       dataIndex: 'code',
-      width: 220,
     },
+    {
+      title: '类型',
+      dataIndex: 'type',
+    },
+    {
+      title: '默认值',
+      dataIndex: 'defaultValue',
+    },
+    {
+      title: '是否为空',
+      dataIndex: 'isNull',
+    },
+    {
+      title: '是否主键',
+      dataIndex: 'isUnique',
+    },
+    {
+      title: '长度',
+      dataIndex: 'length',
+    },
+    {
+      title: '精度',
+      dataIndex: 'precision',
+    },
+   
   ];
   useEffect(() => {
-    run({ uid: props.table.uid });
-  }, [props.table]);
+    run({ uid: props.node.source.table?.uid });
+  }, [props.node]);
   return (
     <ProTable<API.DataBase.Column>
+      rowKey="uid"
       pagination={false}
       search={false}
       loading={loading}

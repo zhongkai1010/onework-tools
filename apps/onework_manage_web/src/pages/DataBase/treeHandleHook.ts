@@ -1,15 +1,24 @@
-import type { DataNode } from 'antd/lib/tree';
-import { useEffect, useState } from 'react';
-import { useRequest } from 'umi';
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 14:30:36
- * @LastEditTime: 2021-03-15 15:49:10
+ * @LastEditTime: 2021-03-16 11:41:57
  * @LastEditors: 钟凯
  * @Description:
+ *      1、加载数据库连接
+ *      2、加载连接的数据库
+ *      3、加载数据库的表
+ *      4、设置节点收展状态
+ *      5、设置节点加载状态
+ *      6、修改节点
+ *      7、新增节点
+ *      8、删除节点
+ *      9、关闭数据库连接
  * @FilePath: \onework_manage_web\src\pages\DataBase\treeHandleHook.ts
  * 可以输入预定的版权声明、个性签名、空行等
  */
+import type { DataNode } from 'antd/lib/tree';
+import { useEffect, useState } from 'react';
+import { useRequest } from 'umi';
 import * as connectionServices from './services/connection';
 import * as schemeServices from './services/scheme';
 
@@ -24,24 +33,24 @@ export interface SchemeNode extends DataNode {
   isLoad: boolean;
   isExpand: boolean;
 }
-
 export interface TreeHandleHook {
   nodeList: SchemeNode[];
   loading: boolean;
-  loadConnection: () => Promise<void>;
+  loadAllConnection: () => Promise<void>;
   loadDatabase: (node: SchemeNode) => Promise<void>;
   loadTable: (node: SchemeNode) => Promise<void>;
   getTreeData: () => SchemeNode[];
-  addConnection: (node: SchemeNode) => Promise<void>;
-  closeConnection: (node: SchemeNode) => void;
-  refreshConnection: () => Promise<void>;
-  handleError: (node: SchemeNode) => void;
+  addConnection: (connection: API.DataBase.Connection) => Promise<void>;
+  deleteConnection: (key: string | number) => Promise<void>;
+  updateConnection: (connection: API.DataBase.Connection) => Promise<void>;
+  closeConnection: (key: string | number) => void;
   getExpandedKeys: () => string[];
-  expandNode: (node: SchemeNode, expanded: boolean) => void;
+  setExpandNode: (key: string | number, expanded: boolean) => void;
+  setLoadedNode: (key: string | number, loaded: boolean) => void;
   getLoadedKeys: () => string[];
 }
 
-export const handleConnection = (connection: API.DataBase.Connection) => {
+export const transformConnection = (connection: API.DataBase.Connection) => {
   return {
     type: 'connection',
     key: connection.uid,
@@ -54,7 +63,7 @@ export const handleConnection = (connection: API.DataBase.Connection) => {
   } as SchemeNode;
 };
 
-const handleDataBase = (connection: SchemeNode, database: API.DataBase.Database) => {
+export const transformDataBase = (connection: SchemeNode, database: API.DataBase.Database) => {
   return {
     key: `${connection?.key}_${database.name}`,
     parentKey: connection?.key.toString(),
@@ -67,7 +76,7 @@ const handleDataBase = (connection: SchemeNode, database: API.DataBase.Database)
   } as SchemeNode;
 };
 
-const handleTabel = (database: SchemeNode, table: API.DataBase.Table) => {
+export const transformTabel = (database: SchemeNode, table: API.DataBase.Table) => {
   return {
     key: `${database?.key}_${table.uid}`,
     parentKey: database?.key.toString(),
@@ -80,7 +89,7 @@ const handleTabel = (database: SchemeNode, table: API.DataBase.Table) => {
   } as SchemeNode;
 };
 
-export const transformNode = (
+export const transformNodes = (
   type: 'connection' | 'database' | 'table',
   data: (API.DataBase.Connection | API.DataBase.Database | API.DataBase.Table)[],
   node?: SchemeNode,
@@ -91,19 +100,19 @@ export const transformNode = (
       switch (type) {
         case 'connection': {
           const element = data[i] as API.DataBase.Connection;
-          result.push(handleConnection(element));
+          result.push(transformConnection(element));
           break;
         }
         case 'database': {
           const element = data[i] as API.DataBase.Database;
           if (!node) throw new Error('transformNode params node is null!');
-          result.push(handleDataBase(node, element));
+          result.push(transformDataBase(node, element));
           break;
         }
         case 'table': {
           const element = data[i] as API.DataBase.Table;
           if (!node) throw new Error('transformNode params node is null!');
-          result.push(handleTabel(node, element));
+          result.push(transformTabel(node, element));
           break;
         }
         default:
@@ -114,37 +123,127 @@ export const transformNode = (
   return result;
 };
 
-const expandSchemeNode = (
+/**
+ * @description: 替换数组中指定key的节点
+ * @param {string} key 替换节点的key
+ * @param {SchemeNode} nodes 节点集合
+ * @param {SchemeNode} newNode 需要替换的节点
+ */
+export const replaceSchemeNode = (
+  key: string | number,
   nodes: SchemeNode[],
-  node: SchemeNode,
+  newNode: SchemeNode,
+) => {
+  const nodeIndex = nodes.findIndex((t) => t.key === key);
+  nodes.splice(nodeIndex, 1, newNode);
+};
+
+/**
+ * @description: 设置数组中指定key的节点指定的属性值
+ * @param {string} key
+ * @param {string} attribute
+ * @param {any} value
+ * @param {SchemeNode} nodes
+ */
+export const setSchemeNodeAttribute = (
+  key: string | number,
+  attribute: string,
+  value: any,
+  nodes: SchemeNode[],
+): void => {
+  const node = nodes.find((t) => t.key === key);
+  if (node === undefined) throw new Error(`${key} is not find nodes`);
+  if (!Object.keys(node).includes(attribute))
+    throw new Error(`${attribute} attribute is not in node attribute`);
+  Object.defineProperty(node, attribute, {
+    value,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
+  replaceSchemeNode(key, nodes, node);
+};
+
+/**
+ * @description: 展开或收起指定key值的节点
+ * @param {string} key 收起的节点key
+ * @param {SchemeNode} nodes 节点集合
+ * @param {boolean} expanded true：展开，false：收起
+ * @return {*}
+ */
+export const expandedSchemeNode = (
+  key: string | number,
+  nodes: SchemeNode[],
+  expanded: boolean = false,
+): void => {
+  setSchemeNodeAttribute(key, 'isExpand', expanded, nodes);
+};
+
+/**
+ * @description: 设置指定key值的节点加载状态
+ * @param {string} key 节点key值
+ * @param {SchemeNode} nodes 节点集合
+ * @param {boolean} loaded true：已加载，false：未加载
+ * @return {*}
+ */
+export const loadedSchemeNode = (
+  key: string | number,
+  nodes: SchemeNode[],
+  loaded: boolean = false,
+): void => {
+  setSchemeNodeAttribute(key, 'isLoad', loaded, nodes);
+};
+
+/**
+ * @description: 设置所有节点展开状态
+ * @param {SchemeNode} nodes 节点集合
+ * @param {boolean} expanded true：已加载，false：未加载
+ * @return {*}
+ */
+export const expandedAllSchemeNode = (
+  nodes: SchemeNode[],
+  expanded: boolean = false,
+): SchemeNode[] => {
+  return nodes.map((t) => {
+    return {
+      ...t,
+      isExpand: expanded,
+    };
+  });
+};
+
+/**
+ * @description:  设置不同类型节点展开属性，内部控制级联关系的展开状态
+ * @param {string} key
+ * @param {SchemeNode} nodes
+ * @param {boolean} expanded
+ * @param {*} SchemeNode
+ * @return {*}
+ */
+export const expandTypeNode = (
+  key: string | number,
+  nodes: SchemeNode[],
   expanded: boolean,
 ): SchemeNode[] => {
-  // 收起控制只需要设置isExpand属性，展开需要考虑连接与数据库上下级展开
   if (!expanded) {
-    const connIndex = nodes.findIndex((t) => t.key === node.key);
-    nodes.splice(connIndex, 1, { ...node, isExpand: expanded });
+    expandedSchemeNode(key, nodes, false);
     return nodes;
   }
-  const tempNodeList = nodes.map((t) => {
-    return { ...t, isExpand: false };
-  });
-  const index = tempNodeList.findIndex((t) => t.key === node.key);
-  const newNode = node;
-  newNode.isExpand = true;
-  tempNodeList.splice(index, 1, newNode);
-  if (node.type === 'database') {
-    // 展开连接的节点
-    const connIndex = tempNodeList.findIndex(
-      (t) => t.source.connection?.uid === node.source.connection?.uid,
-    );
-    const connNode = tempNodeList.find(
-      (t) => t.source.connection?.uid === node.source.connection?.uid,
-    );
-    if (connNode != null) {
-      connNode.isExpand = true;
-      tempNodeList.splice(connIndex, 1, connNode);
-    }
+  // 展开节点的同时，收起同类型节点
+  const tempNodeList = expandedAllSchemeNode(nodes, false);
+  const node = tempNodeList.find((t) => t.key === key);
+  if (node === undefined) throw new Error('key node in nides to keys');
+  if (node.source.connection?.uid === undefined) throw new Error('connection node in nides');
+  const connectionUid = node.source.connection?.uid;
+  const dataBaseName = node.source.database?.name;
+  if (node.type === 'table') {
+    expandedSchemeNode(connectionUid, tempNodeList, true);
+    expandedSchemeNode(`${connectionUid}_${dataBaseName}`, tempNodeList, true);
   }
+  if (node.type === 'database') {
+    expandedSchemeNode(connectionUid, tempNodeList, true);
+  }
+  expandedSchemeNode(key, tempNodeList, true);
   return tempNodeList;
 };
 
@@ -153,6 +252,9 @@ export default (): TreeHandleHook => {
     throwOnError: true,
     manual: false,
   });
+  const updateConnectionOperate = useRequest(connectionServices.update, { manual: true });
+  const removeConnectionOperate = useRequest(connectionServices.remove, { manual: true });
+  const addConnectionOperate = useRequest(connectionServices.insert, { manual: true });
   const getDatabasesOperate = useRequest(schemeServices.getDatabases, {
     manual: true,
     throwOnError: true,
@@ -165,36 +267,30 @@ export default (): TreeHandleHook => {
   /**
    * @description: 加载接口服务中返回的数据库连接集合数据，写入节点列表
    */
-  const loadConnection = async () => {
+  const loadAllConnection = async () => {
     const datas = await connectionGetListOperate.run();
-    const nodes = transformNode('connection', datas);
+    const nodes = transformNodes('connection', datas);
     setNodeList(nodes);
   };
   /**
-   * @description: 加载数据库数据
-   * @param {SchemeNode} node 数据库连接节点
+   * @description: 加载连接节点下的数据库节点，如果已加载就设置展开状态
+   * @param {SchemeNode} node 连接节点
    */
   const loadDatabase = async (node: SchemeNode): Promise<void> => {
     // 判断是否已经加载过，如果未加载过请求服务接口进行数据加载
-    let tempNodeList = [];
-    if (!node.isLoad) {
-      const data = await getDatabasesOperate.run({ uid: node.source.connection?.uid });
-      const connectionNodes = transformNode('database', data, node);
-      tempNodeList = [...nodeList, ...connectionNodes];
+    if (node.isLoad) {
+      const tempNodeList = expandTypeNode(node.key, nodeList, true);
+      setNodeList(tempNodeList.slice());
     } else {
-      tempNodeList = nodeList;
+      const data = await getDatabasesOperate.run({ uid: node.source.connection?.uid });
+      const connectionNodes = transformNodes('database', data, node);
+      const newNodeList = [...nodeList, ...connectionNodes];
+      // loadedSchemeNode(node.key, newNodeList, true);
+      // if (!node.isExpand) newNodeList = expandTypeNode(node.key, newNodeList, true);
+      setNodeList(newNodeList.slice());
+    
     }
-    // 将其他节点收起，展开加载的节点
-    tempNodeList = expandSchemeNode(tempNodeList, node, true);
-    // 设置当前节为已加载过
-    tempNodeList = tempNodeList.map((t) => {
-      return {
-        ...t,
-        isLoad: t.key === node.key ? true : t.isLoad,
-      };
-    });
-
-    setNodeList(tempNodeList);
+    console.log('loadDatabase')
   };
   /**
    * @description: 加载数据库表
@@ -202,73 +298,83 @@ export default (): TreeHandleHook => {
    * @return {*}
    */
   const loadTable = async (node: SchemeNode): Promise<void> => {
-    // 判断是否已经加载过，如果未加载过请求服务接口进行数据加载
-    let tempNodeList = [] as SchemeNode[];
-    if (!node.isLoad) {
+    if (node.isLoad) {
+      const tempNodeList = expandTypeNode(node.key, nodeList, true);
+      setNodeList(tempNodeList.slice());
+    } else {
       const data = await getTablesOperate.run({
         uid: node.source.connection?.uid,
         database: node.source.database?.name,
       });
-      const connectionNodes = transformNode('table', data, node);
-      tempNodeList = [...nodeList, ...connectionNodes];
+      const databaseNodes = transformNodes('table', data, node);
+      const newNodeList = [...nodeList, ...databaseNodes];
+      // loadedSchemeNode(node.key, newNodeList, true);
+      // if (!node.isExpand) newNodeList = expandTypeNode(node.key, newNodeList, true);
+      setNodeList(newNodeList.slice());
     }
-    // 将其他节点收起，展开加载的节点
-    tempNodeList = expandSchemeNode(tempNodeList, node, true);
-    // 设置当前节为已加载过
-    tempNodeList = tempNodeList.map((t) => {
-      return {
-        ...t,
-        isLoad: t.key === node.key ? true : t.isLoad,
-      };
-    });
-    setNodeList(tempNodeList);
   };
+
   /**
-   * @description: 刷新数据库连接，初始化所有加载和展开状态
-   * @param {*}
+   * @description: 设置节点收展状态
+   * @param {string} key
+   * @param {boolean} expanded
    * @return {*}
    */
-  const refreshConnection = async (): Promise<void> => {
-    await connectionGetListOperate.run();
+  const setExpandNode = (key: string | number, expanded: boolean): void => {
+    const newNodeList = expandTypeNode(key, nodeList, expanded);
+    setNodeList(newNodeList.slice());
   };
+
+  /**
+   * @description: 设置节点收展状态
+   * @param {string} key
+   * @param {boolean} expanded
+   * @return {*}
+   */
+  const setLoadedNode = (key: string | number, loaded: boolean): void => {
+    setSchemeNodeAttribute(key, 'isLoad', loaded, nodeList);
+    setNodeList(nodeList.slice());
+  };
+
   /**
    * @description: 关闭连接
    * @param {*} async
    * @return {*}
    */
-  const closeConnection = (node: SchemeNode): void => {
-    const temp = node;
-    temp.isLoad = false;
-    temp.isLeaf = false;
-    delete temp.children;
-    const index = nodeList.findIndex((t) => t.key === node.key);
-    nodeList.splice(index, 1, temp);
-    setNodeList(nodeList.slice());
+  const closeConnection = (key: string | number): void => {
+    const newNodeList = nodeList.filter(
+      (t) => !t.key.toString().includes(key.toString()) && t.key !== key,
+    );
+    expandedSchemeNode(key, newNodeList, false);
+    loadedSchemeNode(key, newNodeList, false);
+    setNodeList(newNodeList.slice());
   };
   /**
    * @description:  添加连接
    * @param {*} async
    * @return {*}
    */
-  const addConnection = async (node: SchemeNode): Promise<void> => {
-    const tempNodes = nodeList;
-    tempNodes.push(node);
-    setNodeList(tempNodes);
-  };
-  /**
-   * @description: 加载失败设置展开状态和子节点
-   * @param {SchemeNode} node
-   * @return {*}
-   */
-  const handleError = (node: SchemeNode): void => {
-    const temp = node;
-    temp.isLoad = false;
-    temp.isLeaf = false;
-    delete temp.children;
-    const index = nodeList.findIndex((t) => t.key === node.key);
-    nodeList.splice(index, 1);
-    nodeList.splice(index, 0, temp);
+  const addConnection = async (connection: API.DataBase.Connection): Promise<void> => {
+    const data = await addConnectionOperate.run(connection);
+    const schemeNode = transformConnection(data);
+    nodeList.push(schemeNode);
     setNodeList(nodeList.slice());
+  };
+  const deleteConnection = async (key: string | number) => {
+    await removeConnectionOperate.run([key]);
+    const newNodeList = nodeList.filter(
+      (t) => !t.key.toString().includes(key.toString()) && t.key !== key,
+    );
+    setNodeList(newNodeList.slice());
+  };
+  const updateConnection = async (connection: API.DataBase.Connection) => {
+    const updatedConnection = await updateConnectionOperate.run(connection);
+    const schemeNode = transformConnection(updatedConnection);
+    const newNodeList = nodeList.filter(
+      (t) => !t.key.toString().includes(connection.uid) && t.key !== connection.uid,
+    );
+    replaceSchemeNode(connection.uid, newNodeList, schemeNode);
+    setNodeList(newNodeList.slice());
   };
   /**
    * @description: 获取数据结构的树形结构数据
@@ -289,6 +395,7 @@ export default (): TreeHandleHook => {
       }
       newNodeList.push(connection);
     }
+    console.log('getTreeData')
     return newNodeList;
   };
   /**
@@ -304,39 +411,26 @@ export default (): TreeHandleHook => {
     const keys = nodeList.filter((t) => t.isLoad).map((t) => t.key.toString());
     return keys;
   };
-  const expandNode = (node: SchemeNode, expanded: boolean): void => {
-    // 展开前，将同类型节点收起
-    let tempNodeList = nodeList;
-    if (expanded) {
-      tempNodeList = nodeList.map((t) => {
-        const temp = t;
-        if (temp.type === node.type) {
-          temp.isExpand = false;
-        }
-        return { ...temp };
-      });
-    }
-    const newNodeList = expandSchemeNode(tempNodeList, node, expanded);
-    setNodeList(newNodeList.slice());
-  };
+
   useEffect(() => {
     const datas = connectionGetListOperate.data || [];
-    const nodes = transformNode('connection', datas);
+    const nodes = transformNodes('connection', datas);
     setNodeList(nodes);
   }, [connectionGetListOperate.data]);
   return {
-    loadConnection,
+    loadAllConnection,
     loadDatabase,
     loadTable,
     getTreeData,
     nodeList,
     loading: connectionGetListOperate.loading,
-    refreshConnection,
     closeConnection,
     getLoadedKeys,
     addConnection,
-    handleError,
     getExpandedKeys,
-    expandNode,
+    setExpandNode,
+    setLoadedNode,
+    deleteConnection,
+    updateConnection,
   };
 };

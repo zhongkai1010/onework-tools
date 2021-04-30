@@ -1,19 +1,19 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-24 21:55:40
- * @LastEditTime: 2021-03-10 23:52:40
+ * @LastEditTime: 2021-03-31 15:32:32
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\model\dataBehavior.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import Controller from '../../../core/base_controller';
-import AppCode from '../../../core/appCode';
+import { BaseController, AppCode, Router } from '../../../core';
 
-export default class DataBehaviorController extends Controller {
+export default class DataBehaviorController extends BaseController {
   /**
    * @description  新增数据模型行为
    */
+  @Router.get('/api/model/data/behavior/insert')
   async insert() {
     const ctx = this.ctx;
     const rule = {
@@ -45,6 +45,7 @@ export default class DataBehaviorController extends Controller {
   /**
    * @description  查询数据模型行为
    */
+  @Router.post('/api/model/data/behavior/getList')
   async getList() {
     const ctx = this.ctx;
     const pageParams = this.validatePage();
@@ -55,6 +56,7 @@ export default class DataBehaviorController extends Controller {
   /**
    * @description  修改数据模型行为
    */
+  @Router.post('/api/model/data/behavior/update')
   async update() {
     const ctx = this.ctx;
     const rule = {
@@ -86,6 +88,7 @@ export default class DataBehaviorController extends Controller {
   /**
    * @description  移除数据模型行为
    */
+  @Router.post('/api/model/data/behavior/remove')
   async remove() {
     const ctx = this.ctx;
     const rule = {

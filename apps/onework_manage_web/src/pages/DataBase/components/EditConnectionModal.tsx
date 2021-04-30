@@ -1,16 +1,15 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-12 10:35:01
- * @LastEditTime: 2021-03-15 10:48:19
+ * @LastEditTime: 2021-03-16 22:32:34
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\components\EditConnectionModal.tsx
  * 可以输入预定的版权声明、个性签名、空行等
  */
-import { PlusSquareOutlined } from '@ant-design/icons';
 import type { ModalFormProps } from '@ant-design/pro-form';
 import { ModalForm } from '@ant-design/pro-form';
-import { Col, Form, Input, InputNumber, Row, Select, Button } from 'antd';
+import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import React from 'react';
 
 const { Option } = Select;
@@ -21,17 +20,7 @@ interface Props {
 
 const EditConnectionModal = (props: Props & ModalFormProps) => {
   return (
-    <ModalForm
-      title="新增数据连接"
-      trigger={
-        <Button
-          title="添加连接"
-          icon={<PlusSquareOutlined />}
-          style={{ cursor: 'pointer', border: 0 }}
-        ></Button>
-      }
-      {...props}
-    >
+    <ModalForm {...props}>
       <Row>
         <Col span={24}>
           <Form.Item

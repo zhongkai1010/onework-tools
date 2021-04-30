@@ -1,14 +1,14 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-28 15:27:42
- * @LastEditTime: 2021-02-28 15:30:51
+ * @LastEditTime: 2021-03-31 15:35:29
  * @LastEditors: 钟凯
  * @description
- * @FilePath: \onework_manage_api\app\controller\api\user\login.js
+ * @FilePath: \egg_ts\app\controller\api\user\login.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import Controller from '../../../core/base_controller';
-export default class LoginController extends Controller {
+import { BaseController } from '../../../core';
+export default class LoginController extends BaseController {
 
 }
 

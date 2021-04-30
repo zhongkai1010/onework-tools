@@ -1,33 +1,33 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:08:45
- * @LastEditTime: 2021-03-15 12:03:31
+ * @LastEditTime: 2021-04-10 09:08:11
  * @LastEditors: 钟凯
  * @description
- * @FilePath: \onework_manage_webd:\github\OneWork\source\demo\nodejs\egg_ts\app\controller\api\database\connection.ts
+ * @FilePath: \egg_ts\app\controller\api\database\connection.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import Controller from '../../../core/base_controller';
+import { BaseController, Validate, Router } from '../../../core';
 
-export default class ConnectionController extends Controller {
+export default class ConnectionController extends BaseController {
 
   /**
    * @description 添加数据库连接
    */
+  @Validate({ bodyRule: {
+    name: 'string',
+    dbType: [ 'mysql', 'mariadb', 'postgres', 'mssql' ],
+    database: 'string?',
+    username: 'string',
+    password: 'string',
+    host: 'string',
+    port: 'int',
+    config: 'string?',
+    description: 'string?',
+  } })
+  @Router.post('/api/database/connection/add')
   async insert() {
     const ctx = this.ctx;
-    const rule = {
-      name: 'string',
-      dbType: [ 'mysql', 'mariadb', 'postgres', 'mssql' ],
-      database: 'string?',
-      username: 'string',
-      password: 'string',
-      host: 'string',
-      port: 'int',
-      config: 'string?',
-      description: 'string?',
-    };
-    ctx.validate(rule, ctx.request.body);
     const data = await ctx.service.database.connection.add(ctx.request.body);
     this.success(data);
   }
@@ -35,6 +35,7 @@ export default class ConnectionController extends Controller {
   /**
    * @description   获取数据库连接列表（分页、排序、关键字）
    */
+  @Router.get('/api/database/connection/getlist')
   async getlist() {
     const ctx = this.ctx;
     const data = await ctx.service.database.connection.getList();
@@ -49,6 +50,7 @@ export default class ConnectionController extends Controller {
   /**
    * @description   修改数据库连接（单条）
    */
+  @Router.post('/api/database/connection/update')
   async update() {
     const ctx = this.ctx;
     const rule = {
@@ -72,6 +74,7 @@ export default class ConnectionController extends Controller {
   /**
    * @description  删除数据库连接
    */
+  @Router.post('/api/database/connection/remove')
   async remove() {
     const ctx = this.ctx;
     const rule = {

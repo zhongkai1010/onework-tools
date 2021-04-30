@@ -15,6 +15,7 @@ module.exports = {
     REACT_APP_ENV: true,
   },
   rules:{
-    "react-hooks/exhaustive-deps":0
+    "react-hooks/exhaustive-deps":0,
+    "no-underscore-dangle":0
   }
 };

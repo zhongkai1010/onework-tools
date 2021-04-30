@@ -7,5 +7,7 @@
 			"path": "demo\\nodejs\\egg_ts"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"typescript.tsdk": "egg_ts\\node_modules\\typescript\\lib"
+	}
 }

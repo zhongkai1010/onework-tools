@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-04 10:03:58
- * @LastEditTime: 2021-03-13 11:24:32
+ * @LastEditTime: 2021-03-17 15:03:48
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\types.d.ts
@@ -25,7 +25,16 @@ declare namespace API {
     };
 
     export type Database = {
+      uid: string;
       name: string;
+      code: string;
+      cnUid: string;
+      isSync: boolean;
+      isOnline?: boolean;
+      lastSyncDate: string;
+      description: string | null;
+      updatedAt?: string;
+      createdAt?: string;
     };
     export type Table = {
       uid: string;

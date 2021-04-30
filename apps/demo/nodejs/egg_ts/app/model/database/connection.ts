@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-01 14:14:42
- * @LastEditTime: 2021-03-11 09:16:29
+ * @LastEditTime: 2021-03-31 15:38:03
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\model\database\connection.ts
@@ -9,14 +9,12 @@
  */
 import { Application, Ow, Sequelize } from 'egg';
 import { DataTypes } from 'sequelize';
-
-import baseModel from '../base';
-
+import { BaseModel } from '../../core/index';
 
 export default (app:Application) => {
 
   const Connection = app.model.define<Sequelize.Database.Connection, Ow.Database.Connection>('connection', {
-    ...baseModel,
+    ...BaseModel,
     name: { type: DataTypes.STRING, allowNull: true, comment: '连接名称' },
     dbType: { type: DataTypes.STRING, allowNull: false, comment: '数据库类型' },
     database: { type: DataTypes.STRING, allowNull: true, comment: '默认数据库' },
@@ -30,7 +28,6 @@ export default (app:Application) => {
     tableName: 'ow_database_connections',
     paranoid: true,
   });
-
 
   return Connection;
 };

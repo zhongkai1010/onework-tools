@@ -1,7 +1,7 @@
 ﻿/*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-03-03 16:08:14
+ * @LastEditTime: 2021-03-25 16:12:43
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\config\routes.ts
@@ -55,7 +55,6 @@ export default [
     path: '/model',
     name: 'model',
     icon: 'crown',
-    access: 'canAdmin',
     routes: [
       {
         path: '/model/item',
@@ -93,8 +92,32 @@ export default [
     path: '/db',
     name: 'db',
     icon: 'crown',
-    access: 'canAdmin',
     component: './DataBase',
+  },
+  {
+    path: '/tool',
+    name: 'tool',
+    icon: 'crown',
+    routes:[
+      {
+        path: '/tool/comparison',
+        name: 'comparison',
+        icon: 'smile',
+        component: './Tool/Comparison',
+      },
+      {
+        path: '/tool/translation',
+        name: 'translation',
+        icon: 'smile',
+        component: './Tool/Translation',
+      },
+      {
+        path: '/tool/template',
+        name: 'template',
+        icon: 'smile',
+        component: './Tool/Template',
+      },
+    ]
   },
   {
     path: '/',

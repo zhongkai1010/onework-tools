@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-21 15:28:47
- * @LastEditTime: 2021-03-09 10:05:37
+ * @LastEditTime: 2021-03-31 15:38:41
  * @LastEditors: 钟凯
  * @Description: 模块的数据模型
  * @FilePath: \egg_ts\app\model\module\moduleModel.ts
@@ -10,12 +10,12 @@
 
 import { DataTypes } from 'sequelize';
 import { Application, Ow, Sequelize } from 'egg';
-import baseModel from '../base';
+import { BaseModel } from '../../core/index';
 
 export default (app:Application) => {
 
   const ModuleModel = app.model.define<Sequelize.Module.ModuleModel, Ow.Module.ModuleModel>('moduleModel', {
-    ...baseModel,
+    ...BaseModel,
     modelUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型uid' },
     moduleUid: { type: DataTypes.UUID, allowNull: false, comment: '模块uid' },
   }, {

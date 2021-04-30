@@ -9,9 +9,7 @@
  */
 import { Service } from 'egg';
 import { FindAndCountOptions, Op, WhereValue } from 'sequelize';
-import AppError from '../../core/appError';
-import AppCode from '../../core/appCode';
-
+import { AppError, AppCode } from '../../core/index';
 export default class CollectionService extends Service {
   protected CollectionModel = this.ctx.model.Data.Collection;
   protected ItemModel = this.ctx.model.Data.Item;

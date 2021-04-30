@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-03 14:28:04
- * @LastEditTime: 2021-03-04 21:22:29
+ * @LastEditTime: 2021-03-24 16:51:47
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\config\proxy.ts
@@ -26,6 +26,10 @@ export default {
     },
     '/api/database/': {
       target: 'http://127.0.0.1:7001',
+      changeOrigin: true,
+    },
+    '/api/tool/': {
+      target: 'http://yapi.one-work.net/mock/15/',
       changeOrigin: true,
     },
     '/api/': {

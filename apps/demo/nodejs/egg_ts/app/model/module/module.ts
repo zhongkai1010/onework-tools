@@ -9,12 +9,12 @@
  */
 import { DataTypes } from 'sequelize';
 import { Application, Ow, Sequelize } from 'egg';
-import baseModel from '../base';
+import { BaseModel } from '../../core/index';
 
 export default (app:Application) => {
 
   const Module = app.model.define<Sequelize.Module.Module, Ow.Module.Module>('module', {
-    ...baseModel,
+    ...BaseModel,
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
 
   }, {

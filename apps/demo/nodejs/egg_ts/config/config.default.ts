@@ -1,13 +1,17 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-06 23:21:22
- * @LastEditTime: 2021-03-09 10:25:53
+ * @LastEditTime: 2021-03-19 10:47:19
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \egg_ts\config\config.default.ts
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\demo\nodejs\egg_ts\config\config.default.ts
  * 可以输入预定的版权声明、个性签名、空行等
  */
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import * as path from 'path';
+// import * as cls from 'cls-hooked';
+// import { Sequelize } from 'sequelize';
+
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -21,7 +25,9 @@ export default (appInfo: EggAppInfo) => {
     'transaction',
     'error',
   ];
-
+  // 加入事务钩子
+  // const namespace = cls.createNamespace('onework-namespace');
+  // Sequelize.useCLS(namespace);
   // add your special config in here
   const bizConfig = {
     security: {
@@ -36,6 +42,10 @@ export default (appInfo: EggAppInfo) => {
       database: 'onework_dev',
       host: '101.37.81.183',
       timezone: '+08:00', // for writing to database
+    },
+    static: {
+      prefix: '/public/',
+      dir: path.join(appInfo.baseDir, 'app/public'),
     },
   };
 

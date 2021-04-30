@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 22:00:56
- * @LastEditTime: 2021-03-07 22:26:03
+ * @LastEditTime: 2021-03-31 15:15:21
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\core\appError.ts
@@ -14,7 +14,7 @@ import errorCode from './errorCode';
  * @param {*}
  * @return {*}
  */
-export default class AppError extends Error {
+class AppError extends Error {
   /**
    * @description  异常构造函数
    * @param {*} code 文本或编码
@@ -34,3 +34,4 @@ export default class AppError extends Error {
   }
 }
 
+export default AppError;

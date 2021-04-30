@@ -8,7 +8,7 @@
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { Service } from 'egg';
-import AppError from '../../core/appError';
+import { AppError } from '../../core/index';
 
 export default class ConnectionService extends Service {
   protected ConnectionModel = this.ctx.model.Database.Connection;

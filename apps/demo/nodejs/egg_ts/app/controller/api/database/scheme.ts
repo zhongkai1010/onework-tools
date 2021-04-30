@@ -1,19 +1,20 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-28 11:26:30
- * @LastEditTime: 2021-03-15 16:59:11
+ * @LastEditTime: 2021-03-31 15:30:13
  * @LastEditors: 钟凯
  * @description
- * @FilePath: \onework_manage_webd:\github\OneWork\source\demo\nodejs\egg_ts\app\controller\api\database\scheme.ts
+ * @FilePath: \egg_ts\app\controller\api\database\scheme.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import Controller from '../../../core/base_controller';
+import { BaseController, Router } from '../../../core';
 
-export default class SchemeController extends Controller {
+export default class SchemeController extends BaseController {
 
   /**
    * @description
    */
+  @Router.get('/api/database/scheme/getData')
   async getSchemeData() {
     const ctx = this.ctx;
     const rule = {
@@ -33,6 +34,7 @@ export default class SchemeController extends Controller {
   /**
    * @description
    */
+  @Router.get('/api/database/scheme/getDatabases')
   async getDatabases() {
     const ctx = this.ctx;
     const rule = {
@@ -49,6 +51,7 @@ export default class SchemeController extends Controller {
   /**
    * @description
    */
+  @Router.get('/api/database/scheme/getTables')
   async getTables() {
     const ctx = this.ctx;
     const rule = {
@@ -63,6 +66,7 @@ export default class SchemeController extends Controller {
     this.success(data);
   }
 
+  @Router.get('/api/database/scheme/syncDataBase')
   async syncDataBase() {
     const ctx = this.ctx;
     const rule = {
@@ -80,6 +84,7 @@ export default class SchemeController extends Controller {
   /**
    * @description
    */
+  @Router.get('/api/database/scheme/getTableColumns')
   async getTableColumns() {
     const ctx = this.ctx;
     const rule = {

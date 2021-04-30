@@ -9,8 +9,7 @@
  */
 import { Service } from 'egg';
 import { Op } from 'sequelize';
-import AppError from '../../core/appError';
-import AppCode from '../../core/appCode';
+import { AppError, AppCode } from '../../core/index';
 
 export default class DataBehaviorService extends Service {
   protected DataModel = this.ctx.model.Data.Data;

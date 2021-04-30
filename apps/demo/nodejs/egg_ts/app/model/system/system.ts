@@ -9,12 +9,12 @@
  */
 import { DataTypes } from 'sequelize';
 import { Application, Ow, Sequelize } from 'egg';
-import baseModel from '../base';
+import { BaseModel } from '../../core/index';
 
 export default (app:Application) => {
 
   const System = app.model.define<Sequelize.System.System, Ow.System.System>('system', {
-    ...baseModel,
+    ...BaseModel,
     description: { type: DataTypes.STRING, allowNull: true, comment: '描述' },
   }, {
     tableName: 'ow_systems',

@@ -1,19 +1,19 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-11 19:22:50
- * @LastEditTime: 2021-03-11 15:47:46
+ * @LastEditTime: 2021-04-15 10:34:28
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\model\item.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import Controller from '../../../core/base_controller';
-import AppCode from '../../../core/appCode';
+import { BaseController, AppCode, Router } from '../../../core';
 
-export default class ItemController extends Controller {
+export default class ItemController extends BaseController {
   /**
    * @description  添加数据项
    */
+  @Router.post('/api/model/item/insert')
   async insert() {
     const ctx = this.ctx;
     const rule = {
@@ -29,6 +29,7 @@ export default class ItemController extends Controller {
   /**
    * @description   获取数据项列表（分页、排序、关键字）
    */
+  @Router.post('/api/model/item/getlist')
   async getlist() {
     const ctx = this.ctx;
     const typeRule = Object.values(AppCode.model.itemType);
@@ -53,6 +54,7 @@ export default class ItemController extends Controller {
   /**
    * @description   修改数据项（单条）
    */
+  @Router.patch('/api/model/item/update')
   async update() {
     const ctx = this.ctx;
     const rule = {
@@ -69,6 +71,7 @@ export default class ItemController extends Controller {
   /**
    * @description   保存数据项（新增或修改）
    */
+  @Router.post('/api/model/item/save')
   async save() {
     const ctx = this.ctx;
     const rule = {
@@ -94,6 +97,7 @@ export default class ItemController extends Controller {
   /**
    * @description  删除数据项
    */
+  @Router.post('/api/model/item/remove')
   async remove() {
     const ctx = this.ctx;
     const rule = {
@@ -113,6 +117,7 @@ export default class ItemController extends Controller {
   /**
    * @description  检索数据项（关键字、限制10条）
    */
+  @Router.post('/api/model/item/search')
   async search() {
     const ctx = this.ctx;
     const rule = {

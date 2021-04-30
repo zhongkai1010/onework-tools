@@ -1,18 +1,20 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-24 21:55:32
- * @LastEditTime: 2021-02-26 15:03:55
+ * @LastEditTime: 2021-03-31 15:32:51
  * @LastEditors: 钟凯
  * @description
- * @FilePath: \onework_manage_api\app\controller\api\model\dataItem.js
+ * @FilePath: \egg_ts\app\controller\api\model\dataItem.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
-import Controller from '../../../core/base_controller';
+import { BaseController, Router } from '../../../core';
 
-export default class DataItemController extends Controller {
+export default class DataItemController extends BaseController {
+
   /**
    * @description   查询数据模型数据项
    */
+  @Router.post('/api/model/data/item/getList')
   async getList() {
     const ctx = this.ctx;
     const pageParams = this.validatePage();
@@ -23,6 +25,7 @@ export default class DataItemController extends Controller {
   /**
    * @description  新增数据模型数据项
    */
+  @Router.post('/api/model/data/item/insert')
   async insert() {
     const ctx = this.ctx;
     const rule = {
@@ -47,6 +50,7 @@ export default class DataItemController extends Controller {
   /**
    * @description  修改数据模型数据项
    */
+  @Router.post('/api/model/data/item/update')
   async update() {
     const ctx = this.ctx;
     const rule = {
@@ -71,6 +75,7 @@ export default class DataItemController extends Controller {
   /**
    * @description  移除数据模型数据项
    */
+  @Router.post('/api/model/data/item/remove')
   async remove() {
     const ctx = this.ctx;
     const rule = {

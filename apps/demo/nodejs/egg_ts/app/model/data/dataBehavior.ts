@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-14 22:34:45
- * @LastEditTime: 2021-03-09 18:16:52
+ * @LastEditTime: 2021-03-31 15:36:39
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\model\data\dataBehavior.ts
@@ -9,12 +9,12 @@
  */
 import { DataTypes } from 'sequelize';
 import { Application, Ow, Sequelize } from 'egg';
-import baseModel from '../base_name_code';
+import { NameCodeModel } from '../../core/index';
 
 export default (app:Application) => {
 
   const DataBehavior = app.model.define<Sequelize.Data.DataBehavior, Ow.Data.DataBehavior>('behavior', {
-    ...baseModel,
+    ...NameCodeModel,
     dataUid: { type: DataTypes.UUID, allowNull: false, comment: '数据模型uid' },
     inputs: { type: DataTypes.JSON, allowNull: true, defaultValue: [], comment: '输入参数，多条记录，[{type:AppCode.model.itemType,valueValue:"",value:""}]' },
     outputs: { type: DataTypes.JSON, allowNull: true, defaultValue: null, comment: '输出参数,单条记录， {type:AppCode.model.itemType,valueValue:"",value:""}]' },

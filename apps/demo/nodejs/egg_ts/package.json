@@ -22,16 +22,18 @@
     "clean": "ets clean"
   },
   "dependencies": {
-    "-": "^0.0.1",
+    "cls-hooked": "^4.2.2",
     "egg": "^2.6.1",
     "egg-scripts": "^2.6.0",
     "egg-sequelize": "^6.0.0",
     "egg-validate": "^2.0.2",
     "mysql2": "^2.2.5",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^6.5.0",
     "tedious": "^11.0.5"
   },
   "devDependencies": {
+    "@types/cls-hooked": "^4.3.3",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.12",
     "@types/supertest": "^2.0.0",

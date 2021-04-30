@@ -1,22 +1,24 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-14 10:18:05
- * @LastEditTime: 2021-03-15 15:56:02
+ * @LastEditTime: 2021-03-18 11:12:21
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\src\pages\DataBase\components\DbConnectionList.tsx
  * 可以输入预定的版权声明、个性签名、空行等
  */
-import { DeleteOutlined, EditOutlined, EllipsisOutlined, SyncOutlined } from '@ant-design/icons';
-import { Card, Col, Descriptions, Row, Tooltip } from 'antd';
+import { DatabaseOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Descriptions, Row } from 'antd';
 import React from 'react';
 import EditConnectionModal from './EditConnectionModal';
+import IconButton from '@/components/IconButton';
+ 
 
 interface Props {
   connections: API.DataBase.Connection[];
-  onSysnc: (connection: API.DataBase.Connection) => void;
-  onEditd: (connection: API.DataBase.Connection) => Promise<boolean>;
-  onRemove: (connection: API.DataBase.Connection) => void;
+  loadDatabase: (database: API.DataBase.Connection) => Promise<any>;
+  updateDatabase: (data: any) => Promise<boolean>;
+  deleteDatabase: (database: API.DataBase.Connection) => Promise<any>;
 }
 
 const DbConnectionList = (props: Props) => {
@@ -27,24 +29,29 @@ const DbConnectionList = (props: Props) => {
           key={`${connection.uid}_card`}
           title={connection.name}
           actions={[
-            <Tooltip title="加载数据库">
-              <SyncOutlined key="loading" onClick={() => props.onSysnc(connection)} />
-            </Tooltip>,
-            <Tooltip title="修改连接">
-              <EditConnectionModal
-                key="edit"
-                trigger={<EditOutlined key="edit_icon" />}
-                data={connection}
-                onFinish={async (data) => {
-                  const editConnection = { ...connection, ...data } as API.DataBase.Connection;
-                  return await props.onEditd(editConnection);
-                }}
-              />
-            </Tooltip>,
-            <Tooltip title="删除连接">
-              <DeleteOutlined key="remove" onClick={() => props.onRemove(connection)} />
-            </Tooltip>,
-            <EllipsisOutlined key="ellipsis" />,
+            <IconButton
+              title="查看数据库"
+              icon={<DatabaseOutlined />}
+              onClick={async () => {
+                await props.loadDatabase(connection);
+              }}
+            />,
+            <EditConnectionModal
+              key="edit"
+              title="编辑连接"
+              trigger={<Button title="修改连接" icon={<EditOutlined />} type="text" />}
+              data={connection}
+              onFinish={(data) => {
+                return props.updateDatabase({ ...connection, ...data });
+              }}
+            />,
+            <IconButton
+              title="删除连接"
+              icon={<DeleteOutlined />}
+              onClick={async () => {
+                await props.deleteDatabase(connection);
+              }}
+            />,
           ]}
         >
           <Descriptions key={`${connection.uid}_descriptions`}>
@@ -68,6 +75,7 @@ const DbConnectionList = (props: Props) => {
       </Col>
     );
   };
+
   return <Row gutter={[16, 16]}>{props.connections.map((t) => renderCard(t))}</Row>;
 };
 

@@ -1,21 +1,21 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:26
- * @LastEditTime: 2021-03-11 16:27:39
+ * @LastEditTime: 2021-03-31 15:32:17
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\model\data.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
-import Controller from '../../../core/base_controller';
-import AppCode from '../../../core/appCode';
+import { BaseController, AppCode, Router } from '../../../core';
 
-export default class DataController extends Controller {
+export default class DataController extends BaseController {
 
   /**
    * @description  构建uid获取数据模型
    */
+  @Router.get('/api/model/data/get')
   async get() {
     const ctx = this.ctx;
     const data = await ctx.service.model.data.get(ctx.request.query as {uid:string});
@@ -26,6 +26,7 @@ export default class DataController extends Controller {
    * @description  添加数据模型
 
    */
+  @Router.post('/api/model/data/insert')
   async insert() {
     const ctx = this.ctx;
     const rule = {
@@ -55,6 +56,7 @@ export default class DataController extends Controller {
   /**
    * @description  获取数据模型列表（分页、排序、关键字）
    */
+  @Router.post('/api/model/data/getlist')
   async getlist() {
     const ctx = this.ctx;
     const rule = {
@@ -85,6 +87,7 @@ export default class DataController extends Controller {
    * @description  修改数据模型
 
    */
+  @Router.patch('/api/model/data/update')
   async update() {
     const ctx = this.ctx;
     const rule = {
@@ -112,6 +115,7 @@ export default class DataController extends Controller {
   /**
    * @description  删除数据模型
    */
+  @Router.post('/api/model/data/remove')
   async remove() {
     const ctx = this.ctx;
     const rule = {
@@ -131,6 +135,7 @@ export default class DataController extends Controller {
   /**
    * @description  检索数据模型（关键字、限制10条）
    */
+  @Router.get('/api/model/data/search')
   async search() {
     const ctx = this.ctx;
     const rule = {

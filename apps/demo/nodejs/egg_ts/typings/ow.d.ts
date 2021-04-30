@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-10 11:33:58
- * @LastEditTime: 2021-03-11 15:37:32
+ * @LastEditTime: 2021-03-25 11:00:28
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: \egg_ts\typings\ow.d.ts
+ * @FilePath: \onework_manage_webd:\github\OneWork\source\demo\nodejs\egg_ts\typings\ow.d.ts
  * 可以输入预定的版权声明、个性签名、空行等
  */
 
@@ -22,11 +22,24 @@ declare module "egg" {
       config: any;
       description: string | null;
     }
+
+    interface Database {
+      uid?: string;
+      name: string;
+      code: string;
+      cnUid: string;
+      isSync: boolean;
+      isOnline?: boolean;
+      lastSyncDate: string;
+      description: string | null;
+    }
+
     interface Table {
       uid?: string;
       name: string;
       code: string;
       cnUid: string;
+      dbUid: string;
       dbName: string;
       description: string;
       columns?: Egg.Sequelize.Database.Column[];
@@ -36,14 +49,15 @@ declare module "egg" {
       name: string;
       code: string;
       cnUid: string;
+      dbUid: string;
       tbUid: string;
       dbName: string;
       type: string;
-      isNull: string;
-      isUnique: string;
-      length: string;
-      precision: string | null;
-      oredr: string | null;
+      isNull: boolean;
+      isUnique: boolean;
+      length: number;
+      precision: number | null;
+      oredr: number | null;
       defaultValue: string | nul;
       description: string | null;
     }
@@ -158,6 +172,27 @@ declare module "egg" {
       moduleUid: string;
     }
   }
+  namespace Ow.Tool {
+    interface Comparison {
+      uid?: string;
+      name: string;
+      code: string;
+      defaultValue: string;
+      datas: {
+        key: string;
+        value: string;
+      }[];
+    }
+
+    interface Translation {
+      uid?: string;
+      dst: string;
+      src: string;
+      from: string;
+      to: string;
+    }
+  }
+
   namespace Ow {
     interface DbDatabase {
       name: string;

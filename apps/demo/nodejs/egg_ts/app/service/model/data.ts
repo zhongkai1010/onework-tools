@@ -9,8 +9,7 @@
  */
 import { Service } from 'egg';
 import { FindAndCountOptions, Op, WhereValue } from 'sequelize';
-import AppError from '../../core/appError';
-import AppCode from '../../core/appCode';
+import { AppError, AppCode } from '../../core/index';
 
 interface GetFunResult extends Egg.Sequelize.Data.Data
 {

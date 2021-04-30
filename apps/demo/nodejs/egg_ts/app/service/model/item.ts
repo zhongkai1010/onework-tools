@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 21:01:23
- * @LastEditTime: 2021-03-12 09:52:01
+ * @LastEditTime: 2021-03-31 15:48:31
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \egg_ts\app\service\model\item.ts
@@ -9,8 +9,7 @@
  */
 import { Service } from 'egg';
 import { FindAndCountOptions, Op, WhereValue } from 'sequelize';
-import AppError from '../../core/appError';
-import AppCode from '../../core/appCode';
+import { AppError, AppCode } from '../../core/index';
 
 export default class ItemService extends Service {
   protected ItemModel = this.ctx.model.Data.Item;

@@ -1,28 +1,28 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 07:06:13
- * @LastEditTime: 2021-03-11 16:12:43
+ * @LastEditTime: 2021-03-31 15:31:33
  * @LastEditors: 钟凯
  * @description
  * @FilePath: \egg_ts\app\controller\api\model\collection.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
+import { BaseController, Validate, Router } from '../../../core';
 
-import Controller from '../../../core/base_controller';
-export default class CollectionController extends Controller {
+export default class CollectionController extends BaseController {
 
   /**
    * @description  添加数据集
    */
+  @Validate({ bodyRule: {
+    name: 'string',
+    code: 'string',
+    itemUids: { type: 'array', itemType: 'string' },
+    description: 'string?' },
+  })
+  @Router.post('/api/model/collection/insert')
   async insert() {
     const ctx = this.ctx;
-    const rule = {
-      name: 'string',
-      code: 'string',
-      itemUids: { type: 'array', itemType: 'string' },
-      description: 'string?',
-    };
-    ctx.validate(rule, ctx.request.body);
     const data = await ctx.service.model.collection.add(ctx.request.body);
     this.success(data);
   }
@@ -30,6 +30,7 @@ export default class CollectionController extends Controller {
   /**
    * @description  获取数据集列表（分页、排序、关键字）
    */
+  @Router.post('/api/model/collection/getlist')
   async getlist() {
     const ctx = this.ctx;
     const pageParams = this.validatePage();
@@ -40,6 +41,7 @@ export default class CollectionController extends Controller {
   /**
    * @description  修改数据集
    */
+  @Router.patch('/api/model/collection/update')
   async update() {
     const ctx = this.ctx;
     const rule = {
@@ -52,12 +54,12 @@ export default class CollectionController extends Controller {
     ctx.validate(rule, ctx.request.body);
     const data = await ctx.service.model.collection.update(ctx.request.body);
     this.success(data);
-
   }
 
   /**
    * @description  检索数据集合（关键字、限制10条）
    */
+  @Router.get('/api/model/collection/search')
   async search() {
     const ctx = this.ctx;
     const rule = {
@@ -71,6 +73,7 @@ export default class CollectionController extends Controller {
   /**
    * @description  删除数据集
    */
+  @Router.post('/api/model/collection/remove')
   async remove() {
     const ctx = this.ctx;
     const rule = {

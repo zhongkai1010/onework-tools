@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-05 20:50:39
- * @LastEditTime: 2021-02-16 11:28:04
+ * @LastEditTime: 2021-03-18 17:44:33
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework_manage_web\config\config.ts
@@ -16,6 +16,8 @@ import routes from './routes';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
+  // base: '/public/www/',
+  // publicPath: '/public/www/',
   hash: true,
   antd: {},
   dva: {
