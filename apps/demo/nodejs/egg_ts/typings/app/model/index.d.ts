@@ -11,11 +11,14 @@ import ExportDataDataItem from '../../../app/model/data/dataItem';
 import ExportDataItem from '../../../app/model/data/item';
 import ExportDatabaseColumn from '../../../app/model/database/column';
 import ExportDatabaseConnection from '../../../app/model/database/connection';
+import ExportDatabaseDatabase from '../../../app/model/database/database';
 import ExportDatabaseTable from '../../../app/model/database/table';
 import ExportModuleModule from '../../../app/model/module/module';
 import ExportModuleModuleModel from '../../../app/model/module/moduleModel';
 import ExportSystemSystem from '../../../app/model/system/system';
 import ExportSystemSystemModule from '../../../app/model/system/systemModule';
+import ExportToolComparison from '../../../app/model/tool/comparison';
+import ExportToolTranslation from '../../../app/model/tool/translation';
 import ExportUserUser from '../../../app/model/user/user';
 
 declare module 'egg' {
@@ -32,6 +35,7 @@ declare module 'egg' {
     Database: {
       Column: ReturnType<typeof ExportDatabaseColumn>;
       Connection: ReturnType<typeof ExportDatabaseConnection>;
+      Database: ReturnType<typeof ExportDatabaseDatabase>;
       Table: ReturnType<typeof ExportDatabaseTable>;
     }
     Module: {
@@ -41,6 +45,10 @@ declare module 'egg' {
     System: {
       System: ReturnType<typeof ExportSystemSystem>;
       SystemModule: ReturnType<typeof ExportSystemSystemModule>;
+    }
+    Tool: {
+      Comparison: ReturnType<typeof ExportToolComparison>;
+      Translation: ReturnType<typeof ExportToolTranslation>;
     }
     User: {
       User: ReturnType<typeof ExportUserUser>;

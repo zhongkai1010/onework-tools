@@ -7,6 +7,7 @@ type AnyFunc<T = any> = (...args: any[]) => T;
 type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
 import ExportDatabaseConnection from '../../../app/service/database/connection';
+import ExportDatabaseDatabase from '../../../app/service/database/database';
 import ExportDatabaseScheme from '../../../app/service/database/scheme';
 import ExportDatabaseTable from '../../../app/service/database/table';
 import ExportModelCollection from '../../../app/service/model/collection';
@@ -19,6 +20,7 @@ declare module 'egg' {
   interface IService {
     database: {
       connection: AutoInstanceType<typeof ExportDatabaseConnection>;
+      database: AutoInstanceType<typeof ExportDatabaseDatabase>;
       scheme: AutoInstanceType<typeof ExportDatabaseScheme>;
       table: AutoInstanceType<typeof ExportDatabaseTable>;
     }

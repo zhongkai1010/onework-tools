@@ -13,6 +13,8 @@ import ExportApiModelDataItem from '../../../app/controller/api/model/dataItem';
 import ExportApiModelItem from '../../../app/controller/api/model/item';
 import ExportApiSystemModule from '../../../app/controller/api/system/module';
 import ExportApiTemplateManage from '../../../app/controller/api/template/manage';
+import ExportApiToolComparison from '../../../app/controller/api/tool/comparison';
+import ExportApiToolTranslation from '../../../app/controller/api/tool/translation';
 import ExportApiUserLogin from '../../../app/controller/api/user/login';
 import ExportApiUserManage from '../../../app/controller/api/user/manage';
 
@@ -37,6 +39,10 @@ declare module 'egg' {
       }
       template: {
         manage: ExportApiTemplateManage;
+      }
+      tool: {
+        comparison: ExportApiToolComparison;
+        translation: ExportApiToolTranslation;
       }
       user: {
         login: ExportApiUserLogin;
