@@ -21,7 +21,17 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    sequelize: {
+      dialect: 'mysql',
+      port: 8806,
+      username: 'root',
+      password: '123qwe!@#zk',
+      database: 'onework_dev',
+      host: '101.37.81.183',
+      timezone: '+08:00', // for writing to database
+    },
   };
+
 
   return {
     ...config,

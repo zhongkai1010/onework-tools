@@ -63,6 +63,7 @@ class AppBootHook {
     // this.app.server.on('timeout', socket => {
     //   // handle socket timeout
     // });
+    // await this.app.model.sync({ alert: true });
   }
 }
 

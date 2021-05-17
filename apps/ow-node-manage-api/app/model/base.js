@@ -8,8 +8,8 @@
  * @可以输入预定的版权声明、个性签名、空行等
  */
 'use strict';
+const { DataTypes } = require('sequelize');
 
-const DataTypes = require('sequelize').DataTypes;
 
 module.exports = {
   uid: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4, allowNull: false, comment: '唯一值，不重复' },

@@ -14,8 +14,7 @@ const AppError = require('./app_error');
 const BaseController = require('./base_controller');
 const CrudController = require('./crud_controller');
 const ErrorCode = require('./app_error_code');
-const BaseModel = require('./model/base');
-const NameCodeModel = require('./model/base_name_code');
+
 
 module.exports = {
   AppCode,
@@ -23,6 +22,4 @@ module.exports = {
   BaseController,
   CrudController,
   ErrorCode,
-  BaseModel,
-  NameCodeModel,
 };
