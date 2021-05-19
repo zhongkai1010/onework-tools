@@ -1,8 +1,8 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-31 14:56:25
- * @LastEditTime: 2021-03-31 15:51:00
- * @LastEditors: 钟凯
+ * @LastEditTime: 2021-05-19 09:14:16
+ * @LastEditors: Please set LastEditors
  * @Description:
  * @FilePath: \egg_ts\app\core\index.ts
  * 可以输入预定的版权声明、个性签名、空行等
@@ -22,4 +22,5 @@ module.exports = {
   BaseController,
   CrudController,
   ErrorCode,
+
 };

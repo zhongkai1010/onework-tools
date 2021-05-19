@@ -1,8 +1,8 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-02-13 22:00:56
- * @LastEditTime: 2021-03-31 15:15:21
- * @LastEditors: 钟凯
+ * @LastEditTime: 2021-05-19 11:13:12
+ * @LastEditors: Please set LastEditors
  * @Description:
  * @FilePath: \egg_ts\app\core\appError.js
  * @可以输入预定的版权声明、个性签名、空行等
