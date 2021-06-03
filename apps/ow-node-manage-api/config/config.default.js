@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-17 18:34:51
- * @LastEditTime: 2021-05-19 09:23:53
+ * @LastEditTime: 2021-05-25 12:53:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ow-node-manage-api\config\config.default.js
@@ -32,13 +32,17 @@ module.exports = appInfo => {
 
   // add your user config here
   const userConfig = {
+    security: {
+      domainWhiteList: [ '*' ], // 白名单
+      csrf: { enable: false },
+    },
     // myAppName: 'egg',
     sequelize: {
       dialect: 'mysql',
-      port: 8806,
-      username: 'root',
-      password: '123qwe!@#zk',
-      database: 'onework_dev',
+      port: 8033,
+      username: 'onework',
+      password: 'C0uaU*Eq-2.X0nUr',
+      database: 'onework',
       host: '101.37.81.183',
       timezone: '+08:00', // for writing to database
     },
