@@ -36,10 +36,10 @@ export default (appInfo: EggAppInfo) => {
     },
     sequelize: {
       dialect: 'mysql',
-      port: 8806,
-      username: 'root',
-      password: '123qwe!@#zk',
-      database: 'onework_dev',
+      port: 8033,
+      username: 'onework',
+      password: 'C0uaU*Eq-2.X0nUr',
+      database: 'onework',
       host: '101.37.81.183',
       timezone: '+08:00', // for writing to database
     },
