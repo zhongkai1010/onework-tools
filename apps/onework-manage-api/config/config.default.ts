@@ -1,10 +1,10 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-06 23:21:22
- * @LastEditTime: 2021-05-14 21:09:56
+ * @LastEditTime: 2021-11-13 20:24:23
  * @LastEditors: 钟凯
  * @Description:
- * @FilePath: /oneowork-github/apps/demo/nodejs/egg_ts/config/config.default.ts
+ * @FilePath: \onework-manage-api\config\config.default.ts
  * 可以输入预定的版权声明、个性签名、空行等
  */
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
@@ -36,11 +36,11 @@ export default (appInfo: EggAppInfo) => {
     },
     sequelize: {
       dialect: 'mysql',
-      port: 8033,
-      username: 'onework',
-      password: 'C0uaU*Eq-2.X0nUr',
-      database: 'onework',
-      host: '101.37.81.183',
+      port: 3306,
+      username: 'root',
+      password: '123qwe',
+      database: 'onework_dev',
+      host: '127.0.0.1',
       timezone: '+08:00', // for writing to database
     },
     static: {

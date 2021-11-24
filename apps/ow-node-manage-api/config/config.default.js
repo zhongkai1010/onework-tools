@@ -30,16 +30,22 @@ module.exports = appInfo => {
     'transaction',
   ];
 
+  config.security = {
+    csrf: {
+      enable: false
+    }
+  }
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
     sequelize: {
       dialect: 'mysql',
-      port: 8806,
+      port: 3306,
       username: 'root',
-      password: '123qwe!@#zk',
+      password: '123qwe',
       database: 'onework_dev',
-      host: '101.37.81.183',
+      host: '127.0.0.1',
       timezone: '+08:00', // for writing to database
     },
   };
