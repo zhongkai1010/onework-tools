@@ -371,3 +371,5 @@ source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx
 /source/demo/nodejs/egg_ts/typings/config
 /source/demo/nodejs/egg_ts/app/public/www
 /apps/demo/nodejs/egg_ts/typings
+/apps/sample/java/onework-database-generator/.idea
+/apps/sample/java/onework-database-generator/target
