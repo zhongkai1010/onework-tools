@@ -3,12 +3,12 @@
   "adminAccount": "zhongkai1010@163.com",
   "timeout":120000,
   "db": {
-    "servername": "101.37.81.183",
+    "servername": "mongo",
     "DATABASE": "yapi",
-    "port": 8017,
+    "port": 27017,
     "user": "yapi",
-    "pass": "123qwe!@#yapi",
-    "authSource": ""
+    "pass": "123456",
+    "authSource": "yapi"
   },
   "mail": {
     "enable": true,
@@ -16,8 +16,8 @@
     "port": 465,
     "from": "***@163.com",
     "auth": {
-      "user": "zhongkai1010@163.com",
-      "pass": "Hya0114145520"
+      "user": "***@163.com",
+      "pass": "*****"
     }
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: 钟凯
  * @Date: 2021-03-06 23:21:22
- * @LastEditTime: 2021-11-13 20:24:23
+ * @LastEditTime: 2021-12-04 19:53:02
  * @LastEditors: 钟凯
  * @Description:
  * @FilePath: \onework-manage-api\config\config.default.ts
@@ -37,10 +37,10 @@ export default (appInfo: EggAppInfo) => {
     sequelize: {
       dialect: 'mysql',
       port: 3306,
-      username: 'root',
-      password: '123qwe',
-      database: 'onework_dev',
-      host: '127.0.0.1',
+      username: 'onework',
+      password: '123456',
+      database: 'onework',
+      host: '172.17.64.1',
       timezone: '+08:00', // for writing to database
     },
     static: {

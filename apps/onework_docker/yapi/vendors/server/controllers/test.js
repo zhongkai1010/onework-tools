@@ -2,10 +2,12 @@ const yapi = require('../yapi.js');
 const baseController = require('./base.js');
 const fs = require('fs'); //引入文件模块
 const path = require('path');
+const interfaceCatModel = require('../models/interfaceCat.js');
 
 class interfaceColController extends baseController {
   constructor(ctx) {
     super(ctx);
+    this.interfaceCatModel = yapi.getInst(interfaceCatModel);
   }
 
   /**
@@ -23,7 +25,25 @@ class interfaceColController extends baseController {
         expires: yapi.commons.expireDate(7),
         httpOnly: true
       });
-      ctx.body = yapi.commons.resReturn(query);
+
+      const project_id = 38;
+      const menuList = await this.interfaceCatModel.list(project_id);
+      // if (menuList.length === 0) {
+      //   const catInst = yapi.getInst(interfaceCatModel);
+      //   const menu = await catInst.save({
+      //     name: '默认分类',
+      //     project_id: project_id,
+      //     desc: '默认分类',
+      //     uid: this.getUid(),
+      //     add_time: yapi.commons.time(),
+      //     up_time: yapi.commons.time()
+      //   });
+      //   menuList.push(menu);
+      // }
+      ctx.body = yapi.commons.resReturn({
+        query,
+        ddd: menuList
+      });
     } catch (e) {
       ctx.body = yapi.commons.resReturn(null, 402, e.message);
     }
@@ -42,7 +62,7 @@ class interfaceColController extends baseController {
       let params = ctx.request.body;
       ctx.status = +ctx.query.code || 200;
       ctx.body = yapi.commons.resReturn(params);
-    } catch(e) {
+    } catch (e) {
       ctx.body = yapi.commons.resReturn(null, 402, e.message);
     }
   }
@@ -77,23 +97,23 @@ class interfaceColController extends baseController {
 
       let chunks = [],
         size = 0;
-      req.on('data', function(chunk) {
+      req.on('data', function (chunk) {
         chunks.push(chunk);
         size += chunk.length;
       });
 
-      req.on('finish', function() {
+      req.on('finish', function () {
         console.log(34343);
       });
 
-      req.on('end', function() {
+      req.on('end', function () {
         let data = new Buffer(size);
         for (let i = 0, pos = 0, l = chunks.length; i < l; i++) {
           let chunk = chunks[i];
           chunk.copy(data, pos);
           pos += chunk.length;
         }
-        fs.writeFileSync(path.join(yapi.WEBROOT_RUNTIME, 'test.text'), data, function(err) {
+        fs.writeFileSync(path.join(yapi.WEBROOT_RUNTIME, 'test.text'), data, function (err) {
           return (ctx.body = yapi.commons.resReturn(null, 402, '写入失败'));
         });
       });
