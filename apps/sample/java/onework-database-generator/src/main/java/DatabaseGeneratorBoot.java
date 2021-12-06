@@ -14,7 +14,7 @@ import java.util.Collections;
 
 public class DatabaseGeneratorBoot {
   public static void main(String[] args) {
-    /*String outputDir = System.getProperty("user.dir") + "/src/main/java";
+    String outputDir = System.getProperty("user.dir") + "/src/main/java";
     String mapperXmlPath = System.getProperty("user.dir")+"/src/main/resources/mapper";
     System.out.println("输出目录：" + outputDir);
     FastAutoGenerator.create("jdbc:mysql://127.0.0.1:3306/onework", "root", "123456")
@@ -33,7 +33,7 @@ public class DatabaseGeneratorBoot {
         )
         .templateConfig(builder ->
             builder.disable(TemplateType.CONTROLLER))
-        .execute();*/
+        .execute();
 
     IOwDatabaseColumnsService databaseColumnsService = new OwDatabaseColumnsServiceImpl();
     System.out.println(databaseColumnsService.list());
