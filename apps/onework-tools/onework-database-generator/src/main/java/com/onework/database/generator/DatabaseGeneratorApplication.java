@@ -1,8 +1,9 @@
 package com.onework.database.generator;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.INameConvert;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
-import com.baomidou.mybatisplus.generator.config.TemplateType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,6 +11,9 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Properties;
 
+/**
+ * @author ZK
+ */
 public class DatabaseGeneratorApplication {
   public static void main(String[] args) {
     try {
@@ -34,16 +38,22 @@ public class DatabaseGeneratorApplication {
               .outputDir(outputDir)
           )
           .packageConfig(builder -> builder
-              .parent("com.onework.tools.webapi")
+              .parent("com.onework.tools.webapi.generator")
               .pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperXmlPath))
           )
           .strategyConfig(builder -> builder
+              .addTablePrefix("ow_")
+              .addTableSuffix("s")
+              .enableCapitalMode()
+              .controllerBuilder()
               .entityBuilder()
+
               .enableLombok()
               .enableChainModel()
+
           )
-          .templateConfig(builder ->
-              builder.disable(TemplateType.CONTROLLER))
+//          .templateConfig(builder ->
+//              builder.disable(TemplateType.CONTROLLER))
           .execute();
     } catch (IOException e) {
       e.printStackTrace();
