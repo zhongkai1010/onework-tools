@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @projectName: onework-tools
@@ -18,20 +19,30 @@ import java.util.ArrayList;
 @Data
 public class Database {
 
-  /**
-   * 数据库名称
-   */
-  private String databaseName;
+    /**
+     * 数据库名称
+     */
+    @NonNull
+    private String databaseName;
 
-  /**
-   * 数据库连接
-   */
-  @NonNull
-  private DataBaseConnection connection;
+    /**
+     * 数据库连接
+     */
+    @NonNull
+    private Connection connection;
 
-  /**
-   * 数据库表
-   */
-  @Builder.Default
-  private ArrayList<DataBaseTable> tables = new ArrayList<>();
+    /**
+     * 数据库表
+     */
+    private ArrayList<Table> tables = new ArrayList<>();
+
+    /**
+     * 数据库表
+     */
+    private boolean syncStatus = false;
+
+    /**
+    * 最后同步时间
+    */
+    private Date lastSyncDate = null;
 }

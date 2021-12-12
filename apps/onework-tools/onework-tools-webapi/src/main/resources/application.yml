@@ -1,0 +1,16 @@
+spring:
+  server:
+    port: 8081
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted_at
+      logic-not-delete-value: "null"
+      id-type: ASSIGN_ID
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
