@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-12
+ * @since 2021-12-15
  */
 @Service
 public class ToolTranslationServiceImpl extends ServiceImpl<ToolTranslationMapper, ToolTranslation> implements IToolTranslationService {

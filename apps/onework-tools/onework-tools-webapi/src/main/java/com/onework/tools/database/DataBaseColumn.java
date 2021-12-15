@@ -1,6 +1,8 @@
 package com.onework.tools.database;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 /**
  * @projectName: onework-tools
@@ -11,21 +13,18 @@ import lombok.*;
  * @date: 2021/12/7 23:35
  * @version: 1.0
  */
-@Getter
 @Setter
-public class DataBaseColumn {
+@Getter class DataBaseColumn {
 
     /**
      * 名称
      */
-    @NonNull
-    private String name;
+    @NonNull private String name;
 
     /**
      * 类型
      */
-    @NonNull
-    private String type;
+    @NonNull private String type;
 
     /**
      * 长度
@@ -40,14 +39,12 @@ public class DataBaseColumn {
     /**
      * 是否为空
      */
-    @NonNull
-    private Boolean allowNull;
+    @NonNull private Boolean allowNull;
 
     /**
      * 是否主键
      */
-    @NonNull
-    private Boolean primarykey;
+    @NonNull private Boolean primarykey;
 
     /**
      * 序号
@@ -64,8 +61,7 @@ public class DataBaseColumn {
      */
     private String description;
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "Column{" + "name='" + name + '\'' + ", type='" + type + '\'' + ", length=" + length + ", precision="
             + precision + ", allowNull=" + allowNull + ", primarykey=" + primarykey + ", order=" + order
             + ", defaultValue='" + defaultValue + '\'' + ", description='" + description + '\'' + '}';
