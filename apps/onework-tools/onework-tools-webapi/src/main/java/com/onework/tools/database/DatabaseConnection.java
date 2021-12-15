@@ -62,4 +62,16 @@ public class DatabaseConnection {
                 return "";
         }
     }
+
+    public String getDriver()
+    {
+        switch (dbType) {
+            case MSSQL:
+                return "com.microsoft.jdbc.sqlserver.SQLServerDriver";
+            case MYSQL:
+                return "com.mysql.cj.jdbc.Driver";
+            default:
+                return "";
+        }
+    }
 }

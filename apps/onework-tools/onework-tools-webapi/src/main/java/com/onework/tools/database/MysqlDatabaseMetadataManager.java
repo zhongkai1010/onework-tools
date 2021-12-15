@@ -3,6 +3,7 @@ package com.onework.tools.database;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.sql.Driver;
 import java.util.List;
 
 /**
@@ -17,6 +18,16 @@ public class MysqlDatabaseMetadataManager extends AbstractMetadataManager {
 
     public MysqlDatabaseMetadataManager(DatabaseConnection databaseConnection) {
         super(databaseConnection);
+    }
+
+    /**
+     * 返回jdbc驱动
+     *
+     * @return Driver
+     */
+    @Override
+    protected Driver getDriver() {
+        return new com.microsoft.sqlserver.jdbc.SQLServerDriver();
     }
 
     /**
@@ -36,9 +47,9 @@ public class MysqlDatabaseMetadataManager extends AbstractMetadataManager {
      * @return List
      */
     @Override
-    public List<String> getTables(String tableName) {
+    public List<String> getTables(String databaseName) {
         String sql = "SELECT db.TABLE_NAME FROM information_schema.`TABLES` AS db WHERE db.TABLE_SCHEMA = '%s'";
-        return getDatabaseOrTableNames(String.format(sql, tableName));
+        return getDatabaseOrTableNames(String.format(sql, databaseName));
     }
 
     /**

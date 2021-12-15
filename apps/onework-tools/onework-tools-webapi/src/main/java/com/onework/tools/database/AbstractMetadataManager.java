@@ -23,9 +23,21 @@ public abstract class AbstractMetadataManager implements DatabaseMetadataManager
         this.databaseConnection = databaseConnection;
     }
 
+    /**
+     * 获取jdbc驱动
+     *
+     * @return Driver jdbc驱动
+     * @throws SQLException
+     *             创建jdbc异常
+     */
+    protected abstract Driver getDriver() throws SQLException;
+
     protected Connection getConnection() {
         String url = databaseConnection.getUrl();
         try {
+            Driver driver;
+            driver = getDriver();
+            DriverManager.registerDriver(driver);
             return DriverManager.getConnection(url, databaseConnection.getUser(), databaseConnection.getPassword());
         } catch (SQLException e) {
             log.error("数据库操作失败，具体错误：" + e.getMessage());
@@ -36,17 +48,12 @@ public abstract class AbstractMetadataManager implements DatabaseMetadataManager
 
     protected List<String> getDatabaseOrTableNames(String sql) {
         List<String> names = new ArrayList<>();
-        try {
-            Connection connection = this.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+        try (Connection connection = this.getConnection(); Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 String value = resultSet.getString(1);
                 names.add(value);
             }
-            resultSet.close();
-            statement.close();
-            connection.close();
         } catch (SQLException e) {
             log.error("数据库操作失败，失败原因：" + e.getMessage());
             e.printStackTrace();
@@ -56,10 +63,8 @@ public abstract class AbstractMetadataManager implements DatabaseMetadataManager
 
     protected List<DataBaseColumn> getDatabaseColumns(String sql) {
         List<DataBaseColumn> dataBaseColumns = new ArrayList<>();
-        try {
-            Connection connection = this.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+        try (Connection connection = this.getConnection(); Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 DataBaseColumn dataBaseColumn = new DataBaseColumn();
                 dataBaseColumn.setName(resultSet.getString("name"));
@@ -67,16 +72,12 @@ public abstract class AbstractMetadataManager implements DatabaseMetadataManager
                 dataBaseColumn.setLength(resultSet.getInt("length"));
                 dataBaseColumn.setDescription(resultSet.getString("description"));
                 dataBaseColumn.setPrecision(resultSet.getInt("precision"));
-                dataBaseColumn.setLength(resultSet.getInt("length"));
                 dataBaseColumn.setAllowNull(resultSet.getBoolean("allowNull"));
                 dataBaseColumn.setPrimarykey(resultSet.getBoolean("primarykey"));
                 dataBaseColumn.setDefaultValue(resultSet.getString("defaultValue"));
                 dataBaseColumn.setOrder(resultSet.getInt("order"));
                 dataBaseColumns.add(dataBaseColumn);
             }
-            resultSet.close();
-            statement.close();
-            connection.close();
         } catch (SQLException e) {
             log.error("数据库操作失败，失败原因：" + e.getMessage());
             e.printStackTrace();

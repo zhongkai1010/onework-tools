@@ -3,6 +3,8 @@ package com.onework.tools.database;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.sql.Driver;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,13 +22,23 @@ public class MssqlDatabaseMetadataManager extends AbstractMetadataManager {
     }
 
     /**
+     * 返回jdbc驱动
+     *
+     * @return Driver
+     */
+    @Override
+    protected Driver getDriver() throws SQLException {
+        return new com.mysql.cj.jdbc.Driver();
+    }
+
+    /**
      * 描述
      *
      * @return List<Database>
      */
     @Override
     public List<String> getDatabase() {
-        String sql = "SELECT db.SCHEMA_NAME AS NAME FROM information_schema.`SCHEMATA` AS db";
+        String sql = "select name from sysdatabases";
         return getDatabaseOrTableNames(sql);
     }
 
@@ -36,9 +48,9 @@ public class MssqlDatabaseMetadataManager extends AbstractMetadataManager {
      * @return List
      */
     @Override
-    public List<String> getTables(String tableName) {
-        String sql = "SELECT db.TABLE_NAME FROM information_schema.`TABLES` AS db WHERE db.TABLE_SCHEMA = '%s'";
-        return getDatabaseOrTableNames(String.format(sql, tableName));
+    public List<String> getTables(String databaseName) {
+        String sql = "use %s select * from sysobjects where xtype='U';";
+        return getDatabaseOrTableNames(String.format(sql, databaseName));
     }
 
     /**
@@ -53,7 +65,7 @@ public class MssqlDatabaseMetadataManager extends AbstractMetadataManager {
     @Override
     public List<DataBaseColumn> getColumns(String databaseName, String tableName) {
         String sql =
-            "SELECT COLUMN_NAME AS `name`, DATA_TYPE AS `type`, CHARACTER_MAXIMUM_LENGTH AS `length`, NUMERIC_SCALE AS `precision`, COLUMN_COMMENT AS `description`,( CASE IS_NULLABLE WHEN 'YES' THEN 1 ELSE 0 END) AS `allowNull`, ( CASE COLUMN_KEY WHEN 'PRI' THEN 1 ELSE 0 END ) AS `primarykey` FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s'";
+            "USE %s SELECT 'order' = a.colorder, 'name' = a.name, 'primarykey' = CASE WHEN EXISTS( SELECT 1 FROM sysobjects WHERE xtype = 'PK' AND name IN ( SELECT name FROM sysindexes WHERE indid IN ( SELECT indid FROM sysindexkeys WHERE id = a.id AND colid = a.colid) ) ) THEN 1 ELSE 0 END, 'type' = b.name, 'length' = COLUMNPROPERTY( a.id , a.name, 'PRECISION' ), 'precision' = isnull( COLUMNPROPERTY( a.id, a.name , 'Scale' ), 0 ), 'allowNull' = CASE WHEN a.isnullable= 1 THEN 1 ELSE 0 END, 'defaultValue' = isnull( e.text , '' ), 'description' = isnull( g.[value], '' ) FROM syscolumns a LEFT JOIN systypes b ON a.xusertype = b.xusertype INNER JOIN sysobjects d ON a.id = d.id AND d.xtype= 'U' AND d.name <> 'dtproperties' LEFT JOIN syscomments e ON a.cdefault = e.id LEFT JOIN sys.extended_properties g ON a.id = g.major_id AND a.colid = g.minor_id LEFT JOIN sys.extended_properties f ON d.id = f.major_id AND f.minor_id = 0 WHERE a.id= OBJECT_ID( '%s' ) ORDER BY a.id, a.colorder";
         return getDatabaseColumns(String.format(sql, databaseName, tableName));
     }
 }

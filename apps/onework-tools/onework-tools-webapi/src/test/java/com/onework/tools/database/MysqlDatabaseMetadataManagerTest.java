@@ -2,7 +2,9 @@ package com.onework.tools.database;
 
 import org.junit.jupiter.api.Test;
 
-class DatabaseMetadataManagerTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class MysqlDatabaseMetadataManagerTest {
 
     @Test
     void getDatabase() {
