@@ -1,6 +1,8 @@
 package com.onework.tools.database;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -9,12 +11,14 @@ import lombok.*;
  */
 @Setter
 @Getter
+@Component
 public class DatabaseConnection {
 
     /**
      * 数据库连接字符串
      */
     @NonNull
+    @JsonProperty("host")
     private String host;
 
     /**

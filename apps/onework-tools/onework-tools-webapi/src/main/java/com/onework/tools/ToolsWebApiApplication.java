@@ -8,13 +8,11 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * @author ZK
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.onework.tools")
 @MapperScan("com.onework.tools.generator.mapper")
-@ComponentScan("com.onework.tools.database")
-@ComponentScan(basePackages="com.onework.tools")
 public class ToolsWebApiApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(ToolsWebApiApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(ToolsWebApiApplication.class, args);
+    }
 }

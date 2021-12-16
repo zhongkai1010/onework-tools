@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,43 +19,34 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-15
+ * @since 2021-12-16
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("ow_model_items")
+@Schema(name = "ModelItem对象", description = "")
 public class ModelItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 唯一值，不重复
-     */
+    @Schema(description = "唯一值，不重复")
     @TableId(value = "uid", type = IdType.ASSIGN_ID)
     private String uid;
 
-    /**
-     * 名称
-     */
+    @Schema(description = "名称")
     @TableField("`name`")
     private String name;
 
-    /**
-     * 编码
-     */
+    @Schema(description = "编码")
     @TableField("`code`")
     private String code;
 
-    /**
-     * 数据项类型
-     */
+    @Schema(description = "数据项类型")
     @TableField("`type`")
     private String type;
 
-    /**
-     * 使用累计总数
-     */
+    @Schema(description = "使用累计总数")
     @TableField("cumulate")
     private Integer cumulate;
 

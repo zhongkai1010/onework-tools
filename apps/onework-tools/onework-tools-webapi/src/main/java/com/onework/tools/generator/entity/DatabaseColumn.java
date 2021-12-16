@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,103 +19,74 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-15
+ * @since 2021-12-16
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("ow_database_columns")
+@Schema(name = "DatabaseColumn对象", description = "")
 public class DatabaseColumn implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 唯一值，不重复
-     */
+    @Schema(description = "唯一值，不重复")
     @TableId(value = "uid", type = IdType.ASSIGN_ID)
     private String uid;
 
-    /**
-     * 名称
-     */
+    @Schema(description = "名称")
     @TableField("`name`")
     private String name;
 
-    /**
-     * 编码
-     */
+    @Schema(description = "编码")
     @TableField("`code`")
     private String code;
 
-    /**
-     * 连接uid
-     */
+    @Schema(description = "连接uid")
     @TableField("cn_uid")
     private String cnUid;
 
-    /**
-     * 数据库uid
-     */
+    @Schema(description = "数据库uid")
     @TableField("db_uid")
     private String dbUid;
 
-    /**
-     * 数据库表uid
-     */
+    @Schema(description = "数据库表uid")
     @TableField("tb_uid")
     private String tbUid;
 
-    /**
-     * 数据库uid
-     */
+    @Schema(description = "数据库uid")
     @TableField("db_name")
     private String dbName;
 
-    /**
-     * 类型
-     */
+    @Schema(description = "类型")
     @TableField("`type`")
     private String type;
 
-    /**
-     * 是否为空
-     */
+    @Schema(description = "是否为空")
     @TableField("is_null")
     private Boolean isNull;
 
-    /**
-     * 是否主键
-     */
+    @Schema(description = "是否主键")
     @TableField("is_unique")
     private Boolean isUnique;
 
-    /**
-     * 长度
-     */
+    @Schema(description = "长度")
     @TableField("length")
     private Long length;
 
-    /**
-     * 精度
-     */
+    @Schema(description = "精度")
     @TableField("`precision`")
     private Integer precision;
 
-    /**
-     * 序号
-     */
+    @Schema(description = "序号")
     @TableField("oredr")
     private Integer oredr;
 
-    /**
-     * 默认值
-     */
+    @Schema(description = "默认值")
     @TableField("default_value")
     private String defaultValue;
 
-    /**
-     * 描述
-     */
+    @Schema(description = "描述")
     @TableField("description")
     private String description;
 

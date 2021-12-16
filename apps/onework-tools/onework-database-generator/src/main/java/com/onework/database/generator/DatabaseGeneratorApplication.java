@@ -45,9 +45,9 @@ public class DatabaseGeneratorApplication {
 
       FastAutoGenerator.create(dataSourceConfigBuilder)
           .globalConfig(builder -> builder
-              //.enableSwagger()
+              .enableSwagger()
               .author("钟凯")
-              .fileOverride()
+              //.fileOverride()
               .disableOpenDir()
               .dateType(DateType.TIME_PACK)
               .outputDir(outputDir)
@@ -56,9 +56,10 @@ public class DatabaseGeneratorApplication {
               .parent("com.onework.tools.generator")
               .pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperXmlPath))
           )
-          .templateConfig(builder -> {
-            builder.disable(TemplateType.CONTROLLER);
-          })
+          .templateConfig(builder -> builder
+                  //.disable(TemplateType.CONTROLLER)
+                  .entity("templates/entity.java")
+          )
           .strategyConfig(builder -> builder
               .addTablePrefix("ow_")
               .addTableSuffix("s")

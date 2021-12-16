@@ -8,6 +8,9 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,73 +21,55 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-15
+ * @since 2021-12-16
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("ow_database_connections")
+@Schema(name = "DatabaseConnection对象", description = "")
 public class DatabaseConnection implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 唯一值，不重复
-     */
+    @Schema(description = "唯一值，不重复")
     @TableId(value = "uid", type = IdType.ASSIGN_ID)
     private String uid;
 
-    /**
-     * 连接名称
-     */
+    @JsonProperty("name")
+    @Schema(description = "连接名称")
     @TableField("`name`")
     private String name;
 
-    /**
-     * 数据库类型
-     */
+    @Schema(description = "数据库类型")
     @TableField("db_type")
     private String dbType;
 
-    /**
-     * 默认数据库
-     */
+    @Schema(description = "默认数据库")
     @TableField("`database`")
     private String database;
 
-    /**
-     * 连接用户名
-     */
+    @Schema(description = "连接用户名")
     @TableField("username")
     private String username;
 
-    /**
-     * 连接密码
-     */
+    @Schema(description = "连接密码")
     @TableField("`password`")
     private String password;
 
-    /**
-     * 主机地址
-     */
+    @Schema(description = "主机地址")
     @TableField("`host`")
     private String host;
 
-    /**
-     * 端口
-     */
+    @Schema(description = "端口")
     @TableField("`port`")
     private Integer port;
 
-    /**
-     * 其它配置
-     */
+    @Schema(description = "其它配置")
     @TableField("config")
     private String config;
 
-    /**
-     * 描述
-     */
+    @Schema(description = "描述")
     @TableField("description")
     private String description;
 

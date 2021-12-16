@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,43 +19,34 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-15
+ * @since 2021-12-16
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("ow_tool_comparisons")
+@Schema(name = "ToolComparison对象", description = "")
 public class ToolComparison implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 唯一值，不重复
-     */
+    @Schema(description = "唯一值，不重复")
     @TableId(value = "uid", type = IdType.ASSIGN_ID)
     private String uid;
 
-    /**
-     * 名称
-     */
+    @Schema(description = "名称")
     @TableField("`name`")
     private String name;
 
-    /**
-     * 编码
-     */
+    @Schema(description = "编码")
     @TableField("`code`")
     private String code;
 
-    /**
-     * 缺省值
-     */
+    @Schema(description = "缺省值")
     @TableField("default_value")
     private String defaultValue;
 
-    /**
-     * 对照数据
-     */
+    @Schema(description = "对照数据")
     @TableField("datas")
     private String datas;
 

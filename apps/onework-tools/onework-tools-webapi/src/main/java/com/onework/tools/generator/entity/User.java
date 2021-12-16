@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,31 +19,26 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-15
+ * @since 2021-12-16
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("ow_users")
+@Schema(name = "User对象", description = "")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 唯一值，不重复
-     */
+    @Schema(description = "唯一值，不重复")
     @TableId(value = "uid", type = IdType.ASSIGN_ID)
     private String uid;
 
-    /**
-     * 系统uid
-     */
+    @Schema(description = "系统uid")
     @TableField("system_uid")
     private String systemUid;
 
-    /**
-     * 模块uid
-     */
+    @Schema(description = "模块uid")
     @TableField("module_uid")
     private String moduleUid;
 
