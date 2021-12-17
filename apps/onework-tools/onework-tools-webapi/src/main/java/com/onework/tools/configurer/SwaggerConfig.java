@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
+/**
+ *
+ *
+ * @author ZK
+ */
 @Configuration
 public class SwaggerConfig implements WebMvcConfigurer {
 
@@ -29,7 +33,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public OpenAPI customOpenAPI(@Value("${springdoc.version}") String appVersion) {
+    public OpenAPI customOpenApi(@Value("${springdoc.version}") String appVersion) {
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("basicScheme",
                         new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))

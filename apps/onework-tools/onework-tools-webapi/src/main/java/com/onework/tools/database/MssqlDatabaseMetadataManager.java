@@ -54,13 +54,12 @@ public class MssqlDatabaseMetadataManager extends AbstractMetadataManager {
     }
 
     /**
-     * 描述
-     *
-     * @param databaseName
-     *            数据库名称
-     * @param tableName
-     *            表名称
-     * @return List<Column>
+     * @param databaseName:
+     * @param tableName:
+     * @return List<DataBaseColumn>
+     * @author ZK
+     * @description TODO
+     * @date 2021/12/16 23:00
      */
     @Override
     public List<DataBaseColumn> getColumns(String databaseName, String tableName) {

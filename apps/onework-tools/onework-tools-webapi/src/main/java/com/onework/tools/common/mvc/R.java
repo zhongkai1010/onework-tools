@@ -9,7 +9,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+/**
+ * @author ZK
+ * @description 请求返回结果
+ * @date 2021/12/16 20:43
+ */
+@SuppressWarnings("AlibabaClassNamingShouldBeCamel") @Getter
 @Setter
 @Schema(description = "Response对象")
 public class R<T> implements Serializable {
@@ -48,7 +53,6 @@ public class R<T> implements Serializable {
         return this;
     }
 
-
     /**
      * 未授权返回结果
      */
@@ -72,10 +76,11 @@ public class R<T> implements Serializable {
     }
 
     /**
-     * 校验失败
-     *
-     * @param message
-     * @return
+     * @param message:
+     * @return R<T>
+     * @author ZK
+     * @description 验证失败
+     * @date 2021/12/16 20:41
      */
     public R<T> validateFailed(String message) {
         this.code(HttpStatus.NOT_FOUND);
