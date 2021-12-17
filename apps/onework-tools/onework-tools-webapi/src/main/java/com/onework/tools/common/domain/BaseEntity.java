@@ -9,7 +9,7 @@ package com.onework.tools.common.domain;
  * @date: 2021/12/16 21:45
  * @version: 1.0
  */
-public abstract class IdEntity implements EntityBase
-{
+public interface BaseEntity {
 
+    String uid;
 }
