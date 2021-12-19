@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.onework.tools.common.domain.BaseEntity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,14 +20,14 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-16
+ * @since 2021-12-18
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("ow_tool_translations")
 @Schema(name = "ToolTranslation对象", description = "")
-public class ToolTranslation implements Serializable {
+public class ToolTranslation extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

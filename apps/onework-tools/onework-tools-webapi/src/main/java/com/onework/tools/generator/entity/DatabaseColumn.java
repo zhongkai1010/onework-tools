@@ -1,11 +1,14 @@
 package com.onework.tools.generator.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.onework.tools.common.domain.BaseEntity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import com.baomidou.mybatisplus.annotation.*;
-import com.onework.tools.common.domain.BaseEntity;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,14 +20,14 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author 钟凯
- * @since 2021-12-16
+ * @since 2021-12-18
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("ow_database_columns")
 @Schema(name = "DatabaseColumn对象", description = "")
-public class DatabaseColumn implements BaseEntity, Serializable {
+public class DatabaseColumn extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -97,5 +100,6 @@ public class DatabaseColumn implements BaseEntity, Serializable {
     @TableField(value = "deleted_at", fill = FieldFill.DEFAULT)
     @TableLogic
     private LocalDateTime deletedAt;
+
 
 }

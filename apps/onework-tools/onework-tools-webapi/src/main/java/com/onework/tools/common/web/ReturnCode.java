@@ -1,15 +1,15 @@
-package com.onework.tools.common.mvc;
+package com.onework.tools.common.web;
 
 /**
- *  返回状态码
+ * 返回状态码
+ * 
  * @author ZK
  */
 public enum ReturnCode {
     /**
      *
      */
-    RC200(200, "操作成功"),
-    RC500(500, "操作失败");
+    RC200(200, "操作成功"), RC500(500, "操作失败");
 
     /**
      * 自定义状态码
@@ -26,7 +26,7 @@ public enum ReturnCode {
      *
      *
      */
-    ReturnCode(int code, String msg){
+    ReturnCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

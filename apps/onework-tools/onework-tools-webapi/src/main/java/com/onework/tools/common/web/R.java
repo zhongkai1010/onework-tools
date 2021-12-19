@@ -1,4 +1,4 @@
-package com.onework.tools.common.mvc;
+package com.onework.tools.common.web;
 
 import java.io.Serializable;
 
@@ -14,7 +14,8 @@ import lombok.Setter;
  * @description 请求返回结果
  * @date 2021/12/16 20:43
  */
-@SuppressWarnings("AlibabaClassNamingShouldBeCamel") @Getter
+@SuppressWarnings("AlibabaClassNamingShouldBeCamel")
+@Getter
 @Setter
 @Schema(description = "Response对象")
 public class R<T> implements Serializable {

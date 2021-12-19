@@ -19,6 +19,7 @@ mybatis-plus:
       logic-delete-field: deleted_at
       logic-not-delete-value: "null"
       id-type: ASSIGN_ID
+      logic-delete-value: now()
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:

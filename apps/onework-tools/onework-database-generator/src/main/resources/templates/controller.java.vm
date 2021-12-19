@@ -1,5 +1,6 @@
 package ${package.Controller};
 
+import ${package.Entity}.${table.entityName};
 import org.springframework.web.bind.annotation.RequestMapping;
 #if(${restControllerStyle})
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ class ${table.controllerName}#if(${superControllerClass}) : ${superControllerCla
 
 #else
 #if(${superControllerClass})
-public class ${table.controllerName} extends ${superControllerClass} {
+public class ${table.controllerName} extends ${superControllerClass}<${table.entityName}> {
 #else
 public class ${table.controllerName} {
 #end
