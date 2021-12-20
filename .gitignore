@@ -374,3 +374,5 @@ source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx
 /apps/sample/java/onework-database-generator/.idea
 /apps/sample/java/onework-database-generator/target
 /apps/onework-tools/.idea
+/.idea
+/apps/sample/java/onework-maven-sample/.idea
