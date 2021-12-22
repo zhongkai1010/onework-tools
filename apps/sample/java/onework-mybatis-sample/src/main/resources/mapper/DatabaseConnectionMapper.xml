@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onework.sample.mybaits.mapper.DatabaseConnectionMapper">
+    <resultMap id="databaseConnectionMap" type="DatabaseConnection" autoMapping="true">
+        <result property="dbType" column="db_type"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+    </resultMap>
+    <select id="getDatabaseConnection" parameterType="string" resultMap="databaseConnectionMap">
+        select *
+        from ow_database_connections
+        where uid = #{uid}
+    </select>
+</mapper>
