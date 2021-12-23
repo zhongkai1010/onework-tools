@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
-import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -30,66 +29,9 @@ import java.util.List;
 
     private final DataSourceProperties dataSourceProperties;
 
-    public SampleGenerateApplicationBoot(DataSourceProperties dataSourceProperties) {
+    public SampleGenerateApplicationBoot(final DataSourceProperties dataSourceProperties) {
         this.dataSourceProperties = dataSourceProperties;
     }
-
-    /**
-     * 全局生成
-     */
-    public void executeByAllTable() {
-        String url = dataSourceProperties.getUrl();
-        String username = dataSourceProperties.getUsername();
-        String password = dataSourceProperties.getPassword();
-        String outputDir = System.getProperty("user.dir").concat("/src/main/java/onework/sample/mybatisplus/generate");
-        String outputPath = outputDir.replaceAll("/", "\\\\");
-        log.info("输出目录：" + outputPath);
-
-        DataSourceConfig.Builder dataSourceConfigBuilder =
-            new DataSourceConfig.Builder(url, username, password).dbQuery(new MySqlQuery())
-                .typeConvert(new MySqlTypeConvert()).keyWordsHandler(new MySqlKeyWordsHandler());
-
-        FastAutoGenerator.create(dataSourceConfigBuilder).globalConfig(
-            builder -> builder.enableSwagger().author("钟凯").fileOverride().disableOpenDir().dateType(DateType.TIME_PACK)
-                .outputDir(outputDir)).packageConfig(builder -> builder.parent("com.onework.tools.generator")
-            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, outputDir))).templateConfig(builder -> builder
-            // .disable(TemplateType.CONTROLLER)
-            .entity("templates/entity.java")).strategyConfig(
-            builder -> builder.addTablePrefix("ow_").addTableSuffix("s").enableCapitalMode().controllerBuilder()
-                .superClass("com.onework.tools.common.web.AbstractCrudController").enableRestStyle().entityBuilder()
-                .superClass("com.onework.tools.common.domain.BaseEntity").enableTableFieldAnnotation() // 开启生成实体时生成字段注解
-                .idType(IdType.ASSIGN_ID)
-                // .addSuperEntityColumns("id", "created_by", "created_time", "updated_by", "updated_time")
-                .naming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略：下划线转驼峰命
-                .columnNaming(NamingStrategy.underline_to_camel) // 数据库表字段映射到实体的命名策略：下划线转驼峰命
-                .logicDeleteColumnName("deleted_at").logicDeletePropertyName("deletedAt")
-                // 添加表字段填充，"create_time"字段自动填充为插入时间，"modify_time"字段自动填充为插入修改时间
-
-                .enableLombok().enableChainModel()).execute();
-    }
-
-    /**
-     * 交互方式生成
-     */
-    public void executeByCustomTable() {
-        /*FastAutoGenerator.create("url", "username", "password")
-            // 全局配置
-            .globalConfig((scanner, builder) -> builder.author(scanner.apply("请输入作者名称？")).fileOverride())
-            // 包配置
-            .packageConfig((scanner, builder) -> builder.parent(scanner.apply("请输入包名？")))
-            // 策略配置
-            .strategyConfig(
-                (scanner, builder) -> builder.addInclude(getTables(scanner.apply("请输入表名，多个英文逗号分隔？所有输入 all")))
-                    .controllerBuilder().enableRestStyle().enableHyphenStyle().entityBuilder().enableLombok()
-                    .addTableFills(new Column("create_time", FieldFill.INSERT)).build())
-            *//*
-                模板引擎配置，默认 Velocity 可选模板引擎 Beetl 或 Freemarker
-               .templateEngine(new BeetlTemplateEngine())
-               .templateEngine(new FreemarkerTemplateEngine())
-             *//*.execute();*/
-    }
-
-    // 处理 all 情况
 
     /**
      * 拼接表名称
@@ -97,7 +39,123 @@ import java.util.List;
      * @param tables 表名字符串
      * @return 表名称数组
      */
-    protected static List<String> getTables(String tables) {
+    private static List<String> getTables(final String tables) {
         return "all".equals(tables) ? Collections.emptyList() : Arrays.asList(tables.split(","));
+    }
+
+    /**
+     * @param subPath: 子目录
+     * @return String
+     * @author ZK
+     * @description 获取输出目录
+     * @date 2021/12/23 21:34
+     */
+    private static String getGeneratePath(final String subPath) {
+        return System.getProperty("user.dir").concat(subPath);
+    }
+
+    /**
+     * 全局生成
+     */
+    public void executeByAllTable() {
+
+        final String outputDir = getGeneratePath("/src/main/java/");
+        final String outputXmlDir = getGeneratePath("/src/main/resources/mapper");
+        log.info("输出目录：" + outputDir);
+
+        final DataSourceConfig.Builder dataSourceConfig = this.getDataSourceConfig();
+
+        // @formatter:off
+        FastAutoGenerator.create(dataSourceConfig).globalConfig(
+            builder -> builder
+                .author("zhongkai")
+                .enableSwagger()
+                .fileOverride()
+                .disableOpenDir()
+                .outputDir(outputDir))
+            .packageConfig(builder -> builder
+                .parent("onework.sample.mybatisplus.generate")
+                .pathInfo(Collections.singletonMap(OutputFile.mapperXml, outputXmlDir)))
+            .templateConfig(builder -> builder
+                .disable(TemplateType.CONTROLLER)
+                .entity("/templates/entity.java")
+            )
+            .strategyConfig(builder -> builder
+                .addTablePrefix("ow_")
+                .addTableSuffix("s")
+                .entityBuilder()
+                .enableTableFieldAnnotation() // 开启生成实体时生成字段注解
+                .idType(IdType.ASSIGN_ID)
+                .naming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略：下划线转驼峰命
+                .columnNaming(NamingStrategy.underline_to_camel) // 数据库表字段映射到实体的命名策略：下划线转驼峰命
+                .logicDeleteColumnName("deleted_at")
+                .logicDeletePropertyName("deletedAt")
+                .enableLombok()
+            )
+            .execute();
+        // @formatter:on
+        log.info("代码生成完成...");
+    }
+
+    /**
+     * 交互方式生成
+     */
+    public void executeByCustomTable() {
+
+        final String outputDir = getGeneratePath("/src/main/java/");
+        final String outputXmlDir = getGeneratePath("/src/main/resources/mapper");
+        log.info("输出目录：" + outputDir);
+
+        final DataSourceConfig.Builder dataSourceConfig = this.getDataSourceConfig();
+
+        // @formatter:off
+        FastAutoGenerator.create(dataSourceConfig).globalConfig(
+                (scanner, builder) -> builder
+                    .author(scanner.apply("请输入作者名称？"))
+                    .enableSwagger()
+                    .fileOverride()
+                    .disableOpenDir()
+                    .outputDir(outputDir))
+            .packageConfig((scanner, builder)  -> builder
+                .parent(scanner.apply("请输入包名？"))
+                .pathInfo(Collections.singletonMap(OutputFile.mapperXml, outputXmlDir)))
+            .templateConfig(builder -> builder
+                .disable(TemplateType.CONTROLLER)
+                .entity("/templates/entity.java")
+            )
+            .strategyConfig((scanner, builder)  -> builder
+                .addInclude(getTables(scanner.apply("请输入表名，多个英文逗号分隔？所有输入 all")))
+                .addTablePrefix("ow_")
+                .addTableSuffix("s")
+                .entityBuilder()
+                .enableTableFieldAnnotation() // 开启生成实体时生成字段注解
+                .idType(IdType.ASSIGN_ID)
+                .naming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略：下划线转驼峰命
+                .columnNaming(NamingStrategy.underline_to_camel) // 数据库表字段映射到实体的命名策略：下划线转驼峰命
+                .logicDeleteColumnName("deleted_at")
+                .logicDeletePropertyName("deletedAt")
+                .enableLombok()
+            )
+            .execute();
+        // @formatter:on
+        log.info("代码生成完成...");
+    }
+
+    /**
+     * @return Builder
+     * @author ZK
+     * @description 获取数据库配置
+     * @date 2021/12/23 21:31
+     */
+    private DataSourceConfig.Builder getDataSourceConfig() {
+        final String url = this.dataSourceProperties.getUrl();
+        final String username = this.dataSourceProperties.getUsername();
+        final String password = this.dataSourceProperties.getPassword();
+
+        final DataSourceConfig.Builder dataSourceConfig = new DataSourceConfig.Builder(url, username, password);
+        dataSourceConfig.dbQuery(new MySqlQuery());
+        dataSourceConfig.typeConvert(new MySqlTypeConvert()).keyWordsHandler(new MySqlKeyWordsHandler());
+
+        return dataSourceConfig;
     }
 }

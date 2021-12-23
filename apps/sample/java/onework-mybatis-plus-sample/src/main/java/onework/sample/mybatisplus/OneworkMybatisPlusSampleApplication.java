@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication(scanBasePackages = "onework.sample.mybatisplus")
-@MapperScan("onework.sample.mybatisplus.mapper")
+@MapperScan("onework.sample.mybatisplus.generate.mapper")
 public class OneworkMybatisPlusSampleApplication {
 
     public static void main(String[] args) {

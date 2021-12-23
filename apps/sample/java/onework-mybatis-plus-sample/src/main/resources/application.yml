@@ -10,5 +10,24 @@ spring:
       data-locations: classpath:db/data-onework.sql
       mode: always
 mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted_at
+      logic-not-delete-value: "null"
+      id-type: ASSIGN_ID
+      logic-delete-value: now()
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+springdoc:
+  version: '@springdoc.version@'
+  swagger-ui:
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    use-root-path: true
+  show-actuator: true
