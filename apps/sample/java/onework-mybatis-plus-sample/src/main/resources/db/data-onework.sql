@@ -17,7 +17,7 @@ VALUES ('1', '1', 'password', '{\"password\":\"123456\"}', '2021-12-23 14:40:35'
 DELETE
 FROM `ow_user_articles`;
 INSERT INTO `ow_user_articles`
-VALUES ('1', '1', '第一篇', '我是内容', '2021-12-23 14:42:25', NULL, NULL);
+VALUES ('1', '1', '第一篇', '我是内容', '2021-12-23 14:42:25', NULL, NULL,NULL);
 
 DELETE
 FROM `ow_users`;

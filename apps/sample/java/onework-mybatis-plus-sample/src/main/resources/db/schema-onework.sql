@@ -25,13 +25,14 @@ CREATE TABLE `ow_accounts`
 DROP TABLE IF EXISTS `ow_user_articles`;
 CREATE TABLE `ow_user_articles`
 (
-    `uid`        char(32)     NOT NULL COMMENT '主键',
-    `user_id`    char(32)     NOT NULL COMMENT '用户id',
-    `title`      varchar(200) NOT NULL COMMENT '标题',
-    `content`    longtext     NOT NULL COMMENT '内容',
-    `created_at` datetime     NOT NULL COMMENT '创建时间',
-    `updated_at` datetime     NULL DEFAULT NULL COMMENT '修改时间',
-    `deleted_at` datetime     NULL DEFAULT NULL COMMENT '删除时间',
+    `uid`             char(32)     NOT NULL COMMENT '主键',
+    `user_id`         char(32)     NOT NULL COMMENT '用户id',
+    `title`           varchar(200) NOT NULL COMMENT '标题',
+    `content`         longtext     NOT NULL COMMENT '内容',
+    `created_at`      datetime     NOT NULL COMMENT '创建时间',
+    `updated_at`      datetime     NULL DEFAULT NULL COMMENT '修改时间',
+    `deleted_at`      datetime     NULL DEFAULT NULL COMMENT '删除时间',
+    `deleted_user_id` char(32)     NULL DEFAULT NULL COMMENT '删除用户',
     PRIMARY KEY (`uid`) USING BTREE
 );
 

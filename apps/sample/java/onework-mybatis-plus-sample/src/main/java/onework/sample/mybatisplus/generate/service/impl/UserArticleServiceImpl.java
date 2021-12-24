@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author zhongkai
- * @since 2021-12-23
+ * @since 2021-12-24
  */
 @Service
 public class UserArticleServiceImpl extends ServiceImpl<UserArticleMapper, UserArticle> implements IUserArticleService {

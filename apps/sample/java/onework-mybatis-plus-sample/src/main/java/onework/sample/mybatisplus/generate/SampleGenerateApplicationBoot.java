@@ -1,5 +1,6 @@
 package onework.sample.mybatisplus.generate;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -63,7 +65,7 @@ import java.util.List;
         final String outputXmlDir = getGeneratePath("/src/main/resources/mapper");
         log.info("输出目录：" + outputDir);
 
-        final DataSourceConfig.Builder dataSourceConfig = this.getDataSourceConfig();
+        final DataSourceConfig.Builder dataSourceConfig = getDataSourceConfig();
 
         // @formatter:off
         FastAutoGenerator.create(dataSourceConfig).globalConfig(
@@ -88,6 +90,8 @@ import java.util.List;
                 .idType(IdType.ASSIGN_ID)
                 .naming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略：下划线转驼峰命
                 .columnNaming(NamingStrategy.underline_to_camel) // 数据库表字段映射到实体的命名策略：下划线转驼峰命
+                .addTableFills(new Column("created_at", FieldFill.INSERT))
+                .addTableFills(new Column("updated_at", FieldFill.UPDATE))
                 .logicDeleteColumnName("deleted_at")
                 .logicDeletePropertyName("deletedAt")
                 .enableLombok()
@@ -106,7 +110,7 @@ import java.util.List;
         final String outputXmlDir = getGeneratePath("/src/main/resources/mapper");
         log.info("输出目录：" + outputDir);
 
-        final DataSourceConfig.Builder dataSourceConfig = this.getDataSourceConfig();
+        final DataSourceConfig.Builder dataSourceConfig = getDataSourceConfig();
 
         // @formatter:off
         FastAutoGenerator.create(dataSourceConfig).globalConfig(
@@ -132,6 +136,8 @@ import java.util.List;
                 .idType(IdType.ASSIGN_ID)
                 .naming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略：下划线转驼峰命
                 .columnNaming(NamingStrategy.underline_to_camel) // 数据库表字段映射到实体的命名策略：下划线转驼峰命
+                .addTableFills(new Column("created_at", FieldFill.INSERT))
+                .addTableFills(new Column("updated_at", FieldFill.UPDATE))
                 .logicDeleteColumnName("deleted_at")
                 .logicDeletePropertyName("deletedAt")
                 .enableLombok()
@@ -148,9 +154,9 @@ import java.util.List;
      * @date 2021/12/23 21:31
      */
     private DataSourceConfig.Builder getDataSourceConfig() {
-        final String url = this.dataSourceProperties.getUrl();
-        final String username = this.dataSourceProperties.getUsername();
-        final String password = this.dataSourceProperties.getPassword();
+        final String url = dataSourceProperties.getUrl();
+        final String username = dataSourceProperties.getUsername();
+        final String password = dataSourceProperties.getPassword();
 
         final DataSourceConfig.Builder dataSourceConfig = new DataSourceConfig.Builder(url, username, password);
         dataSourceConfig.dbQuery(new MySqlQuery());
