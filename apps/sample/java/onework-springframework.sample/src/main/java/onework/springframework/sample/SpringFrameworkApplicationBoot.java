@@ -1,10 +1,5 @@
 package onework.springframework.sample;
 
-import onework.springframework.sample.entity.User;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.util.Assert;
-
 /**
  * @projectName: onework-springframework.sample
  * @package: onework.springframework.sample
