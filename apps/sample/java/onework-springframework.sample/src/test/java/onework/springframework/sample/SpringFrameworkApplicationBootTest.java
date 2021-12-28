@@ -1,16 +1,20 @@
 package onework.springframework.sample;
 
+import onework.springframework.sample.common.DefaultTransactionManager;
+import onework.springframework.sample.common.TransactionManager;
 import onework.springframework.sample.entity.User;
+import onework.springframework.sample.mapper.BaseMapper;
 import onework.springframework.sample.mapper.UserMapper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Map;
 
 public class SpringFrameworkApplicationBootTest {
-
 
     @Test public void test01() {
         BeanFactory beanFactory = new ClassPathXmlApplicationContext("application_boot.xml");
@@ -20,16 +24,32 @@ public class SpringFrameworkApplicationBootTest {
 
     @Test public void test02() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("application_boot.xml");
-        applicationContext.start();
-        applicationContext.addApplicationListener(event -> System.out.println("onApplicationEvent"));
-        User user = applicationContext.getBean("user", User.class);
-        System.out.println(user);
+        Map<String, BaseMapper> userMapperMap = applicationContext.getBeansOfType(BaseMapper.class);
+        userMapperMap.forEach((k, v) -> System.out.println(v));
     }
 
     @Test public void test03() {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application_boot.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("application_boot.xml");
+        UserMapper userMapper = applicationContext.getBean(UserMapper.class);
+        userMapper.add(new User("123","1234"));
+        userMapper.getAll().forEach(v-> System.out.println(v));
+    }
 
-        Map<String, UserMapper> stringClassMap = applicationContext.getBeansOfType(UserMapper.class);
-        stringClassMap.forEach((k,v)-> v.getAllUser().forEach(i-> System.out.println(i)));
+    @Test public void test04() {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringFrameworkApplicationBoot.class);
+        User user = (User)applicationContext.getBean("user");
+        System.out.println(user);
+    }
+
+    @Test public void test05() {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringFrameworkApplicationBoot.class);
+        DefaultTransactionManager defaultTransactionManager = (DefaultTransactionManager)applicationContext.getBean("defaultTransactionManager");
+        Assert.assertNotNull(defaultTransactionManager);
+    }
+
+    @Test public void test06() {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringFrameworkApplicationBoot.class);
+        TransactionManager transactionManager = applicationContext.getBean(TransactionManager.class);
+        System.out.println(transactionManager.getClass().getName());
     }
 }
