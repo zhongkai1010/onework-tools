@@ -19,7 +19,7 @@ import java.util.List;
  * @date: 2021/12/26 10:08
  * @version: 1.0
  */
-@Component
+
 public class UserMapperImpl implements UserMapper {
 
     private final List<User> userStore;
