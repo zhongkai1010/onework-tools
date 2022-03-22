@@ -1,6 +1,6 @@
-package com.onework.tools.web.api.controller;
+package com.onework.tools.web.api.controller.generate;
 
-import com.onework.tools.web.api.entity.ModelDataItem;
+import com.onework.tools.web.api.entity.ModelDataBehavior;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.onework.tools.common.web.AbstractCrudController;
@@ -14,7 +14,7 @@ import com.onework.tools.common.web.AbstractCrudController;
  * @since 2022-03-22
  */
 @RestController
-@RequestMapping("/modelDataItem")
-public class ModelDataItemController extends AbstractCrudController<ModelDataItem> {
+@RequestMapping("/modelDataBehavior")
+public class ModelDataBehaviorController extends AbstractCrudController<ModelDataBehavior> {
 
 }

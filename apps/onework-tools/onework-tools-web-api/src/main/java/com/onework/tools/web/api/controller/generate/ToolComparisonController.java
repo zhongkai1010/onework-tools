@@ -1,6 +1,6 @@
-package com.onework.tools.web.api.controller;
+package com.onework.tools.web.api.controller.generate;
 
-import com.onework.tools.web.api.entity.DatabaseTable;
+import com.onework.tools.web.api.entity.ToolComparison;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.onework.tools.common.web.AbstractCrudController;
@@ -14,7 +14,7 @@ import com.onework.tools.common.web.AbstractCrudController;
  * @since 2022-03-22
  */
 @RestController
-@RequestMapping("/databaseTable")
-public class DatabaseTableController extends AbstractCrudController<DatabaseTable> {
+@RequestMapping("/toolComparison")
+public class ToolComparisonController extends AbstractCrudController<ToolComparison> {
 
 }

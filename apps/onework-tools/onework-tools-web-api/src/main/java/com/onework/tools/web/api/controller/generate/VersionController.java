@@ -1,4 +1,4 @@
-package com.onework.tools.web.api.controller;
+package com.onework.tools.web.api.controller.generate;
 
 import com.onework.tools.web.api.entity.Version;
 import org.springframework.web.bind.annotation.RequestMapping;

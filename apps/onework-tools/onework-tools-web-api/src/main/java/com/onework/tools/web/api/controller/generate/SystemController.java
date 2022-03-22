@@ -1,6 +1,6 @@
-package com.onework.tools.web.api.controller;
+package com.onework.tools.web.api.controller.generate;
 
-import com.onework.tools.web.api.entity.DatabaseDb;
+import com.onework.tools.web.api.entity.System;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.onework.tools.common.web.AbstractCrudController;
@@ -14,7 +14,7 @@ import com.onework.tools.common.web.AbstractCrudController;
  * @since 2022-03-22
  */
 @RestController
-@RequestMapping("/databaseDb")
-public class DatabaseDbController extends AbstractCrudController<DatabaseDb> {
+@RequestMapping("/system")
+public class SystemController extends AbstractCrudController<System> {
 
 }

@@ -62,6 +62,7 @@ public class App
                     .outputDir(outputDir))
                 .packageConfig(builder -> builder
                     .parent("com.onework.tools.web.api")
+                    .controller("controller.generate")
                     .pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperXmlPath)))
                 .templateConfig(builder -> builder
                     .entity("templates/entity.java"))
