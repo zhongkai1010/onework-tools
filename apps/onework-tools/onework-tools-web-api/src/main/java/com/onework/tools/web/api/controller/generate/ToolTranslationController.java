@@ -11,7 +11,7 @@ import com.onework.tools.common.web.AbstractCrudController;
  * </p>
  *
  * @author 钟凯
- * @since 2022-03-22
+ * @since 2022-03-23
  */
 @RestController
 @RequestMapping("/toolTranslation")

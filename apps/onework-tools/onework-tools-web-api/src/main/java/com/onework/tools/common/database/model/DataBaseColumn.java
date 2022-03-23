@@ -1,4 +1,4 @@
-package com.onework.tools.common.database;
+package com.onework.tools.common.database.model;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -15,7 +15,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-class DataBaseColumn {
+public class DataBaseColumn {
 
     /**
      * 名称

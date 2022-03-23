@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author 钟凯
- * @since 2022-03-22
+ * @since 2022-03-23
  */
 public interface IDatabaseTableService extends IService<DatabaseTable> {
 
