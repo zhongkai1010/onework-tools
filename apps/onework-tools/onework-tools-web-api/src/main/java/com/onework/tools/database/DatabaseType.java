@@ -1,8 +1,9 @@
-package com.onework.tools.common.database;
+package com.onework.tools.database;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Driver;
+import java.util.HashMap;
 
 /**
  * 描述
@@ -21,6 +22,13 @@ public class DatabaseType {
     public static final DatabaseType MYSQL = new DatabaseType("com.mysql.cj.jdbc.Driver");
 
     public static final DatabaseType MSSQL = new DatabaseType("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+    public static final HashMap<String, DatabaseType> Map = new HashMap<String, DatabaseType>() {
+        {
+            put("mssql", MSSQL);
+            put("mysql", MYSQL);
+        }
+    };
 
     public Driver getDriver() {
         try {

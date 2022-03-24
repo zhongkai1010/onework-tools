@@ -1,12 +1,11 @@
-package com.onework.tools.common.database;
+package com.onework.tools.database;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.sql.DataSource;
 
 /**
  * @author Administrator
@@ -22,7 +21,8 @@ public class DbConnection {
     private Integer port;
     private String database;
 
-    private Connection connection;
+    @Getter
+    private DataSource dataSource;
 
     private DbConnection(DatabaseType type) {
         this.databaseType = type;
@@ -60,34 +60,18 @@ public class DbConnection {
 
     public DbConnection build() {
         try {
-            Driver driver = this.databaseType.getDriver();
-            DriverManager.registerDriver(driver);
 
             String url = getUrl();
-            if (user != null && password != null) {
-                this.connection = DriverManager.getConnection(url, user, password);
-            } else {
-                this.connection = DriverManager.getConnection(url);
-            }
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(url);
+            config.setUsername(user);
+            config.setPassword(password);
 
+            this.dataSource = new HikariDataSource(config);
             return this;
-        } catch (Exception e) {
-            log.error("DbConnection get Connection is error", e);
-            return null;
-        }
-    }
 
-    public Connection getConnection() {
-        try {
-            if (connection == null) {
-                build();
-            }
-            if (connection.isClosed()) {
-                build();
-            }
-            return connection;
         } catch (Exception e) {
-            log.error("DbConnection getConnection is error", e);
+            log.error(String.format("DbConnection get Connection is error,%s", e.getMessage()), e);
             return null;
         }
     }
@@ -101,18 +85,19 @@ public class DbConnection {
         String url = null;
 
         if (databaseType == DatabaseType.MYSQL) {
-            url = String.format("jdbc:mysql://%s:%s/%s", host, port == null ? "1433" : port, database);
+            url = String.format("jdbc:mysql://%s:%s/%s", host, port == null ? "1433" : port,
+                database == null ? "master" : database);
         }
 
         if (databaseType == DatabaseType.MSSQL) {
-            url = String.format("jdbc:sqlserver://%s:%s;databaseName=%s", host, port, database);
+            url = String.format("jdbc:sqlserver://%s:%s;databaseName=%s", host, port == null ? "3306" : port,
+                database == null ? "mysql" : database);
         }
 
         if (url == null) {
             log.error("DatabaseType get Url is error, not find dbType");
-        } else {
-            log.info(String.format("DatabaseType get url is %s", url));
         }
+
         return url;
     }
 }
