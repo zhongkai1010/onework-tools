@@ -19,8 +19,8 @@ public class MySqlDbSchemaServer extends DbSchemaServer {
 
     @Override
     protected String getTablesSql(String dbName) {
-        return String.format("SELECT db.TABLE_NAME FROM information_schema.`TABLES` AS db WHERE db.TABLE_SCHEMA = '%s'",
-            dbName);
+        return String.format(
+            "SELECT db.TABLE_NAME AS NAME FROM information_schema.`TABLES` AS db WHERE db.TABLE_SCHEMA = '%s'", dbName);
     }
 
     @Override
@@ -30,4 +30,3 @@ public class MySqlDbSchemaServer extends DbSchemaServer {
             dbName, dbTable);
     }
 }
-

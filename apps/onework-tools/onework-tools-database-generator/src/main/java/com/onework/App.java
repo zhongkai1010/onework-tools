@@ -1,10 +1,17 @@
 package com.onework;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.Properties;
+
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
@@ -13,18 +20,11 @@ import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.fill.Property;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.Properties;
-
 /**
  * Hello world!
  *
  */
-public class App 
-{
+public class App {
     public static void main(String[] args) {
 
         try {
@@ -65,6 +65,7 @@ public class App
                     .controller("controller.generate")
                     .pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperXmlPath)))
                 .templateConfig(builder -> builder
+                    .disable(TemplateType.CONTROLLER)
                     .entity("templates/entity.java"))
                 .strategyConfig(builder -> builder
                     .addTablePrefix("ow_")

@@ -1,15 +1,16 @@
 package com.onework.tools.web.api.controller;
 
-import com.onework.tools.common.web.R;
-import com.onework.tools.database.*;
-import com.onework.tools.web.api.controller.model.ConnectionInput;
+import java.util.List;
+import java.util.function.Function;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.function.Function;
+import com.onework.tools.common.web.R;
+import com.onework.tools.database.*;
+import com.onework.tools.web.api.controller.model.ConnectionInput;
 
 /**
  * @author Administrator
@@ -18,7 +19,7 @@ import java.util.function.Function;
 
 public class DatabaseController {
 
-    @PostMapping("/database/{type}/all")
+    @PostMapping("/db/{type}/all")
     public R<List<DataDatabase>> getAll(@PathVariable("type") String dbType, @RequestBody ConnectionInput input) {
 
         R<List<DataDatabase>> defaultResult = new R<List<DataDatabase>>().forbidden("not data");
@@ -30,7 +31,7 @@ public class DatabaseController {
         });
     }
 
-    @PostMapping("/database/{type}/{database}")
+    @PostMapping("/db/{type}/{database}")
     public R<List<DataTable>> getTables(@PathVariable("type") String dbType, @PathVariable("database") String database,
         @RequestBody ConnectionInput input) {
 
@@ -42,7 +43,7 @@ public class DatabaseController {
         });
     }
 
-    @PostMapping("/database/{type}/{database}/{table}")
+    @PostMapping("/db/{type}/{database}/{table}")
     public R<List<DataColumn>> getColumns(@PathVariable("type") String dbType,
         @PathVariable("database") String database, @PathVariable(value = "table") String table,
         @RequestBody ConnectionInput input) {
@@ -56,7 +57,7 @@ public class DatabaseController {
         });
     }
 
-    @PostMapping("/database/{type}")
+    @PostMapping("/db/{type}")
     public R<List<DataDatabase>> getDatabase(@PathVariable("type") String dbType, @RequestBody ConnectionInput input) {
 
         R<List<DataDatabase>> defaultResult = new R<List<DataDatabase>>().forbidden("not data");
@@ -72,9 +73,8 @@ public class DatabaseController {
         if (databaseType == null) {
             return defaultResult;
         }
-        DbSchemaServer dbSchemaServer =
-            DbSchemaFactory.getDbSchemaServer(databaseType, input.getHost(), input.getPort(), input.getDatabase(),
-                input.getUser(), input.getPassword());
+        DbSchemaServer dbSchemaServer = DbSchemaFactory.getDbSchemaServer(databaseType, input.getHost(),
+            input.getPort(), input.getDatabase(), input.getUser(), input.getPassword());
 
         return func.apply(dbSchemaServer);
     }
