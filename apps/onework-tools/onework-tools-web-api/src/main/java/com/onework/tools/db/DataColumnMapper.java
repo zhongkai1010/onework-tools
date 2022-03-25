@@ -1,6 +1,5 @@
-package com.onework.tools.database;
+package com.onework.tools.db;
 
-import com.onework.tools.database.DataColumn;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

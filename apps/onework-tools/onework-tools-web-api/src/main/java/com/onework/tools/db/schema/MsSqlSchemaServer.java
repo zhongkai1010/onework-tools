@@ -1,18 +1,16 @@
-package com.onework.tools.database.schema;
+package com.onework.tools.db.schema;
 
-import com.onework.tools.database.DbConnection;
-import com.onework.tools.database.DbSchemaServer;
-import com.onework.tools.database.DataColumn;
+import com.onework.tools.db.DbSchemaServer;
 
-import java.util.ArrayList;
+import javax.sql.DataSource;
 
 /**
  * @author Administrator
  */
 public class MsSqlSchemaServer extends DbSchemaServer {
 
-    public MsSqlSchemaServer(DbConnection dbConnection) {
-        super(dbConnection);
+    public MsSqlSchemaServer(DataSource dataSource) {
+        super(dataSource);
     }
 
     @Override

@@ -1,9 +1,9 @@
 spring:
   datasource:
     username: root
-    password: 1234567
+    password: 123qwe!@#mysql_root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://101.37.81.183:8033/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
   mvc:
     static-path-pattern: /static/**
     log-request-details: true

@@ -1,6 +1,5 @@
-package com.onework.tools.database;
+package com.onework.tools.db;
 
-import com.onework.tools.database.DataColumn;
 import lombok.Data;
 
 import java.util.List;

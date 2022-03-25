@@ -1,4 +1,4 @@
-package com.onework.tools.web.api.controller.model;
+package com.onework.tools.web.api.controller.model.db;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import lombok.Data;
  * @date Date : 2022年03月24日 10:56
  */
 @Data
-public class ConnectionInput {
+public class DbInput {
 
     private String host;
     private Integer port;

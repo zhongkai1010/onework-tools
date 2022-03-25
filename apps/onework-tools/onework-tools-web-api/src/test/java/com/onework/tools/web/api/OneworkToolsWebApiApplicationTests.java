@@ -1,7 +1,7 @@
 package com.onework.tools.web.api;
 
-import com.onework.tools.database.DataDatabase;
-import com.onework.tools.database.DataDatabaseMapper;
+import com.onework.tools.db.DataDatabase;
+import com.onework.tools.db.DataDatabaseMapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.Test;

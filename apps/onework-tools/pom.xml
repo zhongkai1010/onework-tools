@@ -24,6 +24,7 @@
         <openapi.version>1.6.6</openapi.version>
         <springboot.version>2.6.4</springboot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
     </properties>
     <dependencies>
         <!--父项目这里的依赖可以用到子项目的 通用的-->

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author Administrator
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.onework.tools")
 @MapperScan(basePackages = "com.onework.tools.web.api.mapper")
 public class OneworkToolsWebApiApplication {
 

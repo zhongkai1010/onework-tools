@@ -1,81 +1,40 @@
 package com.onework.tools.web.api.controller;
 
-import java.util.List;
-import java.util.function.Function;
-
-import org.springframework.web.bind.annotation.PathVariable;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
+import com.onework.tools.common.web.R;
+import com.onework.tools.web.api.controller.model.database.ConnectionInput;
+import com.onework.tools.web.api.controller.model.database.ConnectionOutput;
+import com.onework.tools.web.api.entity.DatabaseConnection;
+import com.onework.tools.web.api.service.IDatabaseConnectionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.onework.tools.common.web.R;
-import com.onework.tools.database.*;
-import com.onework.tools.web.api.controller.model.ConnectionInput;
-
 /**
- * @author Administrator
+ * @author : zhongkai1010@163.com
+ * @version V1.0
+ * @Project: onework-tools
+ * @Package com.onework.tools.web.api.controller
+ * @Description: 描述
+ * @date Date : 2022年03月25日 17:02
  */
 @RestController
-
+@RequestMapping("/database")
 public class DatabaseController {
 
-    @PostMapping("/db/{type}/all")
-    public R<List<DataDatabase>> getAll(@PathVariable("type") String dbType, @RequestBody ConnectionInput input) {
+    @Autowired
+    private IDatabaseConnectionService databaseConnectionService;
 
-        R<List<DataDatabase>> defaultResult = new R<List<DataDatabase>>().forbidden("not data");
+    @PostMapping("/connection/add")
+    public R<ConnectionOutput> addConnection(@RequestBody ConnectionInput input) {
+        R<ConnectionOutput> output = new R<>();
 
-        return outResult(dbType, defaultResult, input, server -> {
-            List<DataDatabase> dataDatabases = server.getDatabaseAndTables();
+        DatabaseConnection databaseConnection = BeanUtil.copyProperties(input, DatabaseConnection.class);
+         databaseConnectionService.save(databaseConnection);
 
-            return new R<List<DataDatabase>>().data(dataDatabases).success();
-        });
-    }
-
-    @PostMapping("/db/{type}/{database}")
-    public R<List<DataTable>> getTables(@PathVariable("type") String dbType, @PathVariable("database") String database,
-        @RequestBody ConnectionInput input) {
-
-        R<List<DataTable>> defaultResult = new R<List<DataTable>>().forbidden("not data");
-
-        return outResult(dbType, defaultResult, input, server -> {
-            List<DataTable> dataTables = server.getDataTables(database);
-            return new R<List<DataTable>>().data(dataTables).success();
-        });
-    }
-
-    @PostMapping("/db/{type}/{database}/{table}")
-    public R<List<DataColumn>> getColumns(@PathVariable("type") String dbType,
-        @PathVariable("database") String database, @PathVariable(value = "table") String table,
-        @RequestBody ConnectionInput input) {
-
-        input.setDatabase(database);
-        R<List<DataColumn>> defaultResult = new R<List<DataColumn>>().forbidden("not data");
-
-        return outResult(dbType, defaultResult, input, server -> {
-            List<DataColumn> dataBaseColumns = server.getDataColumns(database, table);
-            return new R<List<DataColumn>>().data(dataBaseColumns).success();
-        });
-    }
-
-    @PostMapping("/db/{type}")
-    public R<List<DataDatabase>> getDatabase(@PathVariable("type") String dbType, @RequestBody ConnectionInput input) {
-
-        R<List<DataDatabase>> defaultResult = new R<List<DataDatabase>>().forbidden("not data");
-
-        return outResult(dbType, defaultResult, input, server -> {
-            List<DataDatabase> dataDatabases = server.getDatabases();
-            return new R<List<DataDatabase>>().data(dataDatabases).success();
-        });
-    }
-
-    private <T> T outResult(String dbType, T defaultResult, ConnectionInput input, Function<DbSchemaServer, T> func) {
-        DatabaseType databaseType = DatabaseType.Map.get(dbType);
-        if (databaseType == null) {
-            return defaultResult;
-        }
-        DbSchemaServer dbSchemaServer = DbSchemaFactory.getDbSchemaServer(databaseType, input.getHost(),
-            input.getPort(), input.getDatabase(), input.getUser(), input.getPassword());
-
-        return func.apply(dbSchemaServer);
+        return output;
     }
 }

@@ -1,4 +1,4 @@
-package com.onework.tools.database;
+package com.onework.tools.db;
 
 import org.springframework.jdbc.core.RowMapper;
 

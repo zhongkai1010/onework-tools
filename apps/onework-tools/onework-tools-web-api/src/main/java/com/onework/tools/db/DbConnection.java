@@ -1,4 +1,4 @@
-package com.onework.tools.database;
+package com.onework.tools.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -58,7 +58,7 @@ public class DbConnection {
         return this;
     }
 
-    public DbConnection build() {
+    public DataSource build() {
         try {
 
             String url = getUrl();
@@ -66,9 +66,9 @@ public class DbConnection {
             config.setJdbcUrl(url);
             config.setUsername(user);
             config.setPassword(password);
+            config.setConnectionTimeout(5000);
 
-            this.dataSource = new HikariDataSource(config);
-            return this;
+            return new HikariDataSource(config);
 
         } catch (Exception e) {
             log.error(String.format("DbConnection get Connection is error,%s", e.getMessage()), e);

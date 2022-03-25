@@ -1,9 +1,10 @@
-package com.onework.tools.database;
+package com.onework.tools.db;
 
-import com.onework.tools.database.schema.MsSqlSchemaServer;
-import com.onework.tools.database.schema.MySqlDbSchemaServer;
+import com.onework.tools.db.schema.MsSqlSchemaServer;
+import com.onework.tools.db.schema.MySqlDbSchemaServer;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,9 +20,12 @@ public class DbSchemaFactory {
 
     public static DbSchemaServer getDbSchemaServer(@NotNull DatabaseType databaseType, @NotNull String host,
         Integer port, @NotNull String database, @NotNull String user, @NotNull String password) {
-        DbConnection dbConnection =
-            DbConnection.create(databaseType).host(host).port(port).user(user).password(password).database(database).build();
-        return getDbSchemaServer(dbConnection);
+
+        DataSource dataSource =
+            DbConnection.create(databaseType).host(host).port(port).user(user).password(password).database(database)
+                .build();
+
+        return getDbSchemaServer(databaseType, dataSource);
     }
 
     public static DbSchemaServer getDbSchemaServer(@NotNull DatabaseType databaseType, @NotNull String host,
@@ -30,35 +34,36 @@ public class DbSchemaFactory {
         return getDbSchemaServer(databaseType, host, null, database, user, password);
     }
 
-    public static DbSchemaServer getDbSchemaServer(DbConnection dbConnection) {
-        if (dbConnection.getDatabaseType() == DatabaseType.MSSQL) {
-            return getMsSqlSchemaServer(dbConnection);
+    public static DbSchemaServer getDbSchemaServer(@NotNull DatabaseType databaseType, DataSource dataSource) {
+
+        if (databaseType == DatabaseType.MSSQL) {
+            return getMsSqlSchemaServer(dataSource);
         }
-        if (dbConnection.getDatabaseType() == DatabaseType.MYSQL) {
-            return getMysqlSchemaServer(dbConnection);
+        if (databaseType == DatabaseType.MYSQL) {
+            return getMysqlSchemaServer(dataSource);
         }
         log.error("DbSchemaFactory getDbSchemaServer DatabaseType value is not find");
 
         return null;
     }
 
-    public static DbSchemaServer getMysqlSchemaServer(DbConnection dbConnection) {
+    public static DbSchemaServer getMysqlSchemaServer(DataSource dataSource) {
 
-        if (dbConnection == null) {
+        if (dataSource == null) {
             log.error("DbSchemaFactory getMysqlSchemaServer connection is null");
             return null;
         }
 
-        return new MySqlDbSchemaServer(dbConnection);
+        return new MySqlDbSchemaServer(dataSource);
     }
 
-    public static DbSchemaServer getMsSqlSchemaServer(DbConnection dbConnection) {
+    public static DbSchemaServer getMsSqlSchemaServer(DataSource dataSource) {
 
-        if (dbConnection == null) {
+        if (dataSource == null) {
             log.error("DbSchemaFactory getMsSqlSchemaServer connection is null");
             return null;
         }
-        return new MsSqlSchemaServer(dbConnection);
+        return new MsSqlSchemaServer(dataSource);
     }
 }
 

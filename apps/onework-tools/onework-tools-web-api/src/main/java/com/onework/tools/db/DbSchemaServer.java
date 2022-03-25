@@ -1,8 +1,9 @@
-package com.onework.tools.database;
+package com.onework.tools.db;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -16,27 +17,31 @@ import java.util.List;
 @Slf4j
 public abstract class DbSchemaServer {
 
-    private final DbConnection dbConnection;
+    private final JdbcTemplate jdbcTemplate;
 
-    protected DbSchemaServer(DbConnection dbConnection) {
-        this.dbConnection = dbConnection;
+    protected DbSchemaServer(DataSource dataSource) {
+
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     /**
      * 获取
+     *
      * @return
      */
     protected abstract String getDatabasesSql();
 
     /**
      * 获取
+     *
      * @param dbName
      * @return
      */
     protected abstract String getTablesSql(String dbName);
 
     /**
-     *  获取
+     * 获取
+     *
      * @param dbName
      * @param dbTable
      * @return
@@ -44,40 +49,36 @@ public abstract class DbSchemaServer {
     protected abstract String getColumnsSql(String dbName, String dbTable);
 
     public List<DataColumn> getDataColumns(String dbName, String dbTable) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dbConnection.getDataSource());
-        return getInternalDataColumns(jdbcTemplate, dbName, dbTable);
+        return getInternalDataColumns(dbName, dbTable);
     }
 
     public List<DataTable> getDataTables(String dbName) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dbConnection.getDataSource());
-        return getInternalDataTables(jdbcTemplate, dbName);
+        return getInternalDataTables(dbName);
     }
 
     public List<DataDatabase> getDatabases() {
         String sql = getDatabasesSql();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dbConnection.getDataSource());
         return jdbcTemplate.query(sql, new DataDatabaseMapper());
     }
 
     public List<DataDatabase> getDatabaseAndTables() {
         String sql = getDatabasesSql();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dbConnection.getDataSource());
         List<DataDatabase> dataDatabases = jdbcTemplate.query(sql, new DataDatabaseMapper());
 
-        dataDatabases.forEach(s -> s.setTables(getInternalDataTables(jdbcTemplate, s.getDbName())));
+        dataDatabases.forEach(s -> s.setTables(getInternalDataTables(s.getDbName())));
         return dataDatabases;
     }
 
-    private List<DataColumn> getInternalDataColumns(JdbcTemplate jdbcTemplate, String dbName, String dbTable) {
+    private List<DataColumn> getInternalDataColumns(String dbName, String dbTable) {
         String sql = getColumnsSql(dbName, dbTable);
         return jdbcTemplate.query(sql, new DataColumnMapper());
     }
 
-    private List<DataTable> getInternalDataTables(JdbcTemplate jdbcTemplate, String dbName) {
+    private List<DataTable> getInternalDataTables(String dbName) {
         String tablesSql = getTablesSql(dbName);
         List<DataTable> dataTables = jdbcTemplate.query(tablesSql, new DataTableMapper());
 
-        dataTables.forEach(s -> s.setColumns(getInternalDataColumns(jdbcTemplate, dbName, s.getTbName())));
+        dataTables.forEach(s -> s.setColumns(getInternalDataColumns(dbName, s.getTbName())));
 
         return dataTables;
     }

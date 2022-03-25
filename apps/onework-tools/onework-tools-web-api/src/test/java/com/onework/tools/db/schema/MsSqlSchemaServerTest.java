@@ -1,8 +1,8 @@
-package com.onework.tools.database.schema;
+package com.onework.tools.db.schema;
 
 import org.junit.jupiter.api.Test;
 
-class MySqlDbSchemaServerTest {
+class MsSqlSchemaServerTest {
 
     @Test
     void getDatabasesSql() {}
