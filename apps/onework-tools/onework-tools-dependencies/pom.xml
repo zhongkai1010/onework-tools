@@ -15,7 +15,7 @@
 
     <properties>
         <maven.install.skip>true</maven.install.skip>
-        <revision>0.0.1-snapshot</revision>
+        <revision>0.0.1</revision>
         <!-- 统一依赖管理 -->
         <spring.boot.version>2.6.4</spring.boot.version>
         <!-- Web 相关 -->
@@ -141,4 +141,11 @@
             <!-- 三方云服务相关 -->
         </dependencies>
     </dependencyManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>localRepository</id>
+            <url>file:D:\development_tools\java\maven_repository</url>
+        </repository>
+    </distributionManagement>
 </project>

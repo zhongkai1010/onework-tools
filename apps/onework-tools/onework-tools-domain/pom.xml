@@ -31,4 +31,11 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>localRepository</id>
+            <url>file:D:\development_tools\java\maven_repository</url>
+        </repository>
+    </distributionManagement>
 </project>

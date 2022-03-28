@@ -13,13 +13,14 @@
         <module>onework-tools-generator</module>
         <module>onework-tools-domain</module>
         <module>onework-tools-server</module>
+        <module>onework-tools-web-api</module>
     </modules>
 
     <description>onework工具包</description>
     <url>https://www.one-work.net/</url>
 
     <properties>
-        <revision>0.0.1-snapshot</revision>
+        <revision>0.0.1</revision>
         <!-- Maven 相关 -->
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -31,12 +32,10 @@
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.onework</groupId>
+                <groupId>com.onework.tools</groupId>
                 <artifactId>onework-tools-dependencies</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>
@@ -44,7 +43,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -75,17 +73,11 @@
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <fork>true</fork>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>
 
+    <!-- 使用 aliyun 的 Maven 源，提升下载速度 -->
     <repositories>
         <repository>
             <id>aliyunmaven</id>

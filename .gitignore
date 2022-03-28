@@ -378,3 +378,7 @@ source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx
 /apps/sample/java/onework-maven-sample/.idea
 /apps/sample/vue/vue-sample/package-lock.json
 /apps/sample/java/onework-springframework.sample/.idea
+/apps/onework-tools/onework-tools-core/target
+/apps/onework-tools/onework-tools-domain/target
+/apps/onework-tools/onework-tools-generator/target
+/apps/onework-tools/onework-tools-server/target

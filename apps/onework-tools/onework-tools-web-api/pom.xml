@@ -13,6 +13,7 @@
     <description>onework-tools的webapi</description>
 
     <dependencies>
+
         <!--工具类-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -56,4 +57,11 @@
             <version>${revision}</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>localRepository</id>
+            <url>file:D:\development_tools\java\maven_repository</url>
+        </repository>
+    </distributionManagement>
 </project>
