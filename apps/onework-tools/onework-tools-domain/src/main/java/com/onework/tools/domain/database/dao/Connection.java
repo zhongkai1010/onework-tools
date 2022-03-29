@@ -16,6 +16,7 @@ import lombok.Data;
 @Data
 public class Connection implements Entity {
 
+    private static final long serialVersionUID = 1536253811858760370L;
     private String uid;
     private String name;
     private String dbType;
@@ -29,8 +30,7 @@ public class Connection implements Entity {
     public DbConnection getDbConnection() {
 
         DatabaseType databaseType = DatabaseType.Map.get(dbType);
-        DbConnection dbConnection =
-            DbConnection.create(databaseType).host(host).port(port).database(database).user(user).password(password);
-        return dbConnection;
+        return DbConnection.create(databaseType).host(host).port(port).database(database).user(user).password(
+            password);
     }
 }

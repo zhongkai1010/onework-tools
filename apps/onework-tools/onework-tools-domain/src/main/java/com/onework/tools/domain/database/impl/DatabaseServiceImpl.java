@@ -16,7 +16,7 @@ import java.util.List;
  * @author : zhongkai1010@163.com
  * @version V1.0
  * @Project: onework-tools
- * @Package com.onework.tools.domain.datamodel.impl
+ * @Package com.onework.tools.domain.database.impl
  * @Description: 描述
  * @date Date : 2022年03月29日 10:38
  */
@@ -43,13 +43,11 @@ public class DatabaseServiceImpl implements DatabaseService {
         if (dbConnection != null) {
             BeanUtils.copyProperties(connection, dbConnection);
             connectionRepository.addOrUpdateConnection(dbConnection);
-        } else {
+        } else
             connectionRepository.addOrUpdateConnection(connection);
-        }
 
-        if (sync) {
+        if (sync)
             syscDatabase(connection);
-        }
     }
 
     @Override
@@ -63,16 +61,15 @@ public class DatabaseServiceImpl implements DatabaseService {
     public void deleteConnection(@NonNull Connection connection) {
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
-        connectionRepository.deleteConnection(connection.getName());
+        connectionRepository.deleteConnection(dbConnection.getName());
     }
 
     @Override
     public void syscDatabase(@NonNull Connection connection) throws DatabaseDomainException {
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
-        if (!dbSchemaServer.TestConnection()) {
+        if (!dbSchemaServer.TestConnection())
             throw new DatabaseDomainException(DatabaseDomainErrorTemplate.DbConnectionError);
-        }
         List<DataDatabase> dataDatabases = dbSchemaServer.getDatabases();
         handleDatabase(connection, dataDatabases);
     }
@@ -124,14 +121,13 @@ public class DatabaseServiceImpl implements DatabaseService {
      * @param connection
      * @return
      */
-    private DbSchemaServer getDbSchemaServer(@NonNull Connection connection) throws DatabaseDomainException {
+    private static DbSchemaServer getDbSchemaServer(@NonNull Connection connection) throws DatabaseDomainException {
         DataSource dataSource = connection.getDbConnection().build();
         DatabaseType databaseType = DatabaseType.Map.get(connection.getDbType());
         DbSchemaServer dbSchemaServer = DbSchemaFactory.getDbSchemaServer(databaseType, dataSource);
 
-        if (dbSchemaServer == null) {
+        if (dbSchemaServer == null)
             throw new DatabaseDomainException(DatabaseDomainErrorTemplate.DbSchemaServerError);
-        }
 
         return dbSchemaServer;
     }
