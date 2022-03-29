@@ -10,9 +10,9 @@
     <modules>
         <module>onework-tools-dependencies</module>
         <module>onework-tools-core</module>
-        <module>onework-tools-generator</module>
         <module>onework-tools-domain</module>
         <module>onework-tools-server</module>
+        <module>onework-tools-generator</module>
         <module>onework-tools-web-api</module>
     </modules>
 

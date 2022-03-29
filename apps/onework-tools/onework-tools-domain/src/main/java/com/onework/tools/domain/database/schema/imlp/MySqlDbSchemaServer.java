@@ -1,7 +1,8 @@
-package com.onework.tools.domain.database.schema;
+package com.onework.tools.domain.database.schema.imlp;
 
 
-import com.onework.tools.domain.database.DbSchemaServer;
+import com.onework.tools.domain.database.schema.DbSchemaServer;
+
 import javax.sql.DataSource;
 
 /**

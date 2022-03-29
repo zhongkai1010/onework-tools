@@ -60,7 +60,17 @@
             <!-- 业务组件 -->
             <dependency>
                 <groupId>com.onework.tools</groupId>
+                <artifactId>onework-tools-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.onework.tools</groupId>
                 <artifactId>onework-tools-domain</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.onework.tools</groupId>
+                <artifactId>onework-tools-server</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- Spring 核心 -->

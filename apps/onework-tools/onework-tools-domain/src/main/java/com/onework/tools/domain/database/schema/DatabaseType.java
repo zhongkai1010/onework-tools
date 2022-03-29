@@ -1,4 +1,4 @@
-package com.onework.tools.domain.database;
+package com.onework.tools.domain.database.schema;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -12,5 +12,17 @@ import java.time.LocalDateTime;
  * @version: 1.0
  */
 public interface EntityUpdated {
-    LocalDateTime updated = null;
+    /**
+     * 获取Id
+     *
+     * @return
+     */
+    LocalDateTime getUpdated();
+
+    /**
+     * 设置Id
+     *
+     * @param value
+     */
+    void setUpdated(LocalDateTime value);
 }

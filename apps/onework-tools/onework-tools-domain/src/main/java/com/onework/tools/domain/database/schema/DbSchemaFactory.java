@@ -1,8 +1,8 @@
-package com.onework.tools.domain.database;
+package com.onework.tools.domain.database.schema;
 
+import com.onework.tools.domain.database.schema.imlp.MsSqlSchemaServer;
+import com.onework.tools.domain.database.schema.imlp.MySqlDbSchemaServer;
 import lombok.extern.slf4j.Slf4j;
-import com.onework.tools.domain.database.schema.MsSqlSchemaServer;
-import com.onework.tools.domain.database.schema.MySqlDbSchemaServer;
 
 import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;

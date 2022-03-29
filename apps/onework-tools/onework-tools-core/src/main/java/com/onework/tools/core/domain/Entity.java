@@ -11,7 +11,19 @@ import java.io.Serializable;
  * @date: 2021/12/16 21:45
  * @version: 1.0
  */
-public abstract class BaseEntity implements Serializable {
+public interface Entity extends Serializable {
 
-    String uid;
+    /**
+     * 获取Id
+     *
+     * @return
+     */
+    String getUid();
+
+    /**
+     * 设置Id
+     *
+     * @param value
+     */
+    void setUid(String value);
 }

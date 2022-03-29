@@ -13,5 +13,17 @@ import java.time.LocalDateTime;
  */
 
 public interface EntityCreated {
-    LocalDateTime created = null;
+    /**
+     * 获取created
+     *
+     * @return
+     */
+    LocalDateTime getCreated();
+
+    /**
+     * 设置created
+     *
+     * @param value
+     */
+    void setCreated(LocalDateTime value);
 }

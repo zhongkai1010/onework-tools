@@ -11,6 +11,18 @@ import java.time.LocalDateTime;
  * @date: 2021/12/16 21:53
  * @version: 1.0
  */
-public interface DeleteEntity {
-    LocalDateTime deleted = null;
+public interface EntityDeleted {
+    /**
+     * 获取deleted
+     *
+     * @return
+     */
+    LocalDateTime getDeleted();
+
+    /**
+     * 设置deleted
+     *
+     * @param value
+     */
+    void setDeleted(LocalDateTime value);
 }

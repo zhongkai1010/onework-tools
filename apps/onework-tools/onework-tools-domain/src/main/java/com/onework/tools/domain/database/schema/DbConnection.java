@@ -1,4 +1,4 @@
-package com.onework.tools.domain.database;
+package com.onework.tools.domain.database.schema;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

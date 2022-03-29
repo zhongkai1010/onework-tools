@@ -1,7 +1,7 @@
 package com.onework.tools.web.controller;
 
 
-import com.onework.tools.domain.database.*;
+import com.onework.tools.domain.database.schema.*;
 import com.onework.tools.web.R;
 import com.onework.tools.web.controller.model.db.DbInput;
 
