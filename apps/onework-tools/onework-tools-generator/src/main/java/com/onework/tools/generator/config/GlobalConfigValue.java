@@ -2,6 +2,7 @@ package com.onework.tools.generator.config;
 
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * fileOverride	覆盖已生成文件	默认值:false <br/>
@@ -22,22 +23,23 @@ import lombok.Data;
  * @version: 1.0
  */
 @Data
+@Accessors(chain = true)
 public class GlobalConfigValue {
 
     /**
      * 覆盖已生成文件 默认值:false
      */
-    private Boolean fileOverride = false;
+    private Boolean fileOverride = true;
 
     /**
      * 禁止打开输出目录 默认值:true
      */
-    private Boolean disableOpenDir = false;
+    private Boolean disableOpenDir = true;
 
     /**
      * 指定输出目录 默认值:System.getProperty("user.dir")
      */
-    private String outputDir = System.getProperty("user.dir").concat("/generator");
+    private String outputDir = System.getProperty("user.dir").concat("/onework-tools-server/src/main/java");
 
     /**
      * 作者名 zhongkai 默认值:作者

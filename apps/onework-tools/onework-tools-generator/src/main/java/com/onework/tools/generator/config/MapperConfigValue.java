@@ -2,6 +2,7 @@ package com.onework.tools.generator.config;
 
 import com.baomidou.mybatisplus.generator.function.ConverterFileName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.apache.ibatis.cache.Cache;
 
 /**
@@ -25,43 +26,44 @@ import org.apache.ibatis.cache.Cache;
  * @version: 1.0
  */
 @Data
+@Accessors(chain = true)
 public class MapperConfigValue {
 
     /**
      * 设置父类	BaseMapper.class
      */
-    private String superClass = null;
+    private String superClass;
 
     /**
      * 开启 @Mapper 注解	默认值:false
      */
-    private Boolean enableMapperAnnotation = false;
+    private Boolean enableMapperAnnotation;
     /**
      * 启用 BaseResultMap 生成	默认值:false
      */
-    private Boolean enableBaseResultMap = false;
+    private Boolean enableBaseResultMap;
     /**
      * 启用 BaseColumnList	默认值:false
      */
-    private Boolean enableBaseColumnList = false;
+    private Boolean enableBaseColumnList;
     /**
      * 设置缓存实现类	MyMapperCache.class
      */
-    private Class<? extends Cache> cache = null;
+    private Class<? extends Cache> cache;
     /**
      * 转换 mapper 类文件名称
      */
-    private ConverterFileName convertMapperFileName = null;
+    private ConverterFileName convertMapperFileName;
     /**
      * 转换 xml 文件名称
      */
-    private ConverterFileName convertXmlFileName = null;
+    private ConverterFileName convertXmlFileName;
     /**
      * 格式化 mapper 文件名称
      */
-    private String formatMapperFileName = null;
+    private String formatMapperFileName;
     /**
      * 格式化 xml 实现类文件名称
      */
-    private String formatXmlFileName = null;
+    private String formatXmlFileName;
 }

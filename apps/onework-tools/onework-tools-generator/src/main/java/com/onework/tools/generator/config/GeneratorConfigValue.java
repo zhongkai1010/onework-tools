@@ -1,6 +1,7 @@
 package com.onework.tools.generator.config;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author : zhongkai1010@163.com
@@ -11,13 +12,24 @@ import lombok.Data;
  * @date Date : 2022年03月30日 15:00
  */
 @Data
+@Accessors(chain = true)
 public class GeneratorConfigValue {
 
-    private GlobalConfigValue globalConfigValue;
+    private GlobalConfigValue globalConfigValue = new GlobalConfigValue();
 
-    private PackageConfigValue packageConfigValue;
+    private PackageConfigValue packageConfigValue = new PackageConfigValue();
 
-    private TemplateConfigValue templateConfigValue;
+    private TemplateConfigValue templateConfigValue = new TemplateConfigValue();
 
-    private StrategyConfigValue strategyConfigValue;
+    private StrategyConfigValue strategyConfigValue = new StrategyConfigValue();
+
+    //    public void setModuleName(String moduleName) {
+    //        packageConfigValue.setModuleName(moduleName)
+    //            .setEntity(String.format("%s.%s", moduleName, packageConfigValue.getEntity()))
+    //            .setService(String.format("%s.%s", moduleName, packageConfigValue.getService()))
+    //            .setServiceImpl(String.format("%s.%s", moduleName, packageConfigValue.getServiceImpl()))
+    //            .setMapper(String.format("%s.%s", moduleName, packageConfigValue.getMapper()))
+    //            .setXml(String.format("%s.%s", moduleName, packageConfigValue.getXml()))
+    //            .setController(String.format("%s.%s", moduleName, packageConfigValue.getController()));
+    //    }
 }

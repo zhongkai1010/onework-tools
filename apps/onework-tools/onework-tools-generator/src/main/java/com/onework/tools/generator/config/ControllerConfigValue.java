@@ -2,6 +2,7 @@ package com.onework.tools.generator.config;
 
 import com.baomidou.mybatisplus.generator.function.ConverterFileName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * superClass(Class<?>)	设置父类	BaseController.class  <br/>
@@ -20,31 +21,32 @@ import lombok.Data;
  * @version: 1.0
  */
 @Data
+@Accessors(chain = true)
 public class ControllerConfigValue {
 
     /**
      * 设置父类	com.baomidou.global.BaseController
      */
-    private String superClass = null;
+    private String superClass;
 
     /**
      * 开启驼峰转连字符	默认值:false
      */
-    private Boolean enableHyphenStyle = false;
+    private Boolean enableHyphenStyle;
 
     /**
      * 开启生成@RestController 控制器	默认值:false
      */
-    private Boolean enableRestStyle = false;
+    private Boolean enableRestStyle;
 
     /**
      * 转换文件名称
      */
-    private ConverterFileName convertFileName = null;
+    private ConverterFileName convertFileName;
 
     /**
      * 格式化文件名称
      */
-    private String formatFileName = null;
+    private String formatFileName;
 
 }

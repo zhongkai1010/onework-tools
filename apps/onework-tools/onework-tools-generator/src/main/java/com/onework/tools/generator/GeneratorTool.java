@@ -2,10 +2,7 @@ package com.onework.tools.generator;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.TemplateConfig;
+import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.Controller;
 import com.baomidou.mybatisplus.generator.config.builder.Entity;
 import com.baomidou.mybatisplus.generator.config.builder.Mapper;
@@ -35,11 +32,10 @@ public class GeneratorTool {
 
     public void execute() {
 
-        fastAutoGenerator.globalConfig(
-                builder -> setGlobalConfig(builder, this.generatorConfigValue.getGlobalConfigValue()))
-            .packageConfig(builder -> setPackageConfig(builder, this.generatorConfigValue.getPackageConfigValue()))
-            .templateConfig(builder -> setTemplateConfig(builder, this.generatorConfigValue.getTemplateConfigValue()))
-            .strategyConfig(builder -> setStrategyConfig(builder, this.generatorConfigValue.getStrategyConfigValue()))
+        fastAutoGenerator.globalConfig(builder -> setGlobalConfig(builder, generatorConfigValue.getGlobalConfigValue()))
+            .packageConfig(builder -> setPackageConfig(builder, generatorConfigValue.getPackageConfigValue()))
+            .templateConfig(builder -> setTemplateConfig(builder, generatorConfigValue.getTemplateConfigValue()))
+            .strategyConfig(builder -> setStrategyConfig(builder, generatorConfigValue.getStrategyConfigValue()))
             .execute();
     }
 
@@ -57,7 +53,7 @@ public class GeneratorTool {
             if (fieldValue != null) {
                 Class<?> type = fieldValue.getClass();
                 if (type.equals(Boolean.class)) {
-                    boolean blValue = Boolean.getBoolean(fieldValue.toString());
+                    boolean blValue = (Boolean)fieldValue;
                     if (blValue) {
                         ReflectUtil.invoke(objectValue, fieldName);
                     }
@@ -118,8 +114,36 @@ public class GeneratorTool {
         //        builder.mapper()
         //        builder.mapperXml()
         //        builder.controller()
-        Field[] field = ReflectUtil.getFields(TemplateConfigValue.class);
-        setValue(field, value, builder);
+
+        Field[] fields = ReflectUtil.getFields(TemplateConfigValue.class);
+        ArrayList<String> replaceFields = new ArrayList<>();
+        replaceFields.add("disableEntity");
+        replaceFields.add("disableService");
+        replaceFields.add("disableServiceImpl");
+        replaceFields.add("disableMapper");
+        replaceFields.add("disableMapperXml");
+        replaceFields.add("disableController");
+        Field[] tempFields = replaceFields(fields, replaceFields);
+        setValue(tempFields, value, builder);
+
+        if (value.getDisableEntity()) {
+            builder.disable(TemplateType.ENTITY);
+        }
+        if (value.getDisableService()) {
+            builder.disable(TemplateType.SERVICE);
+        }
+        if (value.getDisableServiceImpl()) {
+            builder.disable(TemplateType.SERVICEIMPL);
+        }
+        if (value.getDisableMapper()) {
+            builder.disable(TemplateType.MAPPER);
+        }
+        if (value.getDisableMapperXml()) {
+            builder.disable(TemplateType.XML);
+        }
+        if (value.getDisableController()) {
+            builder.disable(TemplateType.CONTROLLER);
+        }
     }
 
     private static void setStrategyConfig(StrategyConfig.Builder builder, StrategyConfigValue value) {

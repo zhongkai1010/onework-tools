@@ -2,6 +2,7 @@ package com.onework.tools.generator.config;
 
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import java.util.Map;
  * @version: 1.0
  */
 @Data
+@Accessors(chain = true)
 public class PackageConfigValue {
 
     /**
@@ -38,46 +40,46 @@ public class PackageConfigValue {
     /**
      * 父包模块名	默认值:无
      */
-    private String moduleName = null;
+    private String moduleName;
 
     /**
      * Entity 包名 默认值:entity
      */
-    private String entity = "entity";
+    private String entity;
 
     /**
      * Service 包名 默认值:service
      */
-    private static String service = "service";
+    private String service;
 
     /**
      * Service Impl 包名 默认值:service.impl
      */
-    private static String serviceImpl = "service.impl";
+    private String serviceImpl;
 
     /**
      * Mapper 包名 默认值:mapper
      */
-    private static String mapper = "mapper";
+    private String mapper;
 
     /**
      * Mapper XML 包名 默认值:mapper.xml
      */
-    private static String xml = "mapper.xml";
+    private String xml;
 
     /**
      * Controller 包名 默认值:controller
      */
-    private static String controller = "controller";
+    private String controller;
 
     /**
      * 自定义文件包名 输出自定义文件时所用到的包名
      */
-    private static String other = null;
+    private String other;
 
     /**
      * Collections.singletonMap(OutputFile.mapperXml, "D://")
      */
-    private Map<OutputFile, String> pathInfo = null;
+    private Map<OutputFile, String> pathInfo;
 
 }

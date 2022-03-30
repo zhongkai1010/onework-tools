@@ -2,6 +2,7 @@ package com.onework.tools.generator.config;
 
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * enableCapitalMode	开启大写命名	默认值:false <br/>
@@ -30,86 +31,87 @@ import lombok.Data;
  * @version: 1.0
  */
 @Data
+@Accessors(chain = true)
 public class StrategyConfigValue {
 
     /**
      * 开启大写命名	默认值:false
      */
-    private Boolean enableCapitalMode = false;
+    private Boolean enableCapitalMode;
 
     /**
      * 开启跳过视图	默认值:false
      */
-    private Boolean enableSkipView = false;
+    private Boolean enableSkipView;
 
     /**
      * 禁用 sql 过滤	默认值:true，语法不能支持使用 sql 过滤表的话，可以考虑关闭此开关
      */
-    private Boolean disableSqlFilter = true;
+    private Boolean disableSqlFilter;
 
     /**
      * 启用 schema	默认值:false，多 schema 场景的时候打开
      */
-    private Boolean enableSchema = false;
+    private Boolean enableSchema;
 
     /**
      * 模糊表匹配(sql 过滤)	likeTable 与 notLikeTable 只能配置一项
      */
-    private LikeTable likeTable = null;
+    private LikeTable likeTable;
 
     /**
      * 模糊表排除(sql 过滤)	likeTable 与 notLikeTable 只能配置一项
      */
-    private LikeTable notLikeTable = null;
+    private LikeTable notLikeTable;
 
     /**
      * 增加表匹配(内存过滤)	include 与 exclude 只能配置一项
      */
-    private String[] addInclude = null;
+    private String[] addInclude;
 
     /**
      * 增加表排除匹配(内存过滤)	include 与 exclude 只能配置一项
      */
-    private String[] addExclude = null;
+    private String[] addExclude;
 
     /**
      * 增加过滤表前缀
      */
-    private String[] addTablePrefix = null;
+    private String[] addTablePrefix;
 
     /**
      * 增加过滤表后缀
      */
-    private String[] addTableSuffix = null;
+    private String[] addTableSuffix;
 
     /**
      * 增加过滤字段前缀
      */
-    private String[] addFieldPrefix = null;
+    private String[] addFieldPrefix;
 
     /**
      * 增加过滤字段后缀
      */
-    private String[] addFieldSuffix = null;
+    private String[] addFieldSuffix;
 
     /**
      * 实体策略配置
      */
-    private EntityConfigValue entityBuilder = null;
+    private EntityConfigValue entityBuilder = new EntityConfigValue();
 
     /**
      * controller 策略配置
      */
-    private ControllerConfigValue controllerBuilder = null;
+    private ControllerConfigValue controllerBuilder = new ControllerConfigValue();
 
     /**
      * mapper 策略配置
      */
-    private MapperConfigValue mapperBuilder = null;
+    private MapperConfigValue mapperBuilder = new MapperConfigValue();
 
     /**
      * service 策略配置
      */
-    private ServiceConfigValue serviceBuilder = null;
+    private ServiceConfigValue serviceBuilder = new ServiceConfigValue();
 
 }
