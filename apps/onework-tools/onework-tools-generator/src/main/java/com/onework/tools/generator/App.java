@@ -1,6 +1,13 @@
 package com.onework.tools.generator;
 
+import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.po.LikeTable;
+import com.onework.tools.generator.config.GeneratorConfigValue;
+import com.onework.tools.generator.config.GlobalConfigValue;
+import com.onework.tools.generator.config.StrategyConfigValue;
+
+import java.lang.reflect.Field;
 
 /**
  * @author : zhongkai1010@163.com
@@ -14,11 +21,48 @@ public class App {
 
     public static void main(String[] args) {
 
-        FastAutoGenerator.create("", "", "").globalConfig(builder -> {
+        String jdbcUrl =
+            "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
+        String user = "root";
+        String password = "123qwe!@#mysql_root";
+        String outputDir = System.getProperty("user.dir").concat("/onework-tools-generator/src/main/java/com/onework/tools/generator");
 
-        }).packageConfig(builder -> {
+        FastAutoGenerator fastAutoGenerator = FastAutoGenerator.create(jdbcUrl, user, password);
+        GeneratorConfigValue generatorConfigValue = new GeneratorConfigValue();
 
-        });
+        GlobalConfigValue globalConfigValue = new GlobalConfigValue();
+        globalConfigValue.setOutputDir(outputDir);
+        generatorConfigValue.setGlobalConfigValue(globalConfigValue);
+
+        StrategyConfigValue strategyConfigValue = new StrategyConfigValue();
+        strategyConfigValue.setLikeTable(new LikeTable("database"));
+        generatorConfigValue.setStrategyConfigValue(strategyConfigValue);
+
+        GeneratorTool generatorTool = new GeneratorTool(fastAutoGenerator, generatorConfigValue);
+        generatorTool.execute();
+
+        // System.out.println("user.dir:" + System.getProperty("user.dir"));
+        //        Properties properties = System.getProperties();
+        //        properties.forEach((o, v) -> {
+        //            System.out.println(String.format("%s:%s", o, v));
+        //        });
+        //        String jdbcUrl =
+        //            "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
+        //        String user = "root";
+        //        String password = "";
+        //
+        //        FastAutoGenerator fastAutoGenerator = FastAutoGenerator.create(jdbcUrl, user, password);
+        //        GeneratorConfigValue generatorConfigValue = new GeneratorConfigValue();
+        //        GeneratorTool generatorTool = new GeneratorTool(fastAutoGenerator,generatorConfigValue);
+        //        generatorTool.execute();
+
+        //        GlobalConfig globalConfig = new GlobalConfig();
+        //        EntityConfig entityConfig = new EntityConfig();
+        //        FastAutoGenerator.create("", "", "").globalConfig(builder -> {
+        //
+        //        }).packageConfig(builder -> {
+        //
+        //        });
         //        try {
         //
         //            String outputDir = System.getProperty("user.dir").concat("/onework-tools-web-api/src/main/java");

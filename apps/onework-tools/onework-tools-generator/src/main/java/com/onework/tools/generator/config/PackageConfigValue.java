@@ -1,4 +1,4 @@
-package com.onework.tools.generator.params;
+package com.onework.tools.generator.config;
 
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import lombok.Data;
@@ -6,6 +6,17 @@ import lombok.Data;
 import java.util.Map;
 
 /**
+ * parent(String)	父包名	默认值:com.baomidou <br/>
+ * moduleName(String)	父包模块名	默认值:无 <br/>
+ * entity(String)	Entity 包名	默认值:entity <br/>
+ * service(String)	Service 包名	默认值:service <br/>
+ * serviceImpl(String)	Service Impl 包名	默认值:service.impl <br/>
+ * mapper(String)	Mapper 包名	默认值:mapper <br/>
+ * xml(String)	Mapper XML 包名	默认值:mapper.xml <br/>
+ * controller(String)	Controller 包名	默认值:controller <br/>
+ * other(String)	自定义文件包名	输出自定义文件时所用到的包名 <br/>
+ * pathInfo(Map<OutputFile, String>)	路径配置信息	Collections.singletonMap(OutputFile.mapperXml, "D://") <br/>
+ *
  * @projectName: onework-tools
  * @package: com.onework.tools.generator
  * @className: GeneratorConfig
@@ -13,21 +24,9 @@ import java.util.Map;
  * @description: 描述
  * @date: 2022/3/29 20:07
  * @version: 1.0
- * <p>
- * parent(String)	父包名	默认值:com.baomidou
- * moduleName(String)	父包模块名	默认值:无
- * entity(String)	Entity 包名	默认值:entity
- * service(String)	Service 包名	默认值:service
- * serviceImpl(String)	Service Impl 包名	默认值:service.impl
- * mapper(String)	Mapper 包名	默认值:mapper
- * xml(String)	Mapper XML 包名	默认值:mapper.xml
- * controller(String)	Controller 包名	默认值:controller
- * other(String)	自定义文件包名	输出自定义文件时所用到的包名
- * pathInfo(Map<OutputFile, String>)	路径配置信息	Collections.singletonMap(OutputFile.mapperXml, "D://")
- * <p/>
  */
 @Data
-public class PackageConfigParams {
+public class PackageConfigValue {
 
     /**
      * 父包名
