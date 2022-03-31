@@ -1,5 +1,11 @@
 package com.onework.tools.domain.database.schema;
 
+import com.onework.tools.domain.database.schema.entity.DataColumn;
+import com.onework.tools.domain.database.schema.entity.DataDatabase;
+import com.onework.tools.domain.database.schema.entity.DataTable;
+import com.onework.tools.domain.database.schema.mapper.DataColumnMapper;
+import com.onework.tools.domain.database.schema.mapper.DataDatabaseMapper;
+import com.onework.tools.domain.database.schema.mapper.DataTableMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 

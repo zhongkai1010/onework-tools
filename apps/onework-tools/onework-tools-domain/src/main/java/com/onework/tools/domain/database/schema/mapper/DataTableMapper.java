@@ -1,5 +1,6 @@
-package com.onework.tools.domain.database.schema;
+package com.onework.tools.domain.database.schema.mapper;
 
+import com.onework.tools.domain.database.schema.entity.DataTable;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

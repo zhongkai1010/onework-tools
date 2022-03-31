@@ -30,6 +30,12 @@ public class ServerDatabaseModule implements ModuleInfo {
 
     public final static String UPDATE_CONNECTION = "0003";
 
+    public final static String SAVE_DATABASE_ERROR = "0004";
+
+    public final static String SAVE_TABLE_ERROR = "0005";
+
+    public final static String SAVE_COLUMN_ERROR = "0005";
+
     // endregion
 
     @Override
@@ -40,10 +46,16 @@ public class ServerDatabaseModule implements ModuleInfo {
     @Override
     public Map<String, String> getErrorCodeMap() {
 
-        return new Hashtable<String, String>() {{
-            put(DELETE_CONNECTION, "删除数据库连接失败");
-            put(ADD_CONNECTION, "添加数据库连接失败");
-            put(UPDATE_CONNECTION, "修改数据库连接失败");
+        return new Hashtable<String, String>() {
+            private static final long serialVersionUID = -7207722230552763780L;
+
+            {
+            put(ServerDatabaseModule.DELETE_CONNECTION, "删除数据库连接失败");
+            put(ServerDatabaseModule.ADD_CONNECTION, "添加数据库连接失败");
+            put(ServerDatabaseModule.UPDATE_CONNECTION, "修改数据库连接失败");
+            put(ServerDatabaseModule.SAVE_DATABASE_ERROR, "添加或修改数据库失败");
+            put(ServerDatabaseModule.SAVE_TABLE_ERROR, "添加或修改数据库表失败");
+            put(ServerDatabaseModule.SAVE_COLUMN_ERROR, "添加或修改表字段失败");
         }};
     }
 }

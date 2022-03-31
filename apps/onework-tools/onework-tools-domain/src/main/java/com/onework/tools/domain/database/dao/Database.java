@@ -2,6 +2,8 @@ package com.onework.tools.domain.database.dao;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -15,5 +17,7 @@ public class Database {
 
     private String uid;
     private String name;
-    private String connUid;
+    private String cnUid;
+    private Boolean isSync;
+    private LocalDateTime lastSyncDate;
 }

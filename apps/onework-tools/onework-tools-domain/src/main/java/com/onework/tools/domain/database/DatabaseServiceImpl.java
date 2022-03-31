@@ -1,17 +1,29 @@
-package com.onework.tools.domain.database.impl;
+package com.onework.tools.domain.database;
 
 import com.onework.tools.core.Check;
-import com.onework.tools.domain.database.*;
+import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.domain.database.dao.Column;
 import com.onework.tools.domain.database.dao.Connection;
 import com.onework.tools.domain.database.dao.Database;
 import com.onework.tools.domain.database.dao.Table;
-import com.onework.tools.domain.database.schema.*;
+import com.onework.tools.domain.database.repository.ColumnRepository;
+import com.onework.tools.domain.database.repository.ConnectionRepository;
+import com.onework.tools.domain.database.repository.DatabaseRepository;
+import com.onework.tools.domain.database.repository.TableRepository;
+import com.onework.tools.domain.database.schema.DatabaseType;
+import com.onework.tools.domain.database.schema.DbSchemaFactory;
+import com.onework.tools.domain.database.schema.DbSchemaServer;
+import com.onework.tools.domain.database.schema.entity.DataColumn;
+import com.onework.tools.domain.database.schema.entity.DataDatabase;
+import com.onework.tools.domain.database.schema.entity.DataTable;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -23,6 +35,7 @@ import java.util.List;
  * @date Date : 2022年03月29日 10:38
  */
 @Service
+@Slf4j
 public class DatabaseServiceImpl implements DatabaseService {
 
     private final ConnectionRepository connectionRepository;
@@ -39,12 +52,14 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public void saveConnection(@NonNull Connection connection, Boolean sync) throws DatabaseDomainException {
+    @Transactional(rollbackFor = Exception.class)
+    public ExecuteResult saveConnection(@NonNull Connection connection, Boolean sync) {
 
-        Check.notNull(connection.getName(),new DatabaseDomainException(DomainDatabaseModule.CONNECTION_NAME_IS_NULL));
+        ExecuteResult executeResult = new ExecuteResult();
+
+        Check.notNull(connection.getName(), new DatabaseDomainException(DomainDatabaseModule.CONNECTION_NAME_IS_NULL));
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
-
         if (dbConnection != null) {
             BeanUtils.copyProperties(connection, dbConnection);
             connectionRepository.updateConnection(dbConnection);
@@ -53,31 +68,70 @@ public class DatabaseServiceImpl implements DatabaseService {
         }
 
         if (sync) {
-            syscDatabase(connection);
+            internalSyscDatabase(connection);
+        }
+
+        return executeResult.ok();
+    }
+
+    @Override
+    public ExecuteResult testConnection(@NonNull Connection connection) {
+
+        ExecuteResult executeResult = new ExecuteResult();
+
+        try {
+
+            DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
+            if (dbSchemaServer.TestConnection()) {
+                return executeResult.ok();
+            }
+
+            return executeResult;
+
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            return executeResult.fail(exception);
         }
     }
 
     @Override
-    public Boolean testConnection(@NonNull Connection connection) throws DatabaseDomainException {
+    public ExecuteResult deleteConnection(@NonNull Connection connection) {
 
-        DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
-        return dbSchemaServer.TestConnection();
+        ExecuteResult executeResult = new ExecuteResult();
+
+        try {
+            Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
+            String connectionName = dbConnection.getName();
+            connectionRepository.deleteConnection(connectionName);
+            return executeResult.ok();
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            return executeResult.fail(exception);
+        }
     }
 
     @Override
-    public void deleteConnection(@NonNull Connection connection) {
+    @Transactional(rollbackFor = Exception.class)
+    public ExecuteResult syscDatabase(@NonNull String connectionName) {
 
-        Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
-        connectionRepository.deleteConnection(dbConnection.getName());
+        ExecuteResult executeResult = new ExecuteResult();
+
+        Connection connection = connectionRepository.getConnectionByName(connectionName);
+        Check.notNull(connection, new DatabaseDomainException(DomainDatabaseModule.DB_CONNECTION_ERROR));
+
+        internalSyscDatabase(connection);
+
+        return executeResult.ok();
     }
 
-    @Override
-    public void syscDatabase(@NonNull Connection connection) throws DatabaseDomainException {
+    private void internalSyscDatabase(Connection connection) throws DatabaseDomainException {
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
+
         if (!dbSchemaServer.TestConnection()) {
             throw new DatabaseDomainException(DomainDatabaseModule.DB_CONNECTION_ERROR);
         }
+
         List<DataDatabase> dataDatabases = dbSchemaServer.getDatabases();
         handleDatabase(connection, dataDatabases);
     }
@@ -90,22 +144,29 @@ public class DatabaseServiceImpl implements DatabaseService {
         for (DataDatabase dataDatabase : dataDatabases) {
 
             Database database = new Database();
-            database.setConnUid(connection.getUid());
             database.setName(dataDatabase.getDbName());
+            database.setCnUid(connection.getUid());
             databaseRepository.addOrUpdateDatabase(database);
 
             handleTable(database, dataDatabase.getTables());
+
+            database.setIsSync(true);
+            database.setLastSyncDate(LocalDateTime.now());
+            databaseRepository.addOrUpdateDatabase(database);
         }
     }
 
     private void handleTable(@NonNull Database database, @NonNull List<DataTable> dataTables) {
 
+        //TODO 是否考虑同步之前，对比数据库表，将已删除的表也在数据中进行移除
+
         for (DataTable dataTable : dataTables) {
 
             Table table = new Table();
-            table.setConnUid(database.getConnUid());
-            table.setDbUid(database.getUid());
             table.setName(dataTable.getTbName());
+            table.setCnUid(database.getCnUid());
+            table.setDbUid(database.getUid());
+
             tableRepository.addOrUpdateTable(table);
 
             handleColumn(database, table, dataTable.getColumns());
@@ -114,13 +175,16 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     private void handleColumn(@NonNull Database database, @NonNull Table table, @NonNull List<DataColumn> columns) {
 
+        //TODO 是否考虑同步之前，对比表字段，将已删除的字段也在数据中进行移除
+
         for (DataColumn dataColumn : columns) {
 
             Column column = new Column();
-            column.setConnUid(database.getConnUid());
+            column.setCnUid(database.getCnUid());
             column.setDbUid(database.getUid());
             column.setTbUid(table.getUid());
             BeanUtils.copyProperties(dataColumn, column);
+
             columnRepository.addOrUpdateColumn(column);
         }
     }
@@ -140,4 +204,5 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         return dbSchemaServer;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.onework.tools.domain.database.schema;
+package com.onework.tools.domain.database.schema.entity;
 
 import lombok.Data;
 

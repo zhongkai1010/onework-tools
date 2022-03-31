@@ -15,6 +15,6 @@ public class Table {
 
     private String uid;
     private String name;
-    private String connUid;
+    private String cnUid;
     private String dbUid;
 }

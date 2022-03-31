@@ -2,7 +2,7 @@ package com.onework.tools.domain.database.dao;
 
 import com.onework.tools.core.domain.Entity;
 import com.onework.tools.domain.database.schema.DatabaseType;
-import com.onework.tools.domain.database.schema.DbConnection;
+import com.onework.tools.domain.database.schema.entity.DbConnection;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -38,7 +38,7 @@ public class Connection implements Entity {
     private String database;
 
     @NotNull
-    private String user;
+    private String username;
 
     @NotNull
     private String password;
@@ -46,6 +46,8 @@ public class Connection implements Entity {
     public DbConnection getDbConnection() {
 
         DatabaseType databaseType = DatabaseType.Map.get(dbType);
-        return DbConnection.create(databaseType).host(host).port(port).database(database).user(user).password(password);
+        return DbConnection.create(databaseType).host(host).port(port).database(database).user(
+                username)
+            .password(password);
     }
 }

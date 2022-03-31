@@ -1,7 +1,6 @@
-package com.onework.tools.server.database.error;
+package com.onework.tools.server.database;
 
 import com.onework.tools.core.error.BaseException;
-import com.onework.tools.server.database.ServerDatabaseModule;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +15,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class DatabaseServerException extends BaseException {
+
+    private static final long serialVersionUID = -4920886708468158443L;
 
     public DatabaseServerException(String code) {
         super(code);

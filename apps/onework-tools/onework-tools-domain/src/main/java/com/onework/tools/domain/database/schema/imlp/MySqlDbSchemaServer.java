@@ -1,6 +1,5 @@
 package com.onework.tools.domain.database.schema.imlp;
 
-
 import com.onework.tools.domain.database.schema.DbSchemaServer;
 
 import javax.sql.DataSource;
@@ -16,7 +15,7 @@ public class MySqlDbSchemaServer extends DbSchemaServer {
 
     @Override
     protected String getDatabasesSql() {
-        return "SELECT db.SCHEMA_NAME AS NAME FROM information_schema.`SCHEMATA` AS db";
+        return "SELECT db.SCHEMA_NAME AS NAME FROM information_schema.`SCHEMATA` AS db WHERE db.SCHEMA_NAME NOT IN ('mysql','information_schema','performance_schema','sys')";
     }
 
     @Override

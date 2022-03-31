@@ -1,5 +1,6 @@
 package com.onework.tools.domain.database;
 
+import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.domain.database.dao.Connection;
 import org.springframework.stereotype.Component;
 
@@ -21,31 +22,31 @@ public interface DatabaseService {
      *
      * @param connection
      * @param sync
-     * @throws DatabaseDomainException
+     * @return
      */
-    void saveConnection(@NotNull Connection connection, Boolean sync) throws DatabaseDomainException;
+    ExecuteResult saveConnection(@NotNull Connection connection, Boolean sync);
 
     /**
      * 测试数据库连接
      *
      * @param connection
      * @return
-     * @throws DatabaseDomainException
      */
-    Boolean testConnection(@NotNull Connection connection) throws DatabaseDomainException;
+    ExecuteResult testConnection(@NotNull Connection connection);
 
     /**
      * 删除连接
      *
-     * @param connection
+     * @param connection:
+     * @return ExecuteResult
      */
-    void deleteConnection(@NotNull Connection connection);
+    ExecuteResult deleteConnection(@NotNull Connection connection);
 
     /**
      * 同步数据库
      *
-     * @param connection
-     * @throws DatabaseDomainException
+     * @param connectionName:
+     * @return ExecuteResult
      */
-    void syscDatabase(@NotNull Connection connection) throws DatabaseDomainException;
+    ExecuteResult syscDatabase(@NotNull String connectionName);
 }

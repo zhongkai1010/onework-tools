@@ -1,11 +1,10 @@
-package com.onework.tools.domain.database.schema;
+package com.onework.tools.domain.database.schema.entity;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- *
  * @author Administrator
  */
 @Data

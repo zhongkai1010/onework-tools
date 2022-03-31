@@ -15,7 +15,7 @@ import lombok.Data;
 public class Column {
 
     private String uid;
-    private String connUid;
+    private String cnUid;
     private String dbUid;
     private String tbUid;
     private String name;

@@ -9,8 +9,9 @@ package com.onework.tools.core.error;
  * @date Date : 2022年03月29日 13:41
  */
 
-public abstract class BaseException extends Exception {
+public abstract class BaseException extends RuntimeException {
 
+    private static final long serialVersionUID = 7969689764816292922L;
     private final String code;
     private Boolean doFormat = false;
     private Object[] formatParams = new Object[] {};
@@ -33,8 +34,8 @@ public abstract class BaseException extends Exception {
      * @return
      */
     public void format(Object... params) {
-        this.doFormat = true;
-        this.formatParams = params;
+        doFormat = true;
+        formatParams = params;
     }
 
     @Override

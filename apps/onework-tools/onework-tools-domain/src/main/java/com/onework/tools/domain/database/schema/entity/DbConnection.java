@@ -1,5 +1,6 @@
-package com.onework.tools.domain.database.schema;
+package com.onework.tools.domain.database.schema.entity;
 
+import com.onework.tools.domain.database.schema.DatabaseType;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class DbConnection {
     private DataSource dataSource;
 
     private DbConnection(DatabaseType type) {
-        this.databaseType = type;
+        databaseType = type;
     }
 
     public static DbConnection create(DatabaseType type) {
@@ -90,8 +91,8 @@ public class DbConnection {
         }
 
         if (databaseType == DatabaseType.MSSQL) {
-            url = String.format("jdbc:sqlserver://%s:%s;databaseName=%s", host, port == null ? "3306" : port,
-                database == null ? "mysql" : database);
+            url = String.format("jdbc:sqlserver://%s:%s;databaseName=%s",
+                host, port == null ? "3306" : port, database == null ? "mysql" : database);
         }
 
         if (url == null) {

@@ -1,10 +1,13 @@
 package com.onework.tools.web.controller;
 
-
-import com.onework.tools.domain.database.schema.*;
+import com.onework.tools.domain.database.schema.DatabaseType;
+import com.onework.tools.domain.database.schema.DbSchemaFactory;
+import com.onework.tools.domain.database.schema.DbSchemaServer;
+import com.onework.tools.domain.database.schema.entity.DataColumn;
+import com.onework.tools.domain.database.schema.entity.DataDatabase;
+import com.onework.tools.domain.database.schema.entity.DataTable;
 import com.onework.tools.web.R;
 import com.onework.tools.web.controller.model.db.DbInput;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

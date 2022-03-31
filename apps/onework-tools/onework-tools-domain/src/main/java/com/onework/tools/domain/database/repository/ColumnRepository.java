@@ -1,7 +1,6 @@
-package com.onework.tools.domain.database;
+package com.onework.tools.domain.database.repository;
 
 import com.onework.tools.domain.database.dao.Column;
-import com.onework.tools.domain.database.dao.Table;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,7 +17,9 @@ public interface ColumnRepository {
     /**
      * 添加数据库字段
      *
-     * @param column
+     * @param column: 数据库
+     * @return void
+     * @throws T
      */
-    void addOrUpdateColumn(Column column);
+    <T extends Throwable> void addOrUpdateColumn(Column column) throws T;
 }

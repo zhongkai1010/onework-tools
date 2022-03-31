@@ -1,4 +1,4 @@
-package com.onework.tools.domain.database.schema;
+package com.onework.tools.domain.database.schema.entity;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -69,7 +69,8 @@ public class DataColumn {
     @Override
     public String toString() {
         return "Column{" + "name='" + name + '\'' + ", type='" + type + '\'' + ", length=" + length + ", precision="
-            + precision + ", allowNull=" + allowNull + ", primarykey=" + primarykey + ", order=" + order
+            + precision + ", allowNull=" + allowNull + ", primarykey=" + primarykey
+            + ", order=" + order
             + ", defaultValue='" + defaultValue + '\'' + ", description='" + description + '\'' + '}';
     }
 }

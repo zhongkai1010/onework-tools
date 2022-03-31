@@ -1,5 +1,6 @@
 package com.onework.tools.domain.database.schema;
 
+import com.onework.tools.domain.database.schema.entity.DbConnection;
 import com.onework.tools.domain.database.schema.imlp.MsSqlSchemaServer;
 import com.onework.tools.domain.database.schema.imlp.MySqlDbSchemaServer;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,8 @@ public class DbSchemaFactory {
     public static DbSchemaServer getDbSchemaServer(@NotNull DatabaseType databaseType, @NotNull String host,
         Integer port, @NotNull String database, @NotNull String user, @NotNull String password) {
 
-        DataSource dataSource =
-            DbConnection.create(databaseType).host(host).port(port).user(user).password(password).database(database)
-                .build();
+        DataSource dataSource = DbConnection.create(databaseType).host(host).port(port).user(user).password(password)
+            .database(database).build();
 
         return getDbSchemaServer(databaseType, dataSource);
     }

@@ -1,8 +1,6 @@
-package com.onework.tools.domain.database;
+package com.onework.tools.domain.database.repository;
 
-import com.onework.tools.domain.database.dao.Connection;
 import com.onework.tools.domain.database.dao.Database;
-import com.onework.tools.domain.database.schema.DataDatabase;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,11 +15,12 @@ import org.springframework.stereotype.Component;
 public interface DatabaseRepository {
 
     /**
-     * 添加数据库
+     * 添加或修改数据库
      *
-     * @param database
-     * @return
+     * @param database: 数据库
+     * @return void
+     * @throws T
      */
-    void addOrUpdateDatabase(Database database);
+    <T extends Throwable> void addOrUpdateDatabase(Database database) throws T;
 
 }

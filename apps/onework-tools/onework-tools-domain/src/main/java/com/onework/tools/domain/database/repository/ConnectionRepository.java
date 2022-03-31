@@ -1,4 +1,4 @@
-package com.onework.tools.domain.database;
+package com.onework.tools.domain.database.repository;
 
 import com.onework.tools.domain.database.dao.Connection;
 import org.springframework.stereotype.Component;

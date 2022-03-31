@@ -1,12 +1,13 @@
-package com.onework.tools.server.database;
+package com.onework.tools.server.database.repository;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.onework.tools.domain.database.ConnectionRepository;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.onework.tools.domain.database.dao.Connection;
+import com.onework.tools.domain.database.repository.ConnectionRepository;
+import com.onework.tools.server.database.DatabaseServerException;
+import com.onework.tools.server.database.ServerDatabaseModule;
 import com.onework.tools.server.database.entity.DatabaseConnection;
-import com.onework.tools.server.database.error.DatabaseServerException;
-import com.onework.tools.server.database.service.IDatabaseConnectionService;
-
+import com.onework.tools.server.database.mapper.DatabaseConnectionMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
@@ -21,10 +22,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ConnectionRepositoryImpl implements ConnectionRepository {
 
-    private final IDatabaseConnectionService databaseConnectionService;
+    private final DatabaseConnectionMapper databaseConnectionMapper;
 
-    public ConnectionRepositoryImpl(IDatabaseConnectionService databaseConnectionService) {
-        this.databaseConnectionService = databaseConnectionService;
+    public ConnectionRepositoryImpl(DatabaseConnectionMapper databaseConnectionMapper) {
+        this.databaseConnectionMapper = databaseConnectionMapper;
     }
 
     @Override
@@ -35,14 +36,14 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
             return null;
         }
         Connection connection = new Connection();
-        BeanUtils.copyProperties(databaseConnection, connection,DatabaseConnection.class);
+        BeanUtils.copyProperties(databaseConnection, connection);
         return connection;
     }
 
     @Override
     public void deleteConnection(String name) throws DatabaseServerException {
         DatabaseConnection databaseConnection = getByName(name);
-        if (!databaseConnectionService.removeById(databaseConnection)) {
+        if (databaseConnectionMapper.deleteById(databaseConnection) == 0) {
             throw new DatabaseServerException(ServerDatabaseModule.DELETE_CONNECTION);
         }
     }
@@ -51,9 +52,12 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
     public void addConnection(Connection connection) throws DatabaseServerException {
         DatabaseConnection databaseConnection = new DatabaseConnection();
         BeanUtils.copyProperties(connection, databaseConnection);
-        if (!databaseConnectionService.save(databaseConnection)) {
+
+        if (databaseConnectionMapper.insert(databaseConnection) == 0) {
             throw new DatabaseServerException(ServerDatabaseModule.ADD_CONNECTION);
         }
+
+        connection.setUid(databaseConnection.getUid());
     }
 
     @Override
@@ -61,17 +65,16 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
 
         DatabaseConnection databaseConnection = new DatabaseConnection();
         BeanUtils.copyProperties(connection, databaseConnection);
-        boolean result =
-            databaseConnectionService.lambdaUpdate().eq(DatabaseConnection::getName, databaseConnection.getName())
-                .update(databaseConnection);
+
+        boolean result = new LambdaUpdateChainWrapper<>(databaseConnectionMapper).eq(DatabaseConnection::getName,
+            databaseConnection.getName()).update(databaseConnection);
+
         if (!result) {
             throw new DatabaseServerException(ServerDatabaseModule.UPDATE_CONNECTION);
         }
     }
 
     private DatabaseConnection getByName(String name) {
-        LambdaQueryWrapper<DatabaseConnection> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(DatabaseConnection::getName, name);
-        return databaseConnectionService.getOne(queryWrapper);
+        return new LambdaQueryChainWrapper<>(databaseConnectionMapper).eq(DatabaseConnection::getName, name).one();
     }
 }
