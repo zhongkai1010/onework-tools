@@ -1,4 +1,4 @@
-package com.onework.tools.common;
+package com.onework.tools.common.mybaits;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

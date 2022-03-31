@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhongkai
- * @since 2022-03-30
+ * @since 2022-03-31
  */
 @Getter
 @Setter
@@ -37,7 +37,7 @@ public class DatabaseConnection implements Serializable {
     /**
      * 连接名称
      */
-    @TableField("name")
+    @TableField("`name`")
     private String name;
 
     /**
@@ -49,7 +49,7 @@ public class DatabaseConnection implements Serializable {
     /**
      * 默认数据库
      */
-    @TableField("database")
+    @TableField("`database`")
     private String database;
 
     /**
@@ -61,19 +61,19 @@ public class DatabaseConnection implements Serializable {
     /**
      * 连接密码
      */
-    @TableField("password")
+    @TableField("`password`")
     private String password;
 
     /**
      * 主机地址
      */
-    @TableField("host")
+    @TableField("`host`")
     private String host;
 
     /**
      * 端口
      */
-    @TableField("port")
+    @TableField("`port`")
     private Integer port;
 
     /**

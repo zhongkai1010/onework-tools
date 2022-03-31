@@ -1,5 +1,6 @@
 package com.onework.tools.domain.database.impl;
 
+import com.onework.tools.core.Check;
 import com.onework.tools.domain.database.*;
 import com.onework.tools.domain.database.dao.Column;
 import com.onework.tools.domain.database.dao.Connection;
@@ -8,6 +9,7 @@ import com.onework.tools.domain.database.dao.Table;
 import com.onework.tools.domain.database.schema.*;
 import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
  * @Description: 描述
  * @date Date : 2022年03月29日 10:38
  */
+@Service
 public class DatabaseServiceImpl implements DatabaseService {
 
     private final ConnectionRepository connectionRepository;
@@ -38,16 +41,20 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Override
     public void saveConnection(@NonNull Connection connection, Boolean sync) throws DatabaseDomainException {
 
+        Check.notNull(connection.getName(),new DatabaseDomainException(DomainDatabaseModule.CONNECTION_NAME_IS_NULL));
+
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
 
         if (dbConnection != null) {
             BeanUtils.copyProperties(connection, dbConnection);
-            connectionRepository.addOrUpdateConnection(dbConnection);
-        } else
-            connectionRepository.addOrUpdateConnection(connection);
+            connectionRepository.updateConnection(dbConnection);
+        } else {
+            connectionRepository.addConnection(connection);
+        }
 
-        if (sync)
+        if (sync) {
             syscDatabase(connection);
+        }
     }
 
     @Override
@@ -68,8 +75,9 @@ public class DatabaseServiceImpl implements DatabaseService {
     public void syscDatabase(@NonNull Connection connection) throws DatabaseDomainException {
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
-        if (!dbSchemaServer.TestConnection())
-            throw new DatabaseDomainException(DatabaseDomainErrorTemplate.DbConnectionError);
+        if (!dbSchemaServer.TestConnection()) {
+            throw new DatabaseDomainException(DomainDatabaseModule.DB_CONNECTION_ERROR);
+        }
         List<DataDatabase> dataDatabases = dbSchemaServer.getDatabases();
         handleDatabase(connection, dataDatabases);
     }
@@ -84,7 +92,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             Database database = new Database();
             database.setConnUid(connection.getUid());
             database.setName(dataDatabase.getDbName());
-            databaseRepository.addOrUpdateDatabase(connection.getName(), database);
+            databaseRepository.addOrUpdateDatabase(database);
 
             handleTable(database, dataDatabase.getTables());
         }
@@ -98,7 +106,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             table.setConnUid(database.getConnUid());
             table.setDbUid(database.getUid());
             table.setName(dataTable.getTbName());
-            tableRepository.addOrUpdateTable(database, table);
+            tableRepository.addOrUpdateTable(table);
 
             handleColumn(database, table, dataTable.getColumns());
         }
@@ -113,7 +121,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             column.setDbUid(database.getUid());
             column.setTbUid(table.getUid());
             BeanUtils.copyProperties(dataColumn, column);
-            columnRepository.addOrUpdateColumn(table, column);
+            columnRepository.addOrUpdateColumn(column);
         }
     }
 
@@ -126,8 +134,9 @@ public class DatabaseServiceImpl implements DatabaseService {
         DatabaseType databaseType = DatabaseType.Map.get(connection.getDbType());
         DbSchemaServer dbSchemaServer = DbSchemaFactory.getDbSchemaServer(databaseType, dataSource);
 
-        if (dbSchemaServer == null)
-            throw new DatabaseDomainException(DatabaseDomainErrorTemplate.DbSchemaServerError);
+        if (dbSchemaServer == null) {
+            throw new DatabaseDomainException(DomainDatabaseModule.DB_SCHEMA_SERVER_ERROR);
+        }
 
         return dbSchemaServer;
     }

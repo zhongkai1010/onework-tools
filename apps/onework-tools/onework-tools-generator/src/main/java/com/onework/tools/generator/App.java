@@ -4,9 +4,13 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.IFill;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
+import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.fill.Column;
+import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 import com.onework.tools.generator.config.GeneratorConfigValue;
 
 /**
@@ -21,13 +25,20 @@ public class App {
 
     public static void main(String[] args) {
 
-        final String jdbcUrl
-            = "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
+        final String jdbcUrl =
+            "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
         final String user = "root";
         final String password = "123qwe!@#mysql_root";
 
         // @formatter:off
-        FastAutoGenerator fastAutoGenerator = FastAutoGenerator.create(jdbcUrl, user, password);
+
+        DataSourceConfig.Builder dataSourceConfig = new DataSourceConfig
+            .Builder(jdbcUrl, user, password)
+            .dbQuery(new MySqlQuery())
+            .typeConvert(new MySqlTypeConvert())
+            .keyWordsHandler(new MySqlKeyWordsHandler());
+        FastAutoGenerator fastAutoGenerator = FastAutoGenerator.create(dataSourceConfig);
+
         GeneratorConfigValue generatorConfigValue = new GeneratorConfigValue();
 
         generatorConfigValue.getPackageConfigValue()

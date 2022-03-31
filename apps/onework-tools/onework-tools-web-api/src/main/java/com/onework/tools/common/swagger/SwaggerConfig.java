@@ -1,4 +1,4 @@
-package com.onework.tools.common;
+package com.onework.tools.common.swagger;
 
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;

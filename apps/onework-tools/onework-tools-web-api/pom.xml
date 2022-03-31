@@ -53,7 +53,7 @@
         <!--业务组件-->
         <dependency>
             <groupId>com.onework.tools</groupId>
-            <artifactId>onework-tools-domain</artifactId>
+            <artifactId>onework-tools-server</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

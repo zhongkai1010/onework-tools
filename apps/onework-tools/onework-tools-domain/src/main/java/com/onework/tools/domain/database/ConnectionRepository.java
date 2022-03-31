@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public interface ConnectionRepository {
 
     /**
-     * 根据名称获取数据库连接
+     * 根据名称获取数据库连接，无数据返回null
      *
      * @param name 名称
      * @return
@@ -26,14 +26,27 @@ public interface ConnectionRepository {
      * 根据名称删除数据库连接
      *
      * @param name
+     * @param <T>
+     * @throws T
      */
-    void deleteConnection(String name);
+    <T extends Throwable> void deleteConnection(String name) throws T;
 
     /**
      * 新增数据库连接
      *
      * @param connection
+     * @param <T>
+     * @throws T
      */
-    void addOrUpdateConnection(Connection connection);
+    <T extends Throwable> void addConnection(Connection connection) throws T;
+
+    /**
+     * 修改数据库连接
+     *
+     * @param connection
+     * @param <T>
+     * @throws T
+     */
+    <T extends Throwable> void updateConnection(Connection connection) throws T;
 
 }

@@ -2,6 +2,7 @@ package com.onework.tools.domain.database;
 
 import com.onework.tools.domain.database.dao.Column;
 import com.onework.tools.domain.database.dao.Table;
+import org.springframework.stereotype.Component;
 
 /**
  * @author : zhongkai1010@163.com
@@ -11,13 +12,13 @@ import com.onework.tools.domain.database.dao.Table;
  * @Description: 描述
  * @date Date : 2022年03月29日 17:29
  */
+@Component
 public interface ColumnRepository {
 
     /**
      * 添加数据库字段
      *
      * @param column
-     * @param table
      */
-    void addOrUpdateColumn(Table table, Column column);
+    void addOrUpdateColumn(Column column);
 }

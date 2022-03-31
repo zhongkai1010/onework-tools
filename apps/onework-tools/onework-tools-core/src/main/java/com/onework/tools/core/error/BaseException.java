@@ -8,43 +8,50 @@ package com.onework.tools.core.error;
  * @Description: 描述
  * @date Date : 2022年03月29日 13:41
  */
+
 public abstract class BaseException extends Exception {
 
-    private final ErrorTemplate errorTemplate;
-
     private final String code;
+    private Boolean doFormat = false;
+    private Object[] formatParams = new Object[] {};
 
-    private Boolean doFormat;
-
-    private Object[] formatParams;
-
-    public BaseException(ErrorTemplate errorTemplate, String code) {
-
-        this.errorTemplate = errorTemplate;
+    protected BaseException(String code) {
         this.code = code;
-        this.doFormat = false;
     }
 
+    /**
+     * 获取模块编码，便于区分不同模块异常
+     *
+     * @return
+     */
+    protected abstract String getModuleCode();
 
     /**
-     * 格式化参数
+     * 设置异常编码
      *
      * @param params
+     * @return
      */
-    public Exception format(Object... params) {
+    public void format(Object... params) {
         this.doFormat = true;
         this.formatParams = params;
-        return this;
     }
 
     @Override
     public String getMessage() {
-        String baseCode = errorTemplate.getBaseCode();
-        String errorCode = String.format("%s.%s", baseCode, this.code);
-        String message = errorTemplate.getMessage(errorCode);
-        if (this.doFormat) {
-            return String.format(message, formatParams);
+
+        String message = "unknown unknown";
+        String moduleCode = getModuleCode();
+        String key = String.format("%s.%s", moduleCode, code);
+
+        if (ErrorMessageManger.ErrorMessageCodeMap.containsKey(key)) {
+            message = ErrorMessageManger.ErrorMessageCodeMap.get(key);
         }
+
+        if (doFormat) {
+            message = String.format(message, formatParams);
+        }
+
         return message;
     }
 }

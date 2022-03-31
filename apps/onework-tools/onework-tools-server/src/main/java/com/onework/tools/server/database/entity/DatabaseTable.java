@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhongkai
- * @since 2022-03-30
+ * @since 2022-03-31
  */
 @Getter
 @Setter
@@ -37,13 +37,13 @@ public class DatabaseTable implements Serializable {
     /**
      * 名称
      */
-    @TableField("name")
+    @TableField("`name`")
     private String name;
 
     /**
      * 编码
      */
-    @TableField("code")
+    @TableField("`code`")
     private String code;
 
     /**

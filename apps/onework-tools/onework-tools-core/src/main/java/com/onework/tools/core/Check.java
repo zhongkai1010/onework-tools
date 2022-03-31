@@ -1,8 +1,5 @@
 package com.onework.tools.core;
 
-import com.onework.tools.core.error.SystemErrorTemplate;
-import com.onework.tools.core.error.SystemExcption;
-
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -13,9 +10,9 @@ import com.onework.tools.core.error.SystemExcption;
  */
 public class Check {
 
-    public static <T,E extends Exception> void notNull(T value, String paramName) throws Exception {
+    public static <T, E extends Throwable> void notNull(T value, E exception) throws E {
         if (value == null) {
-            throw new SystemExcption(SystemErrorTemplate.IsNotNull).format(paramName);
+            throw exception;
         }
     }
 }
