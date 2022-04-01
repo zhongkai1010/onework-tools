@@ -1,5 +1,7 @@
 package com.onework.tools.server.database.repository;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.onework.tools.domain.database.dao.Column;
 import com.onework.tools.domain.database.repository.ColumnRepository;
@@ -30,27 +32,32 @@ public class ColumnRepositoryImpl implements ColumnRepository {
     @Override
     public void addOrUpdateColumn(Column column) throws DatabaseServerException {
 
-        int result;
-
-        DatabaseColumn databaseColumn = new LambdaQueryChainWrapper<>(databaseColumnMapper).eq(DatabaseColumn::getTbUid,
-            column.getTbUid()).eq(DatabaseColumn::getCode, column.getName()).one();
-
-        if (databaseColumn == null) {
-            databaseColumn = new DatabaseColumn();
-            BeanUtils.copyProperties(column, databaseColumn);
-            databaseColumn.setCnUid(column.getCnUid());
-            databaseColumn.setDbUid(column.getDbUid());
-            databaseColumn.setTbUid(column.getUid());
-            result = databaseColumnMapper.insert(databaseColumn);
-        } else {
-            BeanUtils.copyProperties(column, databaseColumn);
-            result = databaseColumnMapper.updateById(databaseColumn);
-        }
-
-        if (result == 0) {
-            throw new DatabaseServerException(ServerDatabaseModule.SAVE_COLUMN_ERROR);
-        }
-
-        column.setUid(databaseColumn.getUid());
+//        int result;
+//
+//        DatabaseColumn databaseColumn =
+//            new LambdaQueryChainWrapper<>(databaseColumnMapper).eq(DatabaseColumn::getTbUid, column.getTbUid())
+//                .eq(DatabaseColumn::getCode, column.getName()).one();
+//
+//        if (databaseColumn == null) {
+//            databaseColumn = new DatabaseColumn();
+//            BeanUtil.copyProperties(column, databaseColumn);
+//            databaseColumn.setCnUid(column.getCnUid());
+//            databaseColumn.setDbUid(column.getDbUid());
+//            databaseColumn.setTbUid(column.getTbUid());
+//            databaseColumn.setCode(column.getName());
+//            databaseColumn.setIsNull(column.getAllowNull());
+//            databaseColumn.setIsUnique(column.getPrimarykey());
+//
+//            result = databaseColumnMapper.insert(databaseColumn);
+//        } else {
+//            BeanUtil.copyProperties(column, databaseColumn, new CopyOptions().ignoreNullValue());
+//            result = databaseColumnMapper.updateById(databaseColumn);
+//        }
+//
+//        if (result == 0) {
+//            throw new DatabaseServerException(ServerDatabaseModule.SAVE_COLUMN_ERROR);
+//        }
+//
+//        column.setUid(databaseColumn.getUid());
     }
 }

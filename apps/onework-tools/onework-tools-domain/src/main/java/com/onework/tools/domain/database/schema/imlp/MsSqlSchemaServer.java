@@ -15,12 +15,12 @@ public class MsSqlSchemaServer extends DbSchemaServer {
 
     @Override
     protected String getDatabasesSql() {
-        return "select name from sysdatabases";
+        return "select name from sysdatabases where name not in ('master','tempdb','model','msdb')";
     }
 
     @Override
     protected String getTablesSql(String dbName) {
-        return String.format("use %s select * from sysobjects where xtype='U';", dbName);
+        return String.format("use \"%s\" select * from sysobjects where xtype='U' ORDER BY name", dbName);
     }
 
     @Override

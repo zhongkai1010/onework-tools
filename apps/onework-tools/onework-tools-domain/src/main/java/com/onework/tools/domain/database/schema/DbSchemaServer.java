@@ -6,6 +6,7 @@ import com.onework.tools.domain.database.schema.entity.DataTable;
 import com.onework.tools.domain.database.schema.mapper.DataColumnMapper;
 import com.onework.tools.domain.database.schema.mapper.DataDatabaseMapper;
 import com.onework.tools.domain.database.schema.mapper.DataTableMapper;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -94,7 +95,12 @@ public abstract class DbSchemaServer {
 
         try {
             String sql = getDatabasesSql();
-            return jdbcTemplate.query(sql, new DataDatabaseMapper());
+            List<DataDatabase> dataDatabases = jdbcTemplate.query(sql, new DataDatabaseMapper());
+
+            log.info(String.format("%s:%s", "DbSchemaServer getDatabases", sql));
+
+            return dataDatabases;
+
         } catch (Exception exception) {
             log.error("DbSchemaServer getDatabases error", exception);
             return new ArrayList<>();
@@ -111,7 +117,14 @@ public abstract class DbSchemaServer {
             String sql = getDatabasesSql();
             List<DataDatabase> dataDatabases = jdbcTemplate.query(sql, new DataDatabaseMapper());
 
-            dataDatabases.forEach(s -> s.setTables(getInternalDataTables(s.getDbName())));
+            log.info(String.format("%s:%s", "DbSchemaServer getDatabaseAndTables", sql));
+
+            for (DataDatabase db : dataDatabases) {
+                String dbName = db.getDbName();
+                List<DataTable> dataTables = getInternalDataTables(dbName);
+                db.setTables(dataTables);
+            }
+
             return dataDatabases;
         } catch (Exception exception) {
             log.error("DbSchemaServer getDatabaseAndTables error", exception);
@@ -128,7 +141,12 @@ public abstract class DbSchemaServer {
 
         try {
             String sql = getColumnsSql(dbName, dbTable);
-            return jdbcTemplate.query(sql, new DataColumnMapper());
+            List<DataColumn> dataColumns = jdbcTemplate.query(sql, new DataColumnMapper());
+
+            log.info(String.format("%s:%s", "DbSchemaServer getInternalDataColumns", sql));
+
+            return dataColumns;
+
         } catch (Exception exception) {
             log.error("DbSchemaServer getInternalDataColumns error", exception);
             return new ArrayList<>();
@@ -139,15 +157,16 @@ public abstract class DbSchemaServer {
      * @param dbName
      * @return
      */
-    private List<DataTable> getInternalDataTables(String dbName) {
+    private  List<DataTable> getInternalDataTables(@NonNull String dbName) {
 
         try {
             String tablesSql = getTablesSql(dbName);
             List<DataTable> dataTables = jdbcTemplate.query(tablesSql, new DataTableMapper());
 
-            dataTables.forEach(s -> s.setColumns(getInternalDataColumns(dbName, s.getTbName())));
+            log.info(String.format("%s:%s", "DbSchemaServer getInternalDataTables", tablesSql));
 
             return dataTables;
+
         } catch (Exception exception) {
             log.error("DbSchemaServer getInternalDataTables error", exception);
             return new ArrayList<>();

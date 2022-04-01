@@ -1,5 +1,7 @@
 package com.onework.tools.server.database.repository;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.onework.tools.domain.database.dao.Database;
 import com.onework.tools.domain.database.repository.DatabaseRepository;
@@ -7,7 +9,6 @@ import com.onework.tools.server.database.DatabaseServerException;
 import com.onework.tools.server.database.ServerDatabaseModule;
 import com.onework.tools.server.database.entity.DatabaseDb;
 import com.onework.tools.server.database.mapper.DatabaseDbMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -23,33 +24,72 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
     private final DatabaseDbMapper databaseDbMapper;
 
+
     public DatabaseRepositoryImpl(DatabaseDbMapper databaseDbMapper) {
         this.databaseDbMapper = databaseDbMapper;
     }
 
     @Override
-    public void addOrUpdateDatabase(Database database) throws DatabaseServerException {
+    public void saveDatabase(Database database) throws DatabaseServerException {
 
         int result;
 
-        DatabaseDb databaseDb = new LambdaQueryChainWrapper<>(databaseDbMapper).eq(DatabaseDb::getUid,
-            database.getCnUid()).eq(DatabaseDb::getName, database.getName()).one();
+        DatabaseDb databaseDb =
+            new LambdaQueryChainWrapper<>(databaseDbMapper).eq(DatabaseDb::getCnUid, database.getCnUid())
+                .eq(DatabaseDb::getName, database.getName()).one();
 
         if (databaseDb == null) {
-            databaseDb = new DatabaseDb();
-            BeanUtils.copyProperties(database, databaseDb);
-            databaseDb.setCode(database.getName());
-            databaseDb.setCnUid(database.getCnUid());
-            result = databaseDbMapper.insert(databaseDb);
+            insertDatabase(database);
 
         } else {
-            BeanUtils.copyProperties(database, databaseDb);
-            result = databaseDbMapper.updateById(databaseDb);
+            updateDatabase(database);
         }
+    }
+
+    @Override
+    public <T extends Throwable> void insertDatabase(Database database) {
+
+        int result;
+        DatabaseDb databaseDb = new DatabaseDb();
+        BeanUtil.copyProperties(database, databaseDb);
+        databaseDb.setCode(database.getName());
+        databaseDb.setCnUid(database.getCnUid());
+
+        result = databaseDbMapper.insert(databaseDb);
+        if (result == 0) {
+            throw new DatabaseServerException(ServerDatabaseModule.SAVE_DATABASE_ERROR);
+        }
+        database.setUid(databaseDb.getUid());
+    }
+
+    @Override
+    public <T extends Throwable> void updateDatabase(Database database) {
+
+        int result;
+
+        DatabaseDb databaseDb =
+            new LambdaQueryChainWrapper<>(databaseDbMapper).eq(DatabaseDb::getCnUid, database.getCnUid())
+                .eq(DatabaseDb::getName, database.getName()).one();
+
+        BeanUtil.copyProperties(database, databaseDb, new CopyOptions().ignoreNullValue());
+        result = databaseDbMapper.updateById(databaseDb);
 
         if (result == 0) {
             throw new DatabaseServerException(ServerDatabaseModule.SAVE_DATABASE_ERROR);
         }
         database.setUid(databaseDb.getUid());
+    }
+
+    @Override
+    public Database getDatabaseByName(String connId, String dbName) {
+        Database database = new Database();
+
+        DatabaseDb databaseDb =
+            new LambdaQueryChainWrapper<>(databaseDbMapper).eq(DatabaseDb::getCnUid, connId)
+                .eq(DatabaseDb::getName, database.getName()).one();
+
+        BeanUtil.copyProperties(databaseDb, database);
+
+        return database;
     }
 }

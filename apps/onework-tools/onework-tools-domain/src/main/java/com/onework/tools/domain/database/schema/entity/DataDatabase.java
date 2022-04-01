@@ -2,6 +2,7 @@ package com.onework.tools.domain.database.schema.entity;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,5 +16,5 @@ import java.util.List;
 @Data
 public class DataDatabase {
     private String dbName;
-    private List<DataTable> tables;
+    private List<DataTable> tables = new ArrayList<>();
 }

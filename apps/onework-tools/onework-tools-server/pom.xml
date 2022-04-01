@@ -28,6 +28,10 @@
             <groupId>com.onework.tools</groupId>
             <artifactId>onework-tools-domain</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
     </dependencies>
     <parent>
         <artifactId>onework-tools</artifactId>

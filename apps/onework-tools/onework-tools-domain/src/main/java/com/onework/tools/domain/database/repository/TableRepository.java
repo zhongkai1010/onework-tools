@@ -1,7 +1,10 @@
 package com.onework.tools.domain.database.repository;
 
+import com.onework.tools.domain.database.dao.Database;
 import com.onework.tools.domain.database.dao.Table;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author : zhongkai1010@163.com
@@ -22,4 +25,13 @@ public interface TableRepository {
      * @throws T
      */
     <T extends Throwable> void addOrUpdateTable(Table table) throws T;
+
+    /**
+     * 批量处理数据库表
+     * @param database
+     * @param tables
+     * @param <T>
+     * @throws T
+     */
+    <T extends Throwable> void batchAddOrUpdateTable(Database database, List<Table> tables) throws T;
 }

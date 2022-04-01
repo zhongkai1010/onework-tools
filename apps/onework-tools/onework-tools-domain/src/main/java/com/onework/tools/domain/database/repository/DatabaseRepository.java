@@ -21,6 +21,31 @@ public interface DatabaseRepository {
      * @return void
      * @throws T
      */
-    <T extends Throwable> void addOrUpdateDatabase(Database database) throws T;
+    <T extends Throwable> void saveDatabase(Database database) throws T;
 
+    /**
+     * 插入数据库
+     *
+     * @param database: 数据库
+     * @return void
+     * @throws T
+     */
+    <T extends Throwable> void insertDatabase(Database database) throws T;
+
+    /**
+     * 修改数据库
+     *
+     * @param database: 数据库
+     * @return void
+     * @throws T
+     */
+    <T extends Throwable> void updateDatabase(Database database) throws T;
+
+    /**
+     * 根据名称获取数据库
+     * @param connId
+     * @param dbName
+     * @return
+     */
+    Database getDatabaseByName(String connId, String dbName);
 }

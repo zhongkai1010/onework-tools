@@ -2,6 +2,7 @@ package com.onework.tools.domain.database;
 
 import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.domain.database.dao.Connection;
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -43,10 +44,19 @@ public interface DatabaseService {
     ExecuteResult deleteConnection(@NotNull Connection connection);
 
     /**
+     * 同步数据库连接下所有数据库和表
+     *
+     * @param connection
+     * @return
+     */
+    ExecuteResult syscConnection(@NotNull Connection connection);
+
+    /**
      * 同步数据库
      *
-     * @param connectionName:
-     * @return ExecuteResult
+     * @param connName
+     * @param dbName
+     * @return
      */
-    ExecuteResult syscDatabase(@NotNull String connectionName);
+    ExecuteResult syscDatabase(@NotNull String connName, @NonNull String dbName);
 }

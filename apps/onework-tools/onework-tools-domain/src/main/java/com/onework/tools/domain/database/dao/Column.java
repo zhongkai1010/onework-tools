@@ -15,9 +15,15 @@ import lombok.Data;
 public class Column {
 
     private String uid;
+
     private String cnUid;
+
     private String dbUid;
+    private String dbName;
+
     private String tbUid;
+    private String tbName;
+
     private String name;
     private String type;
     private Long length;
