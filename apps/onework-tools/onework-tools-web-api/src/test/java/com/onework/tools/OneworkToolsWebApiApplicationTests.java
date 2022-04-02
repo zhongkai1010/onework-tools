@@ -18,6 +18,6 @@ class OneworkToolsWebApiApplicationTests {
     @Test
     void contextLoads() throws DatabaseDomainException {
 
-
+        databaseTableMapper.getCustom("123");
     }
 }

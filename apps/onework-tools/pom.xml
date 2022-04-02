@@ -20,6 +20,7 @@
     <url>https://www.one-work.net/</url>
 
     <properties>
+        <onework-tools.version>0.0.1-SNAPSHOT</onework-tools.version>
         <!-- Maven 相关 -->
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -75,17 +76,17 @@
             <dependency>
                 <groupId>com.onework.tools</groupId>
                 <artifactId>onework-tools-core</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${onework-tools.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.onework.tools</groupId>
                 <artifactId>onework-tools-domain</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${onework-tools.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.onework.tools</groupId>
                 <artifactId>onework-tools-server</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${onework-tools.version}</version>
             </dependency>
             <!-- Spring 核心 -->
             <!-- Web 相关 -->
@@ -179,6 +180,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <skipTests>true</skipTests>
+                    </configuration>
                 </plugin>
                 <!-- maven-compiler-plugin 插件，解决 Lombok + MapStruct 组合 -->
                 <plugin>
