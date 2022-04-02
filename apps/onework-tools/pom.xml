@@ -5,10 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.onework.tools</groupId>
     <artifactId>onework-tools</artifactId>
-    <version>${revision}</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>onework-tools-dependencies</module>
         <module>onework-tools-core</module>
         <module>onework-tools-domain</module>
         <module>onework-tools-server</module>
@@ -16,31 +15,159 @@
         <module>onework-tools-web-api</module>
     </modules>
 
+    <name>${project.artifactId}</name>
     <description>onework工具包</description>
     <url>https://www.one-work.net/</url>
 
     <properties>
-        <revision>0.0.1</revision>
         <!-- Maven 相关 -->
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-
         <lombok.version>1.18.20</lombok.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 统一依赖管理 -->
+        <spring.boot.version>2.6.4</spring.boot.version>
+        <!-- Web 相关 -->
+        <springdoc-openapi.version>1.6.6</springdoc-openapi.version>
+        <!-- DB 相关 -->
+        <mysql.version>8.0.27</mysql.version>
+        <mssql.version>6.4.0.jre8</mssql.version>
+        <druid.version>1.2.8</druid.version>
+        <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
+        <HikariCP.version>4.0.3</HikariCP.version>
+        <!-- Config 配置中心相关 -->
+        <!-- Job 定时任务相关 -->
+        <!-- 服务保障相关 -->
+        <!-- 监控相关 -->
+        <!-- Test 测试相关 -->
+        <!-- Bpm 工作流相关 -->
+        <!-- 工具类相关 -->
+        <mybatis-plus-generator.version>3.5.1</mybatis-plus-generator.version>
+        <lombok.version>1.18.22</lombok.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <hutool.version>5.6.1</hutool.version>
+        <velocity.version>2.3</velocity.version>
+        <annotations.version>23.0.0</annotations.version>
+        <!-- 三方云服务相关 -->
+
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!-- 统一依赖管理 -->
             <dependency>
-                <groupId>com.onework.tools</groupId>
-                <artifactId>onework-tools-dependencies</artifactId>
-                <version>${revision}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+            <!-- 业务组件 -->
+            <dependency>
+                <groupId>com.onework.tools</groupId>
+                <artifactId>onework-tools-core</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.onework.tools</groupId>
+                <artifactId>onework-tools-domain</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.onework.tools</groupId>
+                <artifactId>onework-tools-server</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <!-- Spring 核心 -->
+            <!-- Web 相关 -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+            <!-- DB 相关 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${mssql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${HikariCP.version}</version>
+            </dependency>
+            <!-- Config 配置中心相关 -->
+            <!-- Job 定时任务相关 -->
+            <!-- 服务保障相关 -->
+            <!-- 监控相关 -->
+            <!-- Test 测试相关 -->
+            <!-- Bpm 工作流相关 -->
+            <!-- 工具类相关 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-jdk8</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+            <!-- 三方云服务相关 -->
         </dependencies>
     </dependencyManagement>
     <build>
@@ -78,15 +205,11 @@
     </build>
 
     <!-- 使用 aliyun 的 Maven 源，提升下载速度 -->
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>aliyunmaven</id>-->
-<!--            <name>aliyun</name>-->
-<!--            <url>https://maven.aliyun.com/repository/public</url>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>always</updatePolicy>-->
-<!--            </releases>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <repositories>
+        <repository>
+            <id>aliyunmaven</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
 </project>
