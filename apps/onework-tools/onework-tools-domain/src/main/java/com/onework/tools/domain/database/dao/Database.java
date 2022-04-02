@@ -1,5 +1,6 @@
 package com.onework.tools.domain.database.dao;
 
+import com.onework.tools.domain.database.schema.entity.DataDatabase;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,4 +21,11 @@ public class Database {
     private String cnUid;
     private Boolean isSync;
     private LocalDateTime lastSyncDate;
+
+    public static Database getDatabase(Connection connection, DataDatabase dataDatabase) {
+        Database database = new Database();
+        database.setCnUid(connection.getUid());
+        database.setName(dataDatabase.getDbName());
+        return database;
+    }
 }

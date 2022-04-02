@@ -22,9 +22,6 @@ public class DbConnection {
     private Integer port;
     private String database;
 
-    @Getter
-    private DataSource dataSource;
-
     private DbConnection(DatabaseType type) {
         databaseType = type;
     }

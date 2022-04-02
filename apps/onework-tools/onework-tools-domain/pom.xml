@@ -41,5 +41,9 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.onework.tools</groupId>
+            <artifactId>onework-tools-core</artifactId>
+        </dependency>
     </dependencies>
 </project>

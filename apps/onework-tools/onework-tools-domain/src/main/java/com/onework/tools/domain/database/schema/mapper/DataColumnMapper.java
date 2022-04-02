@@ -24,8 +24,8 @@ public class DataColumnMapper implements RowMapper<DataColumn> {
         dataColumn.setLength(rs.getLong("length"));
         dataColumn.setDescription(rs.getString("description"));
         dataColumn.setPrecision(rs.getInt("precision"));
-        dataColumn.setAllowNull(rs.getBoolean("allowNull"));
-        dataColumn.setPrimarykey(rs.getBoolean("primarykey"));
+        dataColumn.setIsNull(rs.getBoolean("allowNull"));
+        dataColumn.setIsUnique(rs.getBoolean("primarykey"));
         dataColumn.setDefaultValue(rs.getString("defaultValue"));
         dataColumn.setOrder(rs.getInt("order"));
         return dataColumn;

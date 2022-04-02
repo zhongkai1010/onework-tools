@@ -63,11 +63,11 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         Check.notNull(connection.getName(), new DatabaseDomainException(DomainDatabaseModule.CONNECTION_NAME_IS_NULL));
 
-        Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
-        if (dbConnection != null) {
-            BeanUtil.copyProperties(connection, dbConnection, new CopyOptions().ignoreNullValue());
-            connectionRepository.updateConnection(dbConnection);
-            connection.setUid(dbConnection.getUid());
+        Connection oldConnection = connectionRepository.getConnectionByName(connection.getName());
+        if (oldConnection != null) {
+            BeanUtil.copyProperties(connection, oldConnection, new CopyOptions().ignoreNullValue());
+            connectionRepository.updateConnection(oldConnection);
+            connection.setUid(oldConnection.getUid());
         } else {
             connectionRepository.addConnection(connection);
         }
@@ -159,14 +159,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             List<DataColumn> dataColumns = dbSchemaServer.getDataColumns(table.getDbName(), table.getName());
             List<Column> columns = new ArrayList<>();
             for (DataColumn dataColumn : dataColumns) {
-                Column column = new Column();
-                BeanUtil.copyProperties(dataColumn, column);
-                column.setCnUid(table.getCnUid());
-                column.setDbUid(table.getDbUid());
-                column.setDbName(table.getDbName());
-                column.setTbUid(table.getUid());
-                column.setTbName(table.getName());
-                columns.add(column);
+                columns.add(Column.getColumn(dataColumn, table));
             }
             columnRepository.batchAddColumn(columns);
         }
@@ -201,10 +194,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             new String[] {connection.getName()}));
 
         for (DataDatabase dataDatabase : dataDatabases) {
-
-            Database database = new Database();
-            database.setName(dataDatabase.getDbName());
-            database.setCnUid(connection.getUid());
+            Database database = Database.getDatabase(connection, dataDatabase);
             databaseRepository.saveDatabase(database);
 
             List<DataTable> dataTables = dataDatabase.getTables();
@@ -219,8 +209,6 @@ public class DatabaseServiceImpl implements DatabaseService {
      */
     private List<Table> handleTables(@NonNull Database database, @NonNull List<DataTable> dataTables) {
 
-        //TODO 是否考虑同步之前，对比数据库表，将已删除的表也在数据中进行移除
-
         Check.notNull(database.getUid(),
             new DatabaseDomainException(DomainDatabaseModule.SYSC_DATABASE_CONNECTION_ERROR,
                 new String[] {database.getName()}));
@@ -230,16 +218,9 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         List<Table> tables = new ArrayList<>();
         for (DataTable dataTable : dataTables) {
-            Table table = new Table();
-            table.setName(dataTable.getTbName());
-            table.setCnUid(database.getCnUid());
-            table.setDbUid(database.getUid());
-            table.setDbName(database.getName());
-            tables.add(table);
+            tables.add(Table.getTable(database, dataTable));
         }
-        tableRepository.batchAddTable(tables);
-
-        return tables;
+        return tableRepository.batchAddTable(tables);
     }
 
     /**

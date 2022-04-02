@@ -32,17 +32,19 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public <T extends Throwable> void batchAddTable(@NonNull List<Table> tables) {
+    public <T extends Throwable> List<Table> batchAddTable(@NonNull List<Table> tables) {
 
         ArrayList<DatabaseTable> databaseTables = new ArrayList<>();
         tables.forEach(table -> {
             table.setUid(IdWorker.getIdStr());
             DatabaseTable databaseTable = BeanUtil.copyProperties(table, DatabaseTable.class);
+            databaseTable.setCode(table.getName());
             databaseTable.setCreatedAt(LocalDateTime.now());
-            databaseTable.setCreatedAt(LocalDateTime.now());
+            databaseTable.setUpdatedAt(LocalDateTime.now());
             databaseTables.add(databaseTable);
         });
         databaseTableMapper.insertBatch(databaseTables);
+        return tables;
     }
 
     @Override

@@ -25,7 +25,7 @@ public interface TableRepository {
      * @param <T>
      * @throws T
      */
-    <T extends Throwable> void batchAddTable(@NonNull List<Table> tables) throws T;
+    <T extends Throwable> List<Table> batchAddTable(@NonNull List<Table> tables) throws T;
 
     /**
      * 根据数据库批量删除表

@@ -5,8 +5,6 @@ import com.onework.tools.domain.database.schema.DatabaseType;
 import com.onework.tools.domain.database.schema.entity.DbConnection;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -18,33 +16,17 @@ import javax.validation.constraints.NotNull;
 @Data
 public class Connection implements Entity {
 
-    private static final long serialVersionUID = 1536253811858760370L;
-
+    private static final long serialVersionUID = -6956882140336559657L;
     private String uid;
-
-    @NotNull(message = "数据库连接名称不能为空")
     private String name;
-
-    @NotNull
     private String dbType;
-
-    @NotNull
     private String host;
-
-    @NotNull
     private Integer port;
-
-    @NotNull
     private String database;
-
-    @NotNull
     private String username;
-
-    @NotNull
     private String password;
 
     public DbConnection getDbConnection() {
-
         DatabaseType databaseType = DatabaseType.Map.get(dbType);
         return DbConnection.create(databaseType).host(host).port(port).database(database).user(
                 username)

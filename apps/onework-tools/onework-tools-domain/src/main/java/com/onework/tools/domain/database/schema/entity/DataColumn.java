@@ -1,8 +1,6 @@
 package com.onework.tools.domain.database.schema.entity;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * @projectName: onework-tools
@@ -13,64 +11,24 @@ import lombok.Setter;
  * @date: 2021/12/7 23:35
  * @version: 1.0
  */
-@Setter
-@Getter
+@Data
 public class DataColumn {
 
-    /**
-     * 名称
-     */
-    @NonNull
     private String name;
-
-    /**
-     * 类型
-     */
-    @NonNull
     private String type;
-
-    /**
-     * 长度
-     */
     private Long length;
-
-    /**
-     * 精度
-     */
     private Integer precision;
-
-    /**
-     * 是否为空
-     */
-    @NonNull
-    private Boolean allowNull;
-
-    /**
-     * 是否主键
-     */
-    @NonNull
-    private Boolean primarykey;
-
-    /**
-     * 序号
-     */
+    private Boolean isNull;
+    private Boolean isUnique;
     private Integer order;
-
-    /**
-     * 默认值
-     */
     private String defaultValue;
-
-    /**
-     * 描述
-     */
     private String description;
 
     @Override
     public String toString() {
         return "Column{" + "name='" + name + '\'' + ", type='" + type + '\'' + ", length=" + length + ", precision="
-            + precision + ", allowNull=" + allowNull + ", primarykey=" + primarykey
-            + ", order=" + order
-            + ", defaultValue='" + defaultValue + '\'' + ", description='" + description + '\'' + '}';
+            + precision + ", allowNull=" + isNull + ", primarykey=" + isUnique + ", order=" + order
+            + ", defaultValue='"
+            + defaultValue + '\'' + ", description='" + description + '\'' + '}';
     }
 }

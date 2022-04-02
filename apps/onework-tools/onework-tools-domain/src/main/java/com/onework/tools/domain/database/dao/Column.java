@@ -1,5 +1,7 @@
 package com.onework.tools.domain.database.dao;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.onework.tools.domain.database.schema.entity.DataColumn;
 import lombok.Data;
 
 /**
@@ -15,22 +17,31 @@ import lombok.Data;
 public class Column {
 
     private String uid;
+    private String name;
 
     private String cnUid;
-
     private String dbUid;
     private String dbName;
-
     private String tbUid;
     private String tbName;
 
-    private String name;
     private String type;
     private Long length;
     private Integer precision;
-    private Boolean allowNull;
-    private Boolean primarykey;
+    private Boolean isNull;
+    private Boolean isUnique;
     private Integer order;
     private String defaultValue;
     private String description;
+
+    public static Column getColumn(DataColumn dataColumn, Table table) {
+
+        Column column = BeanUtil.copyProperties(dataColumn, Column.class);
+        column.setCnUid(table.getCnUid());
+        column.setDbUid(table.getDbUid());
+        column.setDbName(table.getDbName());
+        column.setTbUid(table.getUid());
+        column.setTbName(table.getName());
+        return column;
+    }
 }

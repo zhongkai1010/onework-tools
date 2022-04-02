@@ -17,11 +17,11 @@ class DatabaseServiceByMssqlTest {
         Connection connection = new Connection();
         connection.setName("添加mssql测试连接");
         connection.setDbType("mssql");
-        connection.setHost("172.16.19.32");
+        connection.setHost("127.0.0.1");
         connection.setPort(1433);
-        connection.setDatabase("CTS");
+        connection.setDatabase("v3");
         connection.setUsername("sa");
-        connection.setPassword("Abcd1234");
+        connection.setPassword("123qwe!@#");
         return connection;
     }
 
@@ -54,7 +54,7 @@ class DatabaseServiceByMssqlTest {
 
         Connection connection = getConnection();
         ExecuteResult executeResult;
-        executeResult = databaseService.syscDatabase(connection.getName(), "CTS");
+        executeResult = databaseService.syscDatabase(connection.getName(), connection.getDatabase());
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
 

@@ -56,6 +56,10 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+        </dependency>
         <!--业务组件-->
         <dependency>
             <groupId>com.onework.tools</groupId>

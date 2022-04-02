@@ -23,16 +23,14 @@ public interface ColumnRepository {
      *
      * @param columns: 字段集合
      * @return void
-     * @throws T
      */
-    <T extends Throwable> void batchAddColumn(@NonNull List<Column> columns) throws T;
+    void batchAddColumn(@NonNull List<Column> columns);
 
     /**
      * 根据数据库批量删除字段
      *
      * @param database
-     * @param <T>
-     * @throws T
      */
-    <T extends Throwable> void batchDeleteColumn(@NonNull Database database) throws T;
+    void batchDeleteColumn(@NonNull Database database);
+
 }

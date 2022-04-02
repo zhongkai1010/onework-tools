@@ -1,5 +1,6 @@
 package com.onework.tools.domain.database.dao;
 
+import com.onework.tools.domain.database.schema.entity.DataTable;
 import lombok.Data;
 
 /**
@@ -18,4 +19,13 @@ public class Table {
     private String cnUid;
     private String dbUid;
     private String dbName;
+
+    public static Table getTable(Database database, DataTable dataTable) {
+        Table table = new Table();
+        table.setName(dataTable.getTbName());
+        table.setCnUid(database.getCnUid());
+        table.setDbUid(database.getUid());
+        table.setDbName(database.getName());
+        return table;
+    }
 }

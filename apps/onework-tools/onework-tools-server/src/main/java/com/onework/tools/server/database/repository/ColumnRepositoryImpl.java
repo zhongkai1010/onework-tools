@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.onework.tools.domain.database.dao.Column;
 import com.onework.tools.domain.database.dao.Database;
 import com.onework.tools.domain.database.repository.ColumnRepository;
-import com.onework.tools.domain.database.schema.entity.DataColumn;
-import com.onework.tools.server.database.DatabaseServerException;
 import com.onework.tools.server.database.entity.DatabaseColumn;
-import com.onework.tools.server.database.entity.DatabaseTable;
 import com.onework.tools.server.database.mapper.DatabaseColumnMapper;
 import lombok.NonNull;
 import org.springframework.stereotype.Repository;
@@ -35,52 +32,21 @@ public class ColumnRepositoryImpl implements ColumnRepository {
     }
 
     @Override
-    public void addOrUpdateColumn(Column column) throws DatabaseServerException {
-
-        //        int result;
-        //
-        //        DatabaseColumn databaseColumn =
-        //            new LambdaQueryChainWrapper<>(databaseColumnMapper).eq(DatabaseColumn::getTbUid, column.getTbUid())
-        //                .eq(DatabaseColumn::getCode, column.getName()).one();
-        //
-        //        if (databaseColumn == null) {
-        //            databaseColumn = new DatabaseColumn();
-        //            BeanUtil.copyProperties(column, databaseColumn);
-        //            databaseColumn.setCnUid(column.getCnUid());
-        //            databaseColumn.setDbUid(column.getDbUid());
-        //            databaseColumn.setTbUid(column.getTbUid());
-        //            databaseColumn.setCode(column.getName());
-        //            databaseColumn.setIsNull(column.getAllowNull());
-        //            databaseColumn.setIsUnique(column.getPrimarykey());
-        //
-        //            result = databaseColumnMapper.insert(databaseColumn);
-        //        } else {
-        //            BeanUtil.copyProperties(column, databaseColumn, new CopyOptions().ignoreNullValue());
-        //            result = databaseColumnMapper.updateById(databaseColumn);
-        //        }
-        //
-        //        if (result == 0) {
-        //            throw new DatabaseServerException(ServerDatabaseModule.SAVE_COLUMN_ERROR);
-        //        }
-        //
-        //        column.setUid(databaseColumn.getUid());
-    }
-
-    @Override
-    public <T extends Throwable> void batchAddColumn(@NonNull List<Column> columns) throws T {
+    public void batchAddColumn(@NonNull List<Column> columns) {
         ArrayList<DatabaseColumn> databaseColumns = new ArrayList<>();
         columns.forEach(column -> {
             column.setUid(IdWorker.getIdStr());
             DatabaseColumn databaseColumn = BeanUtil.copyProperties(column, DatabaseColumn.class);
+            databaseColumn.setCode(column.getDbName());
             databaseColumn.setCreatedAt(LocalDateTime.now());
-            databaseColumn.setCreatedAt(LocalDateTime.now());
+            databaseColumn.setUpdatedAt(LocalDateTime.now());
             databaseColumns.add(databaseColumn);
         });
-        databaseColumnMapper.insertBatch(databaseTables);
+        databaseColumnMapper.insertBatch(databaseColumns);
     }
 
     @Override
-    public <T extends Throwable> void batchDeleteColumn(@NonNull Database database) throws T {
+    public void batchDeleteColumn(@NonNull Database database) {
         databaseColumnMapper.deleteColumnByDatabase(database.getUid());
     }
 }
