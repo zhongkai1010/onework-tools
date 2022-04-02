@@ -24,7 +24,6 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
     private final DatabaseDbMapper databaseDbMapper;
 
-
     public DatabaseRepositoryImpl(DatabaseDbMapper databaseDbMapper) {
         this.databaseDbMapper = databaseDbMapper;
     }
@@ -82,14 +81,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
     @Override
     public Database getDatabaseByName(String connId, String dbName) {
-        Database database = new Database();
 
-        DatabaseDb databaseDb =
-            new LambdaQueryChainWrapper<>(databaseDbMapper).eq(DatabaseDb::getCnUid, connId)
-                .eq(DatabaseDb::getName, database.getName()).one();
-
-        BeanUtil.copyProperties(databaseDb, database);
-
-        return database;
+        DatabaseDb databaseDb = new LambdaQueryChainWrapper<>(databaseDbMapper).eq(DatabaseDb::getCnUid, connId)
+            .eq(DatabaseDb::getName, dbName).one();
+        return BeanUtil.copyProperties(databaseDb, Database.class);
     }
 }

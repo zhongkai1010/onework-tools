@@ -17,7 +17,11 @@ import org.springframework.stereotype.Component;
 public class DatabaseDomainException extends BaseException {
 
     public DatabaseDomainException(String code) {
-        super(code);
+        this(code, null);
+    }
+
+    public DatabaseDomainException(String code, String[] formatParams) {
+        super(code, formatParams);
     }
 
     @Override

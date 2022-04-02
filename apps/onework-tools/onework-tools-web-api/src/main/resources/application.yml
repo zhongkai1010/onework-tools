@@ -22,6 +22,7 @@ mybatis-plus:
       logic-delete-value: now()
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:classpath:/mapper/**/*.xml
 server:
   port: 8081
   servlet:

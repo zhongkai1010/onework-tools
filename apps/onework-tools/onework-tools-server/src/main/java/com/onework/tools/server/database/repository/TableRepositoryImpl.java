@@ -51,6 +51,7 @@ public class TableRepositoryImpl implements TableRepository {
             BeanUtil.copyProperties(table, databaseTable);
             databaseTable.setCnUid(table.getCnUid());
             databaseTable.setDbUid(table.getDbUid());
+            databaseTable.setDbName(table.getDbName());
             databaseTable.setCode(table.getName());
             result = databaseTableMapper.insert(databaseTable);
         } else {
@@ -66,7 +67,7 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public <T extends Throwable> void batchAddOrUpdateTable(Database database, List<Table> tables) throws T {
+    public <T extends Throwable> void batchAddOrUpdateTable(Database database, List<Table> tables) {
 
         //TODO 考虑批量插入数据库表
 
@@ -93,7 +94,7 @@ public class TableRepositoryImpl implements TableRepository {
             }
         });
 
-       // databaseDbMapper.in
+        // databaseDbMapper.in
 
     }
 }

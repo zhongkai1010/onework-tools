@@ -38,9 +38,7 @@ class DatabaseServiceByMysqlTest {
     void saveConnection() {
 
         Connection connection = getConnection();
-
         ExecuteResult executeResult = databaseService.saveConnection(connection, false);
-
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
 
@@ -48,19 +46,7 @@ class DatabaseServiceByMysqlTest {
     void testConnection() {
 
         Connection connection = getConnection();
-
         ExecuteResult executeResult = databaseService.testConnection(connection);
-
-        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
-    }
-
-    @Test
-    void deleteConnection() {
-
-        Connection connection = getConnection();
-
-        ExecuteResult executeResult = databaseService.deleteConnection(connection);
-
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
 
@@ -68,11 +54,25 @@ class DatabaseServiceByMysqlTest {
     void syscConnection() {
 
         Connection connection = getConnection();
+        ExecuteResult saveResult = databaseService.saveConnection(connection, false);
+        ExecuteResult syscResult = databaseService.syscConnection(connection);
+        Assertions.assertTrue(saveResult.equals(ExecuteResult.SUCCESS) && syscResult.equals(ExecuteResult.SUCCESS));
+    }
 
-        ExecuteResult executeResult;
+    @Test
+    void syscDatabase() {
 
-        executeResult = databaseService.syscDatabase(connection.getName(), "onework");
+        Connection connection = getConnection();
+        ExecuteResult saveResult = databaseService.saveConnection(connection, true);
+        ExecuteResult syscResult = databaseService.syscDatabase(connection.getName(), connection.getDatabase());
+        Assertions.assertTrue(saveResult.equals(ExecuteResult.SUCCESS) && syscResult.equals(ExecuteResult.SUCCESS));
+    }
 
+    @Test
+    void deleteConnection() {
+
+        Connection connection = getConnection();
+        ExecuteResult executeResult = databaseService.deleteConnection(connection);
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
 }

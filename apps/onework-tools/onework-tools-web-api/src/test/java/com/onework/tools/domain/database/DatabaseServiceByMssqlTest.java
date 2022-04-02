@@ -42,11 +42,19 @@ class DatabaseServiceByMssqlTest {
     }
 
     @Test
+    void syscConnection() {
+
+        Connection connection = getConnection();
+        ExecuteResult executeResult = databaseService.syscConnection(connection);
+        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
+    }
+
+    @Test
     void syscDatabase() {
 
         Connection connection = getConnection();
         ExecuteResult executeResult;
-        executeResult = databaseService.syscDatabase(connection.getName(),"CTS");
+        executeResult = databaseService.syscDatabase(connection.getName(), "CTS");
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
 
@@ -57,6 +65,4 @@ class DatabaseServiceByMssqlTest {
         ExecuteResult executeResult = databaseService.deleteConnection(connection);
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
-
-
 }

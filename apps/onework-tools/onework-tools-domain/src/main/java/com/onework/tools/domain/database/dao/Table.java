@@ -17,4 +17,5 @@ public class Table {
     private String name;
     private String cnUid;
     private String dbUid;
+    private String dbName;
 }

@@ -13,11 +13,16 @@ public abstract class BaseException extends RuntimeException {
 
     private static final long serialVersionUID = 7969689764816292922L;
     private final String code;
-    private Boolean doFormat = false;
-    private Object[] formatParams = new Object[] {};
+    private final Object[] formatParams;
 
     protected BaseException(String code) {
+        this(code, null);
+    }
+
+    protected BaseException(String code, String[] formatParams) {
+
         this.code = code;
+        this.formatParams = formatParams;
     }
 
     /**
@@ -26,17 +31,6 @@ public abstract class BaseException extends RuntimeException {
      * @return
      */
     protected abstract String getModuleCode();
-
-    /**
-     * 设置异常编码
-     *
-     * @param params
-     * @return
-     */
-    public void format(Object... params) {
-        doFormat = true;
-        formatParams = params;
-    }
 
     @Override
     public String getMessage() {
@@ -49,7 +43,7 @@ public abstract class BaseException extends RuntimeException {
             message = ErrorMessageManger.ErrorMessageCodeMap.get(key);
         }
 
-        if (doFormat) {
+        if (formatParams != null) {
             message = String.format(message, formatParams);
         }
 
