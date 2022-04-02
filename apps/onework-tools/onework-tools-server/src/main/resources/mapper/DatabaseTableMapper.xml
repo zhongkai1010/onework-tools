@@ -2,30 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onework.tools.server.database.mapper.DatabaseTableMapper">
 
-    <insert id="insertOrUpdateBatch" parameterType="arraylist">
+    <insert id="insertBatch" parameterType="arraylist">
         <foreach collection="tables" item="item" index="index" separator=";">
-            <if test=" item.uid == null ">
-                insert into ow_database_tables (uid, `name`, `code`, cn_uid, db_uid, db_name, `description`, created_at,
-                updated_at)
-                values
-                (#{item.uid},#{item.name},#{item.code},#{item.cnUid},#{item.dbUid},#{item.dbName},#{item.description},#{item.createdAt},#{item.updatedAt});
-            </if>
-            <if test=" item.uid != null ">
-                update ow_database_tables
-                set `name`=#{item.name},
-                `code`=#{item.name},
-                cn_uid=#{item.name},
-                db_uid=#{item.name},
-                db_name=#{item.name},
-                `description`=#{item.name},
-                updated_at=#{item.item.updatedAt}
-                where uid = #{item.uid};
-            </if>
+            insert into ow_database_tables (uid, `name`, `code`, cn_uid, db_uid, db_name, `description`, created_at,
+            updated_at)
+            values
+            (#{item.uid},#{item.name},#{item.code},#{item.cnUid},#{item.dbUid},#{item.dbName},#{item.description},#{item.createdAt},#{item.updatedAt});
         </foreach>
     </insert>
-    <select id="getCustom" resultType="com.onework.tools.server.database.entity.DatabaseTable">
-        select *
+    <delete id="deleteTableByDatabase">
+        delete
         from ow_database_tables
-        where uid = #{id}
-    </select>
+        where db_uid = #{dbId};
+    </delete>
 </mapper>

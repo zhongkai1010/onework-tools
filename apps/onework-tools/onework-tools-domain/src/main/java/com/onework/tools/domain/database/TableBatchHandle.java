@@ -32,13 +32,13 @@ public class TableBatchHandle implements Runnable {
     @Override
     public void run() {
 
-        for (Table table : tables) {
-            Column column = new Column();
-            column.setCnUid(database.getCnUid());
-            column.setDbUid(database.getUid());
-            column.setDbName(database.getName());
-            column.setTbUid(table.getUid());
-            columnRepository.addOrUpdateColumn(column);
-        }
+//        for (Table table : tables) {
+//            Column column = new Column();
+//            column.setCnUid(database.getCnUid());
+//            column.setDbUid(database.getUid());
+//            column.setDbName(database.getName());
+//            column.setTbUid(table.getUid());
+//            columnRepository.addOrUpdateColumn(column);
+//        }
     }
 }

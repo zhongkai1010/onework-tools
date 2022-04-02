@@ -57,6 +57,14 @@ public abstract class DbSchemaServer {
     protected abstract String getColumnsSql(String dbName, String dbTable);
 
     /**
+     * 获取数据库所有字段Sql
+     *
+     * @param dbName
+     * @return
+     */
+    protected abstract String getDatabaseAllColumnSql(String dbName);
+
+    /**
      * 测试连接
      *
      * @return
@@ -108,6 +116,21 @@ public abstract class DbSchemaServer {
 
     }
 
+    public List<DataColumn> getDatabaseAllColumn(String dbName){
+        try {
+            String sql = getDatabaseAllColumnSql(dbName);
+            List<DataColumn> dataColumns = jdbcTemplate.query(sql, new DataColumnMapper());
+
+            log.info(String.format("%s:%s", "DbSchemaServer getDatabaseAllColumn", sql));
+
+            return dataColumns;
+
+        } catch (Exception exception) {
+            log.error("DbSchemaServer getDatabaseAllColumn error", exception);
+            return new ArrayList<>();
+        }
+    }
+
     /**
      * @return
      */
@@ -157,7 +180,7 @@ public abstract class DbSchemaServer {
      * @param dbName
      * @return
      */
-    private  List<DataTable> getInternalDataTables(@NonNull String dbName) {
+    private List<DataTable> getInternalDataTables(@NonNull String dbName) {
 
         try {
             String tablesSql = getTablesSql(dbName);

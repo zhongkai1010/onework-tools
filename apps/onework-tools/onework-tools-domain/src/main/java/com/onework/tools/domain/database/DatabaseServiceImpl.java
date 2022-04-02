@@ -4,15 +4,18 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
+import com.onework.tools.domain.database.dao.Column;
 import com.onework.tools.domain.database.dao.Connection;
 import com.onework.tools.domain.database.dao.Database;
 import com.onework.tools.domain.database.dao.Table;
+import com.onework.tools.domain.database.repository.ColumnRepository;
 import com.onework.tools.domain.database.repository.ConnectionRepository;
 import com.onework.tools.domain.database.repository.DatabaseRepository;
 import com.onework.tools.domain.database.repository.TableRepository;
 import com.onework.tools.domain.database.schema.DatabaseType;
 import com.onework.tools.domain.database.schema.DbSchemaFactory;
 import com.onework.tools.domain.database.schema.DbSchemaServer;
+import com.onework.tools.domain.database.schema.entity.DataColumn;
 import com.onework.tools.domain.database.schema.entity.DataDatabase;
 import com.onework.tools.domain.database.schema.entity.DataTable;
 import lombok.NonNull;
@@ -24,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,12 +45,14 @@ public class DatabaseServiceImpl implements DatabaseService {
     private final ConnectionRepository connectionRepository;
     private final DatabaseRepository databaseRepository;
     private final TableRepository tableRepository;
+    private final ColumnRepository columnRepository;
 
     public DatabaseServiceImpl(ConnectionRepository connectionRepository, DatabaseRepository databaseRepository,
-        TableRepository tableRepository) {
+        TableRepository tableRepository, ColumnRepository columnRepository) {
         this.connectionRepository = connectionRepository;
         this.databaseRepository = databaseRepository;
         this.tableRepository = tableRepository;
+        this.columnRepository = columnRepository;
     }
 
     @Override
@@ -59,7 +65,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
         if (dbConnection != null) {
-            BeanUtil.copyProperties(connection, dbConnection,new CopyOptions().ignoreNullValue());
+            BeanUtil.copyProperties(connection, dbConnection, new CopyOptions().ignoreNullValue());
             connectionRepository.updateConnection(dbConnection);
             connection.setUid(dbConnection.getUid());
         } else {
@@ -123,16 +129,47 @@ public class DatabaseServiceImpl implements DatabaseService {
         Database database = databaseRepository.getDatabaseByName(connection.getUid(), dbName);
         Check.notNull(database, new DatabaseDomainException(DomainDatabaseModule.DB_CONNECTION_ERROR));
 
-        List<DataTable> dataTables = dbSchemaServer.getDataTables(dbName);
-        handleTables(database, dataTables);
+        // 同步数据库前，移除数据库表和字段
+        tableRepository.batchDeleteTable(database);
+        columnRepository.batchDeleteColumn(database);
 
-        // TODO 同步表
+        // 同步最新表
+        List<DataTable> dataTables = dbSchemaServer.getDataTables(dbName);
+        List<Table> tables = handleTables(database, dataTables);
+
+        // 同步最新表字段
+        handleColumns(dbSchemaServer, tables);
 
         database.setLastSyncDate(LocalDateTime.now());
         database.setIsSync(true);
         databaseRepository.updateDatabase(database);
 
         return executeResult.ok();
+    }
+
+    /**
+     * @param tables
+     */
+    private void handleColumns(@NonNull DbSchemaServer dbSchemaServer, @NonNull List<Table> tables) {
+
+        for (Table table : tables) {
+            Check.notNull(new DatabaseDomainException(DomainDatabaseModule.SYSC_TABLE_ERROR,
+                new String[] {table.getCnUid(), table.getDbUid(), table.getDbName(), table.getUid(), table.getName()}));
+
+            List<DataColumn> dataColumns = dbSchemaServer.getDataColumns(table.getDbName(), table.getName());
+            List<Column> columns = new ArrayList<>();
+            for (DataColumn dataColumn : dataColumns) {
+                Column column = new Column();
+                BeanUtil.copyProperties(dataColumn, column);
+                column.setCnUid(table.getCnUid());
+                column.setDbUid(table.getDbUid());
+                column.setDbName(table.getDbName());
+                column.setTbUid(table.getUid());
+                column.setTbName(table.getName());
+                columns.add(column);
+            }
+            columnRepository.batchAddColumn(columns);
+        }
     }
 
     /**
@@ -180,7 +217,7 @@ public class DatabaseServiceImpl implements DatabaseService {
      * @param dataTables
      * @return
      */
-    private void handleTables(@NonNull Database database, @NonNull List<DataTable> dataTables) {
+    private List<Table> handleTables(@NonNull Database database, @NonNull List<DataTable> dataTables) {
 
         //TODO 是否考虑同步之前，对比数据库表，将已删除的表也在数据中进行移除
 
@@ -191,14 +228,18 @@ public class DatabaseServiceImpl implements DatabaseService {
             new DatabaseDomainException(DomainDatabaseModule.SYSC_DATABASE_CONNECTION_ERROR,
                 new String[] {database.getName()}));
 
+        List<Table> tables = new ArrayList<>();
         for (DataTable dataTable : dataTables) {
             Table table = new Table();
             table.setName(dataTable.getTbName());
             table.setCnUid(database.getCnUid());
             table.setDbUid(database.getUid());
             table.setDbName(database.getName());
-            tableRepository.addOrUpdateTable(table);
+            tables.add(table);
         }
+        tableRepository.batchAddTable(tables);
+
+        return tables;
     }
 
     /**

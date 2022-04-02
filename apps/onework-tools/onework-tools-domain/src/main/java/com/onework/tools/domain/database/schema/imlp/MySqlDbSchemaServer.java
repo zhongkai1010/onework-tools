@@ -30,4 +30,11 @@ public class MySqlDbSchemaServer extends DbSchemaServer {
             "SELECT ORDINAL_POSITION AS `order`, COLUMN_DEFAULT AS `defaultValue`, COLUMN_NAME AS `name`, DATA_TYPE AS `type`, COLUMN_COMMENT AS `description`, IFNULL( NUMERIC_PRECISION, 0) AS `precision`, IFNULL( CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION ) AS `length`,( CASE IS_NULLABLE WHEN 'YES' THEN 1 ELSE 0 END ) AS `allowNull`, ( CASE COLUMN_KEY WHEN 'PRI' THEN 1 ELSE 0 END ) AS `primarykey` FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s'",
             dbName, dbTable);
     }
+
+    @Override
+    protected String getDatabaseAllColumnSql(String dbName) {
+        return String.format(
+            "SELECT ORDINAL_POSITION AS `order`, COLUMN_DEFAULT AS `defaultValue`, COLUMN_NAME AS `name`, DATA_TYPE AS `type`, COLUMN_COMMENT AS `description`, IFNULL( NUMERIC_PRECISION, 0) AS `precision`, IFNULL( CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION ) AS `length`,( CASE IS_NULLABLE WHEN 'YES' THEN 1 ELSE 0 END ) AS `allowNull`, ( CASE COLUMN_KEY WHEN 'PRI' THEN 1 ELSE 0 END ) AS `primarykey` FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA = '%s' ",
+            dbName);
+    }
 }

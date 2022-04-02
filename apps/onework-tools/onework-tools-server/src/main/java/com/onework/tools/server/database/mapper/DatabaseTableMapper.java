@@ -16,17 +16,18 @@ import java.util.ArrayList;
  */
 public interface DatabaseTableMapper extends BaseMapper<DatabaseTable> {
 
-    //    /**
-    //     * 批量处理数据库表
-    //     *
-    //     * @param tables
-    //     */
-    //    void insertOrUpdateBatch(@Param("tables") ArrayList<DatabaseTable> tables);
+    /**
+     * 批量新增数据库表
+     *
+     * @param tables
+     */
+    void insertBatch(@Param("tables") ArrayList<DatabaseTable> tables);
 
     /**
+     * 根据数据库id删除表和字段
      *
-     * @param id
-     * @return
+     * @param dbId
      */
-    DatabaseTable getCustom(@Param("id") String id);
+    void deleteTableByDatabase(@Param("dbId") String dbId);
+
 }

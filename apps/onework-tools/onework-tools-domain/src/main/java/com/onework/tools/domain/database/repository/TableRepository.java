@@ -2,6 +2,7 @@ package com.onework.tools.domain.database.repository;
 
 import com.onework.tools.domain.database.dao.Database;
 import com.onework.tools.domain.database.dao.Table;
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,20 +19,20 @@ import java.util.List;
 public interface TableRepository {
 
     /**
-     * 添加或修改数据表
-     *
-     * @param table: 数据库
-     * @return void
-     * @throws T
-     */
-    <T extends Throwable> void addOrUpdateTable(Table table) throws T;
-
-    /**
      * 批量处理数据库表
-     * @param database
+     *
      * @param tables
      * @param <T>
      * @throws T
      */
-    <T extends Throwable> void batchAddOrUpdateTable(Database database, List<Table> tables) throws T;
+    <T extends Throwable> void batchAddTable(@NonNull List<Table> tables) throws T;
+
+    /**
+     * 根据数据库批量删除表
+     *
+     * @param database
+     * @param <T>
+     * @throws T
+     */
+    <T extends Throwable> void batchDeleteTable(@NonNull Database database) throws T;
 }

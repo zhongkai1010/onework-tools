@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
-@SpringBootTest()
+@SpringBootTest
 class OneworkToolsWebApiApplicationTests {
 
     @Autowired
@@ -18,6 +18,5 @@ class OneworkToolsWebApiApplicationTests {
     @Test
     void contextLoads() throws DatabaseDomainException {
 
-        databaseTableMapper.getCustom("123");
     }
 }

@@ -15,4 +15,15 @@ public class Check {
             throw exception;
         }
     }
+
+    public static <E extends Throwable> void notNull(E exception, Object... value) throws E {
+        if (value == null) {
+            throw exception;
+        }
+        for (Object obj : value) {
+            if (obj == null) {
+                throw exception;
+            }
+        }
+    }
 }
