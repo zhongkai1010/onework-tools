@@ -25,9 +25,9 @@
             #{item.updatedAt})
         </foreach>
     </insert>
-    <delete id="deleteColumnByDatabase">
+    <delete id="deleteTableColumn">
         delete
         from ow_database_columns
-        where db_uid = #{dbId};
+        where tb_uid = #{tbUid};
     </delete>
 </mapper>

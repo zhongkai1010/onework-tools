@@ -24,9 +24,9 @@ public interface DatabaseColumnMapper extends BaseMapper<DatabaseColumn> {
     void insertBatch(@Param("columns") ArrayList<DatabaseColumn> columns);
 
     /**
-     * 根据数据库id删除字段
+     * 根据数据表字段
      *
-     * @param dbId
+     * @param tbUid
      */
-    void deleteColumnByDatabase(@Param("dbId") String dbId);
+    void deleteTableColumn(@Param("tbUid") String tbUid);
 }

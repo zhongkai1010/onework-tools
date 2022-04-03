@@ -53,9 +53,9 @@ class DatabaseServiceByMssqlTest {
     void syscDatabase() {
 
         Connection connection = getConnection();
-        ExecuteResult executeResult;
-        executeResult = databaseService.syscDatabase(connection.getName(), connection.getDatabase());
-        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
+        ExecuteResult saveResult = databaseService.saveConnection(connection, true);
+        ExecuteResult syscResult = databaseService.syscDatabase(connection.getName(), connection.getDatabase());
+        Assertions.assertTrue(saveResult.equals(ExecuteResult.SUCCESS) && syscResult.equals(ExecuteResult.SUCCESS));
     }
 
     @Test

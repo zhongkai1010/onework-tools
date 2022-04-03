@@ -3,7 +3,7 @@ package com.onework.tools.server.database.repository;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.onework.tools.domain.database.dao.Column;
-import com.onework.tools.domain.database.dao.Database;
+import com.onework.tools.domain.database.dao.Table;
 import com.onework.tools.domain.database.repository.ColumnRepository;
 import com.onework.tools.server.database.entity.DatabaseColumn;
 import com.onework.tools.server.database.mapper.DatabaseColumnMapper;
@@ -46,7 +46,7 @@ public class ColumnRepositoryImpl implements ColumnRepository {
     }
 
     @Override
-    public void batchDeleteColumn(@NonNull Database database) {
-        databaseColumnMapper.deleteColumnByDatabase(database.getUid());
+    public void batchDeleteColumn(@NonNull Table table) {
+        databaseColumnMapper.deleteTableColumn(table.getUid());
     }
 }

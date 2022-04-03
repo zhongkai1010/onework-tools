@@ -2,6 +2,8 @@ package com.onework.tools.domain.database;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.domain.database.dao.Column;
@@ -29,6 +31,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author : zhongkai1010@163.com
@@ -115,7 +118,6 @@ public class DatabaseServiceImpl implements DatabaseService {
         return executeResult.ok();
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public ExecuteResult syscDatabase(@NotNull String connName, @NonNull String dbName) {
 
@@ -129,22 +131,50 @@ public class DatabaseServiceImpl implements DatabaseService {
         Database database = databaseRepository.getDatabaseByName(connection.getUid(), dbName);
         Check.notNull(database, new DatabaseDomainException(DomainDatabaseModule.DB_CONNECTION_ERROR));
 
-        // 同步数据库前，移除数据库表和字段
+        // 同步数据库表前，移除数据库表
         tableRepository.batchDeleteTable(database);
-        columnRepository.batchDeleteColumn(database);
-
-        // 同步最新表
         List<DataTable> dataTables = dbSchemaServer.getDataTables(dbName);
         List<Table> tables = handleTables(database, dataTables);
 
-        // 同步最新表字段
-        handleColumns(dbSchemaServer, tables);
+        //        handleColumns(dbSchemaServer, tables);
+        //        database.setLastSyncDate(LocalDateTime.now());
+        //        database.setIsSync(true);
+        //        databaseRepository.updateDatabase(database);
+        //        return executeResult.ok();
 
-        database.setLastSyncDate(LocalDateTime.now());
-        database.setIsSync(true);
-        databaseRepository.updateDatabase(database);
+        final int pageSize = 10;
+        int pageCount = (tables.size() + pageSize - 1) / pageSize;
+        ThreadPoolExecutor threadPoolExecutor = ThreadUtil.newExecutor(pageCount, pageCount);
+        for (int i = 0; i < pageCount; i++) {
+            int page = i;
+            threadPoolExecutor.execute(() -> {
+                //                // 1.获取事务定义
+                //                DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+                //                // 2.设置事务隔离级别，开启新事务
+                //                def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+                //                TransactionStatus status = dataSourceTransactionManager.getTransaction(def);
+                try {
+                    List<Table> pageTables = CollUtil.page(page, pageSize, tables);
+                    handleColumns(dbSchemaServer, pageTables);
+                } catch (Exception ex) {
+                    // dataSourceTransactionManager.rollback(status);
+                    log.error(String.format("%s：批量提交失败", Thread.currentThread().getName()), ex);
+                }
+                // 3.提交事务
+                //dataSourceTransactionManager.commit(status);
+            });
+        }
+        while (true) {
+            int count = threadPoolExecutor.getActiveCount();
+            if (count == 0) {
+                database.setLastSyncDate(LocalDateTime.now());
+                database.setIsSync(true);
+                databaseRepository.updateDatabase(database);
+                threadPoolExecutor.shutdown();
 
-        return executeResult.ok();
+                return executeResult.ok();
+            }
+        }
     }
 
     /**
@@ -161,6 +191,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             for (DataColumn dataColumn : dataColumns) {
                 columns.add(Column.getColumn(dataColumn, table));
             }
+            columnRepository.batchDeleteColumn(table);
             columnRepository.batchAddColumn(columns);
         }
     }
@@ -184,6 +215,9 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     /**
+     * List<DataTable> dataTables = dataDatabase.getTables();
+     * handleTables(database, dataTables);
+     *
      * @param connection
      * @param dataDatabases
      * @return
@@ -196,9 +230,6 @@ public class DatabaseServiceImpl implements DatabaseService {
         for (DataDatabase dataDatabase : dataDatabases) {
             Database database = Database.getDatabase(connection, dataDatabase);
             databaseRepository.saveDatabase(database);
-
-            List<DataTable> dataTables = dataDatabase.getTables();
-            handleTables(database, dataTables);
         }
     }
 

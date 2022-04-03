@@ -1,7 +1,7 @@
 package com.onework.tools.domain.database.repository;
 
 import com.onework.tools.domain.database.dao.Column;
-import com.onework.tools.domain.database.dao.Database;
+import com.onework.tools.domain.database.dao.Table;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +29,8 @@ public interface ColumnRepository {
     /**
      * 根据数据库批量删除字段
      *
-     * @param database
+     * @param table
      */
-    void batchDeleteColumn(@NonNull Database database);
+    void batchDeleteColumn(@NonNull Table table);
 
 }
