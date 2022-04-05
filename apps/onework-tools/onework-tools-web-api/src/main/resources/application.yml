@@ -1,10 +1,24 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api
 spring:
   datasource:
-    username: root
-    password: 123qwe!@#mysql_root
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
-    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://101.37.81.183:8033/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
+    # username: root
+    # password: 123qwe!@#mysql_root
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    # driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    # url: jdbc:mysql://101.37.81.183:8033/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:p6spy:mysql://101.37.81.183:8033/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      username: root
+      password: 123qwe!@#mysql_root
+      filter:
+        log4j2:
+          enabled: true
+          statement-log-enabled: true
   mvc:
     static-path-pattern: /static/**
     log-request-details: true
@@ -24,10 +38,6 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:mapper/*.xml
-server:
-  port: 8081
-  servlet:
-    context-path: /api
 springdoc:
   version: '1.0.0 base'
   swagger-ui:
@@ -37,8 +47,3 @@ springdoc:
     disable-swagger-default-url: true
     use-root-path: true
   show-actuator: true
-logging:
-  level:
-    com:
-      onework:
-        tools: debug

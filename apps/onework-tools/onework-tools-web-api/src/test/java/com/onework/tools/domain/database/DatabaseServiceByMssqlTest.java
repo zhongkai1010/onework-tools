@@ -7,11 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.sql.DataSource;
+
 @SpringBootTest()
 class DatabaseServiceByMssqlTest {
 
     @Autowired
     private DatabaseService databaseService;
+
+    //数据源组件
+    @Autowired
+    DataSource dataSource;
 
     private static Connection getConnection() {
         Connection connection = new Connection();
@@ -27,7 +33,7 @@ class DatabaseServiceByMssqlTest {
 
     @Test
     void saveConnection() {
-
+        
         Connection connection = getConnection();
         ExecuteResult executeResult = databaseService.saveConnection(connection, false);
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
