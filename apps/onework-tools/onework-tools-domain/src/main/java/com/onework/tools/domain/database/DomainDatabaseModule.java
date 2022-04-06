@@ -1,6 +1,6 @@
 package com.onework.tools.domain.database;
 
-import com.onework.tools.core.module.ModuleInfo;
+import com.onework.tools.core.module.Module;
 import org.springframework.stereotype.Component;
 
 import java.util.Hashtable;
@@ -15,7 +15,7 @@ import java.util.Map;
  * @date Date : 2022年03月31日 16:55
  */
 @Component
-public class DomainDatabaseModule implements ModuleInfo {
+public class DomainDatabaseModule implements Module {
 
     /**
      * 模块异常编号
@@ -43,9 +43,12 @@ public class DomainDatabaseModule implements ModuleInfo {
     public final static String SYSC_DATABASE_CONNECTION_ERROR = "0010";
     public final static String SYSC_TABLE_ERROR = "0011";
 
-
-
     //endregion
+
+    @Override
+    public String getModuleName() {
+        return "领域模块";
+    }
 
     @Override
     public String getModuleCode() {
@@ -53,7 +56,7 @@ public class DomainDatabaseModule implements ModuleInfo {
     }
 
     @Override
-    public Map<String, String> getErrorCodeMap() {
+    public Map<String, String> getErrorMessageMaps() {
         return new Hashtable<String, String>() {{
 
             put(DB_TYPE_IS_NULL, "数据库类型不能为空");

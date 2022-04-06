@@ -53,6 +53,7 @@
         <hutool.version>5.6.1</hutool.version>
         <velocity.version>2.3</velocity.version>
         <annotations.version>23.0.0</annotations.version>
+        <retrofit.version>2.9.0</retrofit.version>
         <!-- 三方云服务相关 -->
 
     </properties>
@@ -133,6 +134,11 @@
             <!-- Test 测试相关 -->
             <!-- Bpm 工作流相关 -->
             <!-- 工具类相关 -->
+            <dependency>
+                <groupId>com.squareup.retrofit2</groupId>
+                <artifactId>retrofit</artifactId>
+                <version>${retrofit.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-generator</artifactId>

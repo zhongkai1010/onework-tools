@@ -1,8 +1,6 @@
 package com.onework.tools.core.error;
 
 import com.onework.tools.core.CoreModule;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 /**
  * 系统异常类
@@ -10,11 +8,9 @@ import org.springframework.stereotype.Component;
  *
  * @author zhongkai
  */
-@Component
-@Scope("prototype")
 public class SystemExcption extends BaseException {
 
-    public SystemExcption(String code) {
+    public SystemExcption(final String code) {
         super(code);
     }
 

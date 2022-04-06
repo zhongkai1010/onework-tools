@@ -1,6 +1,6 @@
 package com.onework.tools.server.database;
 
-import com.onework.tools.core.module.ModuleInfo;
+import com.onework.tools.core.module.Module;
 import org.springframework.stereotype.Component;
 
 import java.util.Hashtable;
@@ -15,7 +15,7 @@ import java.util.Map;
  * @date Date : 2022年03月31日 17:16
  */
 @Component
-public class ServerDatabaseModule implements ModuleInfo {
+public class ServerDatabaseModule implements Module {
 
     /**
      * 模块异常编号
@@ -41,13 +41,17 @@ public class ServerDatabaseModule implements ModuleInfo {
     // endregion
 
     @Override
+    public String getModuleName() {
+        return "数据库同步模块";
+    }
+
+    @Override
     public String getModuleCode() {
         return MODULE_CODE;
     }
 
     @Override
-    public Map<String, String> getErrorCodeMap() {
-
+    public Map<String, String> getErrorMessageMaps() {
         return new Hashtable<String, String>() {
             private static final long serialVersionUID = -7207722230552763780L;
 

@@ -1,5 +1,7 @@
 package com.onework.tools.core.error;
 
+import com.onework.tools.core.module.ModuleManager;
+
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -39,8 +41,8 @@ public abstract class BaseException extends RuntimeException {
         String moduleCode = getModuleCode();
         String key = String.format("%s.%s", moduleCode, code);
 
-        if (ErrorMessageManger.ErrorMessageCodeMap.containsKey(key)) {
-            message = ErrorMessageManger.ErrorMessageCodeMap.get(key);
+        if (ModuleManager.ErrorMessages.containsKey(key)) {
+            message = ModuleManager.ErrorMessages.get(key);
         }
 
         if (formatParams != null) {

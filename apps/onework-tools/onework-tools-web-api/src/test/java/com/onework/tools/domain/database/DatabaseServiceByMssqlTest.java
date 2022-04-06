@@ -23,11 +23,11 @@ class DatabaseServiceByMssqlTest {
         Connection connection = new Connection();
         connection.setName("添加mssql测试连接");
         connection.setDbType("mssql");
-        connection.setHost("127.0.0.1");
+        connection.setHost("172.16.19.32");
         connection.setPort(1433);
-        connection.setDatabase("v3");
+        connection.setDatabase("CTS");
         connection.setUsername("sa");
-        connection.setPassword("123qwe!@#");
+        connection.setPassword("Abcd1234");
         return connection;
     }
 

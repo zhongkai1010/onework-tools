@@ -1,6 +1,6 @@
 package com.onework.tools.core;
 
-import com.onework.tools.core.module.ModuleInfo;
+import com.onework.tools.core.module.Module;
 import org.springframework.stereotype.Component;
 
 import java.util.Hashtable;
@@ -15,12 +15,17 @@ import java.util.Map;
  * @date Date : 2022年03月31日 16:58
  */
 @Component
-public class CoreModule implements ModuleInfo {
+public class CoreModule implements Module {
 
     /**
-     * 模块异常编号
+     * 模块编号
      */
     public final static String MODULE_CODE = "1000";
+
+    /**
+     * 模块名称
+     */
+    public final static String MODULE_NAME = "基础模块";
 
     // region 异常编码常量
 
@@ -29,15 +34,20 @@ public class CoreModule implements ModuleInfo {
     //endregion
 
     @Override
+    public String getModuleName() {
+        return MODULE_NAME;
+    }
+
+    @Override
     public String getModuleCode() {
         return MODULE_CODE;
     }
 
     @Override
-    public Map<String, String> getErrorCodeMap() {
-
+    public Map<String,String> getErrorMessageMaps() {
         return new Hashtable<String, String>() {{
             put(PARAM_IS_NULL, "%s,参数不能为空");
         }};
     }
+
 }
