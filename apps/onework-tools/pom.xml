@@ -53,7 +53,7 @@
         <hutool.version>5.6.1</hutool.version>
         <velocity.version>2.3</velocity.version>
         <annotations.version>23.0.0</annotations.version>
-        <retrofit.version>2.9.0</retrofit.version>
+        <fastjson.version>1.2.80</fastjson.version>
         <!-- 三方云服务相关 -->
 
     </properties>
@@ -135,9 +135,9 @@
             <!-- Bpm 工作流相关 -->
             <!-- 工具类相关 -->
             <dependency>
-                <groupId>com.squareup.retrofit2</groupId>
-                <artifactId>retrofit</artifactId>
-                <version>${retrofit.version}</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -211,6 +211,11 @@
                                 <groupId>org.mapstruct</groupId>
                                 <artifactId>mapstruct-processor</artifactId>
                                 <version>${mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-configuration-processor</artifactId>
+                                <version>${spring.boot.version}</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.IFill;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
@@ -12,6 +13,8 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 import com.onework.tools.generator.config.GeneratorConfigValue;
+
+import java.util.HashMap;
 
 /**
  * @author : zhongkai1010@163.com
@@ -43,7 +46,10 @@ public class App {
 
         generatorConfigValue.getPackageConfigValue()
             .setParent("com.onework.tools.server")
-            .setModuleName("database");
+            .setModuleName("translate")
+            .setPathInfo(new HashMap<OutputFile, String>(16) {{
+                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-server/src/main/resources/mapper/translate"));
+            }});
 
         generatorConfigValue.getTemplateConfigValue()
             .setDisableController(true);
@@ -52,7 +58,7 @@ public class App {
             .setAddTablePrefix(new String[] { "ow_" })
             .setAddTableSuffix(new String[] { "s" })
             .setEnableCapitalMode(true)
-            .setLikeTable(new LikeTable("database"))
+            .setLikeTable(new LikeTable("translations"))
         .getEntityBuilder()
             .setIdType(IdType.ASSIGN_ID)
             .setNaming(NamingStrategy.underline_to_camel)

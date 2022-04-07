@@ -9,13 +9,15 @@ package com.onework.tools.core;
  * @date: 2022/3/31 21:47
  * @version: 1.0
  */
-public class ExecuteResult {
+public class ExecuteResult<TData> {
 
     public final static ExecuteResult SUCCESS = new ExecuteResult(true);
 
     public final static ExecuteResult FAIL = new ExecuteResult(false);
 
     private boolean result;
+
+    private TData data;
 
     public ExecuteResult() {
 
@@ -29,6 +31,12 @@ public class ExecuteResult {
 
     public ExecuteResult ok() {
         result = true;
+        return this;
+    }
+
+    public ExecuteResult<TData> ok(TData data) {
+        result = true;
+        this.data = data;
         return this;
     }
 

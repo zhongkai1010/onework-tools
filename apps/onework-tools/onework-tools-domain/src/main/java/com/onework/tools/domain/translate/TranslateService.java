@@ -1,10 +1,7 @@
 package com.onework.tools.domain.translate;
 
-import javafx.scene.control.Cell;
-import retrofit2.http.GET;
-import retrofit2.http.QueryMap;
-
-import java.util.Map;
+import com.onework.tools.domain.translate.repository.TranslateRecordRepository;
+import org.springframework.stereotype.Component;
 
 /**
  * @author : zhongkai1010@163.com
@@ -12,17 +9,30 @@ import java.util.Map;
  * @Project: onework-tools
  * @Package com.onework.tools.domain.translate
  * @Description: 描述
- * @date Date : 2022年04月06日 17:32
+ * @date Date : 2022年04月07日 17:23
  */
-public interface TranslateService {
 
-    /**
-     * 百度翻译Api
-     *
-     * @param query
-     * @return
-     */
-    @GET("https://fanyi-api.baidu.com/api/trans/vip/translate")
-    Cell<BaiduTranslateResult> translateText(@QueryMap Map<String, String> query);
+@Component
+public class TranslateService {
 
+    private final ThreeTranslateService threeTranslateService;
+    private final TranslateRecordRepository translateRecordRepository;
+
+    public TranslateService(ThreeTranslateService threeTranslateService,
+        TranslateRecordRepository translateRecordRepository) {
+        this.threeTranslateService = threeTranslateService;
+        this.translateRecordRepository = translateRecordRepository;
+    }
+
+    public static String translateText(String text) {
+        return translateText(new String[] {text})[0];
+    }
+
+    public static String[] translateText(String[] texts) {
+
+        String[] result =
+
+            translateRecordRepository.queryTranslate()
+
+    }
 }

@@ -47,3 +47,9 @@ springdoc:
     disable-swagger-default-url: true
     use-root-path: true
   show-actuator: true
+onework:
+  translate:
+    baidu:
+      url: https://fanyi-api.baidu.com/api/trans/vip/translate
+      appId: 20210206000692404
+      secretKey: 26ZZ7HwrFuxiOcAQ_inQ
