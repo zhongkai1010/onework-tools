@@ -1,4 +1,4 @@
-package com.onework.tools.domain.translate;
+package com.onework.tools.domain.translate.provide;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @NoArgsConstructor
 @Data
-public class BaiduTranslateResult {
+public class TranslateResult {
 
     @JsonProperty("from")
     private String from;
@@ -25,11 +25,11 @@ public class BaiduTranslateResult {
 
     private String to;
     @JsonProperty("trans_result")
-    private List<TransResultDTO> transResult;
+    private List<Result> transResult;
 
     @NoArgsConstructor
     @Data
-    public static class TransResultDTO {
+    public static class Result {
         @JsonProperty("src")
         private String src;
         @com.fasterxml.jackson.annotation.JsonProperty("dst")

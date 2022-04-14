@@ -1,5 +1,6 @@
 package com.onework.tools.domain.translate.dao;
 
+import com.onework.tools.domain.translate.Language;
 import lombok.Data;
 
 /**
@@ -16,6 +17,6 @@ public class TranslationRecord {
     private String source;
     private String dst;
     private String src;
-    private String from;
-    private String to;
+    private Language from;
+    private Language to;
 }

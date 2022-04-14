@@ -17,11 +17,11 @@ public abstract class BaseException extends RuntimeException {
     private final String code;
     private final Object[] formatParams;
 
-    protected BaseException(String code) {
+    public BaseException(String code) {
         this(code, null);
     }
 
-    protected BaseException(String code, String[] formatParams) {
+    public BaseException(String code, String[] formatParams) {
 
         this.code = code;
         this.formatParams = formatParams;

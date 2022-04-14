@@ -1,24 +1,20 @@
 package com.onework.tools.server.translate.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-07
+ * @since 2022-04-14
  */
 @Getter
 @Setter
@@ -73,6 +69,5 @@ public class ToolTranslation implements Serializable {
     @TableField(value = "deleted_at", fill = FieldFill.DEFAULT)
     @TableLogic
     private LocalDateTime deletedAt;
-
 
 }

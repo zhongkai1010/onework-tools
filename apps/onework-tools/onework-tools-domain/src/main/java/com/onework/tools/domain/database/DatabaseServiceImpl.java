@@ -65,7 +65,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         ExecuteResult executeResult = new ExecuteResult();
 
-        Check.notNull(connection.getName(), new DatabaseDomainException(DomainDatabaseModule.CONNECTION_NAME_IS_NULL));
+        Check.notNull(connection.getName(), new DomainDatabaseException(DomainDatabaseModule.CONNECTION_NAME_IS_NULL));
 
         Connection oldConnection = connectionRepository.getConnectionByName(connection.getName());
         if (oldConnection != null) {
@@ -111,7 +111,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         ExecuteResult executeResult = new ExecuteResult();
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
-        Check.notNull(dbConnection.getUid(), new DatabaseDomainException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
+        Check.notNull(dbConnection.getUid(), new DomainDatabaseException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
             new String[] {connection.getName()}));
 
         handleConnection(dbConnection);
@@ -125,12 +125,12 @@ public class DatabaseServiceImpl implements DatabaseService {
         ExecuteResult executeResult = new ExecuteResult();
 
         Connection connection = connectionRepository.getConnectionByName(connName);
-        Check.notNull(connection, new DatabaseDomainException(DomainDatabaseModule.DB_CONNECTION_ERROR));
+        Check.notNull(connection, new DomainDatabaseException(DomainDatabaseModule.DB_CONNECTION_ERROR));
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
 
         Database database = databaseRepository.getDatabaseByName(connection.getUid(), dbName);
-        Check.notNull(database, new DatabaseDomainException(DomainDatabaseModule.DB_CONNECTION_ERROR));
+        Check.notNull(database, new DomainDatabaseException(DomainDatabaseModule.DB_CONNECTION_ERROR));
 
         // 同步数据库表前，移除数据库表
         tableRepository.batchDeleteTable(database);
@@ -184,7 +184,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     private void handleColumns(@NonNull DbSchemaServer dbSchemaServer, @NonNull List<Table> tables) {
 
         for (Table table : tables) {
-            Check.notNull(new DatabaseDomainException(DomainDatabaseModule.SYSC_TABLE_ERROR,
+            Check.notNull(new DomainDatabaseException(DomainDatabaseModule.SYSC_TABLE_ERROR,
                 new String[] {table.getCnUid(), table.getDbUid(), table.getDbName(), table.getUid(), table.getName()}));
 
             List<DataColumn> dataColumns = dbSchemaServer.getDataColumns(table.getDbName(), table.getName());
@@ -202,12 +202,12 @@ public class DatabaseServiceImpl implements DatabaseService {
      */
     private void handleConnection(@NonNull Connection connection) {
 
-        Check.notNull(connection.getUid(), new DatabaseDomainException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
+        Check.notNull(connection.getUid(), new DomainDatabaseException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
             new String[] {connection.getName()}));
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
         if (!dbSchemaServer.TestConnection()) {
-            throw new DatabaseDomainException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
+            throw new DomainDatabaseException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
                 new String[] {connection.getName()});
         }
 
@@ -225,7 +225,7 @@ public class DatabaseServiceImpl implements DatabaseService {
      */
     private void handleDatabases(@NonNull Connection connection, @NonNull List<DataDatabase> dataDatabases) {
 
-        Check.notNull(connection.getUid(), new DatabaseDomainException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
+        Check.notNull(connection.getUid(), new DomainDatabaseException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
             new String[] {connection.getName()}));
 
         for (DataDatabase dataDatabase : dataDatabases) {
@@ -242,10 +242,10 @@ public class DatabaseServiceImpl implements DatabaseService {
     private List<Table> handleTables(@NonNull Database database, @NonNull List<DataTable> dataTables) {
 
         Check.notNull(database.getUid(),
-            new DatabaseDomainException(DomainDatabaseModule.SYSC_DATABASE_CONNECTION_ERROR,
+            new DomainDatabaseException(DomainDatabaseModule.SYSC_DATABASE_CONNECTION_ERROR,
                 new String[] {database.getName()}));
         Check.notNull(database.getCnUid(),
-            new DatabaseDomainException(DomainDatabaseModule.SYSC_DATABASE_CONNECTION_ERROR,
+            new DomainDatabaseException(DomainDatabaseModule.SYSC_DATABASE_CONNECTION_ERROR,
                 new String[] {database.getName()}));
 
         List<Table> tables = new ArrayList<>();
@@ -259,13 +259,13 @@ public class DatabaseServiceImpl implements DatabaseService {
      * @param connection
      * @return
      */
-    private static DbSchemaServer getDbSchemaServer(@NonNull Connection connection) throws DatabaseDomainException {
+    private static DbSchemaServer getDbSchemaServer(@NonNull Connection connection) throws DomainDatabaseException {
         DataSource dataSource = connection.getDbConnection().build();
         DatabaseType databaseType = DatabaseType.Map.get(connection.getDbType());
         DbSchemaServer dbSchemaServer = DbSchemaFactory.getDbSchemaServer(databaseType, dataSource);
 
         if (dbSchemaServer == null) {
-            throw new DatabaseDomainException(DomainDatabaseModule.DB_SCHEMA_SERVER_ERROR);
+            throw new DomainDatabaseException(DomainDatabaseModule.DB_SCHEMA_SERVER_ERROR);
         }
 
         return dbSchemaServer;

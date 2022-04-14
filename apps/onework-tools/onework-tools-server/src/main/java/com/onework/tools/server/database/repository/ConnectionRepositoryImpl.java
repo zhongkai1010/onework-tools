@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.onework.tools.domain.database.dao.Connection;
 import com.onework.tools.domain.database.repository.ConnectionRepository;
-import com.onework.tools.server.database.DatabaseServerException;
+import com.onework.tools.server.database.ServerDatabaseException;
 import com.onework.tools.server.database.ServerDatabaseModule;
 import com.onework.tools.server.database.entity.DatabaseConnection;
 import com.onework.tools.server.database.mapper.DatabaseConnectionMapper;
@@ -41,27 +41,27 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
     }
 
     @Override
-    public void deleteConnection(String name) throws DatabaseServerException {
+    public void deleteConnection(String name) throws ServerDatabaseException {
         DatabaseConnection databaseConnection = getByName(name);
         if (databaseConnectionMapper.deleteById(databaseConnection) == 0) {
-            throw new DatabaseServerException(ServerDatabaseModule.DELETE_CONNECTION);
+            throw new ServerDatabaseException(ServerDatabaseModule.DELETE_CONNECTION);
         }
     }
 
     @Override
-    public void addConnection(Connection connection) throws DatabaseServerException {
+    public void addConnection(Connection connection) throws ServerDatabaseException {
         DatabaseConnection databaseConnection = new DatabaseConnection();
         BeanUtils.copyProperties(connection, databaseConnection);
 
         if (databaseConnectionMapper.insert(databaseConnection) == 0) {
-            throw new DatabaseServerException(ServerDatabaseModule.ADD_CONNECTION);
+            throw new ServerDatabaseException(ServerDatabaseModule.ADD_CONNECTION);
         }
 
         connection.setUid(databaseConnection.getUid());
     }
 
     @Override
-    public void updateConnection(Connection connection) throws DatabaseServerException {
+    public void updateConnection(Connection connection) throws ServerDatabaseException {
 
         DatabaseConnection databaseConnection = new DatabaseConnection();
         BeanUtils.copyProperties(connection, databaseConnection);
@@ -70,7 +70,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
             databaseConnection.getName()).update(databaseConnection);
 
         if (!result) {
-            throw new DatabaseServerException(ServerDatabaseModule.UPDATE_CONNECTION);
+            throw new ServerDatabaseException(ServerDatabaseModule.UPDATE_CONNECTION);
         }
     }
 

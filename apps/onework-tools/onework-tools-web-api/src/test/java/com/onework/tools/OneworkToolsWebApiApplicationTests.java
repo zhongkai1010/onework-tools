@@ -1,10 +1,9 @@
 package com.onework.tools;
 
-import com.onework.tools.domain.database.DatabaseDomainException;
-import com.onework.tools.domain.translate.BaiduTranslateResult;
-import com.onework.tools.domain.translate.ThreeTranslateService;
+import com.onework.tools.domain.database.DomainDatabaseException;
+import com.onework.tools.domain.translate.Language;
+import com.onework.tools.domain.translate.provide.ThreeTranslateService;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +16,11 @@ class OneworkToolsWebApiApplicationTests {
     private ThreeTranslateService translateService;
 
     @Test
-    void contextLoads() throws DatabaseDomainException {
+    void contextLoads() throws DomainDatabaseException {
 
-        BaiduTranslateResult translateResult = translateService.baiduTranslateText("hello\nthree", "auto", "auto");
-        Assertions.assertTrue(true);
+        //        TranslateResult translateResult = translateService.translateText("hello\nthree", "auto", "auto");
+        //        Assertions.assertTrue(true);
+
+        System.out.println(Language.en.toString());
     }
 }

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-07
+ * @since 2022-04-14
  */
 public interface ToolTranslationMapper extends BaseMapper<ToolTranslation> {
 

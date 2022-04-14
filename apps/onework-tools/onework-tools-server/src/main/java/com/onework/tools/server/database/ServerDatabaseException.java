@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-public class DatabaseServerException extends BaseException {
+public class ServerDatabaseException extends BaseException {
 
     private static final long serialVersionUID = -4920886708468158443L;
 
-    public DatabaseServerException(String code) {
+    public ServerDatabaseException(String code) {
         super(code);
     }
 

@@ -5,7 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.onework.tools.domain.database.dao.Database;
 import com.onework.tools.domain.database.repository.DatabaseRepository;
-import com.onework.tools.server.database.DatabaseServerException;
+import com.onework.tools.server.database.ServerDatabaseException;
 import com.onework.tools.server.database.ServerDatabaseModule;
 import com.onework.tools.server.database.entity.DatabaseDb;
 import com.onework.tools.server.database.mapper.DatabaseDbMapper;
@@ -29,7 +29,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
     }
 
     @Override
-    public void saveDatabase(Database database) throws DatabaseServerException {
+    public void saveDatabase(Database database) throws ServerDatabaseException {
 
         int result;
 
@@ -56,7 +56,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
         result = databaseDbMapper.insert(databaseDb);
         if (result == 0) {
-            throw new DatabaseServerException(ServerDatabaseModule.SAVE_DATABASE_ERROR);
+            throw new ServerDatabaseException(ServerDatabaseModule.SAVE_DATABASE_ERROR);
         }
         database.setUid(databaseDb.getUid());
     }
@@ -74,7 +74,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
         result = databaseDbMapper.updateById(databaseDb);
 
         if (result == 0) {
-            throw new DatabaseServerException(ServerDatabaseModule.SAVE_DATABASE_ERROR);
+            throw new ServerDatabaseException(ServerDatabaseModule.SAVE_DATABASE_ERROR);
         }
         database.setUid(databaseDb.getUid());
     }

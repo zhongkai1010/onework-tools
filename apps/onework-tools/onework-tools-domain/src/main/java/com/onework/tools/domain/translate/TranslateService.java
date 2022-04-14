@@ -1,7 +1,9 @@
 package com.onework.tools.domain.translate;
 
-import com.onework.tools.domain.translate.repository.TranslateRecordRepository;
+import com.onework.tools.core.ExecuteResult;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 /**
  * @author : zhongkai1010@163.com
@@ -11,28 +13,35 @@ import org.springframework.stereotype.Component;
  * @Description: 描述
  * @date Date : 2022年04月07日 17:23
  */
-
 @Component
-public class TranslateService {
+public interface TranslateService {
 
-    private final ThreeTranslateService threeTranslateService;
-    private final TranslateRecordRepository translateRecordRepository;
+    /**
+     * 翻译文本
+     *
+     * @param from
+     * @param to
+     * @param text
+     * @return
+     */
+    ExecuteResult<String> translateText(Language from, Language to, String text);
 
-    public TranslateService(ThreeTranslateService threeTranslateService,
-        TranslateRecordRepository translateRecordRepository) {
-        this.threeTranslateService = threeTranslateService;
-        this.translateRecordRepository = translateRecordRepository;
-    }
+    /**
+     * 翻译文本
+     *
+     * @param text
+     * @return
+     */
+    ExecuteResult<String> translateText(String text);
 
-    public static String translateText(String text) {
-        return translateText(new String[] {text})[0];
-    }
+    /**
+     * 翻译多行文本
+     *
+     * @param from
+     * @param to
+     * @param texts
+     * @return
+     */
+    ExecuteResult<ArrayList<String>> translateText(Language from, Language to, ArrayList<String> texts);
 
-    public static String[] translateText(String[] texts) {
-
-        String[] result =
-
-            translateRecordRepository.queryTranslate()
-
-    }
 }

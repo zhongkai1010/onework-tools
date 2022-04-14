@@ -1,5 +1,7 @@
 package com.onework.tools.domain.translate.repository;
 
+import com.onework.tools.domain.translate.Language;
+import com.onework.tools.domain.translate.dao.TranslationRecord;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,10 +16,19 @@ import org.springframework.stereotype.Component;
 public interface TranslateRecordRepository {
 
     /**
-     * 根据文本查询翻译内容
+     * 检索翻译记录
      *
-     * @param text
+     * @param from
+     * @param to
+     * @param src
      * @return
      */
-    String queryTranslate(String text);
+    String queryRecord(Language from, Language to, String src);
+
+    /**
+     * 添加翻译文本记录
+     *
+     * @param record
+     */
+    void insertRecord(TranslationRecord record);
 }

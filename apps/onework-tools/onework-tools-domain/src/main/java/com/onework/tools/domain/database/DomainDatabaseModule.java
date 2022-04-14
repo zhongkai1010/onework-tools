@@ -47,7 +47,7 @@ public class DomainDatabaseModule implements Module {
 
     @Override
     public String getModuleName() {
-        return "领域模块";
+        return "数据库领域模块";
     }
 
     @Override

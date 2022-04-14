@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-public class DatabaseDomainException extends BaseException {
+public class DomainDatabaseException extends BaseException {
 
-    public DatabaseDomainException(String code) {
+    public DomainDatabaseException(String code) {
         this(code, null);
     }
 
-    public DatabaseDomainException(String code, String[] formatParams) {
+    public DomainDatabaseException(String code, String[] formatParams) {
         super(code, formatParams);
     }
 

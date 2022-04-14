@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-07
+ * @since 2022-04-14
  */
 public interface IToolTranslationService extends IService<ToolTranslation> {
 

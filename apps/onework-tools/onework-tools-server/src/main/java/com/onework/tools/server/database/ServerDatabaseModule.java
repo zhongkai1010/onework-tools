@@ -53,8 +53,6 @@ public class ServerDatabaseModule implements Module {
     @Override
     public Map<String, String> getErrorMessageMaps() {
         return new Hashtable<String, String>() {
-            private static final long serialVersionUID = -7207722230552763780L;
-
             {
                 put(ServerDatabaseModule.DELETE_CONNECTION, "删除数据库连接失败");
                 put(ServerDatabaseModule.ADD_CONNECTION, "添加数据库连接失败");
