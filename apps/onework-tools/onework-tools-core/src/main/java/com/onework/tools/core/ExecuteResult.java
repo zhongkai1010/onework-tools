@@ -1,5 +1,7 @@
 package com.onework.tools.core;
 
+import lombok.Getter;
+
 /**
  * @projectName: onework-tools
  * @package: com.onework.tools.core
@@ -9,6 +11,7 @@ package com.onework.tools.core;
  * @date: 2022/3/31 21:47
  * @version: 1.0
  */
+
 public class ExecuteResult<TData> {
 
     public final static ExecuteResult SUCCESS = new ExecuteResult(true);
@@ -17,6 +20,7 @@ public class ExecuteResult<TData> {
 
     private boolean result;
 
+    @Getter
     private TData data;
 
     public ExecuteResult() {

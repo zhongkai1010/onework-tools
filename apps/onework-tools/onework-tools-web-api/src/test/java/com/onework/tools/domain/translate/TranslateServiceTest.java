@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -22,7 +24,14 @@ class TranslateServiceTest {
 
     @Test
     void translateText() {
-        ExecuteResult<String> executeResult = translateService.translateText("hello");
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("老人");
+        arrayList.add("鼠标");
+        arrayList.add("小孩");
+        arrayList.add("键盘");
+        ExecuteResult<ArrayList<String>> executeResult =
+            translateService.translateText(Language.zh, Language.en, arrayList);
+        executeResult.getData().forEach(s -> System.out.println(s));
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
 }

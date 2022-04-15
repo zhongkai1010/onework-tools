@@ -1,6 +1,7 @@
 package com.onework.tools.domain.translate;
 
 import com.onework.tools.core.module.Module;
+import org.springframework.stereotype.Component;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @Description: 描述
  * @date Date : 2022年04月14日 15:41
  */
+@Component
 public class DomainTranslationModule implements Module {
 
     /**
@@ -20,7 +22,11 @@ public class DomainTranslationModule implements Module {
      */
     public final static String MODULE_CODE = "2002";
 
-    private final String THREE_API_ERROR = "0001";
+    public static final String THREE_API_NOT_DATA = "0001";
+
+    public static final String LANGUAGE_TYPE_ERROR = "0002";
+
+    public static final String THREE_API_RESULT_ERROR = "0003";
 
     @Override
     public String getModuleName() {
@@ -35,7 +41,9 @@ public class DomainTranslationModule implements Module {
     @Override
     public Map<String, String> getErrorMessageMaps() {
         return new Hashtable<String, String>() {{
-            put(THREE_API_ERROR, "调用第三方翻译Api异常");
+            put(THREE_API_NOT_DATA, "调用第三方翻译Api，无响应结果");
+            put(LANGUAGE_TYPE_ERROR, "翻译语种错误");
+            put(THREE_API_RESULT_ERROR, "调用第三方翻译Api，响应结果异常，异常编码:%s");
         }};
     }
 }

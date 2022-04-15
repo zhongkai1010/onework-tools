@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : zhongkai1010@163.com
@@ -66,29 +68,46 @@ public class TranslateServiceImpl implements TranslateService {
     public ExecuteResult<ArrayList<String>> translateText(Language from, Language to, ArrayList<String> srcs) {
 
         ExecuteResult<ArrayList<String>> executeResult = new ExecuteResult<>();
-        ArrayList<String> data = new ArrayList<>();
 
-        for (int i = 0; i < srcs.size(); i++) {
-            String src = srcs.get(i);
-            String dst = translateRecordRepository.queryRecord(from, to, src);
+        //存储需要翻译文本,将数据库与调用区分开
+        ArrayList<String> translateTexts = new ArrayList<>();
+        Map<String, String> textMap = new HashMap<>(srcs.size());
+        srcs.forEach(s -> {
+            String dst = translateRecordRepository.queryRecord(from, to, s);
             if (dst == null) {
-                // TODO 后续考虑批量查询
-                dst = getTranslateDsts(from, to, src);
-
-                TranslationRecord translationRecord = new TranslationRecord();
-                translationRecord.setFrom(from);
-                translationRecord.setTo(to);
-                translationRecord.setSrc(src);
-                translationRecord.setDst(dst);
-                translationRecord.setSource(threeTranslateService.getApiName());
-                translateRecordRepository.insertRecord(translationRecord);
-
-                data.add(i, dst);
+                translateTexts.add(s);
             }
-            data.add(i, dst);
+            textMap.put(s, dst);
+        });
+
+        // 存储翻译文本结果
+        ArrayList<String> dsts = getTranslateDsts(from, to, translateTexts);
+        for (int i = 0; i < dsts.size(); i++) {
+            String key = translateTexts.get(i);
+            String dst = dsts.get(i);
+            textMap.replace(key, dst);
+            insertRecord(from, to, key, dst);
         }
 
-        return executeResult.ok(data);
+        // 按照参数顺序组装结果
+        ArrayList<String> dataResult = new ArrayList<>();
+        for (int i = 0; i < srcs.size(); i++) {
+            String key = srcs.get(i);
+            String value = textMap.get(key);
+            dataResult.add(i, value);
+        }
+
+        return executeResult.ok(dataResult);
+    }
+
+    private void insertRecord(Language from, Language to, String text, String dst) {
+        TranslationRecord translationRecord = new TranslationRecord();
+        translationRecord.setFrom(from);
+        translationRecord.setTo(to);
+        translationRecord.setSrc(text);
+        translationRecord.setDst(dst);
+        translationRecord.setSource(threeTranslateService.getApiName());
+        translateRecordRepository.insertRecord(translationRecord);
     }
 
     private String getTranslateDsts(Language from, Language to, String src) {
@@ -100,14 +119,16 @@ public class TranslateServiceImpl implements TranslateService {
 
     private ArrayList<String> getTranslateDsts(Language from, Language to, ArrayList<String> srcs) {
 
+        if (srcs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         TranslateResult translateResult = threeTranslateService.translateText(from, to, srcs);
 
-        Check.notNull(translateResult, new DomainTranslateException(DomainTranslationModule.MODULE_CODE));
+        Check.notNull(translateResult, new DomainTranslateException(DomainTranslationModule.THREE_API_NOT_DATA));
 
         List<TranslateResult.Result> result = translateResult.getTransResult();
-        Check.notNull(result, new DomainTranslateException(DomainTranslationModule.MODULE_CODE));
-
-        Check.notData(result, new DomainTranslateException(DomainTranslationModule.MODULE_CODE));
+        Check.notData(result, new DomainTranslateException(DomainTranslationModule.THREE_API_NOT_DATA));
 
         ArrayList<String> dsts = new ArrayList<>();
         result.forEach(r -> dsts.add(r.getDst()));

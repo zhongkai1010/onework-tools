@@ -1,8 +1,6 @@
 package com.onework.tools.domain.database;
 
 import com.onework.tools.core.error.BaseException;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 /**
  * @author : zhongkai1010@163.com
@@ -12,8 +10,7 @@ import org.springframework.stereotype.Component;
  * @Description: 描述
  * @date Date : 2022年03月29日 15:11
  */
-@Component
-@Scope("prototype")
+
 public class DomainDatabaseException extends BaseException {
 
     public DomainDatabaseException(String code) {

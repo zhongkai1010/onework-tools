@@ -22,6 +22,6 @@ public class DomainTranslateException extends BaseException {
 
     @Override
     protected String getModuleCode() {
-        return null;
+        return DomainTranslationModule.MODULE_CODE;
     }
 }

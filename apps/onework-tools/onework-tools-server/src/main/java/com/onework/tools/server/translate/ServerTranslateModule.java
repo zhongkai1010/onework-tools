@@ -1,6 +1,7 @@
 package com.onework.tools.server.translate;
 
 import com.onework.tools.core.module.Module;
+import org.springframework.stereotype.Component;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @Description: 描述
  * @date Date : 2022年04月14日 17:33
  */
+@Component
 public class ServerTranslateModule implements Module {
 
     /**

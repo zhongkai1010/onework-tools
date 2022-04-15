@@ -53,7 +53,8 @@
         <hutool.version>5.6.1</hutool.version>
         <velocity.version>2.3</velocity.version>
         <annotations.version>23.0.0</annotations.version>
-        <fastjson.version>1.2.80</fastjson.version>
+        <fastjson.version>1.2.76</fastjson.version>
+        <retrofit.version>2.9.0</retrofit.version>
         <!-- 三方云服务相关 -->
 
     </properties>
@@ -178,6 +179,11 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.retrofit2</groupId>
+                <artifactId>retrofit</artifactId>
+                <version>${retrofit.version}</version>
             </dependency>
             <!-- 三方云服务相关 -->
         </dependencies>

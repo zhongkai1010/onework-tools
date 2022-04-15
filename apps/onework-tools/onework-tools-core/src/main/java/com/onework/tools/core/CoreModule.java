@@ -20,7 +20,7 @@ public class CoreModule implements Module {
     /**
      * 模块编号
      */
-    public final static String MODULE_CODE = "1000";
+    public final static String MODULE_CODE = "1001";
 
     /**
      * 模块名称
@@ -44,7 +44,7 @@ public class CoreModule implements Module {
     }
 
     @Override
-    public Map<String,String> getErrorMessageMaps() {
+    public Map<String, String> getErrorMessageMaps() {
         return new Hashtable<String, String>() {{
             put(PARAM_IS_NULL, "%s,参数不能为空");
         }};

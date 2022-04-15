@@ -40,6 +40,7 @@ public class Check {
     }
 
     public static <T, E extends Throwable> void notData(@NonNull List<T> list, E exception) throws E {
+
         if (list.size() == 0) {
             throw exception;
         }
