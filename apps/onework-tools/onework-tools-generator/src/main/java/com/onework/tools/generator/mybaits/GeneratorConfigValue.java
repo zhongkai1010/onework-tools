@@ -1,4 +1,4 @@
-package com.onework.tools.generator.config;
+package com.onework.tools.generator.mybaits;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

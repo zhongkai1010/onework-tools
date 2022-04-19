@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.generator.config.builder.Controller;
 import com.baomidou.mybatisplus.generator.config.builder.Entity;
 import com.baomidou.mybatisplus.generator.config.builder.Mapper;
 import com.baomidou.mybatisplus.generator.config.builder.Service;
-import com.onework.tools.generator.config.*;
+import com.onework.tools.generator.mybaits.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

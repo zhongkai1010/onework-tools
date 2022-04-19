@@ -1,4 +1,4 @@
-package com.onework.tools.generator.config;
+package com.onework.tools.generator.mybaits;
 
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import lombok.Data;
