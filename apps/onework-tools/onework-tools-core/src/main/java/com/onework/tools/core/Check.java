@@ -33,6 +33,12 @@ public class Check {
         }
     }
 
+    public static <E extends Throwable> void isTrue(boolean value, @NonNull E exception) throws E {
+        if (value) {
+            throw exception;
+        }
+    }
+
     public static <E extends Throwable> void notData(@NonNull ArrayList arrayList, E exception) throws E {
         if (arrayList.size() == 0) {
             throw exception;
@@ -47,13 +53,19 @@ public class Check {
     }
 
     public static <T, E extends Throwable> void notData(@NonNull T[] list, E exception) throws E {
-        if (Arrays.stream(list).count() == 0) {
+        if (!Arrays.stream(list).findAny().isPresent()) {
             throw exception;
         }
     }
 
     public static <E extends Throwable> void notExecute(long count, E exception) throws E {
         if (count == 0) {
+            throw exception;
+        }
+    }
+
+    public static <E extends Throwable> void compareResult(ExecuteResult executeResult, E exception) throws E {
+        if (executeResult.compare(ExecuteResult.FAIL)) {
             throw exception;
         }
     }

@@ -32,6 +32,6 @@ class TranslateServiceTest {
         ExecuteResult<ArrayList<String>> executeResult =
             translateService.translateText(Language.zh, Language.en, arrayList);
         executeResult.getData().forEach(s -> System.out.println(s));
-        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
+        Assertions.assertTrue(executeResult.compare(ExecuteResult.SUCCESS));
     }
 }

@@ -52,7 +52,6 @@ public class App {
         //如果从文件系统中读取模板，那么属性值为org.apache.velocity.runtime.resource.loader.FileResourceLoader
         ve.setProperty("class.resource.loader.class",
             "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        ve.init();
         // 配置引擎上下文对象
         VelocityContext ctx = new VelocityContext();
 
@@ -63,9 +62,11 @@ public class App {
 
         ControllerActionModel insertAction = new ControllerActionModel();
         insertAction.setMethodName("insert");
+        actions.add(insertAction);
 
         ControllerActionModel updateAction = new ControllerActionModel();
         updateAction.setMethodName("update");
+        actions.add(updateAction);
 
         controllerModel.setActions(actions);
 

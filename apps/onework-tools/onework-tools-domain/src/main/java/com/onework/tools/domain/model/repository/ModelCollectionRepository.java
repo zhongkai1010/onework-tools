@@ -1,6 +1,6 @@
 package com.onework.tools.domain.model.repository;
 
-import com.onework.tools.domain.model.dao.ModelItem;
+import com.onework.tools.domain.model.dao.ModelCollection;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
  * @Project: onework-tools
  * @Package com.onework.tools.domain.model.repository
  * @Description: 描述
- * @date Date : 2022年04月18日 16:22
+ * @date Date : 2022年04月20日 11:12
  */
 @Component
-public interface ModelItemRepository {
+public interface ModelCollectionRepository {
 
     /**
      * 根据Code获取数据模型
@@ -20,24 +20,26 @@ public interface ModelItemRepository {
      * @param code
      * @return
      */
-    ModelItem query(String code);
+    ModelCollection query(String code);
 
     /**
-     * 添加数据模型项
+     * 添加数据项集合
      *
-     * @param modelItem
+     * @param modelCollection
+     * @return
      */
-    void insert(ModelItem modelItem);
+    ModelCollection insert(ModelCollection modelCollection);
 
     /**
-     * 修改数据模型项
+     * 修改数据项集合
      *
-     * @param modelItem
+     * @param modelCollection
+     * @return
      */
-    void update(ModelItem modelItem);
+    ModelCollection update(ModelCollection modelCollection);
 
     /**
-     * 删除数据模型项
+     * 删除数据项集合
      *
      * @param code
      */

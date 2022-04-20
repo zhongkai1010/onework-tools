@@ -1,5 +1,6 @@
 package com.onework.tools.domain.model;
 
+import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.domain.model.dao.ModelCollection;
 import com.onework.tools.domain.model.dao.ModelItem;
 import org.springframework.stereotype.Component;
@@ -23,59 +24,52 @@ public interface ModelService {
      * @param code
      * @return
      */
-    boolean existMoldeItem(String code);
+    ExecuteResult<ModelItem> getModelItem(String code);
 
     /**
      * 添加数据模型项
      *
-     * @param modelItem
+     * @param code
+     * @param name
+     * @param type
      * @return
      */
-    ModelItem addMoldeItem(ModelItem modelItem);
-
-    /**
-     * 修改数据模型项
-     *
-     * @param modelItem
-     * @return
-     */
-    ModelItem updateMoldeItem(ModelItem modelItem);
+    ExecuteResult<ModelItem> saveModelItem(String code, String name, ModelItemType type);
 
     /**
      * 删除数据模型项
      *
      * @param code
+     * @return
      */
-    void deleteMoldeItem(String code);
+    ExecuteResult deleteModel(String code);
 
     /**
-     * 增加计数
+     * 添加关联或取消关联计数
      *
      * @param code
+     * @param linked
+     * @return
      */
-    void incrementCount(String code);
-
-    /**
-     * 减除计数
-     *
-     * @param code
-     */
-    void subtractCount(String code);
+    ExecuteResult linkModelItem(String code, boolean linked);
 
     /**
      * 添加数据模型项集合
      *
      * @param code
      * @param name
-     * @param codes
+     * @param itemCode
+     * @param description
      * @return
      */
-    ModelCollection addModelCollection(String code, String name, ArrayList<String> codes);
+    ExecuteResult<ModelCollection> saveModelCollection(String code, String name, ArrayList<String> itemCode,
+        String description);
 
     /**
      * 删除数据模型项集合
      *
      * @param code
+     * @return
      */
-    void deleteModelCollection(String code);
+    ExecuteResult deleteModelCollection(String code);
 }

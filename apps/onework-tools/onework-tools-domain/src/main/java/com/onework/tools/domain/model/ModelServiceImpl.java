@@ -1,8 +1,10 @@
 package com.onework.tools.domain.model;
 
-import cn.hutool.core.bean.BeanUtil;
+import com.onework.tools.core.Check;
+import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.domain.model.dao.ModelCollection;
 import com.onework.tools.domain.model.dao.ModelItem;
+import com.onework.tools.domain.model.repository.ModelCollectionRepository;
 import com.onework.tools.domain.model.repository.ModelItemRepository;
 import org.springframework.stereotype.Component;
 
@@ -20,65 +22,120 @@ import java.util.ArrayList;
 public class ModelServiceImpl implements ModelService {
 
     private final ModelItemRepository modelItemRepository;
+    private final ModelCollectionRepository modelCollectionRepository;
 
-    public ModelServiceImpl(ModelItemRepository modelItemRepository) {
+    public ModelServiceImpl(ModelItemRepository modelItemRepository,
+        ModelCollectionRepository modelCollectionRepository) {
         this.modelItemRepository = modelItemRepository;
+        this.modelCollectionRepository = modelCollectionRepository;
     }
 
     @Override
-    public boolean existMoldeItem(String code) {
+    public ExecuteResult<ModelItem> getModelItem(String code) {
 
-        ModelItem modelItem = modelItemRepository.getModelItemByCode(code);
-        return modelItem != null;
+        ModelItem modelItem = modelItemRepository.query(code);
+        return ExecuteResult.success(modelItem);
     }
 
     @Override
-    public ModelItem addMoldeItem(ModelItem modelItem) {
-        ModelItem oldModelItem = modelItemRepository.getModelItemByCode(modelItem.getCode());
-        if (oldModelItem != null) {
-            throw new DomainModelException("");
+    public ExecuteResult<ModelItem> saveModelItem(String code, String name, ModelItemType type) {
+
+        ModelItem modelItem = modelItemRepository.query(code);
+
+        if (modelItem != null) {
+            modelItem.setName(name);
+            modelItem.setType(type);
+            modelItemRepository.update(modelItem);
+        } else {
+            modelItem = new ModelItem();
+            modelItem.setCode(code);
+            modelItem.setName(name);
+            modelItem.setCumulate(0);
+            modelItem.setType(type);
+            modelItemRepository.insert(modelItem);
         }
-        modelItemRepository.insert(modelItem);
-        return modelItem;
+
+        return ExecuteResult.success(modelItem);
     }
 
     @Override
-    public ModelItem updateMoldeItem(ModelItem modelItem) {
-        ModelItem oldModelItem = modelItemRepository.getModelItemByCode(modelItem.getCode());
-        if (oldModelItem != null) {
-            throw new DomainModelException("");
+    public ExecuteResult<Boolean> deleteModel(String code) {
+
+        ModelItem modelItem = modelItemRepository.query(code);
+
+        Check.notNull(modelItem, new DomainModelException(DomainModelModule.DELETE_MODEL_NOT_FIND, code));
+
+        Check.isTrue(modelItem.getCumulate() > 0,
+            new DomainModelException(DomainModelModule.DELETE_MODEL_ITEM_USE, code));
+
+        modelItemRepository.delete(code);
+
+        return ExecuteResult.success();
+    }
+
+    @Override
+    public ExecuteResult<ModelItem> linkModelItem(String code, boolean linked) {
+
+        ModelItem modelItem = modelItemRepository.query(code);
+
+        Check.notNull(modelItem, new DomainModelException(DomainModelModule.LINKED_MODEL_NOT_FIND, code));
+
+        int cumulate = modelItem.getCumulate();
+        if (linked) {
+            cumulate += 1;
+        } else {
+            cumulate -= 1;
         }
-        BeanUtil.copyProperties(modelItem, oldModelItem);
-        modelItemRepository.update(oldModelItem);
-        return modelItem;
+        modelItem.setCumulate(cumulate);
+
+        modelItemRepository.update(modelItem);
+
+        return ExecuteResult.success(modelItem);
     }
 
     @Override
-    public void deleteMoldeItem(String code) {
-        ModelItem oldModelItem = modelItemRepository.getModelItemByCode(code);
-        if (oldModelItem == null) {
-            throw new DomainModelException("");
+    public ExecuteResult<ModelCollection> saveModelCollection(String code, String name, ArrayList<String> itemCodes,
+        String description) {
+
+        ModelCollection modelCollection = modelCollectionRepository.query(code);
+
+        ArrayList<ModelItem> modelItems = new ArrayList<>();
+        for (String itemCode : itemCodes) {
+            ModelItem modelItem = modelItemRepository.query(itemCode);
+            Check.notNull(modelItem,
+                new DomainModelException(DomainModelModule.ADD_MODEL_COLLECTION_ITEM_NOT_FIND, itemCode));
+            modelItems.add(modelItem);
         }
-        modelItemRepository.deleteModelItem(code);
+
+        boolean added = false;
+        if (modelCollection == null) {
+            modelCollection = new ModelCollection();
+            added = true;
+        }
+
+        modelCollection.setCode(code);
+        modelCollection.setName(name);
+        modelCollection.setDescription(description);
+        modelCollection.setItems(modelItems);
+
+        if (added) {
+            modelCollectionRepository.insert(modelCollection);
+        } else {
+            modelCollectionRepository.update(modelCollection);
+        }
+
+        return ExecuteResult.success(modelCollection);
     }
 
     @Override
-    public void incrementCount(String code) {
+    public ExecuteResult deleteModelCollection(String code) {
 
-    }
+        ModelCollection modelCollection = modelCollectionRepository.query(code);
 
-    @Override
-    public void subtractCount(String code) {
+        Check.notNull(modelCollection, new DomainModelException(DomainModelModule.DELETE_MODEL_COLLECTION_EXIST, code));
 
-    }
+        modelCollectionRepository.delete(code);
 
-    @Override
-    public ModelCollection addModelCollection(String code, String name, ArrayList<String> codes) {
-        return null;
-    }
-
-    @Override
-    public void deleteModelCollection(String code) {
-
+        return ExecuteResult.success();
     }
 }

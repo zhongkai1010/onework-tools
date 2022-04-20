@@ -33,10 +33,10 @@ class DatabaseServiceByMssqlTest {
 
     @Test
     void saveConnection() {
-        
+
         Connection connection = getConnection();
         ExecuteResult executeResult = databaseService.saveConnection(connection, false);
-        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
+        Assertions.assertEquals(ExecuteResult.SUCCESS, executeResult);
     }
 
     @Test
@@ -44,7 +44,7 @@ class DatabaseServiceByMssqlTest {
 
         Connection connection = getConnection();
         ExecuteResult executeResult = databaseService.testConnection(connection);
-        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
+        Assertions.assertEquals(ExecuteResult.SUCCESS, executeResult);
     }
 
     @Test
@@ -52,7 +52,7 @@ class DatabaseServiceByMssqlTest {
 
         Connection connection = getConnection();
         ExecuteResult executeResult = databaseService.syscConnection(connection);
-        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
+        Assertions.assertEquals(ExecuteResult.SUCCESS, executeResult);
     }
 
     @Test

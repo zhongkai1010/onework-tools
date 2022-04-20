@@ -1,10 +1,12 @@
 package com.onework.tools.domain.model;
 
+import com.onework.tools.core.ExecuteResult;
+import com.onework.tools.domain.model.dao.ModelData;
 import com.onework.tools.domain.model.dao.ModelDataBehavior;
-import com.onework.tools.domain.model.dao.ModelItem;
+import com.onework.tools.domain.model.dao.ModelDataItem;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : zhongkai1010@163.com
@@ -20,26 +22,38 @@ public interface ModelDataService {
     /**
      * 添加数据模型
      *
-     * @param code
-     * @param name
+     * @param modelData
      * @param items
      * @param behaviors
+     * @param description
+     * @return
      */
-    void addModelData(String code, String name, ArrayList<ModelItem> items, ArrayList<ModelDataBehavior> behaviors);
+    ExecuteResult saveModelData(ModelData modelData, List<ModelDataItem> items, List<ModelDataBehavior> behaviors,
+        String description);
+
+    /**
+     * 添加数据模型项
+     *
+     * @param code
+     * @param items
+     * @return
+     */
+    ExecuteResult saveModelDataItems(String code, List<ModelDataItem> items);
+
+    /**
+     * 添加数据模型行为
+     *
+     * @param code
+     * @param behaviors
+     * @return
+     */
+    ExecuteResult saveModelDataBehaviors(String code, List<ModelDataBehavior> behaviors);
 
     /**
      * 移除数据模型数据项
      *
-     * @param modelDataCode
-     * @param itemCode
+     * @param code
+     * @return
      */
-    void removeModelDataItem(String modelDataCode, String itemCode);
-
-    /**
-     * 新增数据模型数据项
-     *
-     * @param modelDataCode
-     * @param itemCode
-     */
-    void addModelDataItem(String modelDataCode, String itemCode);
+    ExecuteResult deleteModelData(String code);
 }

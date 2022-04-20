@@ -63,8 +63,6 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     public ExecuteResult saveConnection(@NonNull Connection connection, Boolean sync) {
 
-        ExecuteResult executeResult = new ExecuteResult();
-
         Check.notNull(connection.getName(), new DomainDatabaseException(DomainDatabaseModule.CONNECTION_NAME_IS_NULL));
 
         Connection oldConnection = connectionRepository.getConnectionByName(connection.getName());
@@ -80,35 +78,31 @@ public class DatabaseServiceImpl implements DatabaseService {
             handleConnection(connection);
         }
 
-        return executeResult.ok();
+        return ExecuteResult.success();
     }
 
     @Override
     public ExecuteResult testConnection(@NonNull Connection connection) {
 
-        ExecuteResult executeResult = new ExecuteResult();
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
         if (dbSchemaServer.TestConnection()) {
-            return executeResult.ok();
+            return ExecuteResult.success();
         }
-        return executeResult;
+        return ExecuteResult.failure();
     }
 
     @Override
     public ExecuteResult deleteConnection(@NonNull Connection connection) {
 
-        ExecuteResult executeResult = new ExecuteResult();
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
         String connectionName = dbConnection.getName();
         connectionRepository.deleteConnection(connectionName);
-        return executeResult.ok();
+        return ExecuteResult.success();
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ExecuteResult syscConnection(@NotNull Connection connection) {
-
-        ExecuteResult executeResult = new ExecuteResult();
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
         Check.notNull(dbConnection.getUid(), new DomainDatabaseException(DomainDatabaseModule.SYSC_CONNECTION_ERROR,
@@ -116,13 +110,11 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         handleConnection(dbConnection);
 
-        return executeResult.ok();
+        return ExecuteResult.success();
     }
 
     @Override
     public ExecuteResult syscDatabase(@NotNull String connName, @NonNull String dbName) {
-
-        ExecuteResult executeResult = new ExecuteResult();
 
         Connection connection = connectionRepository.getConnectionByName(connName);
         Check.notNull(connection, new DomainDatabaseException(DomainDatabaseModule.DB_CONNECTION_ERROR));
@@ -173,7 +165,7 @@ public class DatabaseServiceImpl implements DatabaseService {
                 databaseRepository.updateDatabase(database);
                 threadPoolExecutor.shutdown();
 
-                return executeResult.ok();
+                return ExecuteResult.success();
             }
         }
     }

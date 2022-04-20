@@ -3,21 +3,16 @@ package com.onework.tools.core;
 import lombok.Getter;
 
 /**
- * @projectName: onework-tools
- * @package: com.onework.tools.core
- * @className: ExecuteResult
- * @author: 钟凯
- * @description: 描述
- * @date: 2022/3/31 21:47
- * @version: 1.0
+ * @param <TData>
+ * @author zhongkai
  */
-
 public class ExecuteResult<TData> {
 
-    public final static ExecuteResult SUCCESS = new ExecuteResult(true);
+    public final static Boolean SUCCESS = true;
 
-    public final static ExecuteResult FAIL = new ExecuteResult(false);
+    public final static Boolean FAIL = false;
 
+    @Getter
     private boolean result;
 
     @Getter
@@ -33,7 +28,7 @@ public class ExecuteResult<TData> {
         this.result = result;
     }
 
-    public ExecuteResult ok() {
+    public ExecuteResult<TData> ok() {
         result = true;
         return this;
     }
@@ -44,17 +39,37 @@ public class ExecuteResult<TData> {
         return this;
     }
 
-    public ExecuteResult fail() {
+    public ExecuteResult<TData> fail() {
         result = false;
         return this;
     }
 
-    public <T extends Throwable> ExecuteResult fail(T t) {
+    public <T extends Throwable> ExecuteResult<TData> fail(T t) {
         result = false;
         return this;
     }
 
-    public boolean equals(ExecuteResult o) {
-        return o.result == result;
+    public static <T> ExecuteResult<T> success() {
+        ExecuteResult<T> executeResult = new ExecuteResult<>();
+        return executeResult.ok();
+    }
+
+    public static <T> ExecuteResult<T> success(T data) {
+        ExecuteResult<T> executeResult = new ExecuteResult<>();
+        return executeResult.ok(data);
+    }
+
+    public static <T> ExecuteResult<T> failure() {
+        ExecuteResult<T> executeResult = new ExecuteResult<>();
+        return executeResult.fail();
+    }
+
+    public static <E, T extends Throwable> ExecuteResult<E> failure(T t) {
+        ExecuteResult<E> executeResult = new ExecuteResult<>();
+        return executeResult.fail(t);
+    }
+
+    public Boolean compare(Boolean result) {
+        return this.result == result;
     }
 }

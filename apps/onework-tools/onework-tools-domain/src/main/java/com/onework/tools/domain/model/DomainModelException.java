@@ -16,6 +16,10 @@ public class DomainModelException extends BaseException {
         super(code);
     }
 
+    public DomainModelException(String code, String formatParam) {
+        super(code, new String[] {formatParam});
+    }
+
     public DomainModelException(String code, String[] formatParams) {
         super(code, formatParams);
     }

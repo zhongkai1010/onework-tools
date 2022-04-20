@@ -18,7 +18,11 @@ public abstract class BaseException extends RuntimeException {
     private final Object[] formatParams;
 
     public BaseException(String code) {
-        this(code, null);
+        this(code, new String[] {});
+    }
+
+    public BaseException(String code, String formatParam) {
+        this(code, new String[] {formatParam});
     }
 
     public BaseException(String code, String[] formatParams) {
@@ -45,7 +49,7 @@ public abstract class BaseException extends RuntimeException {
             message = ModuleManager.ErrorMessages.get(key);
         }
 
-        if (formatParams != null) {
+        if (formatParams.length > 0) {
             message = String.format(message, formatParams);
         }
 
