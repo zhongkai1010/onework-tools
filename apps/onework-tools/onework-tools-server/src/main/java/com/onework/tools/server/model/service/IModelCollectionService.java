@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-18
+ * @since 2022-04-21
  */
 public interface IModelCollectionService extends IService<ModelCollection> {
 

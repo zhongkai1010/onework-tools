@@ -42,7 +42,7 @@ import java.util.Properties;
 public class App {
 
     public static void main(String[] args) {
-        velocityTemplate();
+        generatorCode();
     }
 
     private static void velocityTemplate() {

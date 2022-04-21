@@ -43,6 +43,14 @@ public class ModelDataServiceImpl implements ModelDataService {
         this.modelDataBehaviorRepository = modelDataBehaviorRepository;
     }
 
+    @Override
+    public ExecuteResult saveModelData(ModelData modelData) {
+
+        ModelData model = handleModelData(modelData);
+
+        return ExecuteResult.success();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ExecuteResult saveModelData(ModelData modelData, List<ModelDataItem> items,
@@ -172,11 +180,19 @@ public class ModelDataServiceImpl implements ModelDataService {
             modelDataBehavior.setDataCode(modelData.getCode());
             modelDataBehavior.setDataName(modelData.getName());
 
-            modelDataBehavior.getInputRefs().forEach((s, s2) -> {
-                ModelData refsModelData = modelDataRepository.query(s2);
-                Check.notNull(refsModelData,
-                    new DomainModelException(DomainModelModule.SAVE_MODEL_DATA_BEHAVIOR_ERROR, s2));
-            });
+            if (modelDataBehavior.getInputs() != null) {
+                modelDataBehavior.getInputs().forEach((s) -> {
+                    ModelData refsModelData = modelDataRepository.query(s.getCode());
+                    Check.notNull(refsModelData,
+                        new DomainModelException(DomainModelModule.SAVE_MODEL_DATA_BEHAVIOR_ERROR, s.getCode()));
+                });
+            }
+
+            if (modelDataBehavior.getOutput() != null) {
+                ModelData refsModelData = modelDataRepository.query(modelDataBehavior.getOutput().getCode());
+                Check.notNull(refsModelData, new DomainModelException(DomainModelModule.SAVE_MODEL_DATA_BEHAVIOR_ERROR,
+                    modelDataBehavior.getOutput().getCode()));
+            }
 
             modelDataBehaviorRepository.insert(modelDataBehavior);
         });

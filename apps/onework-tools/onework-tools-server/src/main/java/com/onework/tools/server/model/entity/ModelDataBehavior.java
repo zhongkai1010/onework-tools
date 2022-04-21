@@ -1,24 +1,20 @@
 package com.onework.tools.server.model.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-18
+ * @since 2022-04-21
  */
 @Getter
 @Setter
@@ -35,22 +31,22 @@ public class ModelDataBehavior implements Serializable {
     private String uid;
 
     /**
-     * 名称
-     */
-    @TableField("`name`")
-    private String name;
-
-    /**
      * 编码
      */
     @TableField("`code`")
     private String code;
 
     /**
-     * 数据模型uid
+     * 数据模型code
      */
-    @TableField("data_uid")
-    private String dataUid;
+    @TableField("data_code")
+    private String dataCode;
+
+    /**
+     * 数据模型name
+     */
+    @TableField("data_name")
+    private String dataName;
 
     /**
      * 输入参数，多条记录，[{type:AppCode.model.itemType,valueValue:"",value:""}]
@@ -61,8 +57,8 @@ public class ModelDataBehavior implements Serializable {
     /**
      * 输出参数,单条记录， {type:AppCode.model.itemType,valueValue:"",value:""}]
      */
-    @TableField("outputs")
-    private String outputs;
+    @TableField("output")
+    private String output;
 
     /**
      * 操作类型
@@ -85,6 +81,5 @@ public class ModelDataBehavior implements Serializable {
     @TableField(value = "deleted_at", fill = FieldFill.DEFAULT)
     @TableLogic
     private LocalDateTime deletedAt;
-
 
 }

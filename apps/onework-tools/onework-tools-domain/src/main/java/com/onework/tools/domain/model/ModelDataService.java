@@ -23,6 +23,14 @@ public interface ModelDataService {
      * 添加数据模型
      *
      * @param modelData
+     * @return
+     */
+    ExecuteResult saveModelData(ModelData modelData);
+
+    /**
+     * 添加数据模型
+     *
+     * @param modelData
      * @param items
      * @param behaviors
      * @param description

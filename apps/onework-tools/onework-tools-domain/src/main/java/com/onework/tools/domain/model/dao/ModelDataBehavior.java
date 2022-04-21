@@ -4,7 +4,7 @@ import com.onework.tools.domain.model.BehaviorOperationType;
 import com.onework.tools.domain.model.ModelItemType;
 import lombok.Data;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author : zhongkai1010@163.com
@@ -18,13 +18,30 @@ import java.util.Map;
 public class ModelDataBehavior {
 
     private String code;
-    private ModelItemType retrunType;
-    private ModelItemType retrunCode;
-    private ModelItemType retrunName;
+    private ModelDataBehaviorOutput output;
     private String dataCode;
     private String dataName;
-    private Map<String, ModelItemType> inputs;
-    private Map<String, String> inputRefs;
+    private List<ModelDataBehaviorInput> inputs;
     private String description;
     private BehaviorOperationType operationType;
+
+    @Data
+    public class ModelDataBehaviorInput {
+        private String code;
+        private String name;
+        private ModelItemType type;
+        private String refCode;
+        private String arrayCode;
+    }
+
+    @Data
+    public class ModelDataBehaviorOutput {
+        private String code;
+        private String name;
+        private ModelItemType type;
+        private String refCode;
+        private String arrayCode;
+    }
 }
+
+

@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-18
+ * @since 2022-04-21
  */
 @Getter
 @Setter
@@ -47,46 +47,34 @@ public class ModelDataItem implements Serializable {
     private String code;
 
     /**
-     * 数据模型uid
-     */
-    @TableField("data_uid")
-    private String dataUid;
-
-    /**
-     * 数据项uid
-     */
-    @TableField("item_uid")
-    private String itemUid;
-
-    /**
      * 数据项类型
      */
-    @TableField("item_type")
-    private String itemType;
+    @TableField("`type`")
+    private String type;
 
     /**
-     * 数组类型子类型
+     * 数据项code
      */
-    @TableField("array_type")
-    private String arrayType;
+    @TableField("data_code")
+    private String dataCode;
 
     /**
-     * 数组类型子类型
+     * 数据项name
      */
-    @TableField("array_depth")
-    private Integer arrayDepth;
+    @TableField("data_name")
+    private String dataName;
 
     /**
      * 对象类型引用值
      */
-    @TableField("object_ref")
-    private String objectRef;
+    @TableField("ref_code")
+    private String refCode;
 
     /**
-     * 数据项类型值
+     * 数组类型子类型
      */
-    @TableField("type_value")
-    private String typeValue;
+    @TableField("array_code")
+    private String arrayCode;
 
     /**
      * 默认值
@@ -95,28 +83,10 @@ public class ModelDataItem implements Serializable {
     private String defaultValue;
 
     /**
-     * 是否为空
+     * 扩展属性
      */
-    @TableField("is_null")
-    private Boolean isNull;
-
-    /**
-     * 长度
-     */
-    @TableField("length")
-    private Integer length;
-
-    /**
-     * 精确度
-     */
-    @TableField("`precision`")
-    private Integer precision;
-
-    /**
-     * 是否唯一
-     */
-    @TableField("is_unique")
-    private Boolean isUnique;
+    @TableField("extData")
+    private String extData;
 
     @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
