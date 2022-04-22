@@ -39,7 +39,7 @@ public class GlobalConfigValue {
     /**
      * 指定输出目录 默认值:System.getProperty("user.dir")
      */
-    private String outputDir = System.getProperty("user.dir").concat("/onework-tools-server/src/main/java");
+    private String outputDir = System.getProperty("user.dir").concat("/onework-tools-generator/src/main/java");
 
     /**
      * 作者名 zhongkai 默认值:作者

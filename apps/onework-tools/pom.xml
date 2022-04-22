@@ -9,10 +9,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>onework-tools-core</module>
-        <module>onework-tools-domain</module>
-        <module>onework-tools-server</module>
+        <module>onework-tools-database</module>
+        <module>onework-tools-model</module>
+        <module>onework-tools-translate</module>
         <module>onework-tools-generator</module>
-        <module>onework-tools-web-api</module>
+
     </modules>
 
     <name>${project.artifactId}</name>
@@ -81,16 +82,6 @@
                 <artifactId>onework-tools-core</artifactId>
                 <version>${onework-tools.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.onework.tools</groupId>
-                <artifactId>onework-tools-domain</artifactId>
-                <version>${onework-tools.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.onework.tools</groupId>
-                <artifactId>onework-tools-server</artifactId>
-                <version>${onework-tools.version}</version>
-            </dependency>
             <!-- Spring 核心 -->
             <!-- Web 相关 -->
             <dependency>
@@ -119,6 +110,7 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
