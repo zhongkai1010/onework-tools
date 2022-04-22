@@ -22,14 +22,13 @@ import com.onework.tools.database.schema.DbSchemaServer;
 import com.onework.tools.database.schema.entity.DataColumn;
 import com.onework.tools.database.schema.entity.DataDatabase;
 import com.onework.tools.database.schema.entity.DataTable;
-import com.sun.istack.internal.NotNull;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
-    public ExecuteResult saveConnection(@NonNull Connection connection, Boolean sync) {
+    public ExecuteResult saveConnection(@NotNull Connection connection, Boolean sync) {
 
         Check.notNull(connection.getName(), new DatabaseException(DatabaseModule.CONNECTION_NAME_IS_NULL));
 
@@ -84,7 +83,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public ExecuteResult testConnection(@NonNull Connection connection) {
+    public ExecuteResult testConnection(@NotNull Connection connection) {
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
         if (dbSchemaServer.TestConnection()) {
@@ -94,7 +93,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public ExecuteResult deleteConnection(@NonNull Connection connection) {
+    public ExecuteResult deleteConnection(@NotNull Connection connection) {
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
         String connectionName = dbConnection.getName();
@@ -116,7 +115,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public ExecuteResult syscDatabase(@NotNull String connName, @NonNull String dbName) {
+    public ExecuteResult syscDatabase(@NotNull String connName, @NotNull String dbName) {
 
         Connection connection = connectionRepository.getConnectionByName(connName);
         Check.notNull(connection, new DatabaseException(DatabaseModule.DB_CONNECTION_ERROR));
@@ -175,7 +174,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     /**
      * @param tables
      */
-    private void handleColumns(@NonNull DbSchemaServer dbSchemaServer, @NonNull List<Table> tables) {
+    private void handleColumns(@NotNull DbSchemaServer dbSchemaServer, @NotNull List<Table> tables) {
 
         for (Table table : tables) {
             Check.notNull(new DatabaseException(DatabaseModule.SYSC_TABLE_ERROR,
@@ -194,7 +193,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     /**
      * @param connection
      */
-    private void handleConnection(@NonNull Connection connection) {
+    private void handleConnection(@NotNull Connection connection) {
 
         Check.notNull(connection.getUid(),
             new DatabaseException(DatabaseModule.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
@@ -216,7 +215,7 @@ public class DatabaseServiceImpl implements DatabaseService {
      * @param dataDatabases
      * @return
      */
-    private void handleDatabases(@NonNull Connection connection, @NonNull List<DataDatabase> dataDatabases) {
+    private void handleDatabases(@NotNull Connection connection, @NotNull List<DataDatabase> dataDatabases) {
 
         Check.notNull(connection.getUid(),
             new DatabaseException(DatabaseModule.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
@@ -232,7 +231,7 @@ public class DatabaseServiceImpl implements DatabaseService {
      * @param dataTables
      * @return
      */
-    private List<Table> handleTables(@NonNull Database database, @NonNull List<DataTable> dataTables) {
+    private List<Table> handleTables(@NotNull Database database, @NotNull List<DataTable> dataTables) {
 
         Check.notNull(database.getUid(),
             new DatabaseException(DatabaseModule.SYSC_DATABASE_CONNECTION_ERROR, new String[] {database.getName()}));
@@ -250,7 +249,7 @@ public class DatabaseServiceImpl implements DatabaseService {
      * @param connection
      * @return
      */
-    private static DbSchemaServer getDbSchemaServer(@NonNull Connection connection) throws DatabaseException {
+    private static DbSchemaServer getDbSchemaServer(@NotNull Connection connection) throws DatabaseException {
         DataSource dataSource = connection.getDbConnection().build();
         DatabaseType databaseType = DatabaseType.Map.get(connection.getDbType());
         DbSchemaServer dbSchemaServer = DbSchemaFactory.getDbSchemaServer(databaseType, dataSource);

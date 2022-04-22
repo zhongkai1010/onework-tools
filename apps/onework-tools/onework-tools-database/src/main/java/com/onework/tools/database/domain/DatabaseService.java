@@ -2,9 +2,9 @@ package com.onework.tools.database.domain;
 
 import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.database.domain.entity.Connection;
-import com.sun.istack.internal.NotNull;
-import lombok.NonNull;
 import org.springframework.stereotype.Component;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author : zhongkai1010@163.com
@@ -57,5 +57,5 @@ public interface DatabaseService {
      * @param dbName
      * @return
      */
-    ExecuteResult syscDatabase(@NotNull String connName, @NonNull String dbName);
+    ExecuteResult syscDatabase(@NotNull String connName, @NotNull String dbName);
 }

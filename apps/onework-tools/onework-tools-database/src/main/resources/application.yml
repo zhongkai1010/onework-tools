@@ -1,57 +1,6 @@
 server:
   port: 8081
-  servlet:
-    context-path: /api
-#logging:
-#  config: classpath:log4j2.xml
 spring:
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://101.37.81.183:8033/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123qwe!@#mysql_root
-    druid:
-      validation-query: select 1
-      # url: jdbc:p6spy:mysql://101.37.81.183:8033/onework?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
-      # driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-      #      username: root
-      #      password: 123qwe!@#mysql_root
-      filter:
-        log4j2:
-          enabled: true
-          statement-log-enabled: true
-  mvc:
-    static-path-pattern: /static/**
-    log-request-details: true
-    log-resolved-exception: true
-  devtools:
-    restart:
-      enabled: true
-      additional-exclude: templates/**
-      additional-paths: src/main/java
-mybatis-plus:
-  global-config:
-    db-config:
-      logic-delete-field: deleted_at
-      logic-not-delete-value: "null"
-      id-type: ASSIGN_ID
-      logic-delete-value: now()
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath*:mapper/*.xml
-springdoc:
-  version: '1.0.0 base'
-  swagger-ui:
-    display-request-duration: true
-    groups-order: DESC
-    operationsSorter: method
-    disable-swagger-default-url: true
-    use-root-path: true
-  show-actuator: true
-onework:
-  translate:
-    baidu:
-      url: https://fanyi-api.baidu.com/api/trans/vip/translate
-      appId: 20210206000692404
-      secretKey: 26ZZ7HwrFuxiOcAQ_inQ
+  profiles:
+    include:
+      common

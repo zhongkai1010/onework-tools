@@ -89,6 +89,7 @@
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi.version}</version>
             </dependency>
+
             <!-- DB 相关 -->
             <dependency>
                 <groupId>p6spy</groupId>

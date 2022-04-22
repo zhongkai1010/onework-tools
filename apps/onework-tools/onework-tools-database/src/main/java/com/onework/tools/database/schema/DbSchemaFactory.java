@@ -3,10 +3,10 @@ package com.onework.tools.database.schema;
 import com.onework.tools.database.schema.entity.DbConnection;
 import com.onework.tools.database.schema.imlp.MsSqlSchemaServer;
 import com.onework.tools.database.schema.imlp.MySqlDbSchemaServer;
-import com.sun.istack.internal.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author : zhongkai1010@163.com
