@@ -382,3 +382,12 @@ source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx
 /apps/onework-tools/onework-tools-domain/target
 /apps/onework-tools/onework-tools-generator/target
 /apps/onework-tools/onework-tools-server/target
+/apps/onework-tools/onework-tools-authorize/target
+/apps/onework-tools/onework-tools-dictionary/target
+/apps/onework-tools/onework-tools-file/target
+/apps/onework-tools/onework-tools-flow/target
+/apps/onework-tools/onework-tools-form/target
+/apps/onework-tools/onework-tools-identity/target
+/apps/onework-tools/onework-tools-model/target
+/apps/onework-tools/onework-tools-organization/target
+/apps/onework-tools/onework-tools-translate/target

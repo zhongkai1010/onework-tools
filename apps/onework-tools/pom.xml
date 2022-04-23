@@ -12,8 +12,13 @@
         <module>onework-tools-database</module>
         <module>onework-tools-model</module>
         <module>onework-tools-translate</module>
-        <module>onework-tools-generator</module>
-
+        <module>onework-tools-authorize</module>
+        <module>onework-tools-identity</module>
+        <module>onework-tools-organization</module>
+        <module>onework-tools-dictionary</module>
+        <module>onework-tools-file</module>
+        <module>onework-tools-flow</module>
+        <module>onework-tools-form</module>
     </modules>
 
     <name>${project.artifactId}</name>

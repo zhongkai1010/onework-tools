@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onework.tools.database.dao.mapper.DatabaseColumnMapper">
+    <insert id="insertBatch" parameterType="arraylist">
+        insert into ow_database_columns (uid, `name`, `code`, cn_uid, db_uid, tb_uid, db_name, `type`, is_null,
+        is_unique,`length`,
+        `precision`, oredr, default_value, `description`, created_at, updated_at) values
+        <foreach collection="columns" item="item" index="index" separator=",">
+            (#{item.uid},
+            #{item.name},
+            #{item.code},
+            #{item.cnUid},
+            #{item.dbUid},
+            #{item.tbUid},
+            #{item.dbName},
+            #{item.type},
+            #{item.isNull},
+            #{item.isUnique},
+            #{item.length},
+            #{item.precision},
+            #{item.oredr},
+            #{item.defaultValue},
+            #{item.description},
+            #{item.createdAt},
+            #{item.updatedAt})
+        </foreach>
+    </insert>
+    <delete id="deleteTableColumn">
+        delete
+        from ow_database_columns
+        where tb_uid = #{tbUid};
+    </delete>
+</mapper>
