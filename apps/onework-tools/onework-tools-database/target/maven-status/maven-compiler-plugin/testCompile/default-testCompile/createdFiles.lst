@@ -1,5 +1,6 @@
 com\onework\tools\database\domain\DatabaseServiceByMysqlTest.class
 com\onework\tools\database\OneworkToolsDatabaseApplicationTests.class
 com\onework\tools\database\domain\DatabaseServiceByMssqlTest.class
+com\onework\tools\database\OneworkToolsDatabaseApplicationTests$1.class
 com\onework\tools\database\schema\MssqlSchemaServerTest.class
 com\onework\tools\database\dao\mapper\DatabaseTableMapperTest.class

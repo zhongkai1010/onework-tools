@@ -4,7 +4,6 @@ import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.core.error.AppException;
 import com.onework.tools.translate.TranslateException;
-import com.onework.tools.translate.TranslationModule;
 import com.onework.tools.translate.domain.entity.TranslationRecord;
 import com.onework.tools.translate.domain.provide.ThreeTranslateService;
 import com.onework.tools.translate.domain.provide.TranslateResult;

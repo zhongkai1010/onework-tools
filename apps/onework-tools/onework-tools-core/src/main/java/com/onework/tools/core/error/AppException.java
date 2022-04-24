@@ -13,6 +13,7 @@ import com.onework.tools.core.module.ModuleManager;
 
 public class AppException extends RuntimeException {
 
+    private static final long serialVersionUID = 3504239473299483235L;
     private final ErrorMessage message;
     private final Object[] formatParams;
 
@@ -38,8 +39,8 @@ public class AppException extends RuntimeException {
         String code = this.message.getCode();
         String key = String.format("%s.%s", moduleCode, code);
 
-        if (ModuleManager.ErrorMessages.containsKey(key)) {
-            message = ModuleManager.ErrorMessages.get(key);
+        if (ModuleManager.ErrorMessage.containsKey(key)) {
+            message = ModuleManager.ErrorMessage.get(key);
         }
 
         if (formatParams.length > 0) {

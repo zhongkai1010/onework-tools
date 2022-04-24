@@ -10,7 +10,6 @@ com\onework\tools\translate\domain\repository\TranslateRecordRepository.class
 com\onework\tools\translate\domain\TranslateService.class
 META-INF\spring-configuration-metadata.json
 com\onework\tools\translate\TranslateException.class
-com\onework\tools\translate\TranslationModule$1.class
 com\onework\tools\translate\domain\TranslateProperties$Baidu.class
 com\onework\tools\translate\TranslationModule.class
 com\onework\tools\translate\dao\repository\TranslateRecordRepositoryImpl.class

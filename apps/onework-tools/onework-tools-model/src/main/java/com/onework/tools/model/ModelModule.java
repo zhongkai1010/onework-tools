@@ -1,6 +1,5 @@
 package com.onework.tools.model;
 
-import com.onework.tools.core.error.ErrorMessage;
 import com.onework.tools.core.module.BaseModule;
 import com.onework.tools.core.module.ModuleInfo;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ public class ModelModule implements BaseModule {
 
     @Override
     public ModuleInfo getModuleInfo() {
-        return new ModuleInfo(MODULE_CODE,"数据模型模块");
+        return new ModuleInfo(MODULE_CODE, "数据模型模块");
     }
 
     @Override
@@ -45,8 +44,4 @@ public class ModelModule implements BaseModule {
         return messageMap;
     }
 
-    @Override
-    public <E extends Enum<E> & ErrorMessage> Class<E> getExceptionEnumClass() {
-        return (Class<E>)ModelException.class;
-    }
 }

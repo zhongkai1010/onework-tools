@@ -1,10 +1,7 @@
-com\onework\tools\identity\IdentityModule$1.class
 com\onework\tools\identity\dao\entity\User.class
 com\onework\tools\identity\dao\repository\RoleRepository.class
-com\onework\tools\identity\IdentityException.class
 com\onework\tools\identity\domain\entity\Role.class
 com\onework\tools\identity\dao\entity\Account.class
-com\onework\tools\identity\IdentityModule.class
 com\onework\tools\identity\OneworkToolsIdentityApplication.class
 com\onework\tools\identity\domain\store\RoleStore.class
 com\onework\tools\identity\controller\UserController.class

@@ -7,7 +7,6 @@ com\onework\tools\database\dao\entity\DatabaseConnection.class
 com\onework\tools\database\service\impl\DatabaseColumnServiceImpl.class
 com\onework\tools\database\dao\repository\DatabaseRepositoryImpl.class
 com\onework\tools\database\dao\entity\DatabaseColumn.class
-com\onework\tools\database\DatabaseModule$1.class
 com\onework\tools\database\dao\mapper\DatabaseConnectionMapper.class
 com\onework\tools\database\domain\repository\DatabaseRepository.class
 com\onework\tools\database\service\IDatabaseConnectionService.class

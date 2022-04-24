@@ -10,6 +10,7 @@ import com.onework.tools.core.error.ErrorMessage;
  * @Description: 描述
  * @date Date : 2022年04月22日 9:37
  */
+
 public enum DatabaseException implements ErrorMessage {
     /**
      *
@@ -60,8 +61,12 @@ public enum DatabaseException implements ErrorMessage {
         return message;
     }
 
+    /**
+     * 返回模块斌吗
+     */
     @Override
     public String getModuleCode() {
         return DatabaseModule.MODULE_CODE;
     }
+
 }

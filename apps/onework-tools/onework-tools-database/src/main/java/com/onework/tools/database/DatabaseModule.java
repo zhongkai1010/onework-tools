@@ -1,6 +1,5 @@
 package com.onework.tools.database;
 
-import com.onework.tools.core.error.ErrorMessage;
 import com.onework.tools.core.module.BaseModule;
 import com.onework.tools.core.module.ModuleInfo;
 import org.springframework.stereotype.Component;
@@ -29,8 +28,6 @@ public class DatabaseModule implements BaseModule {
         return new ModuleInfo(MODULE_CODE, "数据库模块");
     }
 
-
-
     @Override
     public Map<String, String> getExceptionEnum() {
 
@@ -40,7 +37,7 @@ public class DatabaseModule implements BaseModule {
         for (DatabaseException databaseException : databaseExceptions) {
             String code = databaseException.getCode();
             String key = String.format("%s.%s", MODULE_CODE, code);
-            if (!messageMap.containsKey(key)) {
+            if (messageMap.containsKey(key)) {
                 throw new RuntimeException(String.format("load module exception enum error key is repeat，key:%s", key));
             }
             messageMap.put(key, databaseException.getMessage());

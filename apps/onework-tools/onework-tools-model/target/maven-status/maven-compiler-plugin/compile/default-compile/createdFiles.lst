@@ -16,7 +16,6 @@ com\onework\tools\model\service\impl\ModelDataServiceImpl.class
 com\onework\tools\model\dao\repository\ModelCollectionRepositoryImpl.class
 com\onework\tools\model\dao\repository\ModelItemRepositoryImpl.class
 com\onework\tools\model\domain\ModelService.class
-com\onework\tools\model\ModelModule$1.class
 com\onework\tools\model\domain\ModelServiceImpl.class
 com\onework\tools\model\dao\entity\ModelDataBehavior.class
 com\onework\tools\model\dao\entity\ModuleModel.class

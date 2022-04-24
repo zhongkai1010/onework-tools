@@ -23,6 +23,17 @@ spring:
       enabled: true
       additional-exclude: templates/**
       additional-paths: src/main/java
+  redis:
+    database: 0
+    host: 127.0.01
+    port: 6379
+    password: 123456
+    lettuce:
+      pool:
+        max-idle: 8
+        max-active: 8
+        max-wait: -1
+        min-idle: 0
 mybatis-plus:
   global-config:
     db-config:

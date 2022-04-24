@@ -1,6 +1,5 @@
 package com.onework.tools.core.module;
 
-import com.onework.tools.core.error.ErrorMessage;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -29,6 +28,4 @@ public interface BaseModule {
      * @return
      */
     Map<String, String> getExceptionEnum();
-
-
 }

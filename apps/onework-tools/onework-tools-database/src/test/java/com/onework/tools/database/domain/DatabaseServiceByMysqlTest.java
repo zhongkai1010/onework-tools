@@ -47,7 +47,7 @@ class DatabaseServiceByMysqlTest {
 
         Connection connection = getConnection();
         ExecuteResult executeResult = databaseService.testConnection(connection);
-        Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
+        Assertions.assertTrue(executeResult.compare(ExecuteResult.SUCCESS));
     }
 
     @Test

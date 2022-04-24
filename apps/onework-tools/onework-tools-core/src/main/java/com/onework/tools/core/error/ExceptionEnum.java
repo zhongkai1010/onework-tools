@@ -45,4 +45,5 @@ public enum ExceptionEnum implements ErrorMessage {
     public String getModuleCode() {
         return "0000";
     }
+
 }

@@ -8,7 +8,7 @@ package com.onework.tools.core.error;
  * @Description: 描述
  * @date Date : 2022年04月24日 14:31
  */
-public interface ErrorMessage  {
+public interface ErrorMessage {
 
     /**
      * 获取错误代码
@@ -25,9 +25,12 @@ public interface ErrorMessage  {
     String getMessage();
 
     /**
-     * 获取模块代码
+     * 返回模块斌吗
      *
-     * @return
+     * @return String
+     * @author ZK
+     * @description TODO
+     * @date 2022/4/24 20:21
      */
     String getModuleCode();
 }

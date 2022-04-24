@@ -1,6 +1,7 @@
 package com.onework.tools.core.module;
 
-import lombok.NonNull;
+import com.onework.tools.core.ApplicationBoot;
+import com.onework.tools.core.error.ErrorMessageStore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -16,27 +17,31 @@ import java.util.Map;
  * @Description: 描述
  * @date Date : 2022年04月06日 15:43
  */
-@Component
 @Slf4j
-public class ModuleManager {
+@Component
+public class ModuleManager implements ApplicationBoot {
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-    public static Map<String, BaseModule> Modules;
+    public static Map<String, BaseModule> Modules = null;
 
-    public static Map<String, String> ErrorMessages;
+    public static Map<String, String> ErrorMessage = null;
 
-    public ModuleManager(ApplicationContext applicationContext) {
+    private final ErrorMessageStore errorMessageStore;
 
+    public ModuleManager(ApplicationContext applicationContext, ErrorMessageStore errorMessageStore) {
         this.applicationContext = applicationContext;
-        Modules = getInternalModules();
-        ErrorMessages = getInternalErrorMessages();
+        this.errorMessageStore = errorMessageStore;
     }
 
-    private static @NonNull Map<String, String> getInternalErrorMessages() {
+    @Override
+    public void init() {
+        initModule();
+        initErrorMessage();
+    }
 
+    private void initErrorMessage() {
         Map<String, String> errorMessages = new HashMap<>(16);
-
 
         if (Modules != null) {
             Modules.values().forEach((module -> {
@@ -45,28 +50,29 @@ public class ModuleManager {
 
                 moduleErrorMessages.forEach((k, v) -> {
                     String code = String.format("%s.%s", moduleCode, k);
+
                     errorMessages.put(code, v);
                 });
             }));
         }
-        return errorMessages;
+        ErrorMessage = errorMessageStore.getOrAddErrorMessage(errorMessages);
     }
 
-    private Map<String, BaseModule> getInternalModules() {
+    private void initModule() {
 
-        Map<String, BaseModule> modules = new HashMap<>(16);
         Map<String, BaseModule> beans = applicationContext.getBeansOfType(BaseModule.class);
-        for (Map.Entry<String, BaseModule> entry : beans.entrySet()) {
-            BaseModule module = entry.getValue();
-            ModuleInfo moduleInfo = module.getModuleInfo();
-            String moduleCode = moduleInfo.getCode();
-            modules.put(moduleCode, module);
+        if (Modules == null) {
+            Modules = new HashMap<>(beans.size());
+            for (Map.Entry<String, BaseModule> entry : beans.entrySet()) {
+
+                BaseModule module = entry.getValue();
+                ModuleInfo moduleInfo = module.getModuleInfo();
+                log.info("--------------load Module {}:{}-----------------", moduleInfo.getName(),
+                    moduleInfo.getCode());
+
+                String moduleCode = moduleInfo.getCode();
+                Modules.put(moduleCode, module);
+            }
         }
-
-        return modules;
-    }
-
-    private void logModule(BaseModule module) {
-        log.info("--------------load {}-----------------", module.getModuleInfo().getName());
     }
 }
