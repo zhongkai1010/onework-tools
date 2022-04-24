@@ -6,8 +6,8 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.onework.tools.core.Check;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.translate.TranslateException;
-import com.onework.tools.translate.TranslationModule;
 import com.onework.tools.translate.domain.Language;
 import com.onework.tools.translate.domain.TranslateProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +81,7 @@ public class BaiduTranslateServiceImpl implements ThreeTranslateService {
         @NotNull String... query) {
 
         if (from.equals(to)) {
-            throw new TranslateException(TranslationModule.LANGUAGE_TYPE_ERROR);
+            throw new AppException(TranslateException.LANGUAGE_TYPE_ERROR);
         }
 
         String url = translateConfiguration.getBaidu().getUrl();
@@ -102,11 +102,11 @@ public class BaiduTranslateServiceImpl implements ThreeTranslateService {
         String body = HttpUtil.get(requestUrl);
         TranslateResult translateResult = JSON.parseObject(body, TranslateResult.class);
 
-        Check.notNull(translateResult, new TranslateException(TranslationModule.THREE_API_NOT_DATA));
+        Check.notNull(translateResult, new AppException(TranslateException.THREE_API_NOT_DATA));
 
         if (translateResult.getErrorCode() != null) {
             log.info("BaiduTranslateServiceImpl TranslateText Error,error code:{}", translateResult.getErrorCode());
-            throw new TranslateException(TranslationModule.THREE_API_RESULT_ERROR,
+            throw new AppException(TranslateException.THREE_API_RESULT_ERROR,
                 new String[] {translateResult.getErrorCode()});
         }
 

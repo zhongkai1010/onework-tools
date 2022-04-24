@@ -3,6 +3,7 @@ package com.onework.tools.model.domain;
 import cn.hutool.core.bean.BeanUtil;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
 import com.onework.tools.model.ModelModule;
 import com.onework.tools.model.domain.entity.ModelData;
@@ -72,7 +73,7 @@ public class DataModelServiceImpl implements DataModelService {
     public ExecuteResult saveModelDataItems(String code, List<ModelDataItem> items) {
 
         ModelData model = modelDataRepository.query(code);
-        Check.notNull(model, new ModelException(ModelModule.SAVE_MODEL_DATA_NOT_FIND, code));
+        Check.notNull(model, new AppException(ModelException.SAVE_MODEL_DATA_NOT_FIND, code));
 
         deleteModelDataItems(model);
         items.forEach(modelDataItem -> handleModelDataItem(model, modelDataItem));
@@ -85,7 +86,7 @@ public class DataModelServiceImpl implements DataModelService {
 
         ModelData model = modelDataRepository.query(code);
 
-        Check.notNull(model, new ModelException(ModelModule.SAVE_MODEL_DATA_NOT_FIND, code));
+        Check.notNull(model, new AppException(ModelException.SAVE_MODEL_DATA_NOT_FIND, code));
 
         handleModelDatabehaviors(model, behaviors);
         return ExecuteResult.success();
@@ -96,7 +97,7 @@ public class DataModelServiceImpl implements DataModelService {
 
         ModelData model = modelDataRepository.query(code);
 
-        Check.notNull(model, new ModelException(ModelModule.SAVE_MODEL_DATA_NOT_FIND, code));
+        Check.notNull(model, new AppException(ModelException.SAVE_MODEL_DATA_NOT_FIND, code));
 
         modelDataBehaviorRepository.deleteModeDataBehaviors(code);
         deleteModelDataItems(model);
@@ -132,7 +133,7 @@ public class DataModelServiceImpl implements DataModelService {
         modelDataItems.forEach(modelDataItem -> {
             ExecuteResult executeResult = modelService.linkModelItem(modelDataItem.getCode(), false);
             Check.compareResult(executeResult,
-                new ModelException(ModelModule.DELETE_MODEL_DATA_ITEM_ERROR, modelDataItem.getCode()));
+                new AppException(ModelException.DELETE_MODEL_DATA_ITEM_ERROR, modelDataItem.getCode()));
         });
 
         modelDataItemRepository.deleteModeDataItems(modelData.getCode());
@@ -148,19 +149,19 @@ public class DataModelServiceImpl implements DataModelService {
                 modelService.saveModelItem(modelDataItem.getCode(), modelDataItem.getName(), modelDataItem.getType());
 
             Check.compareResult(executeResult,
-                new ModelException(ModelModule.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getCode()));
+                new AppException(ModelException.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getCode()));
         }
 
         if (modelDataItem.getType() == ModelItemType.OBJECT) {
             ModelData refModelData = modelDataRepository.query(modelDataItem.getRefCode());
             Check.notNull(refModelData,
-                new ModelException(ModelModule.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getRefCode()));
+                new AppException(ModelException.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getRefCode()));
         }
 
         if (modelDataItem.getType() == ModelItemType.ARRAY) {
             ModelData arrayModelData = modelDataRepository.query(modelDataItem.getArrayCode());
             Check.notNull(arrayModelData,
-                new ModelException(ModelModule.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getArrayCode()));
+                new AppException(ModelException.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getArrayCode()));
         }
 
         // 添加数据模型数据项
@@ -171,7 +172,7 @@ public class DataModelServiceImpl implements DataModelService {
         // 计数数据项
         ExecuteResult executeResult = modelService.linkModelItem(modelDataItem.getCode(), true);
         if (executeResult.compare(ExecuteResult.FAIL)) {
-            throw new ModelException(ModelModule.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getCode());
+            throw new AppException(ModelException.SAVE_MODEL_DATA_ITEM_ERROR, modelDataItem.getCode());
         }
     }
 
@@ -186,13 +187,13 @@ public class DataModelServiceImpl implements DataModelService {
                 modelDataBehavior.getInputs().forEach((s) -> {
                     ModelData refsModelData = modelDataRepository.query(s.getCode());
                     Check.notNull(refsModelData,
-                        new ModelException(ModelModule.SAVE_MODEL_DATA_BEHAVIOR_ERROR, s.getCode()));
+                        new AppException(ModelException.SAVE_MODEL_DATA_BEHAVIOR_ERROR, s.getCode()));
                 });
             }
 
             if (modelDataBehavior.getOutput() != null) {
                 ModelData refsModelData = modelDataRepository.query(modelDataBehavior.getOutput().getCode());
-                Check.notNull(refsModelData, new ModelException(ModelModule.SAVE_MODEL_DATA_BEHAVIOR_ERROR,
+                Check.notNull(refsModelData, new AppException(ModelException.SAVE_MODEL_DATA_BEHAVIOR_ERROR,
                     modelDataBehavior.getOutput().getCode()));
             }
 

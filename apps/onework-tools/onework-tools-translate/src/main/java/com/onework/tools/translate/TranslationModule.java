@@ -1,9 +1,11 @@
 package com.onework.tools.translate;
 
-import com.onework.tools.core.module.Module;
+import com.onework.tools.core.error.ErrorMessage;
+import com.onework.tools.core.module.BaseModule;
+import com.onework.tools.core.module.ModuleInfo;
 import org.springframework.stereotype.Component;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,38 +17,32 @@ import java.util.Map;
  * @date Date : 2022年04月14日 15:41
  */
 @Component
-public class TranslationModule implements Module {
+public class TranslationModule implements BaseModule {
 
     /**
      * 模块异常编号
      */
     public final static String MODULE_CODE = "2002";
 
-    public static final String THREE_API_NOT_DATA = "0001";
-
-    public static final String LANGUAGE_TYPE_ERROR = "0002";
-
-    public static final String THREE_API_RESULT_ERROR = "0003";
-
-    public final static String NOT_SUCCESS_INSERT_RECORD = "0001";
-
     @Override
-    public String getModuleName() {
-        return "翻译领域模块";
+    public ModuleInfo getModuleInfo() {
+        return new ModuleInfo(MODULE_CODE, "翻译模块");
     }
 
     @Override
-    public String getModuleCode() {
-        return MODULE_CODE;
+    public Map<String, String> getExceptionEnum() {
+        TranslateException[] exceptions = TranslateException.values();
+        Map<String, String> messageMap = new HashMap<>(exceptions.length);
+
+        for (TranslateException exception : exceptions) {
+            String code = exception.getCode();
+            String key = String.format("%s.%s", MODULE_CODE, code);
+            if (messageMap.containsKey(key)) {
+                throw new RuntimeException(String.format("load module exception enum error key is repeat，key:%s", key));
+            }
+            messageMap.put(key, exception.getMessage());
+        }
+        return messageMap;
     }
 
-    @Override
-    public Map<String, String> getErrorMessageMaps() {
-        return new Hashtable<String, String>() {{
-            put(THREE_API_NOT_DATA, "调用第三方翻译Api，无响应结果");
-            put(LANGUAGE_TYPE_ERROR, "翻译语种错误");
-            put(THREE_API_RESULT_ERROR, "调用第三方翻译Api，响应结果异常，异常编码:%s");
-            put(NOT_SUCCESS_INSERT_RECORD, "未成功插入翻译文本记录");
-        }};
-    }
 }

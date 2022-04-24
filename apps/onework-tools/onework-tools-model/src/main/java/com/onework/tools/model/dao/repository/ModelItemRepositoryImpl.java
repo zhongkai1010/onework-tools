@@ -4,8 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.onework.tools.core.Check;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
-import com.onework.tools.model.ModelModule;
 import com.onework.tools.model.dao.mapper.ModelItemMapper;
 import com.onework.tools.model.domain.entity.ModelItem;
 import com.onework.tools.model.domain.repository.ModelItemRepository;
@@ -43,7 +43,7 @@ public class ModelItemRepositoryImpl implements ModelItemRepository {
 
         int count = modelItemMapper.insert(item);
 
-        Check.isTrue(count == 0, new ModelException(ModelModule.INSERT_MODEL_ITEM_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.INSERT_MODEL_ITEM_ERROR));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ModelItemRepositoryImpl implements ModelItemRepository {
                 .set(com.onework.tools.model.dao.entity.ModelItem::getType, modelItem.getType())
                 .set(com.onework.tools.model.dao.entity.ModelItem::getCumulate, modelItem.getCumulate()).update();
 
-        Check.isTrue(!result, new ModelException(ModelModule.UPDATE_MODEL_ITEM_ERROR));
+        Check.isTrue(!result, new AppException(ModelException.UPDATE_MODEL_ITEM_ERROR));
     }
 
     @Override
@@ -67,6 +67,6 @@ public class ModelItemRepositoryImpl implements ModelItemRepository {
 
         int count = modelItemMapper.delete(queryChainWrapper);
 
-        Check.isTrue(count == 0, new ModelException(ModelModule.DELETE_MODEL_ITEM_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.DELETE_MODEL_ITEM_ERROR));
     }
 }

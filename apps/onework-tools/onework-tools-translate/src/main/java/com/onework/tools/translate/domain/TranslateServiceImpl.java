@@ -2,6 +2,7 @@ package com.onework.tools.translate.domain;
 
 import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.translate.TranslateException;
 import com.onework.tools.translate.TranslationModule;
 import com.onework.tools.translate.domain.entity.TranslationRecord;
@@ -127,10 +128,10 @@ public class TranslateServiceImpl implements TranslateService {
 
         TranslateResult translateResult = threeTranslateService.translateText(from, to, srcs);
 
-        Check.notNull(translateResult, new TranslateException(TranslationModule.THREE_API_NOT_DATA));
+        Check.notNull(translateResult, new AppException(TranslateException.THREE_API_NOT_DATA));
 
         List<TranslateResult.Result> result = translateResult.getTransResult();
-        Check.notData(result, new TranslateException(TranslationModule.THREE_API_NOT_DATA));
+        Check.notData(result, new AppException(TranslateException.THREE_API_NOT_DATA));
 
         ArrayList<String> dsts = new ArrayList<>();
         result.forEach(r -> dsts.add(r.getDst()));

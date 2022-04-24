@@ -2,8 +2,8 @@ package com.onework.tools.database.dao.repository;
 
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.database.DatabaseException;
-import com.onework.tools.database.DatabaseModule;
 import com.onework.tools.database.dao.entity.DatabaseConnection;
 import com.onework.tools.database.dao.mapper.DatabaseConnectionMapper;
 import com.onework.tools.database.domain.entity.Connection;
@@ -44,7 +44,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
     public void deleteConnection(String name) {
         DatabaseConnection databaseConnection = getByName(name);
         if (databaseConnectionMapper.deleteById(databaseConnection) == 0) {
-            throw new DatabaseException(DatabaseModule.DELETE_CONNECTION);
+            throw new AppException(DatabaseException.DELETE_CONNECTION);
         }
     }
 
@@ -54,7 +54,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
         BeanUtils.copyProperties(connection, databaseConnection);
 
         if (databaseConnectionMapper.insert(databaseConnection) == 0) {
-            throw new DatabaseException(DatabaseModule.ADD_CONNECTION);
+            throw new AppException(DatabaseException.ADD_CONNECTION);
         }
 
         connection.setUid(databaseConnection.getUid());
@@ -70,7 +70,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository {
             databaseConnection.getName()).update(databaseConnection);
 
         if (!result) {
-            throw new DatabaseException(DatabaseModule.UPDATE_CONNECTION);
+            throw new AppException(DatabaseException.UPDATE_CONNECTION);
         }
     }
 

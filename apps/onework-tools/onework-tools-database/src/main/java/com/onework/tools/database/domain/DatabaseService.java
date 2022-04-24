@@ -24,7 +24,7 @@ public interface DatabaseService {
      * @param sync
      * @return
      */
-    ExecuteResult saveConnection(@NotNull Connection connection, Boolean sync);
+    ExecuteResult<Boolean> saveConnection(@NotNull Connection connection, Boolean sync);
 
     /**
      * 测试数据库连接
@@ -32,7 +32,7 @@ public interface DatabaseService {
      * @param connection
      * @return
      */
-    ExecuteResult testConnection(@NotNull Connection connection);
+    ExecuteResult<Boolean> testConnection(@NotNull Connection connection);
 
     /**
      * 删除连接
@@ -40,7 +40,7 @@ public interface DatabaseService {
      * @param connection:
      * @return ExecuteResult
      */
-    ExecuteResult deleteConnection(@NotNull Connection connection);
+    ExecuteResult<Boolean> deleteConnection(@NotNull Connection connection);
 
     /**
      * 同步数据库连接下所有数据库和表
@@ -48,7 +48,7 @@ public interface DatabaseService {
      * @param connection
      * @return
      */
-    ExecuteResult syscConnection(@NotNull Connection connection);
+    ExecuteResult<Boolean> syscConnection(@NotNull Connection connection);
 
     /**
      * 同步数据库
@@ -57,5 +57,5 @@ public interface DatabaseService {
      * @param dbName
      * @return
      */
-    ExecuteResult syscDatabase(@NotNull String connName, @NotNull String dbName);
+    ExecuteResult<Boolean> syscDatabase(@NotNull String connName, @NotNull String dbName);
 }

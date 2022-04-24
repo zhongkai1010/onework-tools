@@ -3,8 +3,8 @@ package com.onework.tools.translate.dao.repository;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.onework.tools.core.Check;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.translate.TranslateException;
-import com.onework.tools.translate.TranslationModule;
 import com.onework.tools.translate.dao.entity.ToolTranslation;
 import com.onework.tools.translate.dao.mapper.ToolTranslationMapper;
 import com.onework.tools.translate.domain.Language;
@@ -42,6 +42,6 @@ public class TranslateRecordRepositoryImpl implements TranslateRecordRepository 
     public void insertRecord(TranslationRecord record) {
         ToolTranslation toolTranslation = BeanUtil.copyProperties(record, ToolTranslation.class);
         int count = toolTranslationMapper.insert(toolTranslation);
-        Check.notExecute(count, new TranslateException(TranslationModule.NOT_SUCCESS_INSERT_RECORD));
+        Check.notExecute(count, new AppException(TranslateException.NOT_SUCCESS_INSERT_RECORD));
     }
 }

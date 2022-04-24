@@ -2,6 +2,7 @@ package com.onework.tools.model.domain;
 
 import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
 import com.onework.tools.model.ModelModule;
 import com.onework.tools.model.domain.entity.ModelCollection;
@@ -65,9 +66,9 @@ public class ModelServiceImpl implements ModelService {
 
         ModelItem modelItem = modelItemRepository.query(code);
 
-        Check.notNull(modelItem, new ModelException(ModelModule.DELETE_MODEL_NOT_FIND, code));
+        Check.notNull(modelItem, new AppException(ModelException.DELETE_MODEL_NOT_FIND, code));
 
-        Check.isTrue(modelItem.getCumulate() > 0, new ModelException(ModelModule.DELETE_MODEL_ITEM_USE, code));
+        Check.isTrue(modelItem.getCumulate() > 0, new AppException(ModelException.DELETE_MODEL_ITEM_USE, code));
 
         modelItemRepository.delete(code);
 
@@ -79,7 +80,7 @@ public class ModelServiceImpl implements ModelService {
 
         ModelItem modelItem = modelItemRepository.query(code);
 
-        Check.notNull(modelItem, new ModelException(ModelModule.LINKED_MODEL_NOT_FIND, code));
+        Check.notNull(modelItem, new AppException(ModelException.LINKED_MODEL_NOT_FIND, code));
 
         int cumulate = modelItem.getCumulate();
         if (linked) {
@@ -103,7 +104,7 @@ public class ModelServiceImpl implements ModelService {
         ArrayList<ModelItem> modelItems = new ArrayList<>();
         for (String itemCode : itemCodes) {
             ModelItem modelItem = modelItemRepository.query(itemCode);
-            Check.notNull(modelItem, new ModelException(ModelModule.ADD_MODEL_COLLECTION_ITEM_NOT_FIND, itemCode));
+            Check.notNull(modelItem, new AppException(ModelException.ADD_MODEL_COLLECTION_ITEM_NOT_FIND, itemCode));
             modelItems.add(modelItem);
         }
 
@@ -132,7 +133,7 @@ public class ModelServiceImpl implements ModelService {
 
         ModelCollection modelCollection = modelCollectionRepository.query(code);
 
-        Check.notNull(modelCollection, new ModelException(ModelModule.DELETE_MODEL_COLLECTION_EXIST, code));
+        Check.notNull(modelCollection, new AppException(ModelException.DELETE_MODEL_COLLECTION_EXIST, code));
 
         modelCollectionRepository.delete(code);
 

@@ -3,6 +3,7 @@ package com.onework.tools.model.dao.repository;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.onework.tools.core.Check;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
 import com.onework.tools.model.ModelModule;
 import com.onework.tools.model.dao.mapper.ModelDataItemMapper;
@@ -40,6 +41,6 @@ public class ModelDataItemRepositoryImpl implements ModelDataItemRepository {
         com.onework.tools.model.dao.entity.ModelDataItem item =
             BeanUtil.copyProperties(items, com.onework.tools.model.dao.entity.ModelDataItem.class);
         int count = modelDataItemMapper.insert(item);
-        Check.isTrue(count == 0, new ModelException(ModelModule.INSERT_MODEL_DATA_ITEM_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.INSERT_MODEL_DATA_ITEM_ERROR));
     }
 }

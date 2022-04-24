@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.onework.tools.core.Check;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
 import com.onework.tools.model.ModelModule;
 import com.onework.tools.model.dao.mapper.ModelDataBehaviorMapper;
@@ -61,7 +62,7 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
 
         int count = modelDataMapper.insert(model);
 
-        Check.isTrue(count == 0, new ModelException(ModelModule.INSERT_MODEL_DATA_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.INSERT_MODEL_DATA_ERROR));
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
                 .set(com.onework.tools.model.dao.entity.ModelData::getStatus, modelData.getStatus())
                 .set(com.onework.tools.model.dao.entity.ModelData::getDescription, modelData.getDescription()).update();
 
-        Check.isTrue(!result, new ModelException(ModelModule.UPDATE_MODEL_DATA_ERROR));
+        Check.isTrue(!result, new AppException(ModelException.UPDATE_MODEL_DATA_ERROR));
     }
 
     @Override
@@ -86,7 +87,7 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
 
         int count = modelDataMapper.delete(queryChainWrapper);
 
-        Check.isTrue(count == 0, new ModelException(ModelModule.DELETE_MODEL_DATA_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.DELETE_MODEL_DATA_ERROR));
     }
 
     @Override

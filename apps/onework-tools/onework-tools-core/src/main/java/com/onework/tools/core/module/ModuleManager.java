@@ -1,6 +1,7 @@
 package com.onework.tools.core.module;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +17,16 @@ import java.util.Map;
  * @date Date : 2022年04月06日 15:43
  */
 @Component
+@Slf4j
 public class ModuleManager {
 
-    private final ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
-    public static Map<String, Module> Modules;
+    public static Map<String, BaseModule> Modules;
 
     public static Map<String, String> ErrorMessages;
 
-    public ModuleManager(final ApplicationContext applicationContext) {
+    public ModuleManager(ApplicationContext applicationContext) {
 
         this.applicationContext = applicationContext;
         Modules = getInternalModules();
@@ -33,15 +35,16 @@ public class ModuleManager {
 
     private static @NonNull Map<String, String> getInternalErrorMessages() {
 
-        final Map<String, String> errorMessages = new HashMap<>(16);
+        Map<String, String> errorMessages = new HashMap<>(16);
+
 
         if (Modules != null) {
             Modules.values().forEach((module -> {
-                final String moduleCode = module.getModuleCode();
-                final Map<String, String> moduleErrorMessages = module.getErrorMessageMaps();
+                String moduleCode = module.getModuleInfo().getCode();
+                Map<String, String> moduleErrorMessages = module.getExceptionEnum();
 
                 moduleErrorMessages.forEach((k, v) -> {
-                    final String code = String.format("%s.%s", moduleCode, k);
+                    String code = String.format("%s.%s", moduleCode, k);
                     errorMessages.put(code, v);
                 });
             }));
@@ -49,17 +52,21 @@ public class ModuleManager {
         return errorMessages;
     }
 
-    private Map<String, Module> getInternalModules() {
+    private Map<String, BaseModule> getInternalModules() {
 
-        final Map<String, Module> modules = new HashMap<>(16);
-        final Map<String, Module> beans = applicationContext.getBeansOfType(Module.class);
-        for (final Map.Entry<String, Module> entry : beans.entrySet()) {
-            final String key = entry.getKey();
-            final Module module = entry.getValue();
-            final String moduleCode = module.getModuleCode();
+        Map<String, BaseModule> modules = new HashMap<>(16);
+        Map<String, BaseModule> beans = applicationContext.getBeansOfType(BaseModule.class);
+        for (Map.Entry<String, BaseModule> entry : beans.entrySet()) {
+            BaseModule module = entry.getValue();
+            ModuleInfo moduleInfo = module.getModuleInfo();
+            String moduleCode = moduleInfo.getCode();
             modules.put(moduleCode, module);
         }
 
         return modules;
+    }
+
+    private void logModule(BaseModule module) {
+        log.info("--------------load {}-----------------", module.getModuleInfo().getName());
     }
 }

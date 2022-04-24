@@ -6,8 +6,8 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.onework.tools.core.Check;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
-import com.onework.tools.model.ModelModule;
 import com.onework.tools.model.dao.mapper.ModelCollectionMapper;
 import com.onework.tools.model.domain.entity.ModelCollection;
 import com.onework.tools.model.domain.repository.ModelCollectionRepository;
@@ -53,7 +53,7 @@ public class ModelCollectionRepositoryImpl implements ModelCollectionRepository 
 
         int count = modelCollectionMapper.insert(collection);
 
-        Check.isTrue(count == 0, new ModelException(ModelModule.INSERT_MODEL_COLLECTION_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.INSERT_MODEL_COLLECTION_ERROR));
 
         return modelCollection;
     }
@@ -70,7 +70,7 @@ public class ModelCollectionRepositoryImpl implements ModelCollectionRepository 
             .set(com.onework.tools.model.dao.entity.ModelCollection::getDescription, modelCollection.getDescription())
             .update();
 
-        Check.isTrue(!result, new ModelException(ModelModule.UPDATE_MODEL_COLLECTION_ERROR));
+        Check.isTrue(!result, new AppException(ModelException.UPDATE_MODEL_COLLECTION_ERROR));
 
         return modelCollection;
     }
@@ -84,6 +84,6 @@ public class ModelCollectionRepositoryImpl implements ModelCollectionRepository 
 
         int count = modelCollectionMapper.delete(queryChainWrapper);
 
-        Check.isTrue(count == 0, new ModelException(ModelModule.DELETE_MODEL_COLLECTION_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.DELETE_MODEL_COLLECTION_ERROR));
     }
 }

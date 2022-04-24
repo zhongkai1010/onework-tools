@@ -11,38 +11,31 @@ import com.onework.tools.core.module.ModuleManager;
  * @date Date : 2022年03月29日 13:41
  */
 
-public abstract class BaseException extends RuntimeException {
+public class AppException extends RuntimeException {
 
-    private static final long serialVersionUID = 7969689764816292922L;
-    private final String code;
+    private final ErrorMessage message;
     private final Object[] formatParams;
 
-    public BaseException(String code) {
-        this(code, new String[] {});
+    public AppException(ErrorMessage message) {
+        this(message, new String[] {});
     }
 
-    public BaseException(String code, String formatParam) {
-        this(code, new String[] {formatParam});
+    public AppException(ErrorMessage message, String formatParam) {
+        this(message, new String[] {formatParam});
     }
 
-    public BaseException(String code, String[] formatParams) {
+    public AppException(ErrorMessage message, String[] formatParams) {
 
-        this.code = code;
+        this.message = message;
         this.formatParams = formatParams;
     }
-
-    /**
-     * 获取模块编码，便于区分不同模块异常
-     *
-     * @return
-     */
-    protected abstract String getModuleCode();
 
     @Override
     public String getMessage() {
 
         String message = "unknown unknown";
-        String moduleCode = getModuleCode();
+        String moduleCode = this.message.getModuleCode();
+        String code = this.message.getCode();
         String key = String.format("%s.%s", moduleCode, code);
 
         if (ModuleManager.ErrorMessages.containsKey(key)) {

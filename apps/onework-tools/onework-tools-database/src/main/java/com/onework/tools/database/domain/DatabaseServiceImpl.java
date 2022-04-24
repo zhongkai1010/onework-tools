@@ -6,8 +6,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.database.DatabaseException;
-import com.onework.tools.database.DatabaseModule;
 import com.onework.tools.database.domain.entity.Column;
 import com.onework.tools.database.domain.entity.Connection;
 import com.onework.tools.database.domain.entity.Database;
@@ -62,9 +62,9 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
-    public ExecuteResult saveConnection(@NotNull Connection connection, Boolean sync) {
+    public ExecuteResult<Boolean> saveConnection(@NotNull Connection connection, Boolean sync) {
 
-        Check.notNull(connection.getName(), new DatabaseException(DatabaseModule.CONNECTION_NAME_IS_NULL));
+        Check.notNull(connection.getName(), new AppException(DatabaseException.CONNECTION_NAME_IS_NULL));
 
         Connection oldConnection = connectionRepository.getConnectionByName(connection.getName());
         if (oldConnection != null) {
@@ -83,7 +83,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public ExecuteResult testConnection(@NotNull Connection connection) {
+    public ExecuteResult<Boolean> testConnection(@NotNull Connection connection) {
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
         if (dbSchemaServer.TestConnection()) {
@@ -93,7 +93,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public ExecuteResult deleteConnection(@NotNull Connection connection) {
+    public ExecuteResult<Boolean> deleteConnection(@NotNull Connection connection) {
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
         String connectionName = dbConnection.getName();
@@ -103,11 +103,11 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ExecuteResult syscConnection(@NotNull Connection connection) {
+    public ExecuteResult<Boolean> syscConnection(@NotNull Connection connection) {
 
         Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
         Check.notNull(dbConnection.getUid(),
-            new DatabaseException(DatabaseModule.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
+            new AppException(DatabaseException.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
 
         handleConnection(dbConnection);
 
@@ -115,26 +115,20 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public ExecuteResult syscDatabase(@NotNull String connName, @NotNull String dbName) {
+    public ExecuteResult<Boolean> syscDatabase(@NotNull String connName, @NotNull String dbName) {
 
         Connection connection = connectionRepository.getConnectionByName(connName);
-        Check.notNull(connection, new DatabaseException(DatabaseModule.DB_CONNECTION_ERROR));
+        Check.notNull(connection, new AppException(DatabaseException.DB_CONNECTION_ERROR));
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
 
         Database database = databaseRepository.getDatabaseByName(connection.getUid(), dbName);
-        Check.notNull(database, new DatabaseException(DatabaseModule.DB_CONNECTION_ERROR));
+        Check.notNull(database, new AppException(DatabaseException.DB_CONNECTION_ERROR));
 
         // 同步数据库表前，移除数据库表
         tableRepository.batchDeleteTable(database);
         List<DataTable> dataTables = dbSchemaServer.getDataTables(dbName);
         List<Table> tables = handleTables(database, dataTables);
-
-        //        handleColumns(dbSchemaServer, tables);
-        //        database.setLastSyncDate(LocalDateTime.now());
-        //        database.setIsSync(true);
-        //        databaseRepository.updateDatabase(database);
-        //        return executeResult.ok();
 
         final int pageSize = 10;
         int pageCount = (tables.size() + pageSize - 1) / pageSize;
@@ -177,7 +171,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     private void handleColumns(@NotNull DbSchemaServer dbSchemaServer, @NotNull List<Table> tables) {
 
         for (Table table : tables) {
-            Check.notNull(new DatabaseException(DatabaseModule.SYSC_TABLE_ERROR,
+            Check.notNull(new AppException(DatabaseException.SYSC_TABLE_ERROR,
                 new String[] {table.getCnUid(), table.getDbUid(), table.getDbName(), table.getUid(), table.getName()}));
 
             List<DataColumn> dataColumns = dbSchemaServer.getDataColumns(table.getDbName(), table.getName());
@@ -196,11 +190,11 @@ public class DatabaseServiceImpl implements DatabaseService {
     private void handleConnection(@NotNull Connection connection) {
 
         Check.notNull(connection.getUid(),
-            new DatabaseException(DatabaseModule.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
+            new AppException(DatabaseException.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
 
         DbSchemaServer dbSchemaServer = getDbSchemaServer(connection);
         if (!dbSchemaServer.TestConnection()) {
-            throw new DatabaseException(DatabaseModule.SYSC_CONNECTION_ERROR, new String[] {connection.getName()});
+            throw new AppException(DatabaseException.SYSC_CONNECTION_ERROR, new String[] {connection.getName()});
         }
 
         List<DataDatabase> dataDatabases = dbSchemaServer.getDatabaseAndTables();
@@ -218,7 +212,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     private void handleDatabases(@NotNull Connection connection, @NotNull List<DataDatabase> dataDatabases) {
 
         Check.notNull(connection.getUid(),
-            new DatabaseException(DatabaseModule.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
+            new AppException(DatabaseException.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
 
         for (DataDatabase dataDatabase : dataDatabases) {
             Database database = Database.getDatabase(connection, dataDatabase);
@@ -234,9 +228,9 @@ public class DatabaseServiceImpl implements DatabaseService {
     private List<Table> handleTables(@NotNull Database database, @NotNull List<DataTable> dataTables) {
 
         Check.notNull(database.getUid(),
-            new DatabaseException(DatabaseModule.SYSC_DATABASE_CONNECTION_ERROR, new String[] {database.getName()}));
+            new AppException(DatabaseException.SYSC_DATABASE_CONNECTION_ERROR, new String[] {database.getName()}));
         Check.notNull(database.getCnUid(),
-            new DatabaseException(DatabaseModule.SYSC_DATABASE_CONNECTION_ERROR, new String[] {database.getName()}));
+            new AppException(DatabaseException.SYSC_DATABASE_CONNECTION_ERROR, new String[] {database.getName()}));
 
         List<Table> tables = new ArrayList<>();
         for (DataTable dataTable : dataTables) {
@@ -249,13 +243,13 @@ public class DatabaseServiceImpl implements DatabaseService {
      * @param connection
      * @return
      */
-    private static DbSchemaServer getDbSchemaServer(@NotNull Connection connection) throws DatabaseException {
+    private static DbSchemaServer getDbSchemaServer(@NotNull Connection connection) throws AppException {
         DataSource dataSource = connection.getDbConnection().build();
         DatabaseType databaseType = DatabaseType.Map.get(connection.getDbType());
         DbSchemaServer dbSchemaServer = DbSchemaFactory.getDbSchemaServer(databaseType, dataSource);
 
         if (dbSchemaServer == null) {
-            throw new DatabaseException(DatabaseModule.DB_SCHEMA_SERVER_ERROR);
+            throw new AppException(DatabaseException.DB_SCHEMA_SERVER_ERROR);
         }
 
         return dbSchemaServer;

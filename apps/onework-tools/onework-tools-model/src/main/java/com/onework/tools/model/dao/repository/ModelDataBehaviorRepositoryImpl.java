@@ -5,6 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.onework.tools.core.Check;
+import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
 import com.onework.tools.model.ModelModule;
 import com.onework.tools.model.dao.mapper.ModelDataBehaviorMapper;
@@ -56,6 +57,6 @@ public class ModelDataBehaviorRepositoryImpl implements ModelDataBehaviorReposit
 
         int count = modelDataBehaviorMapper.insert(behavior);
 
-        Check.isTrue(count == 0, new ModelException(ModelModule.INSERT_MODEL_DATA_BEHAVIOR_ERROR));
+        Check.isTrue(count == 0, new AppException(ModelException.INSERT_MODEL_DATA_BEHAVIOR_ERROR));
     }
 }
