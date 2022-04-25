@@ -391,3 +391,7 @@ source/onework_manage_web/src/pages/DataModel/Model/components/TableDetails.tsx
 /apps/onework-tools/onework-tools-model/target
 /apps/onework-tools/onework-tools-organization/target
 /apps/onework-tools/onework-tools-translate/target
+/apps/onework-tools/onework-tools-message/target
+/apps/onework-tools/onework-tools-module/target
+/apps/onework-tools/onework-tools-service/target
+/apps/onework-tools/onework-tools-webapi/target
