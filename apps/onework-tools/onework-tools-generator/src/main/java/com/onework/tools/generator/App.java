@@ -118,17 +118,17 @@ public class App {
         GeneratorConfigValue generatorConfigValue = new GeneratorConfigValue();
 
         generatorConfigValue.getGlobalConfigValue()
-            .setOutputDir(System.getProperty("user.dir").concat("/onework-tools-module/src/main/java"));
+            .setOutputDir(System.getProperty("user.dir").concat("/onework-tools-service/src/main/java"));
 
         generatorConfigValue.getPackageConfigValue()
-            .setParent("com.onework.tools")
+            .setParent("com.onework.tools.service")
             .setModuleName("module")
-            .setEntity("dao.entity")
-            .setMapper("dao.mapper")
-            .setService("service")
-            .setServiceImpl("service.impl")
+            .setEntity("entity")
+            .setMapper("mapper")
+            // .setService("service")
+            .setServiceImpl("impl")
             .setPathInfo(new HashMap<OutputFile, String>(16) {{
-                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper"));
+                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-service/src/main/resources/mapper/module"));
             }});
 
         generatorConfigValue.getTemplateConfigValue()

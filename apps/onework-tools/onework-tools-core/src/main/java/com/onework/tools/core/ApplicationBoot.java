@@ -14,5 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ApplicationBoot {
 
+    /**
+     * 应用启动初始化
+     */
     void init();
 }
