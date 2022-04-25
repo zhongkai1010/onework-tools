@@ -21,10 +21,11 @@ import {
 
 // 创建路由实例
 export const router: Router = createRouter({
-  history: getHistoryMode(),
-  routes: constantRoutes.concat(...remainingRouter),
-  strict: true,
+  history: getHistoryMode(), // https://router.vuejs.org/zh/api/#history
+  routes: constantRoutes.concat(...remainingRouter), // 路由列表,https://router.vuejs.org/zh/api/#routerecordraw
+  strict: true, // 可以通过使用 strict 配置和手动添加(或不添加)斜线来禁用它。
   scrollBehavior(to, from, savedPosition) {
+    // https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html
     return new Promise(resolve => {
       if (savedPosition) {
         return savedPosition;
