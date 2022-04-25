@@ -118,17 +118,17 @@ public class App {
         GeneratorConfigValue generatorConfigValue = new GeneratorConfigValue();
 
         generatorConfigValue.getGlobalConfigValue()
-            .setOutputDir(System.getProperty("user.dir").concat("/onework-tools-translate/src/main/java"));
+            .setOutputDir(System.getProperty("user.dir").concat("/onework-tools-module/src/main/java"));
 
         generatorConfigValue.getPackageConfigValue()
             .setParent("com.onework.tools")
-            .setModuleName("translate")
+            .setModuleName("module")
             .setEntity("dao.entity")
             .setMapper("dao.mapper")
             .setService("service")
             .setServiceImpl("service.impl")
             .setPathInfo(new HashMap<OutputFile, String>(16) {{
-                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-translate/src/main/resources/mapper"));
+                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper"));
             }});
 
         generatorConfigValue.getTemplateConfigValue()
@@ -138,7 +138,7 @@ public class App {
             .setAddTablePrefix(new String[] { "ow_" })
             .setAddTableSuffix(new String[] { "s" })
             .setEnableCapitalMode(true)
-            .setLikeTable(new LikeTable("translations"))
+            .setLikeTable(new LikeTable("module"))
         .getEntityBuilder()
             .setIdType(IdType.ASSIGN_ID)
             .setNaming(NamingStrategy.underline_to_camel)

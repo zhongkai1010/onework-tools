@@ -19,6 +19,8 @@
         <module>onework-tools-file</module>
         <module>onework-tools-flow</module>
         <module>onework-tools-form</module>
+        <module>onework-tools-message</module>
+        <module>onework-tools-module</module>
     </modules>
 
     <name>${project.artifactId}</name>
