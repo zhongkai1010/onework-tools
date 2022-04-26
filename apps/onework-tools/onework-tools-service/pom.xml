@@ -16,20 +16,11 @@
 
     <dependencies>
         <!--spring系列-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+
         <!--数据库系列-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
+
         <!--内部模块系列-->
-        <dependency>
-            <groupId>com.onework.tools</groupId>
-            <artifactId>onework-tools-domain</artifactId>
-        </dependency>
+
         <!--辅助系列-->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -52,7 +43,6 @@
             <groupId>com.onework.tools</groupId>
             <artifactId>onework-tools-core</artifactId>
         </dependency>
-
         <!--其它系列-->
 
     </dependencies>

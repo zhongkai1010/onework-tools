@@ -82,8 +82,8 @@ public class App {
     private static void readJsonFile() {
         try {
 
-            String fileName =
-                System.getProperty("user.dir").concat("/onework-tools-generator/src/main/resources/swaggerApi.json");
+            String fileName = System.getProperty("user.dir")
+                .concat("/onework-tools-generator/src/main/resources/swaggerApi.json");
             Path path = Paths.get(fileName);
             byte[] bytes = Files.readAllBytes(path);
             List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -101,8 +101,8 @@ public class App {
     }
 
     private static void generatorCode() {
-        final String jdbcUrl =
-            "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
+        final String jdbcUrl
+            = "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
         final String user = "root";
         final String password = "123qwe!@#mysql_root";
 
@@ -121,14 +121,14 @@ public class App {
             .setOutputDir(System.getProperty("user.dir").concat("/onework-tools-service/src/main/java"));
 
         generatorConfigValue.getPackageConfigValue()
-            .setParent("com.onework.tools.service")
-            .setModuleName("module")
+            .setParent("com.onework.tools")
+            .setModuleName("model")
             .setEntity("entity")
             .setMapper("mapper")
-            // .setService("service")
-            .setServiceImpl("impl")
-            .setPathInfo(new HashMap<OutputFile, String>(16) {{
-                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-service/src/main/resources/mapper/module"));
+            .setService("service")
+            .setServiceImpl("service.impl")
+            .setPathInfo(new HashMap<OutputFile, String>(16) {private static final long serialVersionUID = -4418335994349371423L;{
+                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-service/src/main/resources/mapper/model"));
             }});
 
         generatorConfigValue.getTemplateConfigValue()
@@ -138,7 +138,7 @@ public class App {
             .setAddTablePrefix(new String[] { "ow_" })
             .setAddTableSuffix(new String[] { "s" })
             .setEnableCapitalMode(true)
-            .setLikeTable(new LikeTable("module"))
+            .setLikeTable(new LikeTable("model"))
         .getEntityBuilder()
             .setIdType(IdType.ASSIGN_ID)
             .setNaming(NamingStrategy.underline_to_camel)

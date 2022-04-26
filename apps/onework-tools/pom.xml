@@ -10,7 +10,7 @@
     <modules>
         <module>onework-tools-core</module>
         <module>onework-tools-service</module>
-        <module>onework-tools-domain</module>
+        <module>onework-tools-webapi</module>
     </modules>
 
     <name>${project.artifactId}</name>
@@ -77,11 +77,6 @@
             <dependency>
                 <groupId>com.onework.tools</groupId>
                 <artifactId>onework-tools-core</artifactId>
-                <version>${onework-tools.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.onework.tools</groupId>
-                <artifactId>onework-tools-domain</artifactId>
                 <version>${onework-tools.version}</version>
             </dependency>
             <dependency>
