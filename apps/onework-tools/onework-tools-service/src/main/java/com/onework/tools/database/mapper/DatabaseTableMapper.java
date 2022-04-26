@@ -2,7 +2,7 @@ package com.onework.tools.database.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.onework.tools.database.entity.DatabaseTable;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-26
+ * @since 2022-03-31
  */
 public interface DatabaseTableMapper extends BaseMapper<DatabaseTable> {
 

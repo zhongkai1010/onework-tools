@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,9 @@ public class ModuleManager implements ApplicationBoot {
 
     private final ApplicationContext applicationContext;
 
-    public static Map<String, BaseModule> Modules = null;
+    public static Map<String, BaseModule> Modules = new HashMap<>();
 
-    public static Map<String, String> ErrorMessage = null;
+    public static Map<String, String> ErrorMessage = new HashMap<>();
 
     private final ModuleStore moduleStore;
 
@@ -50,8 +51,6 @@ public class ModuleManager implements ApplicationBoot {
         }));
     }
 
-
-
     private void initFeature() {
         Map<String, FeatureProvider> featureProviderMap = applicationContext.getBeansOfType(FeatureProvider.class);
         featureProviderMap.values().forEach(featureProvider -> {
@@ -73,7 +72,7 @@ public class ModuleManager implements ApplicationBoot {
         Modules = moduleMap;
     }
 
-    private void loadModuleLog(ModuleInfo moduleInfo) {
+    private static void loadModuleLog(ModuleInfo moduleInfo) {
         log.info("--------------load module {}:{}-----------------", moduleInfo.getName(), moduleInfo.getCode());
     }
 

@@ -1,6 +1,7 @@
 package com.onework.tools.module.domain;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.onework.tools.CacheKeys;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.error.AppException;
@@ -46,7 +47,10 @@ public class ModuleStoreImpl implements ModuleStore {
 
     @Override
     public void registerModule(ModuleInfo moduleInfo) {
-        Module module = moduleService.getOne(moduleService.lambdaQuery().eq(Module::getCode, moduleInfo.getCode()));
+
+        String moduleCode = moduleInfo.getCode();
+        LambdaQueryChainWrapper<Module> wrapper = moduleService.lambdaQuery();
+        Module module = wrapper.eq(Module::getCode, moduleCode).one();
         if (module == null) {
             module = BeanUtil.copyProperties(moduleInfo, Module.class);
             moduleService.save(module);
@@ -55,11 +59,12 @@ public class ModuleStoreImpl implements ModuleStore {
 
     @Override
     public void saveModuleFeature(ModuleInfo moduleInfo, Feature feature) {
-        Module module = moduleService.getOne(moduleService.lambdaQuery().eq(Module::getCode, moduleInfo.getCode()));
+
+        Module module = moduleService.lambdaQuery().eq(Module::getCode, moduleInfo.getCode()).one();
         Check.notNull(module, new AppException(ModuleException.SAVE_MODULE_FEATURE_ERROR, moduleInfo.getName()));
 
-        List<ModuleFeature> moduleFeatures = moduleFeatureService.list(
-            moduleFeatureService.lambdaQuery().eq(ModuleFeature::getModuleCode, moduleInfo.getCode()));
+        List<ModuleFeature> moduleFeatures = moduleFeatureService.lambdaQuery()
+            .eq(ModuleFeature::getModuleCode, moduleInfo.getCode()).list();
 
         Map<String, Feature> featureMap = convertModuleFeature(feature);
         Map<String, ModuleFeature> moduleFeatureMap = moduleFeatures.stream()
@@ -95,8 +100,8 @@ public class ModuleStoreImpl implements ModuleStore {
     @Override
     public void saveErrorMessage(ModuleInfo moduleInfo, Map<String, String> errorMessage) {
 
-        List<ModuleErrorMessage> moduleErrorMessages = moduleErrorMessageService.list(
-            moduleErrorMessageService.lambdaQuery().eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()));
+        List<ModuleErrorMessage> moduleErrorMessages = moduleErrorMessageService.lambdaQuery()
+            .eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()).list();
         Map<String, ModuleErrorMessage> messageMap = moduleErrorMessages.stream()
             .collect(Collectors.toMap(ModuleErrorMessage::getCode, current -> current));
         List<ModuleErrorMessage> newMessages = new ArrayList<>();
@@ -114,8 +119,8 @@ public class ModuleStoreImpl implements ModuleStore {
     @Override
     @Cacheable(cacheNames = CacheKeys.MODULE_ERROR_MESSAGE, key = "#moduleInfo.code")
     public Map<String, String> getModuleErrorMessage(ModuleInfo moduleInfo) {
-        List<ModuleErrorMessage> moduleErrorMessages = moduleErrorMessageService.list(
-            moduleErrorMessageService.lambdaQuery().eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()));
+        List<ModuleErrorMessage> moduleErrorMessages = moduleErrorMessageService.lambdaQuery()
+            .eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()).list();
         return moduleErrorMessages.stream()
             .collect(Collectors.toMap(ModuleErrorMessage::getCode, ModuleErrorMessage::getName));
     }
