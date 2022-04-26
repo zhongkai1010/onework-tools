@@ -1,9 +1,12 @@
 package com.onework.tools.domain.module;
 
 import com.onework.tools.core.module.BaseModule;
+import com.onework.tools.core.module.FeatureProvider;
 import com.onework.tools.core.module.ModuleInfo;
+import com.onework.tools.core.module.Feature;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +19,7 @@ import java.util.Map;
  * @date Date : 2022年04月22日 9:41
  */
 @Component
-public class ModuleModule implements BaseModule {
+public class ModuleModule implements BaseModule, FeatureProvider {
 
     /**
      * 模块异常编号
@@ -25,7 +28,15 @@ public class ModuleModule implements BaseModule {
 
     @Override
     public ModuleInfo getModuleInfo() {
+
         return new ModuleInfo(MODULE_CODE, "数据库模块");
+    }
+
+    @Override
+    public Feature getModuleFeature() {
+        return new Feature("", "").setSubFeatures(new ArrayList<Feature>() {{
+            add(new Feature("", ""));
+        }});
     }
 
     @Override

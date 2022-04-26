@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-25
+ * @since 2022-04-26
  */
 @Service
 public class ModuleErrorMessageServiceImpl extends ServiceImpl<ModuleErrorMessageMapper, ModuleErrorMessage> implements IModuleErrorMessageService {

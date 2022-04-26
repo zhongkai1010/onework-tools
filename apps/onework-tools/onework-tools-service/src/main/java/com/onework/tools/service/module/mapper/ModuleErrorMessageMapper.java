@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author zhongkai
- * @since 2022-04-25
+ * @since 2022-04-26
  */
 public interface ModuleErrorMessageMapper extends BaseMapper<ModuleErrorMessage> {
 

@@ -1,6 +1,6 @@
 package com.onework.tools.service.module.mapper;
 
-import com.onework.tools.service.module.entity.ModuleModel;
+import com.onework.tools.service.module.entity.ModuleFeature;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author zhongkai
  * @since 2022-04-26
  */
-public interface ModuleModelMapper extends BaseMapper<ModuleModel> {
+public interface ModuleFeatureMapper extends BaseMapper<ModuleFeature> {
 
 }

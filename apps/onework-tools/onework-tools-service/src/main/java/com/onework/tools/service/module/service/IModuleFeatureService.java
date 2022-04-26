@@ -1,6 +1,6 @@
 package com.onework.tools.service.module.service;
 
-import com.onework.tools.service.module.entity.Module;
+import com.onework.tools.service.module.entity.ModuleFeature;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author zhongkai
  * @since 2022-04-26
  */
-public interface IModuleService extends IService<Module> {
+public interface IModuleFeatureService extends IService<ModuleFeature> {
 
 }

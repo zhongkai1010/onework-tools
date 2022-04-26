@@ -23,8 +23,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("ow_module_models")
-public class ModuleModel implements Serializable {
+@TableName("ow_module_features")
+public class ModuleFeature implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,16 +35,46 @@ public class ModuleModel implements Serializable {
     private String uid;
 
     /**
-     * 数据模型uid
+     * 模块编码
      */
-    @TableField("model_uid")
-    private String modelUid;
+    @TableField("module_code")
+    private String moduleCode;
 
     /**
-     * 模块uid
+     * 模块名称
      */
-    @TableField("module_uid")
-    private String moduleUid;
+    @TableField("module_name")
+    private String moduleName;
+
+    /**
+     * 编码
+     */
+    @TableField("`code`")
+    private String code;
+
+    /**
+     * 名称
+     */
+    @TableField("`name`")
+    private String name;
+
+    /**
+     * 状态
+     */
+    @TableField("state")
+    private String state;
+
+    /**
+     * 描述
+     */
+    @TableField("description")
+    private String description;
+
+    /**
+     * 扩展信息
+     */
+    @TableField("ext_data")
+    private String extData;
 
     @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

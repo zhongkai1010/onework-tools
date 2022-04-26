@@ -15,7 +15,7 @@ public enum ModuleException implements ErrorMessage {
     /**
      *
      */
-     ;
+    SAVE_MODULE_FEATURE_ERROR("1001", "同步%s模块功能失败");
 
     /**
      * 错误码
