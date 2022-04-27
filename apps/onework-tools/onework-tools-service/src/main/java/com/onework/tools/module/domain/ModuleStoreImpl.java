@@ -63,12 +63,12 @@ public class ModuleStoreImpl implements ModuleStore {
         Module module = moduleService.lambdaQuery().eq(Module::getCode, moduleInfo.getCode()).one();
         Check.notNull(module, new AppException(ModuleException.SAVE_MODULE_FEATURE_ERROR, moduleInfo.getName()));
 
-        List<ModuleFeature> moduleFeatures = moduleFeatureService.lambdaQuery()
-            .eq(ModuleFeature::getModuleCode, moduleInfo.getCode()).list();
+        List<ModuleFeature> moduleFeatures =
+            moduleFeatureService.lambdaQuery().eq(ModuleFeature::getModuleCode, moduleInfo.getCode()).list();
 
         Map<String, Feature> featureMap = convertModuleFeature(feature);
-        Map<String, ModuleFeature> moduleFeatureMap = moduleFeatures.stream()
-            .collect(Collectors.toMap(ModuleFeature::getCode, current -> current));
+        Map<String, ModuleFeature> moduleFeatureMap =
+            moduleFeatures.stream().collect(Collectors.toMap(ModuleFeature::getCode, current -> current));
 
         Set<String> featureMapKeys = featureMap.keySet();
         Set<String> moduleFeatureMapKeys = moduleFeatureMap.keySet();
@@ -100,33 +100,37 @@ public class ModuleStoreImpl implements ModuleStore {
     @Override
     public void saveErrorMessage(ModuleInfo moduleInfo, Map<String, String> errorMessage) {
 
-        List<ModuleErrorMessage> moduleErrorMessages = moduleErrorMessageService.lambdaQuery()
-            .eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()).list();
-        Map<String, ModuleErrorMessage> messageMap = moduleErrorMessages.stream()
-            .collect(Collectors.toMap(ModuleErrorMessage::getCode, current -> current));
+        List<ModuleErrorMessage> moduleErrorMessages =
+            moduleErrorMessageService.lambdaQuery().eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()).list();
+        Map<String, ModuleErrorMessage> messageMap =
+            moduleErrorMessages.stream().collect(Collectors.toMap(ModuleErrorMessage::getCode, current -> current));
         List<ModuleErrorMessage> newMessages = new ArrayList<>();
         errorMessage.forEach((key, message) -> {
             if (!messageMap.containsKey(key)) {
                 ModuleErrorMessage moduleErrorMessage = new ModuleErrorMessage();
+                moduleErrorMessage.setCode(key);
+                moduleErrorMessage.setName(message);
                 moduleErrorMessage.setModuleCode(moduleInfo.getCode());
                 moduleErrorMessage.setModuleName(moduleInfo.getName());
                 newMessages.add(moduleErrorMessage);
             }
         });
-        moduleErrorMessageService.saveOrUpdateBatch(newMessages);
+        if (newMessages.size() > 0) {
+            moduleErrorMessageService.saveOrUpdateBatch(newMessages);
+        }
     }
 
     @Override
     @Cacheable(cacheNames = CacheKeys.MODULE_ERROR_MESSAGE, key = "#moduleInfo.code")
     public Map<String, String> getModuleErrorMessage(ModuleInfo moduleInfo) {
-        List<ModuleErrorMessage> moduleErrorMessages = moduleErrorMessageService.lambdaQuery()
-            .eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()).list();
+        List<ModuleErrorMessage> moduleErrorMessages =
+            moduleErrorMessageService.lambdaQuery().eq(ModuleErrorMessage::getModuleCode, moduleInfo.getCode()).list();
         return moduleErrorMessages.stream()
             .collect(Collectors.toMap(ModuleErrorMessage::getCode, ModuleErrorMessage::getName));
     }
 
     private static Map<String, Feature> convertModuleFeature(Feature feature) {
-        Map<String, Feature> featureMap = new HashMap<>(16);
+        HashMap<String, Feature> featureMap = new HashMap<>(16);
         featureMap.put(feature.getCode(), feature);
 
         List<Feature> subs = feature.getSubFeatures();

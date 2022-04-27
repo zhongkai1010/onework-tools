@@ -21,11 +21,11 @@ public class FlowModule implements BaseModule {
     /**
      * 模块异常编号
      */
-    public final static String MODULE_CODE = "2001";
+    public final static String MODULE_CODE = "B005";
 
     @Override
     public ModuleInfo getModuleInfo() {
-        return new ModuleInfo(MODULE_CODE, "数据库模块");
+        return new ModuleInfo(MODULE_CODE, "流程模块");
     }
 
     @Override

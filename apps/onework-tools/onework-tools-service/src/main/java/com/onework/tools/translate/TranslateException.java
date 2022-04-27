@@ -15,10 +15,10 @@ public enum TranslateException implements ErrorMessage {
     /**
      *
      */
-    THREE_API_NOT_DATA("1000", "调用第三方翻译Api，无响应结果"),
-    LANGUAGE_TYPE_ERROR("1000", "翻译语种错误"),
-    THREE_API_RESULT_ERROR("1000", "调用第三方翻译Api，响应结果异常，异常编码:%s"),
-    NOT_SUCCESS_INSERT_RECORD("1000", "未成功插入翻译文本记录");
+    THREE_API_NOT_DATA("1001", "调用第三方翻译Api，无响应结果"),
+    LANGUAGE_TYPE_ERROR("1002", "翻译语种错误"),
+    THREE_API_RESULT_ERROR("1003", "调用第三方翻译Api，响应结果异常，异常编码:%s"),
+    NOT_SUCCESS_INSERT_RECORD("1004", "未成功插入翻译文本记录");
 
     /**
      * 错误码

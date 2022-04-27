@@ -16,6 +16,16 @@ import java.util.List;
  */
 public class Check {
 
+    public static <T, E extends Throwable> void nullString(T value, E exception) throws E {
+        if (value == null) {
+
+        } else {
+            if (value.equals("")) {
+                throw exception;
+            }
+        }
+    }
+
     public static <T, E extends Throwable> void notNull(T value, E exception) throws E {
         if (value == null) {
             throw exception;

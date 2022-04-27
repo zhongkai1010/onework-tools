@@ -21,7 +21,7 @@ public class ModelModule implements BaseModule {
     /**
      * 模块异常编号
      */
-    public final static String MODULE_CODE = "3001";
+    public final static String MODULE_CODE = "B009";
 
     @Override
     public ModuleInfo getModuleInfo() {

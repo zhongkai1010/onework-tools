@@ -21,11 +21,11 @@ public class TranslationModule implements BaseModule {
     /**
      * 模块异常编号
      */
-    public final static String MODULE_CODE = "2002";
+    public final static String MODULE_CODE = "B012";
 
     @Override
     public ModuleInfo getModuleInfo() {
-        return new ModuleInfo(MODULE_CODE, "翻译模块");
+        return new ModuleInfo(MODULE_CODE, "翻译辅助模块");
     }
 
     @Override

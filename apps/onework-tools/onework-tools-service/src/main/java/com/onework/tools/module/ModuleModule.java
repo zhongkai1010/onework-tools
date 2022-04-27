@@ -24,22 +24,21 @@ public class ModuleModule implements BaseModule, FeatureProvider {
     /**
      * 模块异常编号
      */
-    public final static String MODULE_CODE = "2001";
+    public final static String MODULE_CODE = "B010";
 
     @Override
     public ModuleInfo getModuleInfo() {
 
-        return new ModuleInfo(MODULE_CODE, "数据库模块");
+        return new ModuleInfo(MODULE_CODE, "基础模块");
     }
 
     @Override
     public Feature getModuleFeature() {
-        return new Feature("", "").setSubFeatures(new ArrayList<Feature>() {
-            private static final long serialVersionUID = -6910055370793869447L;
-
+        return new Feature("module", "模块管理").setSubFeatures(new ArrayList<Feature>() {
             {
-            add(new Feature("", ""));
-        }});
+                add(new Feature("list", "模块维护"));
+            }
+        });
     }
 
     @Override
