@@ -1,6 +1,7 @@
 package com.onework.tools.generator;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
@@ -14,6 +15,8 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 import com.onework.tools.generator.mybaits.GeneratorConfigValue;
+import com.onework.tools.generator.openapi.OpenApiParseFactory;
+import com.onework.tools.generator.openapi.entity.OpenApi;
 import com.onework.tools.generator.velocity.ControllerActionModel;
 import com.onework.tools.generator.velocity.ControllerModel;
 import org.apache.velocity.Template;
@@ -42,7 +45,12 @@ import java.util.Properties;
 public class App {
 
     public static void main(String[] args) {
-        generatorCode();
+
+        String context = getFileContext() ;
+
+        OpenApi openApiDocument = JSONObject.parseObject(context, OpenApi.class);
+
+        System.out.println(openApiDocument);
     }
 
     private static void velocityTemplate() {
@@ -79,30 +87,38 @@ public class App {
         System.out.print(sw);
     }
 
-    private static void readJsonFile() {
-        try {
+    private static void parseJson() {
 
-            String fileName = System.getProperty("user.dir")
-                .concat("/onework-tools-generator/src/main/resources/swaggerApi.json");
+        String context = getFileContext();
+        OpenApiParseFactory.parseJson(context);
+    }
+
+    private static String getFileContext() {
+        try {
+            String fileName =
+                System.getProperty("user.dir").concat("/onework-tools-generator/src/main/resources/openapi3.json");
             Path path = Paths.get(fileName);
             byte[] bytes = Files.readAllBytes(path);
             List<String> allLines = Files.readAllLines(path, StandardCharsets.UTF_8);
             StringBuilder stringBuilder = new StringBuilder();
             allLines.forEach((o) -> stringBuilder.append(o));
             System.out.println(stringBuilder);
-
-            Object model = JSON.parse(stringBuilder.toString());
-
-            System.out.println(model.getClass());
-
+            return stringBuilder.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    private static void readJsonFile() {
+        String context = getFileContext();
+        Object model = JSON.parse(context);
+        System.out.println(model.getClass());
     }
 
     private static void generatorCode() {
-        final String jdbcUrl
-            = "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
+        final String jdbcUrl =
+            "jdbc:mysql://101.37.81.183:8033/onework?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false";
         final String user = "root";
         final String password = "123qwe!@#mysql_root";
 
