@@ -1,6 +1,7 @@
 package com.onework.tools.webapi.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.onework.tools.identity.entity.User;
+import com.onework.tools.web.AbstractCrudController;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -9,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @Project: onework-tools
  * @Package com.onework.tools.webapi.controller
  * @Description: 描述
- * @date Date : 2022年04月27日 14:39
+ * @date Date : 2022年05月09日 10:02
  */
-@RestController
-@RequestMapping("/database")
-public class DataBaseController {
-
+@RestController("/user")
+public class UserController extends AbstractCrudController<User> {
 
 }

@@ -55,7 +55,7 @@ class DatabaseServiceByMysqlTest {
 
         Connection connection = getConnection();
         ExecuteResult saveResult = databaseService.saveConnection(connection, false);
-        ExecuteResult syscResult = databaseService.syscConnection(connection);
+        ExecuteResult syscResult = databaseService.syscConnection(connection.getName());
         Assertions.assertTrue(saveResult.equals(ExecuteResult.SUCCESS) && syscResult.equals(ExecuteResult.SUCCESS));
     }
 
@@ -72,7 +72,7 @@ class DatabaseServiceByMysqlTest {
     void deleteConnection() {
 
         Connection connection = getConnection();
-        ExecuteResult executeResult = databaseService.deleteConnection(connection);
+        ExecuteResult executeResult = databaseService.deleteConnection(connection.getName());
         Assertions.assertTrue(executeResult.equals(ExecuteResult.SUCCESS));
     }
 }

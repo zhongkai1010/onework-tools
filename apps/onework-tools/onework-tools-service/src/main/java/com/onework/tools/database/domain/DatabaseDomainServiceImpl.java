@@ -93,21 +93,19 @@ public class DatabaseDomainServiceImpl implements DatabaseDomainService {
     }
 
     @Override
-    public ExecuteResult<Boolean> deleteConnection(@NotNull Connection connection) {
+    public ExecuteResult<Boolean> deleteConnection(@NotNull String connectionName) {
 
-        Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
-        String connectionName = dbConnection.getName();
         connectionRepository.deleteConnection(connectionName);
         return ExecuteResult.success();
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ExecuteResult<Boolean> syscConnection(@NotNull Connection connection) {
+    public ExecuteResult<Boolean> syscConnection(@NotNull String connectionName) {
 
-        Connection dbConnection = connectionRepository.getConnectionByName(connection.getName());
+        Connection dbConnection = connectionRepository.getConnectionByName(connectionName);
         Check.notNull(dbConnection.getUid(),
-            new AppException(DatabaseException.SYSC_CONNECTION_ERROR, new String[] {connection.getName()}));
+            new AppException(DatabaseException.SYSC_CONNECTION_ERROR, new String[] {connectionName}));
 
         handleConnection(dbConnection);
 

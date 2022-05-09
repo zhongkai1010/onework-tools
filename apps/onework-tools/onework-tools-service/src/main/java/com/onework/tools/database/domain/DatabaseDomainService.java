@@ -37,10 +37,10 @@ public interface DatabaseDomainService {
     /**
      * 删除连接
      *
-     * @param connection:
+     * @param connectionName:
      * @return ExecuteResult
      */
-    ExecuteResult<Boolean> deleteConnection(@NotNull Connection connection);
+    ExecuteResult<Boolean> deleteConnection(@NotNull String connectionName);
 
     /**
      * 同步数据库连接下所有数据库和表
@@ -48,7 +48,7 @@ public interface DatabaseDomainService {
      * @param connection
      * @return
      */
-    ExecuteResult<Boolean> syscConnection(@NotNull Connection connection);
+    ExecuteResult<Boolean> syscConnection(@NotNull String connectionName);
 
     /**
      * 同步数据库

@@ -1,4 +1,4 @@
-package com.onework.tools.database.entity;
+package com.onework.tools.identity.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -23,8 +23,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("ow_database_connections")
-public class DatabaseConnection implements Serializable {
+@TableName("ow_users")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,58 +35,40 @@ public class DatabaseConnection implements Serializable {
     private String uid;
 
     /**
-     * 连接名称
-     */
-    @TableField("`name`")
-    private String name;
-
-    /**
-     * 数据库类型
-     */
-    @TableField("db_type")
-    private String dbType;
-
-    /**
-     * 默认数据库
-     */
-    @TableField("`database`")
-    private String database;
-
-    /**
-     * 连接用户名
+     * 系统uid
      */
     @TableField("username")
     private String username;
 
     /**
-     * 连接密码
+     * 模块uid
      */
+    @TableField("display_name")
+    private String displayName;
+
+    @TableField("sex")
+    private Integer sex;
+
+    @TableField("birthday")
+    private LocalDateTime birthday;
+
+    @TableField("mail")
+    private LocalDateTime mail;
+
+    @TableField("phone")
+    private String phone;
+
     @TableField("`password`")
     private String password;
 
-    /**
-     * 主机地址
-     */
-    @TableField("`host`")
-    private String host;
+    @TableField("enable_state")
+    private Boolean enableState;
 
-    /**
-     * 端口
-     */
-    @TableField("`port`")
-    private Integer port;
+    @TableField("active_state")
+    private Boolean activeState;
 
-    /**
-     * 其它配置
-     */
-    @TableField("config")
-    private String config;
-
-    /**
-     * 描述
-     */
-    @TableField("description")
-    private String description;
+    @TableField("last_login_date")
+    private LocalDateTime lastLoginDate;
 
     @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

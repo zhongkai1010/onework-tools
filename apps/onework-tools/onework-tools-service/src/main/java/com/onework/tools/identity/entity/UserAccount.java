@@ -1,4 +1,4 @@
-package com.onework.tools.database.entity;
+package com.onework.tools.identity.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -23,70 +23,19 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("ow_database_connections")
-public class DatabaseConnection implements Serializable {
+@TableName("ow_user_accounts")
+public class UserAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 唯一值，不重复
-     */
     @TableId(value = "uid", type = IdType.ASSIGN_ID)
     private String uid;
 
-    /**
-     * 连接名称
-     */
-    @TableField("`name`")
-    private String name;
+    @TableField("user_uid")
+    private String userUid;
 
-    /**
-     * 数据库类型
-     */
-    @TableField("db_type")
-    private String dbType;
-
-    /**
-     * 默认数据库
-     */
-    @TableField("`database`")
-    private String database;
-
-    /**
-     * 连接用户名
-     */
-    @TableField("username")
-    private String username;
-
-    /**
-     * 连接密码
-     */
-    @TableField("`password`")
-    private String password;
-
-    /**
-     * 主机地址
-     */
-    @TableField("`host`")
-    private String host;
-
-    /**
-     * 端口
-     */
-    @TableField("`port`")
-    private Integer port;
-
-    /**
-     * 其它配置
-     */
-    @TableField("config")
-    private String config;
-
-    /**
-     * 描述
-     */
-    @TableField("description")
-    private String description;
+    @TableField("account_type")
+    private Integer accountType;
 
     @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

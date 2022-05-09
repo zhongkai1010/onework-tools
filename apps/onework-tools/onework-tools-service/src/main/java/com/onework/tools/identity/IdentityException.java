@@ -15,6 +15,7 @@ public enum IdentityException implements ErrorMessage {
     /**
      *
      */
+    QUERY_USER_EXIST("1001", "该“{0}”已经存在，操作失败"),
     ;
 
     /**
