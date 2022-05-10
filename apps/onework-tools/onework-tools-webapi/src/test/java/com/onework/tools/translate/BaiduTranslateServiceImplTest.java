@@ -1,8 +1,10 @@
 package com.onework.tools.translate;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onework.tools.translate.domain.TranslateResult;
 import com.onework.tools.translate.domain.provide.BaiduTranslateServiceImpl;
+import com.onework.tools.webapi.OneworkToolsWebapiApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,14 @@ import java.util.ArrayList;
  * @Description: 描述
  * @date Date : 2022年04月15日 9:24
  */
-@SpringBootTest()
+@SpringBootTest(classes = OneworkToolsWebapiApplication.class)
 class BaiduTranslateServiceImplTest {
 
     @Autowired
     private BaiduTranslateServiceImpl baiduTranslateService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void getApiName() {
@@ -31,13 +36,13 @@ class BaiduTranslateServiceImplTest {
     }
 
     @Test
-    void translateText() {
+    void translateText() throws JsonProcessingException {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("开发");
         arrayList.add("测试");
         arrayList.add("交付");
         TranslateResult translateResult = baiduTranslateService.translateText(arrayList);
-        System.out.println(JSON.toJSON(translateResult));
+        System.out.println(objectMapper.writeValueAsString(translateResult));
         Assertions.assertTrue(true);
     }
 }

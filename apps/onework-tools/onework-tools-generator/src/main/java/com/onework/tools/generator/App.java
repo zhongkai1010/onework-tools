@@ -1,7 +1,5 @@
 package com.onework.tools.generator;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
@@ -14,9 +12,10 @@ import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onework.tools.generator.mybaits.GeneratorConfigValue;
 import com.onework.tools.generator.openapi.OpenApiParseFactory;
-import com.onework.tools.generator.openapi.entity.OpenApi;
 import com.onework.tools.generator.velocity.ControllerActionModel;
 import com.onework.tools.generator.velocity.ControllerModel;
 import org.apache.velocity.Template;
@@ -108,7 +107,13 @@ public class App {
 
     private static void readJsonFile() {
         String context = getFileContext();
-        Object model = JSON.parse(context);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Object model = null;
+        try {
+            model = objectMapper.readValue(context,Object.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         System.out.println(model.getClass());
     }
 

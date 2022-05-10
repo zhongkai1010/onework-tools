@@ -1,6 +1,6 @@
-server:
-  servlet:
-    context-path: /api
+#server:
+#  servlet:
+#    context-path: /api
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -53,3 +53,6 @@ springdoc:
     disable-swagger-default-url: true
     use-root-path: true
   show-actuator: true
+jwt:
+  secret: onework
+  expiration: 60000000

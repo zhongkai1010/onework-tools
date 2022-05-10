@@ -1,14 +1,14 @@
-package com.onework.tools.module.domain;
+package com.onework.tools;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.onework.tools.CacheKeys;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.error.AppException;
 import com.onework.tools.core.module.Feature;
 import com.onework.tools.core.module.ModuleInfo;
 import com.onework.tools.core.module.ModuleStore;
 import com.onework.tools.module.ModuleException;
+import com.onework.tools.module.domain.FeatureState;
 import com.onework.tools.module.entity.Module;
 import com.onework.tools.module.entity.ModuleErrorMessage;
 import com.onework.tools.module.entity.ModuleFeature;

@@ -37,9 +37,9 @@ public class ModuleManager implements ApplicationBoot {
 
     @Override
     public void init() {
-        initModule();
-        initFeature();
-        initErrorMessage();
+//        initModule();
+//        initFeature();
+//        initErrorMessage();
     }
 
     private void initErrorMessage() {

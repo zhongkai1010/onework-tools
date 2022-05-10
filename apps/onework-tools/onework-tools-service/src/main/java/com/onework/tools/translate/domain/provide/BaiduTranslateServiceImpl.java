@@ -4,7 +4,8 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.http.HttpUtil;
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.error.AppException;
 import com.onework.tools.translate.Language;
@@ -13,6 +14,7 @@ import com.onework.tools.translate.TranslateProperties;
 import com.onework.tools.translate.domain.ThreeTranslateService;
 import com.onework.tools.translate.domain.TranslateResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -46,6 +48,9 @@ import java.util.ArrayList;
 public class BaiduTranslateServiceImpl implements ThreeTranslateService {
 
     private final TranslateProperties translateConfiguration;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public BaiduTranslateServiceImpl(TranslateProperties translateConfiguration) {
         this.translateConfiguration = translateConfiguration;
@@ -106,7 +111,12 @@ public class BaiduTranslateServiceImpl implements ThreeTranslateService {
         builder.queryParam("sign", md5);
         String requestUrl = builder.toUriString();
         String body = HttpUtil.get(requestUrl);
-        TranslateResult translateResult = JSON.parseObject(body, TranslateResult.class);
+        TranslateResult translateResult = null;
+        try {
+            translateResult = objectMapper.readValue(body, TranslateResult.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         Check.notNull(translateResult, new AppException(TranslateException.THREE_API_NOT_DATA));
 

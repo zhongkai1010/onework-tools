@@ -2,9 +2,11 @@ package com.onework.tools.model.domain.repository.imlp;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.alibaba.fastjson.JSON;
+
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
@@ -33,21 +35,28 @@ public class ModelCollectionRepositoryImpl implements ModelCollectionRepository 
     @Override
     public ModelCollection query(String code) {
 
-        com.onework.tools.model.entity.ModelCollection collection = new LambdaQueryChainWrapper<>(
-            modelCollectionMapper).eq(com.onework.tools.model.entity.ModelCollection::getCode, code).one();
+        com.onework.tools.model.entity.ModelCollection collection =
+            new LambdaQueryChainWrapper<>(modelCollectionMapper).eq(
+                com.onework.tools.model.entity.ModelCollection::getCode, code).one();
         return BeanUtil.copyProperties(collection, ModelCollection.class);
     }
 
     @Override
     public ModelCollection insert(ModelCollection modelCollection) {
 
-        com.onework.tools.model.entity.ModelCollection collection
-            = new com.onework.tools.model.entity.ModelCollection();
+        com.onework.tools.model.entity.ModelCollection collection =
+            new com.onework.tools.model.entity.ModelCollection();
         CopyOptions copyOptions = new CopyOptions();
         copyOptions.setIgnoreProperties("items");
         BeanUtil.copyProperties(modelCollection, collection, copyOptions);
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        String items = JSON.toJSONString(modelCollection.getItems());
+        String items = null;
+        try {
+            items = objectMapper.writeValueAsString(modelCollection.getItems());
+        } catch (JsonProcessingException e) {
+            items = null;
+        }
         collection.setItems(items);
 
         int count = modelCollectionMapper.insert(collection);
@@ -60,8 +69,13 @@ public class ModelCollectionRepositoryImpl implements ModelCollectionRepository 
     @Override
     public ModelCollection update(ModelCollection modelCollection) {
 
-        String items = JSON.toJSONString(modelCollection.getItems());
-
+        String items = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            items = objectMapper.writeValueAsString(modelCollection.getItems());
+        } catch (JsonProcessingException e) {
+            items = null;
+        }
         boolean result = new LambdaUpdateChainWrapper<>(modelCollectionMapper).eq(
                 com.onework.tools.model.entity.ModelCollection::getCode, modelCollection.getCode())
             .set(com.onework.tools.model.entity.ModelCollection::getName, modelCollection.getName())
@@ -77,9 +91,9 @@ public class ModelCollectionRepositoryImpl implements ModelCollectionRepository 
     @Override
     public void delete(String code) {
 
-        LambdaQueryChainWrapper<com.onework.tools.model.entity.ModelCollection> queryChainWrapper
-            = new LambdaQueryChainWrapper<>(modelCollectionMapper).eq(
-            com.onework.tools.model.entity.ModelCollection::getCode, code);
+        LambdaQueryChainWrapper<com.onework.tools.model.entity.ModelCollection> queryChainWrapper =
+            new LambdaQueryChainWrapper<>(modelCollectionMapper).eq(
+                com.onework.tools.model.entity.ModelCollection::getCode, code);
 
         int count = modelCollectionMapper.delete(queryChainWrapper);
 

@@ -2,14 +2,17 @@ package com.onework.tools.model.domain.repository.imlp;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.alibaba.fastjson.JSON;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
 import com.onework.tools.model.domain.repository.ModelDataBehaviorRepository;
 import com.onework.tools.model.domain.vo.ModelDataBehavior;
 import com.onework.tools.model.mapper.ModelDataBehaviorMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,6 +28,9 @@ public class ModelDataBehaviorRepositoryImpl implements ModelDataBehaviorReposit
 
     private final ModelDataBehaviorMapper modelDataBehaviorMapper;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     public ModelDataBehaviorRepositoryImpl(ModelDataBehaviorMapper modelDataBehaviorMapper) {
         this.modelDataBehaviorMapper = modelDataBehaviorMapper;
     }
@@ -38,7 +44,7 @@ public class ModelDataBehaviorRepositoryImpl implements ModelDataBehaviorReposit
     }
 
     @Override
-    public void insert(ModelDataBehavior modelDataBehavior) {
+    public void insert(ModelDataBehavior modelDataBehavior)  {
         com.onework.tools.model.entity.ModelDataBehavior behavior
             = new com.onework.tools.model.entity.ModelDataBehavior();
 
@@ -48,8 +54,18 @@ public class ModelDataBehaviorRepositoryImpl implements ModelDataBehaviorReposit
 
         BeanUtil.copyProperties(modelDataBehavior, behavior, copyOptions);
 
-        String inputs = JSON.toJSONString(modelDataBehavior.getInputs());
-        String output = JSON.toJSONString(modelDataBehavior.getOutput());
+        String inputs = null;
+        try {
+            inputs = objectMapper.writeValueAsString(modelDataBehavior.getInputs());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        String output = null;
+        try {
+            output = objectMapper.writeValueAsString(modelDataBehavior.getOutput());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         behavior.setInputs(inputs);
         behavior.setOutput(output);

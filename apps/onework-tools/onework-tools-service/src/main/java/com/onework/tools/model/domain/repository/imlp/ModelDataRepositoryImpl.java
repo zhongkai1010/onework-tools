@@ -2,9 +2,11 @@ package com.onework.tools.model.domain.repository.imlp;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onework.tools.core.Check;
 import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
@@ -37,26 +39,30 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
 
     private final ModelDataBehaviorMapper modelDataBehaviorMapper;
 
+    private final ObjectMapper objectMapper;
+
     public ModelDataRepositoryImpl(ModelDataMapper modelDataMapper, ModelDataItemMapper modelDataItemMapper,
-        ModelDataBehaviorMapper modelDataBehaviorMapper) {
+        ModelDataBehaviorMapper modelDataBehaviorMapper, ObjectMapper objectMapper) {
         this.modelDataMapper = modelDataMapper;
         this.modelDataItemMapper = modelDataItemMapper;
         this.modelDataBehaviorMapper = modelDataBehaviorMapper;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public ModelData query(String code) {
 
-        com.onework.tools.model.entity.ModelData modelData = new LambdaQueryChainWrapper<>(modelDataMapper).eq(
-            com.onework.tools.model.entity.ModelData::getCode, code).one();
+        com.onework.tools.model.entity.ModelData modelData =
+            new LambdaQueryChainWrapper<>(modelDataMapper).eq(com.onework.tools.model.entity.ModelData::getCode, code)
+                .one();
         return BeanUtil.copyProperties(modelData, ModelData.class);
     }
 
     @Override
     public void insert(ModelData modelData) {
 
-        com.onework.tools.model.entity.ModelData model = BeanUtil.copyProperties(modelData,
-            com.onework.tools.model.entity.ModelData.class);
+        com.onework.tools.model.entity.ModelData model =
+            BeanUtil.copyProperties(modelData, com.onework.tools.model.entity.ModelData.class);
 
         int count = modelDataMapper.insert(model);
 
@@ -66,12 +72,12 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
     @Override
     public void update(ModelData modelData) {
 
-        boolean result = new LambdaUpdateChainWrapper<>(modelDataMapper).eq(
-                com.onework.tools.model.entity.ModelData::getCode, modelData.getCode())
-            .set(com.onework.tools.model.entity.ModelData::getName, modelData.getName())
-            .set(com.onework.tools.model.entity.ModelData::getUse, modelData.getUse())
-            .set(com.onework.tools.model.entity.ModelData::getStatus, modelData.getStatus())
-            .set(com.onework.tools.model.entity.ModelData::getDescription, modelData.getDescription()).update();
+        boolean result =
+            new LambdaUpdateChainWrapper<>(modelDataMapper).eq(com.onework.tools.model.entity.ModelData::getCode,
+                    modelData.getCode()).set(com.onework.tools.model.entity.ModelData::getName, modelData.getName())
+                .set(com.onework.tools.model.entity.ModelData::getUse, modelData.getUse())
+                .set(com.onework.tools.model.entity.ModelData::getStatus, modelData.getStatus())
+                .set(com.onework.tools.model.entity.ModelData::getDescription, modelData.getDescription()).update();
 
         Check.isTrue(!result, new AppException(ModelException.UPDATE_MODEL_DATA_ERROR));
     }
@@ -79,9 +85,8 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
     @Override
     public void delete(String code) {
 
-        LambdaQueryChainWrapper<com.onework.tools.model.entity.ModelData> queryChainWrapper
-            = new LambdaQueryChainWrapper<>(modelDataMapper).eq(com.onework.tools.model.entity.ModelData::getCode,
-            code);
+        LambdaQueryChainWrapper<com.onework.tools.model.entity.ModelData> queryChainWrapper =
+            new LambdaQueryChainWrapper<>(modelDataMapper).eq(com.onework.tools.model.entity.ModelData::getCode, code);
 
         int count = modelDataMapper.delete(queryChainWrapper);
 
@@ -92,8 +97,9 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
     public List<ModelDataItem> getItems(String dataCode) {
 
         List<ModelDataItem> data = new ArrayList<>();
-        List<com.onework.tools.model.entity.ModelDataItem> modelDataItems = new LambdaQueryChainWrapper<>(
-            modelDataItemMapper).eq(com.onework.tools.model.entity.ModelDataItem::getDataCode, dataCode).list();
+        List<com.onework.tools.model.entity.ModelDataItem> modelDataItems =
+            new LambdaQueryChainWrapper<>(modelDataItemMapper).eq(
+                com.onework.tools.model.entity.ModelDataItem::getDataCode, dataCode).list();
 
         modelDataItems.forEach(modelDataItem -> data.add(BeanUtil.copyProperties(modelDataItem, ModelDataItem.class)));
 
@@ -103,8 +109,9 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
     @Override
     public List<ModelDataBehavior> getBehaviors(String dataCode) {
         List<ModelDataBehavior> data = new ArrayList<>();
-        List<com.onework.tools.model.entity.ModelDataBehavior> modelDataItems = new LambdaQueryChainWrapper<>(
-            modelDataBehaviorMapper).eq(com.onework.tools.model.entity.ModelDataBehavior::getDataCode, dataCode).list();
+        List<com.onework.tools.model.entity.ModelDataBehavior> modelDataItems =
+            new LambdaQueryChainWrapper<>(modelDataBehaviorMapper).eq(
+                com.onework.tools.model.entity.ModelDataBehavior::getDataCode, dataCode).list();
 
         modelDataItems.forEach(modelDataItem -> {
             ModelDataBehavior modelDataBehavior = new ModelDataBehavior();
@@ -115,12 +122,23 @@ public class ModelDataRepositoryImpl implements ModelDataRepository {
 
             BeanUtil.copyProperties(modelDataItem, modelDataBehavior, copyOptions);
 
-            List<ModelDataBehavior.ModelDataBehaviorInput> inputs = JSON.parseArray(modelDataItem.getInputs(),
-                ModelDataBehavior.ModelDataBehaviorInput.class);
+            List<ModelDataBehavior.ModelDataBehaviorInput> inputs = null;
+            try {
+                inputs = objectMapper.readValue(modelDataItem.getInputs(),
+                    new TypeReference<List<ModelDataBehavior.ModelDataBehaviorInput>>() {{
+                    }});
+            } catch (JsonProcessingException e) {
+                inputs = new ArrayList<>();
+            }
             modelDataBehavior.setInputs(inputs);
 
-            ModelDataBehavior.ModelDataBehaviorOutput output = JSON.parseObject(modelDataItem.getOutput(),
-                ModelDataBehavior.ModelDataBehaviorOutput.class);
+            ModelDataBehavior.ModelDataBehaviorOutput output = null;
+            try {
+                output =
+                    objectMapper.readValue(modelDataItem.getOutput(), ModelDataBehavior.ModelDataBehaviorOutput.class);
+            } catch (JsonProcessingException e) {
+
+            }
             modelDataBehavior.setOutput(output);
 
             data.add(modelDataBehavior);

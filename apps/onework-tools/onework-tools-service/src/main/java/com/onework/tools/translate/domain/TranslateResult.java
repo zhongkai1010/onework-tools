@@ -1,8 +1,6 @@
 package com.onework.tools.translate.domain;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,28 +19,27 @@ import java.util.List;
 @Data
 public class TranslateResult {
 
-    @JSONField(name = "from")
+
     private String from;
 
-    @JSONField(name = "to")
+
     private String to;
 
-    @JSONField(name = "trans_result", serialzeFeatures = SerializerFeature.BeanToArray,
-        parseFeatures = Feature.SupportArrayToBean)
+    @JsonProperty("trans_result")
     private final List<Result> transResult = new ArrayList<>();
 
-    @JSONField(name = "error_code")
+    @JsonProperty("error_code")
     private String errorCode;
 
-    @JSONField(name = "error_msg")
+    @JsonProperty("error_msg")
     private String errorMsg;
 
     @NoArgsConstructor
     @Data
     public static class Result {
-        @JSONField(name = "src")
+
         private String src;
-        @JSONField(name = "dst")
+
         private String dst;
     }
 }

@@ -1,4 +1,4 @@
-package com.onework.tools.webapi.controller;
+package com.onework.tools.webapi.controller.identity;
 
 import com.onework.tools.identity.entity.User;
 import com.onework.tools.web.AbstractCrudController;
