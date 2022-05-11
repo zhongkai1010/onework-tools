@@ -22,7 +22,7 @@ public class JwtAuthenticationLoginFilter extends AbstractAuthenticationProcessi
      * 构造方法，调用父类的，设置登录地址/login，请求方式POST
      */
     public JwtAuthenticationLoginFilter() {
-        super(new AntPathRequestMatcher("/login", "POST"));
+        super(new AntPathRequestMatcher("/account/login", "POST"));
     }
 
     @Override

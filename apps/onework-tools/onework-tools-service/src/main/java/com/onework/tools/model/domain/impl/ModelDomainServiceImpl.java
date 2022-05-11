@@ -1,9 +1,10 @@
-package com.onework.tools.model.domain;
+package com.onework.tools.model.domain.impl;
 
 import com.onework.tools.core.Check;
 import com.onework.tools.core.ExecuteResult;
 import com.onework.tools.core.error.AppException;
 import com.onework.tools.model.ModelException;
+import com.onework.tools.model.domain.ModelDomainService;
 import com.onework.tools.model.domain.repository.ModelCollectionRepository;
 import com.onework.tools.model.domain.repository.ModelItemRepository;
 import com.onework.tools.model.domain.vo.ModelCollection;

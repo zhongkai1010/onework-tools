@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -20,9 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @OpenAPIDefinition(info = @Info(description = "测试服务"))
 public class TestController {
 
+
+
     @Operation(description = "验证Api")
     @GetMapping(value = "index")
-    public static String index() {
+    public static String index(HttpServletRequest httpServletRequest) {
+
+        httpServletRequest.getSession();
+
         return "hello word";
     }
 }

@@ -34,6 +34,7 @@ public class SecurityUser implements UserDetails {
     }
 
     public SecurityUser() {
+
     }
 
     @Override

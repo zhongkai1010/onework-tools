@@ -4,6 +4,7 @@ import com.onework.tools.core.SecurityUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +20,10 @@ public class JwtTokenUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new SecurityUser();
+        SecurityUser securityUser = new SecurityUser();
+        securityUser.setUsername("onework");
+        securityUser.setPassword(new BCryptPasswordEncoder().encode("123456"));
+
+        return securityUser;
     }
 }
