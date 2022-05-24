@@ -1,9 +1,12 @@
 package com.onework.tools.database.domain.schema;
 
-import com.onework.tools.database.domain.schema.entity.DataColumn;
-import com.onework.tools.database.domain.schema.entity.DataDatabase;
-import com.onework.tools.database.domain.schema.entity.DataTable;
-import com.onework.tools.database.domain.schema.entity.DbConnection;
+import com.onework.tools.modularity.database.domain.schema.DatabaseType;
+import com.onework.tools.modularity.database.domain.schema.DbSchemaFactory;
+import com.onework.tools.modularity.database.domain.schema.DbSchemaServer;
+import com.onework.tools.modularity.database.domain.schema.entity.DataColumn;
+import com.onework.tools.modularity.database.domain.schema.entity.DataDatabase;
+import com.onework.tools.modularity.database.domain.schema.entity.DataTable;
+import com.onework.tools.modularity.database.domain.schema.entity.DbConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

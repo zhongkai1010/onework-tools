@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>onework-tools-core</module>
-        <module>onework-tools-service</module>
+        <module>onework-tools-module</module>
         <module>onework-tools-webapi</module>
     </modules>
 
@@ -81,7 +81,7 @@
             </dependency>
             <dependency>
                 <groupId>com.onework.tools</groupId>
-                <artifactId>onework-tools-service</artifactId>
+                <artifactId>onework-tools-module</artifactId>
                 <version>${onework-tools.version}</version>
             </dependency>
             <!-- Spring 核心 -->
@@ -147,11 +147,7 @@
                 <artifactId>annotations</artifactId>
                 <version>${annotations.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-jdk8</artifactId>
-                <version>${mapstruct.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
@@ -210,11 +206,7 @@
                                 <artifactId>lombok</artifactId>
                                 <version>${lombok.version}</version>
                             </path>
-                            <path>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>${mapstruct.version}</version>
-                            </path>
+
                             <path>
                                 <groupId>org.springframework.boot</groupId>
                                 <artifactId>spring-boot-configuration-processor</artifactId>

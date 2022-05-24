@@ -72,7 +72,7 @@
         </dependency>
         <dependency>
             <groupId>com.onework.tools</groupId>
-            <artifactId>onework-tools-service</artifactId>
+            <artifactId>onework-tools-module</artifactId>
         </dependency>
         <!--辅助系列-->
         <dependency>
@@ -98,6 +98,7 @@
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

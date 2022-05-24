@@ -1,7 +1,7 @@
 package com.onework.tools.database;
 
-import com.onework.tools.database.entity.DatabaseTable;
-import com.onework.tools.database.mapper.DatabaseTableMapper;
+import com.onework.tools.modularity.database.entity.DatabaseTable;
+import com.onework.tools.modularity.database.mapper.DatabaseTableMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
