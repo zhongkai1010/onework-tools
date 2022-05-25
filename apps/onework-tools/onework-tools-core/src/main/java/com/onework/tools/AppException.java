@@ -1,6 +1,8 @@
 package com.onework.tools;
 
 import com.onework.tools.domain.module.ModuleManager;
+import com.onework.tools.error.ErrorMessage;
+import com.onework.tools.error.ErrorMessageImlp;
 
 /**
  * @author : zhongkai1010@163.com
@@ -17,6 +19,11 @@ public class AppException extends RuntimeException {
 
     private final ErrorMessage message;
     private final Object[] formatParams;
+
+    public AppException(String message) {
+        this.message = new ErrorMessageImlp(message, message);
+        this.formatParams = new Object[] {};
+    }
 
     /**
      * @param message
@@ -44,14 +51,22 @@ public class AppException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        String message = "unknown unknown";
+
         String code = this.message.getCode();
+        String message = this.message.getMessage();
+
         if (ModuleManager.ErrorMessageMap.containsKey(code)) {
             message = ModuleManager.ErrorMessageMap.get(code);
+            if (formatParams.length > 0) {
+                message = String.format(message, formatParams);
+            }
+        } else {
+            if (message != null) {
+                return message;
+            }
+            return "unknown unknown";
         }
-        if (formatParams.length > 0) {
-            message = String.format(message, formatParams);
-        }
+
         return message;
     }
 }

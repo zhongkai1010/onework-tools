@@ -1,7 +1,7 @@
 package com.onework.tools.domain.module;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.onework.tools.entity.Entity;
+import com.onework.tools.domain.entity.Entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

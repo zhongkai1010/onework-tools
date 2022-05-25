@@ -1,6 +1,6 @@
 package com.onework.tools.modularity.translate;
 
-import com.onework.tools.ErrorMessage;
+import com.onework.tools.error.ErrorMessage;
 import lombok.Getter;
 
 /**

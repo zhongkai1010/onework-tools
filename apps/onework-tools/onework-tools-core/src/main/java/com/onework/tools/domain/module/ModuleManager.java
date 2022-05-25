@@ -2,7 +2,7 @@ package com.onework.tools.domain.module;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.onework.tools.ApplicationBoot;
-import com.onework.tools.ErrorMessage;
+import com.onework.tools.error.ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

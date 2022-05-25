@@ -6,6 +6,8 @@ import com.onework.tools.*;
 import com.onework.tools.domain.module.AppFeature;
 import com.onework.tools.domain.module.AppModule;
 import com.onework.tools.domain.module.ModuleStore;
+import com.onework.tools.error.ErrorMessage;
+import com.onework.tools.error.ErrorMessageImlp;
 import com.onework.tools.modularity.module.domain.FeatureState;
 import com.onework.tools.modularity.module.entity.ModuleErrorMessage;
 import com.onework.tools.modularity.module.entity.ModuleFeature;

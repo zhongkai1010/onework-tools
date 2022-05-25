@@ -1,6 +1,9 @@
 package com.onework.tools.domain.module;
 
-import com.onework.tools.ErrorMessage;
+import com.onework.tools.ApplicationBoot;
+import com.onework.tools.domain.entity.NameCodeValue;
+import com.onework.tools.error.ErrorMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,22 +17,16 @@ import java.util.List;
  * @Description: 模块登记
  * @date Date : 2022年05月23日 15:13
  */
+@Slf4j
 @Component
-public abstract class ModuleRegister {
+public abstract class ModuleRegister implements ApplicationBoot {
 
     /**
-     * 获取模块编码
+     * 获取模块名称和编码
      *
      * @return
      */
-    protected abstract String getModuleCode();
-
-    /**
-     * 获取模块名称
-     *
-     * @return
-     */
-    protected abstract String getModuleName();
+    protected abstract NameCodeValue getModuleNameCode();
 
     /**
      * @return
@@ -45,6 +42,12 @@ public abstract class ModuleRegister {
         return new ArrayList<>();
     }
 
+    @Override
+    public void init() {
+        NameCodeValue value = getModuleNameCode();
+        log.info("------------------init module {}-----------------------", value.getName());
+    }
+
     /**
      * 获取模块信息
      *
@@ -52,12 +55,11 @@ public abstract class ModuleRegister {
      */
     public AppModule getModule() {
 
-        String code = getModuleCode();
-        String name = getModuleName();
+        NameCodeValue nameCodeValue = getModuleNameCode();
         List<AppFeature> features = getFeatures();
         List<ErrorMessage> errorMessages = getErrorMessages();
 
-        AppModule module = new AppModule(code, name);
+        AppModule module = new AppModule(nameCodeValue.getCode(), nameCodeValue.getName());
         module.setFeatures(features);
         module.setErrorMessages(errorMessages);
 

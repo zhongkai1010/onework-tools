@@ -1,6 +1,5 @@
 package com.onework.tools.component.spring.security;
 
-import com.onework.tools.SecurityUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

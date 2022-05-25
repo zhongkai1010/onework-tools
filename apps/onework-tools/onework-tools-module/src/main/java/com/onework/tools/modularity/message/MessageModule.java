@@ -1,7 +1,9 @@
 package com.onework.tools.modularity.message;
 
-import com.onework.tools.ErrorMessage;
-import com.onework.tools.ErrorMessageImlp;
+import com.onework.tools.domain.entity.NameCodeValue;
+import com.onework.tools.ModuleCode;
+import com.onework.tools.error.ErrorMessage;
+import com.onework.tools.error.ErrorMessageImlp;
 import com.onework.tools.domain.module.ModuleRegister;
 import org.springframework.stereotype.Component;
 
@@ -19,19 +21,9 @@ import java.util.List;
 @Component
 public class MessageModule extends ModuleRegister {
 
-    /**
-     * 模块异常编号
-     */
-    public final static String MODULE_CODE = "B008";
-
     @Override
-    protected String getModuleCode() {
-        return MODULE_CODE;
-    }
-
-    @Override
-    protected String getModuleName() {
-        return "消息模块";
+    protected NameCodeValue getModuleNameCode() {
+        return ModuleCode.MESSAGE;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.onework.tools.domain.module;
 
 import cn.hutool.core.collection.ListUtil;
-import com.onework.tools.ErrorMessage;
+import com.onework.tools.error.ErrorMessage;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package com.onework.tools.domain.module;
 
-import com.onework.tools.ErrorMessage;
+import com.onework.tools.error.ErrorMessage;
 import lombok.Getter;
 
 import java.util.ArrayList;

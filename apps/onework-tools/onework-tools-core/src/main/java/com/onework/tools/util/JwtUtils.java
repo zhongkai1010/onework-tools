@@ -1,6 +1,6 @@
 package com.onework.tools.util;
 
-import com.onework.tools.SecurityUser;
+import com.onework.tools.component.spring.security.SecurityUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

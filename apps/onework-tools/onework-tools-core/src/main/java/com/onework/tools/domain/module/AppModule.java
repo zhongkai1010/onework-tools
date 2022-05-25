@@ -1,7 +1,7 @@
 package com.onework.tools.domain.module;
 
-import com.onework.tools.ErrorMessage;
-import com.onework.tools.entity.Entity;
+import com.onework.tools.error.ErrorMessage;
+import com.onework.tools.domain.entity.Entity;
 import lombok.Data;
 
 import java.util.List;

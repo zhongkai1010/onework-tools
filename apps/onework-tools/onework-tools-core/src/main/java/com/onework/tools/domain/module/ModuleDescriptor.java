@@ -1,7 +1,7 @@
 package com.onework.tools.domain.module;
 
-import com.onework.tools.ErrorMessage;
-import com.onework.tools.ErrorMessageImlp;
+import com.onework.tools.error.ErrorMessage;
+import com.onework.tools.error.ErrorMessageImlp;
 import lombok.Getter;
 
 import java.util.ArrayList;
