@@ -1,4 +1,4 @@
-package com.onework.tools.modularity.database.domain;
+package com.onework.tools.modularity.database.domain.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -8,6 +8,7 @@ import com.onework.tools.AppException;
 import com.onework.tools.Check;
 import com.onework.tools.ExecuteResult;
 import com.onework.tools.modularity.database.DatabaseException;
+import com.onework.tools.modularity.database.domain.DatabaseDomainService;
 import com.onework.tools.modularity.database.domain.repository.ColumnRepository;
 import com.onework.tools.modularity.database.domain.repository.ConnectionRepository;
 import com.onework.tools.modularity.database.domain.repository.DatabaseRepository;

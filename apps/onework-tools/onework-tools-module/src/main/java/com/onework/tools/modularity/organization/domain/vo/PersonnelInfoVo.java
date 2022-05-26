@@ -7,16 +7,18 @@ import lombok.Data;
  * @author : zhongkai1010@163.com
  * @version V1.0
  * @Project: onework-tools
- * @Package com.onework.tools.modularity.organization.vo
+ * @Package com.onework.tools.modularity.organization.domain.vo
  * @Description: 描述
- * @date Date : 2022年05月25日 10:52
+ * @date Date : 2022年05月26日 16:51
  */
 @Data
-public class DepartmentVo implements Entity {
+public class PersonnelInfoVo implements Entity {
 
     private String uid;
-    private String name;
-    private String organizationId;
-    private String organizationName;
-    private long personnelCount;
+
+    private String personnelId;
+
+    private String extKey;
+    
+    private String extValue;
 }

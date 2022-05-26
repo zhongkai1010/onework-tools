@@ -1,6 +1,6 @@
 package com.onework.tools;
 
-import com.onework.tools.domain.entity.NameCodeValue;
+import com.onework.tools.modularity.dictionary.DictionaryGroupValue;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -14,7 +14,12 @@ import java.util.Map;
  * @Description: 描述
  * @date Date : 2022年05月25日 16:02
  */
-public enum DictionaryGroupData implements NameCodeValue {
+public enum DictionaryGroupEnum implements DictionaryGroupValue {
+
+    /**
+     *
+     */
+    PERSONNEL_INFO("人员属性", "personnel_info"),
 
     /**
      *
@@ -30,14 +35,15 @@ public enum DictionaryGroupData implements NameCodeValue {
     @Getter
     private String code;
 
+    @Getter
     private Map<String, String> items;
 
-    DictionaryGroupData(String name, String code) {
+    DictionaryGroupEnum(String name, String code) {
         this.name = name;
         this.code = code;
     }
 
-    DictionaryGroupData(String name, String code, Map<String, String> items) {
+    DictionaryGroupEnum(String name, String code, Map<String, String> items) {
         this.name = name;
         this.code = code;
         this.items = items;

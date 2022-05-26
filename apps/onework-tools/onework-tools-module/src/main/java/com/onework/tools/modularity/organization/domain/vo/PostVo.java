@@ -1,7 +1,6 @@
 package com.onework.tools.modularity.organization.domain.vo;
 
 import com.onework.tools.domain.entity.Entity;
-import com.onework.tools.domain.entity.NameCodeValue;
 import lombok.Data;
 
 /**
@@ -13,9 +12,11 @@ import lombok.Data;
  * @date Date : 2022年05月25日 10:53
  */
 @Data
-public class PostVo implements Entity, NameCodeValue {
+public class PostVo implements Entity {
 
     private String uid;
     private String name;
-    private String code;
+    private String organizationId;
+    private String organizationName;
+    private long personnelCount;
 }

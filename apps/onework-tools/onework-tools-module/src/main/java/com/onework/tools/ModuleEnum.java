@@ -11,7 +11,7 @@ import lombok.Getter;
  * @Description: 描述
  * @date Date : 2022年05月25日 9:58
  */
-public enum ModuleCode implements NameCodeValue {
+public enum ModuleEnum implements NameCodeValue {
 
     /**
      * 应用模块
@@ -36,7 +36,7 @@ public enum ModuleCode implements NameCodeValue {
     @Getter
     private final String name;
 
-    ModuleCode(String code, String name) {
+    ModuleEnum(String code, String name) {
         this.code = code;
         this.name = name;
     }

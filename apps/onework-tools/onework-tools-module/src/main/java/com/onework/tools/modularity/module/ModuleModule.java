@@ -1,7 +1,7 @@
 package com.onework.tools.modularity.module;
 
 import com.onework.tools.domain.entity.NameCodeValue;
-import com.onework.tools.ModuleCode;
+import com.onework.tools.ModuleEnum;
 import com.onework.tools.error.ErrorMessage;
 import com.onework.tools.error.ErrorMessageImlp;
 import com.onework.tools.domain.module.AppFeature;
@@ -25,7 +25,7 @@ public class ModuleModule extends ModuleRegister {
 
     @Override
     protected NameCodeValue getModuleNameCode() {
-        return ModuleCode.MODULE;
+        return ModuleEnum.MODULE;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.onework.tools.modularity.authorize;
 
 import com.onework.tools.domain.entity.NameCodeValue;
-import com.onework.tools.ModuleCode;
+import com.onework.tools.ModuleEnum;
 import com.onework.tools.error.ErrorMessage;
 import com.onework.tools.error.ErrorMessageImlp;
 import com.onework.tools.domain.module.ModuleRegister;
@@ -23,7 +23,7 @@ public class AuthorizeModule extends ModuleRegister {
 
     @Override
     protected NameCodeValue getModuleNameCode() {
-        return ModuleCode.AUTHORIZE;
+        return ModuleEnum.AUTHORIZE;
     }
 
     @Override
