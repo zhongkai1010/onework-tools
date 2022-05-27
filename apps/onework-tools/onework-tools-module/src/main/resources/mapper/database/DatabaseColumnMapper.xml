@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onework.tools.modularity.database.mapper.DatabaseColumnMapper">
+<mapper namespace="com.onework.tools.database.mapper.DatabaseColumnMapper">
     <insert id="insertBatch" parameterType="arraylist">
         insert into ow_database_columns (uid, `name`, `code`, cn_uid, db_uid, tb_uid, db_name, `type`, is_null,
         is_unique,`length`,

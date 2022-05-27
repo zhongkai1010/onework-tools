@@ -1,8 +1,7 @@
 package com.onework.tools.translate;
 
 import com.onework.tools.ExecuteResult;
-import com.onework.tools.modularity.translate.Language;
-import com.onework.tools.modularity.translate.domain.TranslateDomainService;
+import com.onework.tools.translate.domain.TranslateDomainService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

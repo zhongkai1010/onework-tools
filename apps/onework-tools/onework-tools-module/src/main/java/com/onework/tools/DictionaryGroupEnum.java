@@ -1,6 +1,6 @@
 package com.onework.tools;
 
-import com.onework.tools.modularity.dictionary.DictionaryGroupValue;
+import com.onework.tools.dictionary.DictionaryGroupValue;
 import lombok.Getter;
 
 import java.util.HashMap;

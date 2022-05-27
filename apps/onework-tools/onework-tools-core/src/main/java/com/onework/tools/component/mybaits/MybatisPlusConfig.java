@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @version: 1.0
  */
 @Configuration
-@MapperScan("com.onework.tools.modularity.*.mapper")
+@MapperScan("com.onework.tools.*.mapper")
 public class MybatisPlusConfig {
 
 }
