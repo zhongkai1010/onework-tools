@@ -3,8 +3,6 @@ package com.onework.tools.authentication.domain.vo;
 import com.onework.tools.domain.entity.Entity;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -24,7 +22,12 @@ public class UserVo implements Entity {
     /**
      * 用户名
      */
-    private String name;
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
 
     /**
      * 邮箱
@@ -37,7 +40,7 @@ public class UserVo implements Entity {
     private String mobilePhone;
 
     /**
-     * 最后登录时间
+     * 锁定状态
      */
-    private LocalDateTime loginDate;
+    private Boolean lockState;
 }
