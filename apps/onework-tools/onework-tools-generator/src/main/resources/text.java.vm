@@ -1,7 +1,0 @@
-public class ${Controller.className} {
-${Controller.actions}
-
-#foreach($action in $Controller.actions)
-public void ${action.methodName}
-#end
-    }
