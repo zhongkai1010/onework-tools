@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.onework.tools</groupId>
+        <artifactId>onework-tools</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>onework-tools-module</artifactId>
+    <packaging>jar</packaging>
+
+    <name>onework-tools-module</name>
+    <description>onework-tools-module</description>
+
+    <dependencies>
+        <!--spring系列-->
+
+        <!--数据库系列-->
+
+        <!--内部模块系列-->
+
+        <!--辅助系列-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.onework.tools</groupId>
+            <artifactId>onework-tools-core</artifactId>
+        </dependency>
+        <!--其它系列-->
+
+    </dependencies>
+</project>

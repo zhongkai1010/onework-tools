@@ -1,0 +1,5363 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "onework_test",
+    "version": "last"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "公共分类",
+      "description": "公共分类"
+    },
+    {
+      "name": "database_connection"
+    },
+    {
+      "name": "database_secheme"
+    },
+    {
+      "name": "database_table"
+    },
+    {
+      "name": "tool_comparison",
+      "description": "匹配清单表"
+    },
+    {
+      "name": "tool_translation"
+    },
+    {
+      "name": "tool_template"
+    },
+    {
+      "name": "model_item",
+      "description": "公共数据项"
+    },
+    {
+      "name": "model_data",
+      "description": "数据模型集成数据项与模型行为"
+    },
+    {
+      "name": "model_collection",
+      "description": "公共数据项集合"
+    },
+    {
+      "name": "model_data_item"
+    },
+    {
+      "name": "model_data_behavior"
+    }
+  ],
+  "paths": {
+    "/upload": {
+      "post": {
+        "tags": [
+          "公共分类"
+        ],
+        "summary": "测试接口01",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "title": "title",
+                  "required": [
+                    "data"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "maxItems": 10,
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "name",
+                          "page"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "page": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/database/connection/update": {
+      "post": {
+        "tags": [
+          "database_connection"
+        ],
+        "summary": "修改数据库连接",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "dbType",
+                  "host",
+                  "name",
+                  "password",
+                  "port",
+                  "uid",
+                  "username"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "dbType": {
+                    "type": "string",
+                    "description": "数据库类型"
+                  },
+                  "database": {
+                    "type": "string",
+                    "description": "默认数据库"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "用户名"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "密码"
+                  },
+                  "host": {
+                    "type": "string",
+                    "description": "主机"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "端口"
+                  },
+                  "config": {
+                    "type": "string",
+                    "description": "扩展配置"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "描述"
+                  },
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "dbType": {
+                          "type": "string"
+                        },
+                        "database": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "host": {
+                          "type": "string"
+                        },
+                        "port": {
+                          "type": "number"
+                        },
+                        "config": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/database/connection/remove": {
+      "post": {
+        "tags": [
+          "database_connection"
+        ],
+        "summary": "删除数据库连接",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "uid集合"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/database/connection/insert": {
+      "post": {
+        "tags": [
+          "database_connection"
+        ],
+        "summary": "添加数据库连接",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "dbType",
+                  "host",
+                  "name",
+                  "password",
+                  "port",
+                  "username"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "dbType": {
+                    "type": "string",
+                    "description": "数据库类型"
+                  },
+                  "database": {
+                    "type": "string",
+                    "description": "默认数据库"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "用户名"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "密码"
+                  },
+                  "host": {
+                    "type": "string",
+                    "description": "主机"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "端口"
+                  },
+                  "config": {
+                    "type": "string",
+                    "description": "扩展配置"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "描述"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "dbType": {
+                          "type": "string"
+                        },
+                        "database": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "host": {
+                          "type": "string"
+                        },
+                        "port": {
+                          "type": "number"
+                        },
+                        "config": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/database/connection/getlist": {
+      "get": {
+        "tags": [
+          "database_connection"
+        ],
+        "summary": "获取数据连接列表",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "createdAt",
+                          "dbType",
+                          "description",
+                          "host",
+                          "name",
+                          "password",
+                          "port",
+                          "uid",
+                          "updatedAt",
+                          "username"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "dbType": {
+                            "type": "string"
+                          },
+                          "username": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          },
+                          "host": {
+                            "type": "string"
+                          },
+                          "port": {
+                            "type": "number"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/database/scheme/syncDataBase": {
+      "post": {
+        "tags": [
+          "database_secheme"
+        ],
+        "summary": "同步连接数据库结构",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "database",
+                  "uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "string",
+                    "description": "连接uid"
+                  },
+                  "database": {
+                    "type": "string",
+                    "description": "数据库名称"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "cnUid",
+                          "code",
+                          "columns",
+                          "createdAt",
+                          "dbName",
+                          "description",
+                          "name",
+                          "uid",
+                          "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "cnUid": {
+                            "type": "string"
+                          },
+                          "dbName": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "columns": {
+                            "type": "array",
+                            "items": {
+                              "required": [
+                                "cnUid",
+                                "code",
+                                "createdAt",
+                                "dbName",
+                                "description",
+                                "isNull",
+                                "isUnique",
+                                "name",
+                                "tbUid",
+                                "type",
+                                "uid",
+                                "updatedAt"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "uid": {
+                                  "type": "string"
+                                },
+                                "cnUid": {
+                                  "type": "string"
+                                },
+                                "tbUid": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "code": {
+                                  "type": "string"
+                                },
+                                "dbName": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "isNull": {
+                                  "type": "boolean"
+                                },
+                                "isUnique": {
+                                  "type": "boolean"
+                                },
+                                "description": {
+                                  "type": "string"
+                                },
+                                "updatedAt": {
+                                  "type": "string"
+                                },
+                                "createdAt": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/database/scheme/getTables": {
+      "get": {
+        "tags": [
+          "database_secheme"
+        ],
+        "summary": "获取指定数据库的表列表",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "description": "数据库连接uid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "database",
+            "in": "query",
+            "description": "数据库名称",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/database/scheme/getTableColumns": {
+      "get": {
+        "tags": [
+          "database_secheme"
+        ],
+        "summary": "获取指定表的所有字段列表",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "cnUid": {
+                            "type": "string"
+                          },
+                          "tbUid": {
+                            "type": "string"
+                          },
+                          "dbName": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "isNull": {
+                            "type": "boolean"
+                          },
+                          "isUnique": {
+                            "type": "boolean"
+                          },
+                          "oredr": {
+                            "type": "number"
+                          },
+                          "defaultValue": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/database/scheme/getDatabases": {
+      "get": {
+        "tags": [
+          "database_secheme"
+        ],
+        "summary": "获取指定连接的数据库列表",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "code",
+                          "name"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/database/scheme/getData": {
+      "get": {
+        "tags": [
+          "database_secheme"
+        ],
+        "summary": "获取数据库结构（原始sql）",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "database",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "table",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/database/table/getList": {
+      "post": {
+        "tags": [
+          "database_table"
+        ],
+        "summary": "查询数据库表",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tool/comparison/update": {
+      "post": {
+        "tags": [
+          "tool_comparison"
+        ],
+        "summary": "修改编码规则",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "datas",
+                  "defaultValue",
+                  "name",
+                  "uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "datas": {
+                    "type": "array",
+                    "description": "对照数据",
+                    "items": {
+                      "required": [
+                        "key",
+                        "value"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "description": "key值"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "value值"
+                        }
+                      },
+                      "description": "对照清单"
+                    }
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "data",
+                        "defaultValue",
+                        "name",
+                        "uid"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string",
+                          "description": "uid"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "data": {
+                          "maxItems": 20,
+                          "minItems": 1,
+                          "uniqueItems": true,
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "key",
+                              "value"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "defaultValue": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/comparison/delete": {
+      "post": {
+        "tags": [
+          "tool_comparison"
+        ],
+        "summary": "删除匹配规则",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "删除对照规则uid"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/comparison/add": {
+      "post": {
+        "tags": [
+          "tool_comparison"
+        ],
+        "summary": "新增匹配规则",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "datas",
+                  "defaultValue",
+                  "name"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "datas": {
+                    "type": "array",
+                    "description": "对照数据",
+                    "items": {
+                      "required": [
+                        "key",
+                        "value"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "description": "key值"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "value值"
+                        }
+                      },
+                      "description": "对照清单"
+                    }
+                  },
+                  "defaultValue": {
+                    "type": "string",
+                    "description": "默认值"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "datas",
+                        "defaultValue",
+                        "name",
+                        "uid"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string",
+                          "description": "uid"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "datas": {
+                          "maxItems": 20,
+                          "minItems": 1,
+                          "uniqueItems": true,
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "key",
+                              "value"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "defaultValue": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/comparison/getList": {
+      "post": {
+        "tags": [
+          "tool_comparison"
+        ],
+        "summary": "获取对照表清单",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "type": "object"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "maxItems": 20,
+                      "minItems": 10,
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "code",
+                          "createdAt",
+                          "datas",
+                          "defaultValue",
+                          "name",
+                          "uid",
+                          "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string",
+                            "description": "uid"
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "编码"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "名称"
+                          },
+                          "datas": {
+                            "maxItems": 20,
+                            "minItems": 1,
+                            "uniqueItems": true,
+                            "type": "array",
+                            "items": {
+                              "required": [
+                                "key",
+                                "value"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "defaultValue": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/translation/getlist": {
+      "post": {
+        "tags": [
+          "tool_translation"
+        ],
+        "summary": "查询翻译记录",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "分页",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "个数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "排序方式",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "排序类型",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "description": "文本语言"
+                  },
+                  "to": {
+                    "type": "string",
+                    "description": "译文语言"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "请求状态"
+                    },
+                    "data": {
+                      "required": [
+                        "rows",
+                        "total"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "总数"
+                        },
+                        "rows": {
+                          "type": "array",
+                          "description": "数据集",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "type": "string",
+                                "description": "唯一值"
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "文本"
+                              },
+                              "translation": {
+                                "type": "string",
+                                "description": "译文"
+                              },
+                              "from": {
+                                "type": "string",
+                                "description": "原文本语言"
+                              },
+                              "to": {
+                                "type": "string",
+                                "description": "译文语言"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "description": "创建时间"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "description": "修改时间"
+                              },
+                              "deletedAt": {
+                                "type": "string",
+                                "description": "删除时间"
+                              }
+                            },
+                            "description": "数据集合"
+                          }
+                        }
+                      },
+                      "description": "数据"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {},
+                      "description": "异常"
+                    }
+                  },
+                  "description": "请求结果结构"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/translation/": {
+      "get": {
+        "tags": [
+          "tool_translation"
+        ],
+        "summary": "翻译文本",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tool/template/update": {
+      "post": {
+        "tags": [
+          "tool_template"
+        ],
+        "summary": "修改字符模板",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "datas",
+                  "name",
+                  "uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "datas": {
+                    "type": "array",
+                    "description": "对照数据",
+                    "items": {
+                      "required": [
+                        "key",
+                        "value"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "description": "key值"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "value值"
+                        }
+                      },
+                      "description": "对照清单"
+                    }
+                  },
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "name",
+                        "parameters",
+                        "template",
+                        "uid"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string",
+                          "description": "uid"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "template": {
+                          "type": "string"
+                        },
+                        "parameters": {
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "name",
+                              "rule"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "rule": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/template/delete": {
+      "post": {
+        "tags": [
+          "tool_template"
+        ],
+        "summary": "删除字符模板",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "删除对照规则uid"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/template/add": {
+      "post": {
+        "tags": [
+          "tool_template"
+        ],
+        "summary": "新增字符模板",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "name",
+                  "parameters",
+                  "template"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "template": {
+                    "type": "string",
+                    "description": "对照数据"
+                  },
+                  "parameters": {
+                    "type": "array",
+                    "description": "参数数据",
+                    "items": {
+                      "required": [
+                        "name",
+                        "rule"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "参数名称"
+                        },
+                        "rule": {
+                          "type": "string",
+                          "description": "参数规则"
+                        }
+                      },
+                      "description": "参数集合"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "name",
+                        "parameters",
+                        "template",
+                        "uid"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string",
+                          "description": "uid"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "template": {
+                          "type": "string"
+                        },
+                        "parameters": {
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "name",
+                              "rule"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "rule": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/tool/template/getlist": {
+      "get": {
+        "tags": [
+          "tool_template"
+        ],
+        "summary": "获取字符模板列表",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string",
+                            "description": "uid"
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "编码"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "名称"
+                          },
+                          "template": {
+                            "type": "string"
+                          },
+                          "parameters": {
+                            "type": "array",
+                            "items": {
+                              "required": [
+                                "name",
+                                "rule"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "rule": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/item/save": {
+      "put": {
+        "tags": [
+          "model_item"
+        ],
+        "summary": "保存数据项（新增或修改）",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "请求数据",
+                "items": {
+                  "required": [
+                    "code",
+                    "name",
+                    "type"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "uid": {
+                      "type": "string",
+                      "description": "唯一值"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "名称"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "编码"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "数据项类型"
+                    }
+                  },
+                  "description": "数据"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "description": "数据结果",
+                      "items": {
+                        "required": [
+                          "code",
+                          "createdAt",
+                          "name",
+                          "type",
+                          "uid",
+                          "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string",
+                            "description": "唯一值"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "名称"
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "编码"
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "数据项类型"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "description": "创建时间"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "description": "修改时间"
+                          }
+                        },
+                        "description": "数据"
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/item/update": {
+      "patch": {
+        "tags": [
+          "model_item"
+        ],
+        "summary": "修改数据项（单条）",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "code",
+                  "name",
+                  "type",
+                  "uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "数据项类型"
+                  },
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "name",
+                        "type",
+                        "uid",
+                        "updatedAt"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string",
+                          "description": "唯一值"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "代码"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "数据项类型"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "创建时间"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "description": "修改时间"
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/item/remove": {
+      "post": {
+        "tags": [
+          "model_item"
+        ],
+        "summary": "删除数据项",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "请求数据",
+                "items": {
+                  "type": "string",
+                  "description": "唯一值集合"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "description": "数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/item/search": {
+      "get": {
+        "tags": [
+          "model_item"
+        ],
+        "summary": "检索数据项（关键字、限制10条）",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "maxItems": 10,
+                      "minItems": 0,
+                      "uniqueItems": true,
+                      "type": "array",
+                      "description": "响应数据",
+                      "items": {
+                        "required": [
+                          "code",
+                          "createdAt",
+                          "name",
+                          "type",
+                          "uid",
+                          "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string",
+                            "description": "唯一值"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "名称"
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "代码"
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "数据项类型"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "description": "创建时间"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "description": "修改时间"
+                          }
+                        },
+                        "description": "数据"
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "请求状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/item/insert": {
+      "post": {
+        "tags": [
+          "model_item"
+        ],
+        "summary": "添加数据项",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "code",
+                  "name",
+                  "type"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "数据项类型"
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "name",
+                        "type",
+                        "uid",
+                        "updatedAt"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string",
+                          "description": "唯一值"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "代码"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "数据项类型"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "创建时间"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "description": "修改时间"
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/item/getlist": {
+      "post": {
+        "tags": [
+          "model_item"
+        ],
+        "summary": "获取数据项列表（分页、排序、关键字）",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "个数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "排序字段",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "排序方式，desc、asc",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "uniqueItems": true,
+                    "type": "array",
+                    "description": "类型集合",
+                    "items": {
+                      "type": "string",
+                      "description": "数据项类型"
+                    }
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number"
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "code",
+                              "createdAt",
+                              "cumulate",
+                              "name",
+                              "type",
+                              "uid",
+                              "updatedAt"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "code": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "cumulate": {
+                                "type": "number"
+                              },
+                              "createdAt": {
+                                "type": "string"
+                              },
+                              "updatedAt": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/update": {
+      "patch": {
+        "tags": [
+          "model_data"
+        ],
+        "summary": "修改数据模型",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "behaviors",
+                  "code",
+                  "items",
+                  "name",
+                  "status",
+                  "uid",
+                  "use"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "items": {
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "description": "数据项集合",
+                    "items": {
+                      "required": [
+                        "code",
+                        "itemType",
+                        "name"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "itemType": {
+                          "type": "string",
+                          "description": "类型"
+                        },
+                        "isNull": {
+                          "type": "boolean",
+                          "description": "是否可未空"
+                        },
+                        "length": {
+                          "type": "integer",
+                          "description": "长度"
+                        },
+                        "precision": {
+                          "type": "integer",
+                          "description": "小数位数"
+                        },
+                        "defaultValue": {
+                          "type": "string",
+                          "description": "默认值"
+                        }
+                      },
+                      "description": "数据项"
+                    }
+                  },
+                  "behaviors": {
+                    "maxItems": 10,
+                    "minItems": 0,
+                    "type": "array",
+                    "description": "行为集合",
+                    "items": {
+                      "required": [
+                        "code",
+                        "inputs",
+                        "name",
+                        "outputType"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "行为名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "行为编码"
+                        },
+                        "inputs": {
+                          "type": "array",
+                          "description": "行为输入参数集合",
+                          "items": {
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "description": "参数类型 "
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "输入参数值"
+                              }
+                            }
+                          }
+                        },
+                        "outputType": {
+                          "type": "string",
+                          "description": "输出类型"
+                        },
+                        "outputValue": {
+                          "type": "string",
+                          "description": "输出值"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "行为描述"
+                        }
+                      },
+                      "description": "行为"
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "描述"
+                  },
+                  "use": {
+                    "type": "string",
+                    "description": "用途"
+                  },
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "状态"
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "created_at",
+                        "id",
+                        "name",
+                        "status",
+                        "type",
+                        "uid",
+                        "updated_at"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "items": {
+                          "maxItems": 10,
+                          "minItems": 1,
+                          "uniqueItems": true,
+                          "type": "array",
+                          "description": "数据项集合",
+                          "items": {
+                            "required": [
+                              "code",
+                              "isNull",
+                              "name",
+                              "type"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "名称"
+                              },
+                              "code": {
+                                "type": "string",
+                                "description": "编码"
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "类型"
+                              },
+                              "uid": {
+                                "type": "string",
+                                "description": "唯一值"
+                              },
+                              "isNull": {
+                                "type": "boolean",
+                                "description": "是否可未空"
+                              },
+                              "length": {
+                                "type": "integer",
+                                "description": "长度"
+                              },
+                              "precision": {
+                                "type": "integer",
+                                "description": "小数位数"
+                              },
+                              "defaultValue": {
+                                "type": "string",
+                                "description": "默认值"
+                              }
+                            },
+                            "description": "数据项"
+                          }
+                        },
+                        "behaviors": {
+                          "maxItems": 10,
+                          "minItems": 0,
+                          "type": "array",
+                          "description": "行为集合",
+                          "items": {
+                            "required": [
+                              "code",
+                              "input",
+                              "name",
+                              "outputType"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "行为名称"
+                              },
+                              "code": {
+                                "type": "string",
+                                "description": "行为编码"
+                              },
+                              "input": {
+                                "type": "array",
+                                "description": "行为输入参数集合",
+                                "items": {
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "description": "参数类型 "
+                                    },
+                                    "valueUid": {
+                                      "type": "string",
+                                      "description": "输入参数值"
+                                    }
+                                  }
+                                }
+                              },
+                              "outputType": {
+                                "type": "string",
+                                "description": "输出类型 "
+                              },
+                              "outputValue": {
+                                "type": "string",
+                                "description": "输出值"
+                              },
+                              "description": {
+                                "type": "string",
+                                "description": "行为描述"
+                              }
+                            },
+                            "description": "行为"
+                          }
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "描述"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "类型 "
+                        },
+                        "id": {
+                          "type": "integer",
+                          "description": "ID"
+                        },
+                        "uid": {
+                          "type": "string",
+                          "description": "唯一值"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "description": "创建时间"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "description": "修改时间"
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "状态 "
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/remove": {
+      "post": {
+        "tags": [
+          "model_data"
+        ],
+        "summary": "删除数据模型",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "请求数据",
+                "items": {
+                  "type": "string",
+                  "description": "唯一值"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/getlist": {
+      "post": {
+        "tags": [
+          "model_data"
+        ],
+        "summary": "数据模型列表（分页、排序、关键字）",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "个数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "排序类型，0：无，1：名称、2：编码、3：类型、4：创建时间、5：修改时间",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "排序方式，desc、asc",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "status",
+                  "use"
+                ],
+                "type": "object",
+                "properties": {
+                  "use": {
+                    "type": "array",
+                    "description": "类型集合",
+                    "items": {
+                      "type": "string",
+                      "description": "数据模型类型 "
+                    }
+                  },
+                  "status": {
+                    "type": "array",
+                    "description": "状态集合",
+                    "items": {
+                      "type": "string",
+                      "description": "数据状态"
+                    }
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "total"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "rows",
+                        "total"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "rows": {
+                          "type": "array",
+                          "description": "数据",
+                          "items": {
+                            "required": [
+                              "code",
+                              "items",
+                              "name"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "名称"
+                              },
+                              "code": {
+                                "type": "string",
+                                "description": "编码"
+                              },
+                              "items": {
+                                "maxItems": 10,
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "type": "array",
+                                "description": "数据项集合",
+                                "items": {
+                                  "required": [
+                                    "code",
+                                    "isNull",
+                                    "itemType",
+                                    "name"
+                                  ],
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "description": "唯一值"
+                                    },
+                                    "code": {
+                                      "type": "string",
+                                      "description": "编码"
+                                    },
+                                    "itemType": {
+                                      "type": "string",
+                                      "description": "类型"
+                                    },
+                                    "isNull": {
+                                      "type": "boolean",
+                                      "description": "是否可未空"
+                                    },
+                                    "length": {
+                                      "type": "integer",
+                                      "description": "长度"
+                                    },
+                                    "precision": {
+                                      "type": "integer",
+                                      "description": "小数位数"
+                                    },
+                                    "defaultValue": {
+                                      "type": "string",
+                                      "description": "默认值"
+                                    }
+                                  },
+                                  "description": "数据项"
+                                }
+                              },
+                              "behaviors": {
+                                "maxItems": 10,
+                                "minItems": 0,
+                                "type": "array",
+                                "description": "行为集合",
+                                "items": {
+                                  "required": [
+                                    "code",
+                                    "input",
+                                    "name",
+                                    "outputType"
+                                  ],
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "description": "行为名称"
+                                    },
+                                    "code": {
+                                      "type": "string",
+                                      "description": "行为编码"
+                                    },
+                                    "input": {
+                                      "type": "array",
+                                      "description": "行为输入参数集合",
+                                      "items": {
+                                        "required": [
+                                          "type"
+                                        ],
+                                        "type": "object",
+                                        "properties": {
+                                          "type": {
+                                            "type": "string",
+                                            "description": "参数类型 "
+                                          },
+                                          "value": {
+                                            "type": "string",
+                                            "description": "输入参数值"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "outputType": {
+                                      "type": "string",
+                                      "description": "输出类型 "
+                                    },
+                                    "outputValue": {
+                                      "type": "string",
+                                      "description": "输出值"
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "description": "行为描述"
+                                    }
+                                  },
+                                  "description": "行为"
+                                }
+                              },
+                              "description": {
+                                "type": "string",
+                                "description": "描述"
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "类型 "
+                              },
+                              "id": {
+                                "type": "integer",
+                                "description": "ID"
+                              },
+                              "uid": {
+                                "type": "string",
+                                "description": "唯一值"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "description": "创建时间"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "description": "修改时间"
+                              },
+                              "status": {
+                                "type": "string",
+                                "description": "状态"
+                              }
+                            }
+                          }
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "请求状态"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "总页数"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/search": {
+      "get": {
+        "tags": [
+          "model_data"
+        ],
+        "summary": "检索数据模型（关键字、限制10条）",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "description": "响应数据",
+                      "items": {
+                        "required": [
+                          "code",
+                          "createdAt",
+                          "id",
+                          "name",
+                          "status",
+                          "uid",
+                          "updatedAt",
+                          "use"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "名称"
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "编码"
+                          },
+                          "items": {
+                            "maxItems": 10,
+                            "minItems": 1,
+                            "uniqueItems": true,
+                            "type": "array",
+                            "description": "数据项集合",
+                            "items": {
+                              "required": [
+                                "code",
+                                "isNull",
+                                "name",
+                                "type"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "名称"
+                                },
+                                "code": {
+                                  "type": "string",
+                                  "description": "编码"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "description": "类型"
+                                },
+                                "uid": {
+                                  "type": "string",
+                                  "description": "唯一值"
+                                },
+                                "isNull": {
+                                  "type": "boolean",
+                                  "description": "是否可未空"
+                                },
+                                "length": {
+                                  "type": "integer",
+                                  "description": "长度"
+                                },
+                                "precision": {
+                                  "type": "integer",
+                                  "description": "小数位数"
+                                },
+                                "defaultValue": {
+                                  "type": "string",
+                                  "description": "默认值"
+                                }
+                              },
+                              "description": "数据项"
+                            }
+                          },
+                          "behaviors": {
+                            "maxItems": 10,
+                            "minItems": 0,
+                            "type": "array",
+                            "description": "行为集合",
+                            "items": {
+                              "required": [
+                                "code",
+                                "input",
+                                "name",
+                                "output"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "行为名称"
+                                },
+                                "code": {
+                                  "type": "string",
+                                  "description": "行为编码"
+                                },
+                                "input": {
+                                  "type": "array",
+                                  "description": "行为输入参数集合",
+                                  "items": {
+                                    "required": [
+                                      "type"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "description": "参数类型 "
+                                      },
+                                      "valueUid": {
+                                        "type": "string",
+                                        "description": "输入参数值"
+                                      }
+                                    }
+                                  }
+                                },
+                                "output": {
+                                  "type": "string",
+                                  "description": "行为输出参数集合"
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "description": "行为描述"
+                                }
+                              },
+                              "description": "行为"
+                            }
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "描述"
+                          },
+                          "use": {
+                            "type": "string",
+                            "description": "类型 "
+                          },
+                          "id": {
+                            "type": "integer",
+                            "description": "ID"
+                          },
+                          "uid": {
+                            "type": "string",
+                            "description": "唯一值"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "description": "创建时间"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "description": "修改时间"
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "状态 "
+                          }
+                        },
+                        "description": "数据"
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/data/insert": {
+      "post": {
+        "tags": [
+          "model_data"
+        ],
+        "summary": "添加数据模型",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "description",
+                  "name",
+                  "use"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "use": {
+                    "type": "string",
+                    "description": "用途"
+                  },
+                  "items": {
+                    "type": "array",
+                    "description": "数据项集合",
+                    "items": {
+                      "required": [
+                        "code",
+                        "itemType",
+                        "name"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "itemType": {
+                          "type": "string",
+                          "description": "类型"
+                        },
+                        "isNull": {
+                          "type": "boolean",
+                          "description": "是否可未空"
+                        },
+                        "isUnique": {
+                          "type": "boolean",
+                          "description": "是否唯一"
+                        }
+                      }
+                    }
+                  },
+                  "behaviors": {
+                    "maxItems": 10,
+                    "minItems": 0,
+                    "type": "array",
+                    "description": "行为集合",
+                    "items": {
+                      "required": [
+                        "code",
+                        "description",
+                        "name",
+                        "operationType"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "行为名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "行为编码"
+                        },
+                        "operationType": {
+                          "type": "string",
+                          "description": "输出值"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "行为描述"
+                        }
+                      }
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "描述"
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "id",
+                        "items",
+                        "name",
+                        "status",
+                        "type",
+                        "uid",
+                        "updatedAt"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "items": {
+                          "maxItems": 10,
+                          "minItems": 1,
+                          "uniqueItems": true,
+                          "type": "array",
+                          "description": "数据项集合",
+                          "items": {
+                            "required": [
+                              "code",
+                              "createdAt",
+                              "id",
+                              "itemType",
+                              "name",
+                              "uid",
+                              "updatedAt"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "唯一值"
+                              },
+                              "code": {
+                                "type": "string",
+                                "description": "编码"
+                              },
+                              "itemType": {
+                                "type": "string",
+                                "description": "类型"
+                              },
+                              "isNull": {
+                                "type": "boolean",
+                                "description": "是否可未空"
+                              },
+                              "length": {
+                                "type": "integer",
+                                "description": "长度"
+                              },
+                              "precision": {
+                                "type": "integer",
+                                "description": "小数位数"
+                              },
+                              "defaultValue": {
+                                "type": "string",
+                                "description": "默认值"
+                              },
+                              "id": {
+                                "type": "integer"
+                              },
+                              "uid": {
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "string"
+                              },
+                              "updatedAt": {
+                                "type": "string"
+                              }
+                            },
+                            "description": "数据项"
+                          }
+                        },
+                        "behaviors": {
+                          "maxItems": 10,
+                          "minItems": 0,
+                          "type": "array",
+                          "description": "行为集合",
+                          "items": {
+                            "required": [
+                              "code",
+                              "createdAt",
+                              "description",
+                              "id",
+                              "inputs",
+                              "name",
+                              "operationType",
+                              "uid",
+                              "updatedAt"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "行为名称"
+                              },
+                              "id": {
+                                "type": "integer"
+                              },
+                              "uid": {
+                                "type": "string"
+                              },
+                              "code": {
+                                "type": "string",
+                                "description": "行为编码"
+                              },
+                              "inputs": {
+                                "type": "array",
+                                "description": "行为输入参数集合",
+                                "items": {
+                                  "required": [
+                                    "type",
+                                    "value"
+                                  ],
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "description": "参数类型 "
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "description": "输入参数值"
+                                    }
+                                  }
+                                }
+                              },
+                              "outputs": {
+                                "type": "object",
+                                "properties": {},
+                                "description": "输出类型 "
+                              },
+                              "operationType": {
+                                "type": "string",
+                                "description": "操作类型"
+                              },
+                              "description": {
+                                "type": "string",
+                                "description": "行为描述"
+                              },
+                              "createdAt": {
+                                "type": "string"
+                              },
+                              "updatedAt": {
+                                "type": "string"
+                              }
+                            },
+                            "description": "行为"
+                          }
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "描述"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "类型 "
+                        },
+                        "id": {
+                          "type": "integer",
+                          "description": "ID"
+                        },
+                        "uid": {
+                          "type": "string",
+                          "description": "唯一值"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "创建时间"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "description": "修改时间"
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "状态"
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "处理状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/collection/update": {
+      "patch": {
+        "tags": [
+          "model_collection"
+        ],
+        "summary": "修改数据集",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "description",
+                  "itemUids",
+                  "name",
+                  "uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "itemUids": {
+                    "uniqueItems": true,
+                    "type": "array",
+                    "description": "数据项集合",
+                    "items": {
+                      "type": "string",
+                      "description": "数据项唯一值",
+                      "enum": [
+                        "d3543e20-ac3d-4ce2-8cb6-8f5c74bd0d5d",
+                        "91767633-f227-4933-b27d-15be6e146101",
+                        "a75585b9-2732-4387-bf1e-7475c1fe912e",
+                        "a108196c-f981-4d71-aef0-047c2f3df762",
+                        "07eb28e7-226b-4285-8761-eafd0b96bbd6",
+                        "3c85a609-6d05-42cd-928c-e6ccb8b3060e",
+                        "e5aa8dd6-3040-43e1-985b-e23f8a7e4d8f",
+                        "de0f92cb-fad2-44a5-a859-c28620893c7c",
+                        "44e721fd-0b8e-4e89-a488-adb331a775ff",
+                        "7c9d6cf2-0c0e-41c9-bb13-a75a0a293b33",
+                        "ef8d008a-7135-44e7-8e85-490d777c7957",
+                        "13f9967f-b40e-4840-8941-25f4ce23f8e3",
+                        "7d4a039a-cc97-4795-b975-a55456c449f5",
+                        "08e8dac2-efb3-43b4-befa-66fdb8c4fa05",
+                        "2c59cb07-23a4-4182-80ad-16beabdc27cb",
+                        "45cf86fa-cc76-45c9-bbb1-7498a53d0e35",
+                        "d6590058-2f1d-497b-bc99-c8f7354e6b25",
+                        "0e873aea-d8df-45b6-91a0-38da9deec588",
+                        "85c86782-4858-4eec-97dc-06169b29fb13",
+                        "fbdf4049-c71e-46f8-b0f8-fa5d30e33b11",
+                        "be89f8d5-7875-4cbf-829d-0f051ee48388",
+                        "a6b1cd51-313a-45fc-bb9a-50ffa35bbc99",
+                        "c384db77-061a-4087-90eb-9d4b88616727",
+                        "1861d114-598a-414f-a5c1-5b0393e3e884",
+                        "d35c035a-d483-4f2d-802e-949d018d153d",
+                        "3d925d9d-1636-4b6c-b6b3-2e68884bca63",
+                        "fd9f38f0-ead3-44fa-943d-c0313d7d47bc",
+                        "a3bb5939-fbab-49c0-bfd6-4142eea4c230",
+                        "c054491a-c86b-4f83-93d6-f7f0f7b32d00",
+                        "c914a3e8-0883-4add-971e-f7f4d29d04d6",
+                        "b466a802-cbd6-44d7-a80e-74e2eb639d07",
+                        "d552a454-9181-4971-8753-c2afb00ced1a",
+                        "54ffee6f-5165-4d75-84ba-de66195eb2d1",
+                        "a29879fa-5aa0-4fda-b0d6-e3b45a3ccc4c",
+                        "47091e39-3734-4ee4-8799-c87848484ccb",
+                        "91918ad1-594c-4b72-bbd1-ca6cd9a62e79"
+                      ]
+                    }
+                  },
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值",
+                    "enum": [
+                      "d554b7c1-676d-4a51-8a9c-176c500a389e",
+                      "9b95c85a-91f2-4867-94d6-0cf03dabd9d6",
+                      "2fc3bebf-99f6-401b-ba66-ffc8bbf5b889",
+                      "f838c8cd-c21a-4776-a8c1-70dd69f31d9f",
+                      "d93a5183-1d31-4ec4-9332-20a8fe87fd8a",
+                      "f01d41cd-18ce-4d12-b403-5b1f920bc569",
+                      "5c6ba08d-9df2-4a57-a610-ab73d69db205",
+                      "5331a6a8-c2fd-46bf-826d-b9d0abc70c64",
+                      "8e76acfd-6256-40a6-ab72-69a2c53a3a37",
+                      "9331a9ff-76bd-4294-9546-8330eaa0e416",
+                      "ba9fc50d-0a5a-472c-9571-682d95d71c4d",
+                      "9f99cced-c571-48a4-9bf3-d743e6f74cf6",
+                      "e5c6c363-7fc0-479d-b5c3-5b1c8f91903b",
+                      "03d133d6-476c-4ef9-8f1c-6ae7ce3a8019",
+                      "7dbc03b3-3eaf-4e33-9959-5f8a5db3a200",
+                      "cd0d6364-1cc8-4a32-9882-822dc3bfc9fc",
+                      "9c685206-f34b-4a8c-ae27-babd9b5ed7da"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "描述"
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "uid": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "code": {
+                          "type": "string"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "code",
+                              "createdAt",
+                              "cumulate",
+                              "name",
+                              "type",
+                              "uid",
+                              "updatedAt"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "code": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "cumulate": {
+                                "type": "number"
+                              },
+                              "createdAt": {
+                                "type": "string"
+                              },
+                              "updatedAt": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/collection/remove": {
+      "post": {
+        "tags": [
+          "model_collection"
+        ],
+        "summary": "删除数据集",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "请求数据",
+                "items": {
+                  "type": "string",
+                  "description": "唯一值"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {},
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "请求状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/collection/search": {
+      "get": {
+        "tags": [
+          "model_collection"
+        ],
+        "summary": "检索数据集合（关键字、限制10条）",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "code",
+                          "createdAt",
+                          "description",
+                          "items",
+                          "name",
+                          "uid",
+                          "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "uid": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "required": [
+                                "code",
+                                "createdAt",
+                                "cumulate",
+                                "name",
+                                "type",
+                                "uid",
+                                "updatedAt"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "uid": {
+                                  "type": "string"
+                                },
+                                "code": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "cumulate": {
+                                  "type": "number"
+                                },
+                                "createdAt": {
+                                  "type": "string"
+                                },
+                                "updatedAt": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/collection/insert": {
+      "post": {
+        "tags": [
+          "model_collection"
+        ],
+        "summary": "添加数据集",
+        "requestBody": {
+          "description": "请求数据",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "itemUids",
+                  "name"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "itemUids": {
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "description": "数据项集合",
+                    "items": {
+                      "type": "string",
+                      "description": "数据项唯一值集合",
+                      "enum": [
+                        "08f6f9c9-bd53-47e5-bc34-2a864e5ed155",
+                        "20355f81-86a3-4731-b662-103662ccbfc4",
+                        "30d007ee-64c7-43a8-b4ce-c3f972ea6bc8",
+                        "47674a3d-6a26-4a2f-b175-ba42e74b4d28",
+                        "583c2beb-6a25-4a13-8ad1-372d13021564",
+                        "5860ee4b-6192-48ff-be41-56d3d3063680",
+                        "5a267fe5-55b3-4739-87ed-27c010d9520b",
+                        "7f44cac8-61b1-4c27-aded-eec09e482064",
+                        "82dad9f8-725d-47df-aded-56eba1d0d810",
+                        "a1a9d954-5e93-4c87-ad5b-8033bc709a38",
+                        "c0ff2656-6a83-481d-bd06-93d63f62791f",
+                        "f4b81fcb-ed23-4b11-98c9-080804339c0c",
+                        "f67065dd-d811-4e49-95a4-4359b625e5bd"
+                      ]
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "描述"
+                  }
+                },
+                "description": "请求数据"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "title": "empty object",
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    },
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "description",
+                        "id",
+                        "items",
+                        "name",
+                        "uid",
+                        "updatedAt"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "ID"
+                        },
+                        "uid": {
+                          "type": "string",
+                          "description": "唯一值"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "描述"
+                        },
+                        "items": {
+                          "maxItems": 10,
+                          "minItems": 1,
+                          "uniqueItems": true,
+                          "type": "array",
+                          "description": "数据项集合",
+                          "items": {
+                            "required": [
+                              "code",
+                              "id",
+                              "name",
+                              "type",
+                              "uid"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "description": "ID"
+                              },
+                              "uid": {
+                                "type": "string",
+                                "description": "唯一值"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "名称"
+                              },
+                              "code": {
+                                "type": "string",
+                                "description": "编码"
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "类型"
+                              }
+                            },
+                            "description": "数据项"
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "创建时间"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "description": "修改时间"
+                        }
+                      },
+                      "description": "响应数据"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/collection/getlist": {
+      "post": {
+        "tags": [
+          "model_collection"
+        ],
+        "summary": "获取数据集列表（分页、排序、关键字）",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "个数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "排序类型，0：无，1：名称、2：编码、3：状态、4：创建时间、5：修改时间",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "排序方式，desc、asc",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number"
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "code",
+                              "createdAt",
+                              "description",
+                              "items",
+                              "name",
+                              "uid",
+                              "updatedAt"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "code": {
+                                "type": "string"
+                              },
+                              "items": {
+                                "type": "array",
+                                "items": {
+                                  "required": [
+                                    "code",
+                                    "createdAt",
+                                    "cumulate",
+                                    "name",
+                                    "type",
+                                    "uid",
+                                    "updatedAt"
+                                  ],
+                                  "type": "object",
+                                  "properties": {
+                                    "uid": {
+                                      "type": "string"
+                                    },
+                                    "code": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string"
+                                    },
+                                    "cumulate": {
+                                      "type": "number"
+                                    },
+                                    "createdAt": {
+                                      "type": "string"
+                                    },
+                                    "updatedAt": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "string"
+                              },
+                              "updatedAt": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/data/removeModelItem": {
+      "post": {
+        "tags": [
+          "model_data_item"
+        ],
+        "summary": "删除数据模型数据项",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "required": [
+                    "dataUid",
+                    "names"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "dataUid": {
+                      "type": "string",
+                      "description": "数据模型uid"
+                    },
+                    "names": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "数据项名称"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {},
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/item/getList": {
+      "post": {
+        "tags": [
+          "model_data_item"
+        ],
+        "summary": "数据模型数据项列表（分页、排序、关键字）",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "个数",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "关键字",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "排序字段",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "排序方式，desc、asc",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "type": "object",
+                "properties": {
+                  "dataUid": {
+                    "type": "string"
+                  },
+                  "itemType": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "rows",
+                        "total"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "required": [
+                              "code",
+                              "createdAt",
+                              "dataUid",
+                              "itemType",
+                              "name",
+                              "uid",
+                              "updatedAt"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "uid": {
+                                "type": "string",
+                                "description": "唯一值"
+                              },
+                              "dataUid": {
+                                "type": "string",
+                                "description": "数据模型uid"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "名称"
+                              },
+                              "code": {
+                                "type": "string",
+                                "description": "编码"
+                              },
+                              "itemType": {
+                                "type": "string",
+                                "description": "类型"
+                              },
+                              "typeValue": {
+                                "type": "string",
+                                "description": "类型值"
+                              },
+                              "subType": {
+                                "type": "string",
+                                "description": "子类型（对象）"
+                              },
+                              "objectRef": {
+                                "type": "string",
+                                "description": "对象引用"
+                              },
+                              "defaultValue": {
+                                "type": "string",
+                                "description": "默认值"
+                              },
+                              "isNull": {
+                                "type": "boolean",
+                                "description": "是否为空"
+                              },
+                              "length": {
+                                "type": "string",
+                                "description": "长度"
+                              },
+                              "precision": {
+                                "type": "integer",
+                                "description": "精度"
+                              },
+                              "isUnique": {
+                                "type": "boolean",
+                                "description": "唯一值"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "description": "创建时间"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "description": "修改时间"
+                              }
+                            }
+                          }
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/updateModelItem": {
+      "post": {
+        "tags": [
+          "model_data_item"
+        ],
+        "summary": "设置数据模型数据项",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "itemType",
+                  "name",
+                  "uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "string",
+                    "description": "唯一值"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "itemType": {
+                    "type": "string",
+                    "description": "类型"
+                  },
+                  "typeValue": {
+                    "type": "string",
+                    "description": "类型值"
+                  },
+                  "subType": {
+                    "type": "integer",
+                    "description": "子类型（对象）"
+                  },
+                  "objectRef": {
+                    "type": "string",
+                    "description": "对象引用"
+                  },
+                  "defaultValue": {
+                    "type": "string",
+                    "description": "默认值"
+                  },
+                  "isNull": {
+                    "type": "boolean",
+                    "description": "是否为空"
+                  },
+                  "length": {
+                    "type": "string",
+                    "description": "长度"
+                  },
+                  "precision": {
+                    "type": "integer",
+                    "description": "精度"
+                  },
+                  "isUnique": {
+                    "type": "boolean",
+                    "description": "唯一值"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "dataUid",
+                        "id",
+                        "itemType",
+                        "name",
+                        "updatedAt"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "ID"
+                        },
+                        "dataUid": {
+                          "type": "string",
+                          "description": "数据模型uid"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "itemType": {
+                          "type": "string",
+                          "description": "类型"
+                        },
+                        "typeValue": {
+                          "type": "string",
+                          "description": "类型值"
+                        },
+                        "subType": {
+                          "type": "integer",
+                          "description": "子类型（对象）"
+                        },
+                        "objectRef": {
+                          "type": "string",
+                          "description": "对象引用"
+                        },
+                        "defaultValue": {
+                          "type": "string",
+                          "description": "默认值"
+                        },
+                        "isNull": {
+                          "type": "boolean",
+                          "description": "是否为空"
+                        },
+                        "length": {
+                          "type": "string",
+                          "description": "长度"
+                        },
+                        "precision": {
+                          "type": "integer",
+                          "description": "精度"
+                        },
+                        "isUnique": {
+                          "type": "boolean",
+                          "description": "唯一值"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "创建时间"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "description": "修改时间"
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/removeModelBehavior": {
+      "post": {
+        "tags": [
+          "model_data_behavior"
+        ],
+        "summary": "删除数据模型行为",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "required": [
+                    "dataUid",
+                    "names"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "dataUid": {
+                      "type": "string",
+                      "description": "数据模型uid"
+                    },
+                    "names": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "行为名称"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {},
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/getModelBehaviorList": {
+      "post": {
+        "tags": [
+          "model_data_behavior"
+        ],
+        "summary": "数据模型行为列表（分页、排序、关键字）",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "dataUid",
+                  "name",
+                  "use"
+                ],
+                "type": "object",
+                "properties": {
+                  "dataUid": {
+                    "type": "string"
+                  },
+                  "use": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "description": "响应数据",
+                      "items": {
+                        "required": [
+                          "code",
+                          "createdAt",
+                          "dataUid",
+                          "id",
+                          "inputs",
+                          "name",
+                          "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID"
+                          },
+                          "dataUid": {
+                            "type": "string",
+                            "description": "数据模型uid"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "名称"
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "编码"
+                          },
+                          "inputs": {
+                            "type": "array",
+                            "description": "输入数据",
+                            "items": {
+                              "required": [
+                                "arrayType",
+                                "type",
+                                "value"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "description": "输出类型"
+                                },
+                                "arrayType": {
+                                  "type": "string",
+                                  "description": "输出子类型"
+                                },
+                                "value": {
+                                  "type": "string",
+                                  "description": "类型值"
+                                }
+                              },
+                              "description": "输入对象"
+                            }
+                          },
+                          "outpus": {
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "description": "输出类型"
+                              },
+                              "arrayType": {
+                                "type": "string",
+                                "description": "输出子类型"
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "类型值"
+                              }
+                            },
+                            "description": "输出参数"
+                          },
+                          "operationType": {
+                            "type": "integer",
+                            "description": "子类型（对象）"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "对象引用"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "description": "创建时间"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "description": "修改时间"
+                          }
+                        },
+                        "description": "数据"
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    },
+    "/api/model/data/updateModelBehavior": {
+      "post": {
+        "tags": [
+          "model_data_behavior"
+        ],
+        "summary": "设置数据模型行为",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "empty object",
+                "required": [
+                  "code",
+                  "createdAt",
+                  "dataUid",
+                  "inputs",
+                  "name",
+                  "updatedAt"
+                ],
+                "type": "object",
+                "properties": {
+                  "dataUid": {
+                    "type": "string",
+                    "description": "数据模型uid"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "编码"
+                  },
+                  "inputs": {
+                    "type": "array",
+                    "description": "输入数据",
+                    "items": {
+                      "required": [
+                        "subType",
+                        "type",
+                        "value"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "description": "输出类型"
+                        },
+                        "subType": {
+                          "type": "string",
+                          "description": "输出子类型"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "类型值"
+                        }
+                      },
+                      "description": "输入对象"
+                    }
+                  },
+                  "outpus": {
+                    "required": [
+                      "type"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "输出类型"
+                      },
+                      "subType": {
+                        "type": "string",
+                        "description": "输出子类型"
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "类型值"
+                      }
+                    },
+                    "description": "输出参数"
+                  },
+                  "operationType": {
+                    "type": "integer",
+                    "description": "子类型（对象）"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "对象引用"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "description": "创建时间"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "description": "修改时间"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "required": [
+                        "code",
+                        "createdAt",
+                        "dataUid",
+                        "id",
+                        "name",
+                        "updatedAt"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "ID"
+                        },
+                        "dataUid": {
+                          "type": "string",
+                          "description": "数据模型uid"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "名称"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "编码"
+                        },
+                        "inputs": {
+                          "type": "array",
+                          "description": "输入数据",
+                          "items": {
+                            "required": [
+                              "subType",
+                              "type",
+                              "value"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "description": "输出类型"
+                              },
+                              "subType": {
+                                "type": "string",
+                                "description": "输出子类型"
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "类型值"
+                              }
+                            },
+                            "description": "输入对象"
+                          }
+                        },
+                        "outpus": {
+                          "required": [
+                            "type"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "description": "输出类型"
+                            },
+                            "subType": {
+                              "type": "string",
+                              "description": "输出子类型"
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "类型值"
+                            }
+                          },
+                          "description": "输出参数"
+                        },
+                        "operationType": {
+                          "type": "integer",
+                          "description": "子类型（对象）"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "对象引用"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "创建时间"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "description": "修改时间"
+                        }
+                      },
+                      "description": "响应数据"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "响应状态"
+                    }
+                  },
+                  "description": "响应结果"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "root"
+      }
+    }
+  },
+  "components": {}
+}
