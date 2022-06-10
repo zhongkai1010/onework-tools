@@ -1,6 +1,5 @@
 package com.onework.tools.application.domain.vo;
 
-import com.onework.tools.domain.entity.NameCodeValue;
 import com.onework.tools.domain.entity.Entity;
 import lombok.Data;
 
@@ -13,7 +12,7 @@ import lombok.Data;
  * @date Date : 2022年05月23日 14:32
  */
 @Data
-public class ApplicationVo implements Entity, NameCodeValue {
+public class ApplicationVo implements Entity {
 
     /**
      * 应用标识
@@ -21,12 +20,12 @@ public class ApplicationVo implements Entity, NameCodeValue {
     private String uid;
 
     /**
-     * 应用编码，用于其它应用相关编码组合
-     */
-    private String code;
-
-    /**
      * 应用名称
      */
     private String name;
+
+    /**
+     *  应用编码，唯一
+     */
+    private String code;
 }

@@ -1,6 +1,6 @@
 package com.onework.tools.application.domain.repository;
 
-import com.onework.tools.application.domain.vo.SystemNavigationVo;
+import com.onework.tools.application.domain.vo.ApplicationNavigationVo;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public interface SystemNavigationRepository {
      * @param navCode
      * @return
      */
-    SystemNavigationVo getNavigation(String systemId, String navCode);
+    ApplicationNavigationVo getNavigation(String systemId, String navCode);
 
     /**
      * 根据导航Id获取导航，无数据则返回null
@@ -29,28 +29,28 @@ public interface SystemNavigationRepository {
      * @param navId
      * @return
      */
-    SystemNavigationVo getNavigation(String navId);
+    ApplicationNavigationVo getNavigation(String navId);
 
     /**
      *  获取所有下级导航
      * @param navCode
      * @return
      */
-    List<SystemNavigationVo> getAllNavChildren(String navCode);
+    List<ApplicationNavigationVo> getAllNavChildren(String navCode);
 
     /**
      * 添加导航
      *
      * @param navigation
      */
-    void addNavigation(SystemNavigationVo navigation);
+    void addNavigation(ApplicationNavigationVo navigation);
 
     /**
      * 修改导航，同步更新path
      *
      * @param navigation
      */
-    void updatedNavigation(SystemNavigationVo navigation);
+    void updatedNavigation(ApplicationNavigationVo navigation);
 
 
     /**

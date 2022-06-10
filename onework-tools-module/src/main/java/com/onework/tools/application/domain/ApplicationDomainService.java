@@ -20,4 +20,21 @@ public interface ApplicationDomainService {
      * @return
      */
     ExecuteResult<Boolean> addApplication(ApplicationVo applicationVo);
+
+    /**
+     * 修改应用
+     *
+     * @param applicationVo
+     * @return
+     */
+    ExecuteResult<Boolean> updateApplication(ApplicationVo applicationVo);
+
+    /**
+     * 删除应用应用
+     *
+     * @param applicationVo
+     * @return
+     */
+    ExecuteResult<Boolean> deleteApplication(ApplicationVo applicationVo);
+
 }

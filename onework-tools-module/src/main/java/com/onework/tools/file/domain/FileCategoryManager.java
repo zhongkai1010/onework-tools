@@ -32,7 +32,7 @@ public class FileCategoryManager implements ApplicationBoot {
 
     @Override
     public void init() {
-        Configs = loadFileCategory();
+//        Configs = loadFileCategory();
     }
 
     public Map<String, Map<FileCategoryConfigType, String>> loadFileCategory() {

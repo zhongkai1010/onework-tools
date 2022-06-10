@@ -1,7 +1,7 @@
 package com.onework.tools.application.domain;
 
 import com.onework.tools.ExecuteResult;
-import com.onework.tools.application.domain.vo.SystemNavigationVo;
+import com.onework.tools.application.domain.vo.ApplicationNavigationVo;
 
 /**
  * @author : zhongkai1010@163.com
@@ -19,7 +19,7 @@ public interface NavigationDomainService {
      * @param navigation
      * @return
      */
-    ExecuteResult<Boolean> addNavigation(SystemNavigationVo navigation);
+    ExecuteResult<Boolean> addNavigation(ApplicationNavigationVo navigation);
 
     /**
      * 修改导航
@@ -27,7 +27,7 @@ public interface NavigationDomainService {
      * @param navigation
      * @return
      */
-    ExecuteResult<Boolean> updateNavigation(SystemNavigationVo navigation);
+    ExecuteResult<Boolean> updateNavigation(ApplicationNavigationVo navigation);
 
     /**
      * 删除导航

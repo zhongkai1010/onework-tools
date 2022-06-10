@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @date Date : 2022年05月25日 11:21
  */
 @Data
-public class SystemNavigationVo implements Entity {
+public class ApplicationNavigationVo implements Entity {
 
     /**
      * 导航id
@@ -59,11 +59,6 @@ public class SystemNavigationVo implements Entity {
      * 上级导航名称
      */
     private String parentName;
-
-    //    /**
-    //     * 下级导航
-    //     */
-    //    private List<SystemNavigationVo> children;
 
     /**
      * 导航元数据

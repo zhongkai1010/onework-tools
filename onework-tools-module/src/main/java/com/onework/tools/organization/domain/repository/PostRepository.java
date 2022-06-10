@@ -13,8 +13,6 @@ import com.onework.tools.organization.domain.vo.PostVo;
 public interface PostRepository {
     void deletePostByOrganization(String organizationId);
 
-
-
     void addPost(PostVo post);
 
     PostVo getPost(String organizationId, String name);

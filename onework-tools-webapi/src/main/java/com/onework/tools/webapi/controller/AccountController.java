@@ -1,8 +1,5 @@
 package com.onework.tools.webapi.controller;
 
-import com.onework.tools.util.JwtUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -16,11 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AccountController {
 
-    @Autowired
-    private JwtUtils jwtUtils;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
 
 }

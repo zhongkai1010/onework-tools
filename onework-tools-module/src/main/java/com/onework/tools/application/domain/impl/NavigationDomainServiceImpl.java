@@ -4,11 +4,10 @@ import com.onework.tools.AppException;
 import com.onework.tools.Check;
 import com.onework.tools.ExecuteResult;
 import com.onework.tools.application.domain.NavigationDomainService;
-import com.onework.tools.application.domain.vo.SystemNavigationVo;
-import com.onework.tools.application.domain.vo.SystemVo;
+import com.onework.tools.application.domain.repository.ApplicationRepository;
 import com.onework.tools.application.domain.repository.SystemNavigationRepository;
-import com.onework.tools.application.domain.repository.SystemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.onework.tools.application.domain.vo.ApplicationNavigationVo;
+import com.onework.tools.application.domain.vo.ApplicationVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,11 +25,15 @@ import java.util.Objects;
 @Service
 public class NavigationDomainServiceImpl implements NavigationDomainService {
 
-    @Autowired
-    private SystemNavigationRepository systemNavigationRepository;
+    private final SystemNavigationRepository systemNavigationRepository;
 
-    @Autowired
-    private SystemRepository systemRepository;
+    private ApplicationRepository applicationRepository;
+
+    public NavigationDomainServiceImpl(SystemNavigationRepository systemNavigationRepository,
+        ApplicationRepository applicationRepository) {
+        this.systemNavigationRepository = systemNavigationRepository;
+        this.applicationRepository = applicationRepository;
+    }
 
     /**
      * 1.验证
@@ -49,18 +52,18 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ExecuteResult<Boolean> addNavigation(SystemNavigationVo navigationVo) {
+    public ExecuteResult<Boolean> addNavigation(ApplicationNavigationVo navigationVo) {
         //验证关联系统是否存在
-        SystemVo systemVo = validationSystem(navigationVo);
-        navigationVo.setSystemName(systemVo.getName());
+        ApplicationVo applicationVo = applicationRepository.getApplication(navigationVo.getSystemId());
+        navigationVo.setSystemName(applicationVo.getName());
         // 验证同系统name是否存在
-        SystemNavigationVo dbNavigation =
-            systemNavigationRepository.getNavigation(systemVo.getUid(), navigationVo.getCode());
+        ApplicationNavigationVo dbNavigation =
+            systemNavigationRepository.getNavigation(applicationVo.getUid(), navigationVo.getCode());
         Check.isTrue(dbNavigation != null, new AppException(""));
         // 验证上级导航是否存在
         String parentId = navigationVo.getParentId();
         if (parentId != null) {
-            SystemNavigationVo parentNavigation = systemNavigationRepository.getNavigation(parentId);
+            ApplicationNavigationVo parentNavigation = systemNavigationRepository.getNavigation(parentId);
             Check.notNull(parentNavigation, new AppException(""));
             navigationVo.setParentName(parentNavigation.getName());
 
@@ -73,9 +76,9 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ExecuteResult<Boolean> updateNavigation(SystemNavigationVo navigationVo) {
+    public ExecuteResult<Boolean> updateNavigation(ApplicationNavigationVo navigationVo) {
         // 获取旧数据进行比对
-        SystemNavigationVo dbNav = systemNavigationRepository.getNavigation(navigationVo.getUid());
+        ApplicationNavigationVo dbNav = systemNavigationRepository.getNavigation(navigationVo.getUid());
         Check.notNull(dbNav, new AppException(""));
         // 控制不能进行修改属性
         navigationVo.setSystemId(dbNav.getSystemId());
@@ -84,14 +87,14 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
         // 处理更换上级导航
         String parentId = navigationVo.getParentId();
         if (!Objects.equals(dbNav.getParentId(), parentId)) {
-            SystemNavigationVo parentNavigation = systemNavigationRepository.getNavigation(parentId);
+            ApplicationNavigationVo parentNavigation = systemNavigationRepository.getNavigation(parentId);
             Check.notNull(parentNavigation, new AppException(""));
 
             String parentCode = String.format("%s.%s", parentNavigation.getCode(), navigationVo.getCode());
             navigationVo.setParentName(parentNavigation.getName());
             navigationVo.setCode(parentCode);
             // 处理下级导航
-            List<SystemNavigationVo> children = systemNavigationRepository.getAllNavChildren(dbNav.getCode());
+            List<ApplicationNavigationVo> children = systemNavigationRepository.getAllNavChildren(dbNav.getCode());
             children.forEach(nav -> {
                 String code = nav.getCode();
                 String newCode = code.replaceAll(dbNav.getCode(), parentCode);
@@ -108,18 +111,12 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
     @Transactional(rollbackFor = Exception.class)
     public ExecuteResult<Boolean> deleteNavigation(String navigationId) {
         // 获取数据详情
-        SystemNavigationVo dbNav = systemNavigationRepository.getNavigation(navigationId);
+        ApplicationNavigationVo dbNav = systemNavigationRepository.getNavigation(navigationId);
         Check.notNull(dbNav, new AppException(""));
         // 处理下级导航
-        List<SystemNavigationVo> children = systemNavigationRepository.getAllNavChildren(dbNav.getCode());
+        List<ApplicationNavigationVo> children = systemNavigationRepository.getAllNavChildren(dbNav.getCode());
         children.forEach(nav -> systemNavigationRepository.deleteNavigation(nav.getUid()));
         systemNavigationRepository.deleteNavigation(navigationId);
         return ExecuteResult.success(true);
-    }
-
-    private SystemVo validationSystem(SystemNavigationVo navigationVo) {
-        SystemVo systemVo = systemRepository.getSystem(navigationVo.getSystemId());
-        Check.notNull(systemVo, new AppException(""));
-        return systemVo;
     }
 }
