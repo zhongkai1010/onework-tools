@@ -1,11 +1,12 @@
 package com.onework.tools.application.domain.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.onework.tools.AppException;
 import com.onework.tools.Check;
 import com.onework.tools.ExecuteResult;
 import com.onework.tools.application.domain.NavigationDomainService;
+import com.onework.tools.application.domain.repository.ApplicationNavigationRepository;
 import com.onework.tools.application.domain.repository.ApplicationRepository;
-import com.onework.tools.application.domain.repository.SystemNavigationRepository;
 import com.onework.tools.application.domain.vo.ApplicationNavigationVo;
 import com.onework.tools.application.domain.vo.ApplicationVo;
 import org.springframework.stereotype.Service;
@@ -25,85 +26,130 @@ import java.util.Objects;
 @Service
 public class NavigationDomainServiceImpl implements NavigationDomainService {
 
-    private final SystemNavigationRepository systemNavigationRepository;
+    private final ApplicationNavigationRepository applicationNavigationRepository;
 
-    private ApplicationRepository applicationRepository;
+    private final ApplicationRepository applicationRepository;
 
-    public NavigationDomainServiceImpl(SystemNavigationRepository systemNavigationRepository,
+    public NavigationDomainServiceImpl(ApplicationNavigationRepository systemNavigationRepository,
         ApplicationRepository applicationRepository) {
-        this.systemNavigationRepository = systemNavigationRepository;
+        this.applicationNavigationRepository = systemNavigationRepository;
         this.applicationRepository = applicationRepository;
     }
 
-    /**
-     * 1.验证
-     * 1.1 验证关联系统是否存在
-     * 1.2 验证同系统name是否存在
-     * 1.3 验证上级导航是否存在
-     * 2.计算
-     * 2.1 计算parentPath
-     * 3.关联
-     * 3.1 处理下级导航
-     * 4.数据
-     * 4.1 添加数据
-     *
-     * @param navigationVo
-     * @return
-     */
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public ExecuteResult<Boolean> addNavigation(ApplicationNavigationVo navigationVo) {
-        //验证关联系统是否存在
-        ApplicationVo applicationVo = applicationRepository.getApplication(navigationVo.getSystemId());
-        navigationVo.setSystemName(applicationVo.getName());
-        // 验证同系统name是否存在
+    public ExecuteResult<Boolean> addRootNavigation(String appId, ApplicationNavigationVo navigation) {
+        // 获取应用，验证参数是否正确
+        ApplicationVo application = applicationRepository.getApplication(appId);
+        // 验证同应用导航name是否重复
+        Check.notNull(navigation.getName(), new AppException("add navigation name is null"));
         ApplicationNavigationVo dbNavigation =
-            systemNavigationRepository.getNavigation(applicationVo.getUid(), navigationVo.getCode());
-        Check.isTrue(dbNavigation != null, new AppException(""));
-        // 验证上级导航是否存在
-        String parentId = navigationVo.getParentId();
-        if (parentId != null) {
-            ApplicationNavigationVo parentNavigation = systemNavigationRepository.getNavigation(parentId);
-            Check.notNull(parentNavigation, new AppException(""));
-            navigationVo.setParentName(parentNavigation.getName());
-
-            String code = String.format("%s.%s", parentNavigation.getCode(), navigationVo.getCode());
-            navigationVo.setCode(code);
-        }
-        systemNavigationRepository.addNavigation(navigationVo);
+            applicationNavigationRepository.findNavigation(application.getUid(), navigation.getName());
+        Check.isTrue(dbNavigation != null, new AppException(
+            String.format("add root navigation appid:%s name:%s is exist", appId, navigation.getName())));
+        // 控制默认值
+        navigation.setUid(IdWorker.getIdStr());
+        navigation.setAppId(appId);
+        navigation.setAppName(application.getName());
+        navigation.setParentId(null);
+        navigation.setParentName(null);
+        // 上级路径，根目录存id
+        navigation.setParentIds(navigation.getUid());
+        applicationNavigationRepository.insertNavigation(navigation);
         return ExecuteResult.success(true);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public ExecuteResult<Boolean> updateNavigation(ApplicationNavigationVo navigationVo) {
-        // 获取旧数据进行比对
-        ApplicationNavigationVo dbNav = systemNavigationRepository.getNavigation(navigationVo.getUid());
-        Check.notNull(dbNav, new AppException(""));
-        // 控制不能进行修改属性
-        navigationVo.setSystemId(dbNav.getSystemId());
-        navigationVo.setSystemName(dbNav.getSystemName());
-        navigationVo.setCode(dbNav.getCode());
-        // 处理更换上级导航
-        String parentId = navigationVo.getParentId();
-        if (!Objects.equals(dbNav.getParentId(), parentId)) {
-            ApplicationNavigationVo parentNavigation = systemNavigationRepository.getNavigation(parentId);
-            Check.notNull(parentNavigation, new AppException(""));
+    public ExecuteResult<Boolean> addChildNavigation(String parentId, ApplicationNavigationVo navigation) {
+        // 获取上级导航，验证参数是否正确
+        ApplicationNavigationVo parentNavigation = applicationNavigationRepository.getNavigation(parentId);
+        String appId = parentNavigation.getAppId();
+        // 验证同应用导航name是否重复
+        Check.notNull(navigation.getName(), new AppException("add navigation name is null"));
+        ApplicationNavigationVo dbNavigation =
+            applicationNavigationRepository.findNavigation(appId, navigation.getName());
+        Check.isTrue(dbNavigation != null, new AppException(
+            String.format("add child navigation appid:%s name:%s is exist", appId, navigation.getName())));
+        // 控制默认值
+        navigation.setUid(IdWorker.getIdStr());
+        navigation.setAppId(appId);
+        navigation.setAppName(parentNavigation.getAppName());
+        String parentIds = String.format("%s.%s", parentNavigation.getParentIds(), navigation.getUid());
+        navigation.setParentId(parentId);
+        navigation.setParentIds(parentIds);
+        navigation.setParentName(parentNavigation.getName());
+        applicationNavigationRepository.insertNavigation(navigation);
+        return ExecuteResult.success(true);
+    }
 
-            String parentCode = String.format("%s.%s", parentNavigation.getCode(), navigationVo.getCode());
-            navigationVo.setParentName(parentNavigation.getName());
-            navigationVo.setCode(parentCode);
-            // 处理下级导航
-            List<ApplicationNavigationVo> children = systemNavigationRepository.getAllNavChildren(dbNav.getCode());
+    /**
+     * 1.验证
+     *
+     * @param navigation
+     * @return
+     */
+    @Override
+    public ExecuteResult<Boolean> addNavigation(ApplicationNavigationVo navigation) {
+        if (navigation.getParentId() != null) {
+            return addChildNavigation(navigation.getParentId(), navigation);
+        } else {
+            return addRootNavigation(navigation.getAppId(), navigation);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ExecuteResult<Boolean> updateNavigation(ApplicationNavigationVo navigation) {
+        // 获取旧数据进行比对
+        ApplicationNavigationVo dbNavigation = applicationNavigationRepository.getNavigation(navigation.getUid());
+        // 控制不能进行修改属性
+        navigation.setAppId(dbNavigation.getAppId());
+        navigation.setAppName(dbNavigation.getAppName());
+        // 处理上级id更换
+        String parentId = navigation.getParentId();
+        String dbParentId = dbNavigation.getParentId();
+        if (!Objects.equals(parentId, dbParentId)) {
+            if (parentId == null) {
+                navigation.setParentId(null);
+                navigation.setParentName(null);
+                navigation.setParentIds(navigation.getUid());
+            } else {
+                // 获取上级导航，验证参数是否正确
+                ApplicationNavigationVo parentNavigation = applicationNavigationRepository.getNavigation(parentId);
+                String parentIds = String.format("%s.%s", parentNavigation.getParentIds(), navigation.getUid());
+                navigation.setParentIds(parentIds);
+                navigation.setParentName(parentNavigation.getName());
+            }
+            // 处理子集
+            List<ApplicationNavigationVo> children =
+                applicationNavigationRepository.getAllChildrenNavigation(dbNavigation.getUid());
             children.forEach(nav -> {
-                String code = nav.getCode();
-                String newCode = code.replaceAll(dbNav.getCode(), parentCode);
-                nav.setCode(newCode);
-                systemNavigationRepository.updatedNavigation(nav);
+                String dbIds = String.format("%s.%s", dbNavigation.getParentIds(), dbNavigation.getUid());
+                String oldIds = nav.getParentIds();
+                String newIds = oldIds.replaceAll(dbIds, navigation.getParentIds());
+                nav.setParentIds(newIds);
+                applicationNavigationRepository.updatedNavigation(nav);
             });
         }
-
-        systemNavigationRepository.updatedNavigation(navigationVo);
+        // 处理名称更换
+        String name = navigation.getName();
+        String dbName = dbNavigation.getName();
+        if (!Objects.equals(name, dbName)) {
+            // 验证同应用导航name是否重复
+            Check.notNull(name, new AppException("update navigation name is null"));
+            ApplicationNavigationVo dbNameNavigation =
+                applicationNavigationRepository.findNavigation(dbNavigation.getAppId(), name);
+            Check.isTrue(dbNameNavigation != null, new AppException(
+                String.format("update navigation appid:%s name:%s is exist", dbNavigation.getAppId(),
+                    navigation.getName())));
+            List<ApplicationNavigationVo> children =
+                applicationNavigationRepository.getChildrenNavigation(dbNavigation.getUid());
+            children.forEach(nav -> {
+                nav.setParentName(name);
+                applicationNavigationRepository.updatedNavigation(nav);
+            });
+        }
+        // 更新导航
+        applicationNavigationRepository.updatedNavigation(navigation);
         return ExecuteResult.success(true);
     }
 
@@ -111,12 +157,12 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
     @Transactional(rollbackFor = Exception.class)
     public ExecuteResult<Boolean> deleteNavigation(String navigationId) {
         // 获取数据详情
-        ApplicationNavigationVo dbNav = systemNavigationRepository.getNavigation(navigationId);
-        Check.notNull(dbNav, new AppException(""));
+        ApplicationNavigationVo navigation = applicationNavigationRepository.getNavigation(navigationId);
         // 处理下级导航
-        List<ApplicationNavigationVo> children = systemNavigationRepository.getAllNavChildren(dbNav.getCode());
-        children.forEach(nav -> systemNavigationRepository.deleteNavigation(nav.getUid()));
-        systemNavigationRepository.deleteNavigation(navigationId);
+        List<ApplicationNavigationVo> children =
+            applicationNavigationRepository.getAllChildrenNavigation(navigation.getUid());
+        children.forEach(nav -> applicationNavigationRepository.deleteNavigation(nav.getUid()));
+        applicationNavigationRepository.deleteNavigation(navigationId);
         return ExecuteResult.success(true);
     }
 }

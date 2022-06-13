@@ -6,7 +6,7 @@ import com.onework.tools.ExecuteResult;
 import com.onework.tools.application.domain.ApplicationDomainService;
 import com.onework.tools.application.domain.repository.ApplicationRepository;
 import com.onework.tools.application.domain.vo.ApplicationVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author : zhongkai1010@163.com
@@ -16,16 +16,28 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @Description: 描述
  * @date Date : 2022年05月25日 14:03
  */
+@Service
 public class ApplicationDomainServiceImpl implements ApplicationDomainService {
 
-    @Autowired
-    private ApplicationRepository applicationRepository;
+    private final ApplicationRepository applicationRepository;
+
+    public ApplicationDomainServiceImpl(ApplicationRepository applicationRepository) {
+        this.applicationRepository = applicationRepository;
+    }
+
+    @Override
+    public ExecuteResult<ApplicationVo> getApplication(String code) {
+        ApplicationVo dbApplication = applicationRepository.findApplicationByCode(code);
+        Check.notNull(dbApplication, new AppException(String.format("get application is not find code : %s", code)));
+        return ExecuteResult.success(dbApplication);
+    }
 
     @Override
     public ExecuteResult<Boolean> addApplication(ApplicationVo applicationVo) {
         // 验证应用编码，避免出现重复
-        ApplicationVo application = applicationRepository.getApplicationByCode(applicationVo.getCode());
-        Check.isTrue(application == null, new AppException(""));
+        ApplicationVo dbApplication = applicationRepository.findApplicationByCode(applicationVo.getCode());
+        Check.isTrue(dbApplication != null,
+            new AppException(String.format("add application code is repeat,code : %s", applicationVo.getCode())));
         // 添加应用
         applicationRepository.insertApplication(applicationVo);
         return ExecuteResult.success(true);
@@ -33,21 +45,21 @@ public class ApplicationDomainServiceImpl implements ApplicationDomainService {
 
     @Override
     public ExecuteResult<Boolean> updateApplication(ApplicationVo applicationVo) {
+        // 验证id是否存在
+        Check.notNull(applicationVo.getUid(), new AppException("id must be empty"));
         // 获取更新应用，验证提交数据
-        ApplicationVo application = applicationRepository.getApplication(applicationVo.getUid());
-        Check.notNull(application,new AppException(""));
+        ApplicationVo dbApplication = applicationRepository.getApplication(applicationVo.getUid());
         // 控制不能变更的字段
-        application.setName(application.getName());
+        dbApplication.setName(applicationVo.getName());
         // 更新应用
-        applicationRepository.updateApplication(application);
+        applicationRepository.updateApplication(dbApplication);
         return ExecuteResult.success(true);
     }
 
     @Override
-    public ExecuteResult<Boolean> deleteApplication(ApplicationVo applicationVo) {
+    public ExecuteResult<Boolean> deleteApplication(String id) {
         // 获取更新应用，验证提交数据
-        ApplicationVo application = applicationRepository.getApplication(applicationVo.getUid());
-        Check.notNull(application,new AppException(""));
+        ApplicationVo application = applicationRepository.getApplication(id);
         // 更新应用
         applicationRepository.deleteApplication(application);
         return ExecuteResult.success(true);

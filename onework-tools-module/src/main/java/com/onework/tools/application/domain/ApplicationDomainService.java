@@ -14,6 +14,14 @@ import com.onework.tools.application.domain.vo.ApplicationVo;
 public interface ApplicationDomainService {
 
     /**
+     * 根据code获取应用
+     *
+     * @param code
+     * @return
+     */
+    ExecuteResult<ApplicationVo> getApplication(String code);
+
+    /**
      * 添加应用
      *
      * @param applicationVo
@@ -32,9 +40,9 @@ public interface ApplicationDomainService {
     /**
      * 删除应用应用
      *
-     * @param applicationVo
+     * @param id
      * @return
      */
-    ExecuteResult<Boolean> deleteApplication(ApplicationVo applicationVo);
+    ExecuteResult<Boolean> deleteApplication(String id);
 
 }

@@ -14,6 +14,24 @@ import com.onework.tools.application.domain.vo.ApplicationNavigationVo;
 public interface NavigationDomainService {
 
     /**
+     * 添加根导航
+     *
+     * @param appId      应用id
+     * @param navigation 导航数据
+     * @return
+     */
+    ExecuteResult<Boolean> addRootNavigation(String appId, ApplicationNavigationVo navigation);
+
+    /**
+     * 添加根导航
+     *
+     * @param parentId   父级导航id
+     * @param navigation 导航数据
+     * @return
+     */
+    ExecuteResult<Boolean> addChildNavigation(String parentId, ApplicationNavigationVo navigation);
+
+    /**
      * 添加导航
      *
      * @param navigation

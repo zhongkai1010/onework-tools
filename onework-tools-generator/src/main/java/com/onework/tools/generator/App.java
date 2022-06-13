@@ -138,14 +138,14 @@ public class App {
             .setOutputDir(System.getProperty("user.dir").concat("/onework-tools-module/src/main/java"));
 
         generatorConfigValue.getPackageConfigValue()
-            .setParent("com.onework.tools.modularity")
-            .setModuleName("module")
+            .setParent("com.onework.tools")
+            .setModuleName("application")
             .setEntity("entity")
             .setMapper("mapper")
             .setService("service")
             .setServiceImpl("service.impl")
             .setPathInfo(new HashMap<OutputFile, String>(16) {private static final long serialVersionUID = -4418335994349371423L;{
-                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper/module"));
+                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper/application"));
             }});
 
         generatorConfigValue.getTemplateConfigValue()
@@ -155,7 +155,7 @@ public class App {
             .setAddTablePrefix(new String[] { "ow_" })
             .setAddTableSuffix(new String[] { "s" })
             .setEnableCapitalMode(true)
-            .setLikeTable(new LikeTable("module"))
+            .setLikeTable(new LikeTable("application"))
         .getEntityBuilder()
             .setIdType(IdType.ASSIGN_ID)
             .setNaming(NamingStrategy.underline_to_camel)

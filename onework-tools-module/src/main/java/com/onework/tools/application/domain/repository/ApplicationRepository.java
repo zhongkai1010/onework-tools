@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 public interface ApplicationRepository {
 
     /**
-     * 根据code获取应用
+     * 根据code获取应用,无数据则为空
      *
      * @param code
      * @return
      */
-    ApplicationVo getApplicationByCode(String code);
+    ApplicationVo findApplicationByCode(String code);
 
     /**
      * 新增应用

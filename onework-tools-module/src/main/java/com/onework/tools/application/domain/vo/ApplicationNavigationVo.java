@@ -25,24 +25,18 @@ public class ApplicationNavigationVo implements Entity {
      * 系统id
      */
     @NotNull
-    private String systemId;
+    private String appId;
 
     /**
      * 系统名称
      */
-    private String systemName;
+    private String appName;
 
     /**
      * 路径
      */
     @NotNull
     private String path;
-
-    /**
-     * 导航编码，唯一
-     */
-    @NotNull
-    private String code;
 
     /**
      * 导航名称，可以同名
@@ -56,13 +50,13 @@ public class ApplicationNavigationVo implements Entity {
     private String parentId;
 
     /**
+     * 上级导航路径
+     */
+    @NotNull
+    private String parentIds;
+
+    /**
      * 上级导航名称
      */
     private String parentName;
-
-    /**
-     * 导航元数据
-     */
-
-    private String meta;
 }
