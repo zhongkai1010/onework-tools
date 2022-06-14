@@ -17,7 +17,13 @@ import java.util.Map;
  */
 public interface FileCategoryRepository {
 
-    FileCategoryVo getFileCategorByCode(String code);
+    /**
+     * 根据code查询文件类别
+     *
+     * @param code
+     * @return
+     */
+    FileCategoryVo findFileCategoryByCode(String code);
 
     void addFileCategory(FileCategoryVo fileCategory);
 
@@ -40,4 +46,6 @@ public interface FileCategoryRepository {
     void plusFileCount(String uid);
 
     void subFileCount(String uid);
+
+    void deleteFileCategoryConfig(String categoryId);
 }

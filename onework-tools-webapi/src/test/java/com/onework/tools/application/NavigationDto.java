@@ -1,8 +1,11 @@
-package com.onework.tools.application.domain;
+package com.onework.tools.application;
 
 import lombok.Data;
 
 import java.util.List;
+
+
+
 
 /**
  * @author : zhongkai1010@163.com
@@ -17,7 +20,7 @@ public class NavigationDto {
 
     private String name;
 
-    private String parentId;
+    private String path;
 
-    private List<NavigationDto> child;
+    private List<NavigationDto> children;
 }

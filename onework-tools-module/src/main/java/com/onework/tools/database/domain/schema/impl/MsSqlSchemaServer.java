@@ -1,4 +1,4 @@
-package com.onework.tools.database.domain.schema.imlp;
+package com.onework.tools.database.domain.schema.impl;
 
 import com.onework.tools.database.domain.schema.DbSchemaServer;
 

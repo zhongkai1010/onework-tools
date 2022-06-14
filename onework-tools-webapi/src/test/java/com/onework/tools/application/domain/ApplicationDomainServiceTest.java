@@ -35,13 +35,15 @@ class ApplicationDomainServiceTest extends BaseApplicationTest {
     @Test
     void updateApplication() {
 
-        ExecuteResult<ApplicationVo> applicationVoExecuteResult = applicationDomainService.getApplication("application.test");
-        ApplicationVo applicationVo = applicationVoExecuteResult.getData();
-
-        applicationVo.setName("测试应用1");
+        ApplicationVo applicationVo = new ApplicationVo();
+        applicationVo.setName("测试应用");
         applicationVo.setCode("application.test");
+        ExecuteResult<ApplicationVo> applicationVoExecuteResult = applicationDomainService.getApplicationByCodeAsSave(applicationVo);
+        ApplicationVo application = applicationVoExecuteResult.getData();
 
-        ExecuteResult<Boolean> executeResult = applicationDomainService.updateApplication(applicationVo);
+        application.setName("测试应用1");
+        application.setCode("application.test");
+        ExecuteResult<Boolean> executeResult = applicationDomainService.updateApplication(application);
         Assertions.assertEquals(executeResult.isResult(), true);
     }
 
@@ -53,5 +55,4 @@ class ApplicationDomainServiceTest extends BaseApplicationTest {
         ExecuteResult<Boolean> executeResult =  applicationDomainService.deleteApplication(applicationVo.getUid());
         Assertions.assertEquals(executeResult.isResult(), true);
     }
-
 }

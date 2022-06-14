@@ -1,0 +1,88 @@
+{
+  "navigations": [
+    {
+      "name": "应用管理",
+      "path": "/application"
+    },
+    {
+      "name": "用户管理",
+      "path": "/user"
+    },
+    {
+      "name": "文件附件",
+      "path": "/file"
+    },
+    {
+      "name": "消息管理",
+      "path": "/message",
+      "children": [
+        {
+          "name": "消息模板",
+          "path": "/message/template"
+        },
+        {
+          "name": "消息记录",
+          "path": "/message/logs"
+        }
+      ]
+    },
+    {
+      "name": "通知公告",
+      "path": "/announcement"
+    },
+    {
+      "name": "系统管理",
+      "path": "/system",
+      "children": [
+        {
+          "name": "角色管理",
+          "path": "/system/role",
+          "children": [
+            {
+              "name": "角色组",
+              "path": "/system/role/group"
+            },
+            {
+              "name": "角色授权",
+              "path": "/system/role/authorize"
+            }
+          ]
+        },
+        {
+          "name": "表单管理",
+          "path": "/system/form"
+        },
+        {
+          "name": "流程管理",
+          "path": "/system/flow"
+        },
+        {
+          "name": "数据字典",
+          "path": "/system/dictionary"
+        }
+      ]
+    },
+    {
+      "name": "运维平台",
+      "path": "/operation",
+      "children": [
+        {
+          "name": "组织机构",
+          "path": "/operation/organization"
+        },
+        {
+          "name": "数据库管理",
+          "path": "/operation/database"
+        },
+        {
+          "name": "翻译记录",
+          "path": "/operation/translate"
+        },
+        {
+          "name": "日志记录",
+          "path": "/operation/logs"
+        }
+      ]
+    }
+  ]
+}

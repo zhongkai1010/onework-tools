@@ -1,4 +1,4 @@
-package com.onework.tools.application.entity;
+package com.onework.tools.file.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author zhongkai
- * @since 2022-06-13
+ * @since 2022-06-14
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("ow_applications")
-public class Application implements Serializable {
+@TableName("ow_file_categories")
+public class FileCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,16 +31,22 @@ public class Application implements Serializable {
     private String uid;
 
     /**
-     * 编码
+     * 类别编码
      */
     @TableField("`code`")
     private String code;
 
     /**
-     * 名称
+     * 类别名称
      */
     @TableField("`name`")
     private String name;
+
+    /**
+     * 所属文件总数
+     */
+    @TableField("file_count")
+    private Integer fileCount;
 
     @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
@@ -51,4 +57,6 @@ public class Application implements Serializable {
     @TableField(value = "deleted_at", fill = FieldFill.DEFAULT)
     @TableLogic
     private LocalDateTime deletedAt;
+
+
 }

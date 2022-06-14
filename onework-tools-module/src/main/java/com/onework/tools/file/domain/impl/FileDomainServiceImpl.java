@@ -50,9 +50,11 @@ public class FileDomainServiceImpl implements FileDomainService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ExecuteResult<Boolean> addCategory(FileCategoryVo fileCategory, Map<FileCategoryConfigType, String> config) {
+        Check.notNull(fileCategory.getCode(), new AppException("add category code is null"));
         // 控制文件类别code不能出现重复
-        FileCategoryVo dbFileCategory = fileCategoryRepository.getFileCategorByCode(fileCategory.getCode());
-        Check.isTrue(dbFileCategory != null, new AppException(""));
+        FileCategoryVo dbFileCategory = fileCategoryRepository.findFileCategoryByCode(fileCategory.getCode());
+        Check.isTrue(dbFileCategory != null,
+            new AppException(String.format("add category code is repeat code is %s", fileCategory.getCode())));
         // 添加文件类别，设置默认值，获得id
         fileCategory.setUid(IdWorker.getIdStr());
         fileCategory.setFileCount(0);
@@ -62,6 +64,7 @@ public class FileDomainServiceImpl implements FileDomainService {
             config.forEach((k, v) -> {
                 FileCategoryConfigVo categoryConfig = new FileCategoryConfigVo();
                 categoryConfig.setCategoryId(fileCategory.getUid());
+                categoryConfig.setValue(v);
                 categoryConfig.setType(k);
                 fileCategoryRepository.addCategoryConfig(categoryConfig);
             });
@@ -102,9 +105,10 @@ public class FileDomainServiceImpl implements FileDomainService {
     public ExecuteResult<Boolean> deleteCategory(String categoryId) {
         // 验证是否存在
         FileCategoryVo fileCategory = fileCategoryRepository.getFileCategory(categoryId);
-        Check.notNull(fileCategory, new AppException(""));
         // 控制删除文件类别前，需要处理所属文件类别下的文件
         Check.isTrue(fileCategory.getFileCount() > 0, new AppException(""));
+        // 删除配置
+        fileCategoryRepository.deleteFileCategoryConfig(categoryId);
         fileCategoryRepository.deleteFileCategory(categoryId);
         // 发布变动
         fileCategoryEventPublisher.publishFileCategory(fileCategory);

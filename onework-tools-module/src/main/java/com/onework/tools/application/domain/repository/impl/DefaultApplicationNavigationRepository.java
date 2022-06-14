@@ -2,6 +2,7 @@ package com.onework.tools.application.domain.repository.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.onework.tools.AppException;
 import com.onework.tools.Check;
 import com.onework.tools.application.domain.repository.ApplicationNavigationRepository;
@@ -75,19 +76,16 @@ public class DefaultApplicationNavigationRepository implements ApplicationNaviga
     @Override
     public void updatedNavigation(ApplicationNavigationVo navigation) {
         ApplicationNavigation applicationNavigation = BeanUtil.copyProperties(navigation, ApplicationNavigation.class);
-        LambdaQueryChainWrapper<ApplicationNavigation> queryChainWrapper =
-            new LambdaQueryChainWrapper<>(applicationNavigationMapper).eq(ApplicationNavigation::getUid,
-                navigation.getUid());
-        int count = applicationNavigationMapper.update(applicationNavigation, queryChainWrapper);
-        Check.isTrue(count == 0, new AppException("update application navigation is error"));
+        boolean success = new LambdaUpdateChainWrapper<>(applicationNavigationMapper).eq(ApplicationNavigation::getUid,
+            navigation.getUid()).update(applicationNavigation);
+        Check.isTrue(!success, new AppException("update application navigation is error"));
     }
 
     @Override
     public void deleteNavigation(String id) {
-        LambdaQueryChainWrapper<ApplicationNavigation> queryChainWrapper =
-            new LambdaQueryChainWrapper<>(applicationNavigationMapper).eq(ApplicationNavigation::getUid, id);
-        int count = applicationNavigationMapper.delete(queryChainWrapper);
-        Check.isTrue(count == 0, new AppException("delete application navigation is error"));
+        boolean success =
+            new LambdaUpdateChainWrapper<>(applicationNavigationMapper).eq(ApplicationNavigation::getUid, id).remove();
+        Check.isTrue(!success, new AppException("delete application navigation is error"));
     }
 
     @Override

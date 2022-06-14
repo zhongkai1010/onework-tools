@@ -50,8 +50,8 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
         navigation.setUid(IdWorker.getIdStr());
         navigation.setAppId(appId);
         navigation.setAppName(application.getName());
-        navigation.setParentId(null);
-        navigation.setParentName(null);
+        navigation.setParentId("");
+        navigation.setParentName("");
         // 上级路径，根目录存id
         navigation.setParentIds(navigation.getUid());
         applicationNavigationRepository.insertNavigation(navigation);
@@ -89,7 +89,7 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
      */
     @Override
     public ExecuteResult<Boolean> addNavigation(ApplicationNavigationVo navigation) {
-        if (navigation.getParentId() != null) {
+        if (!Objects.equals(navigation.getParentId(), "")) {
             return addChildNavigation(navigation.getParentId(), navigation);
         } else {
             return addRootNavigation(navigation.getAppId(), navigation);
@@ -108,9 +108,9 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
         String parentId = navigation.getParentId();
         String dbParentId = dbNavigation.getParentId();
         if (!Objects.equals(parentId, dbParentId)) {
-            if (parentId == null) {
-                navigation.setParentId(null);
-                navigation.setParentName(null);
+            if (Objects.equals(parentId, "")) {
+                navigation.setParentId("");
+                navigation.setParentName("");
                 navigation.setParentIds(navigation.getUid());
             } else {
                 // 获取上级导航，验证参数是否正确
@@ -123,9 +123,9 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
             List<ApplicationNavigationVo> children =
                 applicationNavigationRepository.getAllChildrenNavigation(dbNavigation.getUid());
             children.forEach(nav -> {
-                String dbIds = String.format("%s.%s", dbNavigation.getParentIds(), dbNavigation.getUid());
+                String parentIds = dbNavigation.getParentIds();
                 String oldIds = nav.getParentIds();
-                String newIds = oldIds.replaceAll(dbIds, navigation.getParentIds());
+                String newIds = oldIds.replaceAll(parentIds, navigation.getParentIds());
                 nav.setParentIds(newIds);
                 applicationNavigationRepository.updatedNavigation(nav);
             });
@@ -164,5 +164,18 @@ public class NavigationDomainServiceImpl implements NavigationDomainService {
         children.forEach(nav -> applicationNavigationRepository.deleteNavigation(nav.getUid()));
         applicationNavigationRepository.deleteNavigation(navigationId);
         return ExecuteResult.success(true);
+    }
+
+    @Override
+    public ExecuteResult<ApplicationNavigationVo> getNavigation(String id) {
+        ApplicationNavigationVo navigation = applicationNavigationRepository.getNavigation(id);
+        return ExecuteResult.success(navigation);
+    }
+
+    @Override
+    public ExecuteResult<ApplicationNavigationVo> getNavigation(String appId, String name) {
+        ApplicationNavigationVo navigation = applicationNavigationRepository.findNavigation(appId, name);
+        Check.notNull(navigation, new AppException("find not get navigation by name"));
+        return ExecuteResult.success(navigation);
     }
 }

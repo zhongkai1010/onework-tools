@@ -33,24 +33,24 @@ public class ApplicationDomainServiceImpl implements ApplicationDomainService {
     }
 
     @Override
-    public ExecuteResult<Boolean> addApplication(ApplicationVo applicationVo) {
+    public ExecuteResult<Boolean> addApplication(ApplicationVo application) {
         // 验证应用编码，避免出现重复
-        ApplicationVo dbApplication = applicationRepository.findApplicationByCode(applicationVo.getCode());
+        ApplicationVo dbApplication = applicationRepository.findApplicationByCode(application.getCode());
         Check.isTrue(dbApplication != null,
-            new AppException(String.format("add application code is repeat,code : %s", applicationVo.getCode())));
+            new AppException(String.format("add application code is repeat,code : %s", application.getCode())));
         // 添加应用
-        applicationRepository.insertApplication(applicationVo);
+        applicationRepository.insertApplication(application);
         return ExecuteResult.success(true);
     }
 
     @Override
-    public ExecuteResult<Boolean> updateApplication(ApplicationVo applicationVo) {
+    public ExecuteResult<Boolean> updateApplication(ApplicationVo application) {
         // 验证id是否存在
-        Check.notNull(applicationVo.getUid(), new AppException("id must be empty"));
+        Check.notNull(application.getUid(), new AppException("id must be empty"));
         // 获取更新应用，验证提交数据
-        ApplicationVo dbApplication = applicationRepository.getApplication(applicationVo.getUid());
+        ApplicationVo dbApplication = applicationRepository.getApplication(application.getUid());
         // 控制不能变更的字段
-        dbApplication.setName(applicationVo.getName());
+        dbApplication.setName(application.getName());
         // 更新应用
         applicationRepository.updateApplication(dbApplication);
         return ExecuteResult.success(true);
@@ -63,5 +63,16 @@ public class ApplicationDomainServiceImpl implements ApplicationDomainService {
         // 更新应用
         applicationRepository.deleteApplication(application);
         return ExecuteResult.success(true);
+    }
+
+    @Override
+    public ExecuteResult<ApplicationVo> getApplicationByCodeAsSave(ApplicationVo application) {
+
+        ApplicationVo dbApplication = applicationRepository.findApplicationByCode(application.getCode());
+        if (dbApplication == null) {
+            applicationRepository.insertApplication(application);
+            return ExecuteResult.success(application);
+        }
+        return ExecuteResult.success(dbApplication);
     }
 }

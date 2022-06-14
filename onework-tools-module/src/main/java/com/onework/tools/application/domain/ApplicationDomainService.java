@@ -24,18 +24,18 @@ public interface ApplicationDomainService {
     /**
      * 添加应用
      *
-     * @param applicationVo
+     * @param application
      * @return
      */
-    ExecuteResult<Boolean> addApplication(ApplicationVo applicationVo);
+    ExecuteResult<Boolean> addApplication(ApplicationVo application);
 
     /**
      * 修改应用
      *
-     * @param applicationVo
+     * @param application
      * @return
      */
-    ExecuteResult<Boolean> updateApplication(ApplicationVo applicationVo);
+    ExecuteResult<Boolean> updateApplication(ApplicationVo application);
 
     /**
      * 删除应用应用
@@ -45,4 +45,11 @@ public interface ApplicationDomainService {
      */
     ExecuteResult<Boolean> deleteApplication(String id);
 
+    /**
+     * 根据code查询应用，无数据则新增应用，反之返回应用数据
+     *
+     * @param application
+     * @return
+     */
+    ExecuteResult<ApplicationVo> getApplicationByCodeAsSave(ApplicationVo application);
 }

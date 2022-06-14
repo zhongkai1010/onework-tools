@@ -1,8 +1,8 @@
 package com.onework.tools.database.domain.schema;
 
 import com.onework.tools.database.domain.schema.entity.DbConnection;
-import com.onework.tools.database.domain.schema.imlp.MsSqlSchemaServer;
-import com.onework.tools.database.domain.schema.imlp.MySqlDbSchemaServer;
+import com.onework.tools.database.domain.schema.impl.MsSqlSchemaServer;
+import com.onework.tools.database.domain.schema.impl.MySqlDbSchemaServer;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;

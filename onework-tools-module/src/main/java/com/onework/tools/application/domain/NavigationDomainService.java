@@ -54,4 +54,21 @@ public interface NavigationDomainService {
      * @return
      */
     ExecuteResult<Boolean> deleteNavigation(String navId);
+
+    /**
+     * 根据id获取导航
+     *
+     * @param id
+     * @return
+     */
+    ExecuteResult<ApplicationNavigationVo> getNavigation(String id);
+
+    /**
+     * 根据appid和name获取导航
+     *
+     * @param appId
+     * @param name
+     * @return
+     */
+    ExecuteResult<ApplicationNavigationVo> getNavigation(String appId, String name);
 }
