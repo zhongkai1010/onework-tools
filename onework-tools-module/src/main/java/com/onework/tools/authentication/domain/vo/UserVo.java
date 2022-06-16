@@ -14,33 +14,7 @@ import lombok.Data;
 @Data
 public class UserVo implements Entity {
 
-    /**
-     * ID
-     */
     private String uid;
-
-    /**
-     * 用户名
-     */
     private String username;
-
-    /**
-     * 密码
-     */
     private String password;
-
-    /**
-     * 邮箱
-     */
-    private String mailbox;
-
-    /**
-     * 移动电话
-     */
-    private String mobilePhone;
-
-    /**
-     * 锁定状态
-     */
-    private Boolean lockState;
 }

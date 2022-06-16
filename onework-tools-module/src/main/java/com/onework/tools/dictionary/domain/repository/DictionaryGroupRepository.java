@@ -2,6 +2,8 @@ package com.onework.tools.dictionary.domain.repository;
 
 import com.onework.tools.dictionary.domain.vo.DictionaryGroupVo;
 
+import java.util.List;
+
 /**
  * @author : zhongkai1010@163.com
  * @version V1.0
@@ -13,12 +15,12 @@ import com.onework.tools.dictionary.domain.vo.DictionaryGroupVo;
 public interface DictionaryGroupRepository {
 
     /**
-     * 根据name获取字典组
+     * 根据code检索字典组
      *
-     * @param groupName
+     * @param code
      * @return
      */
-    DictionaryGroupVo getGroupByName(String groupName);
+    DictionaryGroupVo findGroupByCode(String code);
 
     /**
      * 根据id获取字典组
@@ -33,17 +35,27 @@ public interface DictionaryGroupRepository {
      *
      * @param group
      */
-    void addGroup(DictionaryGroupVo group);
+    void insertGroup(DictionaryGroupVo group);
 
     /**
      * 更新字典组
+     *
      * @param dictionaryGroup
      */
     void updateGroup(DictionaryGroupVo dictionaryGroup);
 
     /**
      * 删除字典组
+     *
      * @param groupId
      */
     void deleteGroup(String groupId);
+
+    /**
+     * 获取指定id的所有子集
+     *
+     * @param id
+     * @return
+     */
+    List<DictionaryGroupVo> getAllGroupChildren(String id);
 }

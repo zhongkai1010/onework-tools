@@ -3,7 +3,7 @@ package com.onework.tools.authentication.domain;
 import com.onework.tools.authentication.domain.vo.UserVo;
 import com.onework.tools.domain.entity.Entity;
 import com.onework.tools.domain.event.EntityApplicationEvent;
-import com.onework.tools.domain.event.EntityHandle;
+import com.onework.tools.domain.event.EntityHandler;
 
 /**
  * @author : zhongkai1010@163.com
@@ -13,7 +13,7 @@ import com.onework.tools.domain.event.EntityHandle;
  * @Description: 描述
  * @date Date : 2022年05月30日 14:57
  */
-public class UserEntityHandle implements EntityHandle {
+public class UserEntityHandle implements EntityHandler {
 
     @Override
     public Boolean isDo(EntityApplicationEvent applicationEvent) {

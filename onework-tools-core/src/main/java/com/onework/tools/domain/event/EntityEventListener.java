@@ -28,7 +28,7 @@ public class EntityEventListener implements ApplicationListener<EntityApplicatio
      */
     @Override
     public void onApplicationEvent(EntityApplicationEvent event) {
-        Map<String, EntityHandle> handleMap = applicationContext.getBeansOfType(EntityHandle.class);
+        Map<String, EntityHandler> handleMap = applicationContext.getBeansOfType(EntityHandler.class);
         handleMap.forEach((k, v) -> {
             if (v.isDo(event)) {
                 log.info("---------------do entity event is {}-------------------", k);

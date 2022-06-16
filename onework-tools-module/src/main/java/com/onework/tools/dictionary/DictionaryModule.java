@@ -1,7 +1,7 @@
 package com.onework.tools.dictionary;
 
 import com.onework.tools.ModuleEnum;
-import com.onework.tools.dictionary.domain.DictionaryDomainService;
+import com.onework.tools.dictionary.domain.DictionaryItemDomainService;
 import com.onework.tools.domain.entity.NameCodeValue;
 import com.onework.tools.domain.module.ModuleRegister;
 import com.onework.tools.error.ErrorMessage;
@@ -24,7 +24,7 @@ import java.util.List;
 public class DictionaryModule extends ModuleRegister {
 
     @Autowired
-    private DictionaryDomainService dictionaryDomainService;
+    private DictionaryItemDomainService dictionaryDomainService;
 
     @Override
     protected NameCodeValue getModuleNameCode() {

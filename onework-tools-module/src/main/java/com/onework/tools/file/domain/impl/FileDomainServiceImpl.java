@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.onework.tools.AppException;
 import com.onework.tools.Check;
 import com.onework.tools.ExecuteResult;
-import com.onework.tools.file.domain.FileCategoryManager;
-import com.onework.tools.file.domain.FileDomainService;
+import com.onework.tools.file.FileCategoryManager;
+import com.onework.tools.file.FileDomainService;
 import com.onework.tools.file.domain.event.FileCategoryEventPublisher;
 import com.onework.tools.file.domain.repository.FileAttachmentRepository;
 import com.onework.tools.file.domain.repository.FileCategoryRepository;
@@ -32,20 +32,37 @@ import java.util.Map;
 @Service
 public class FileDomainServiceImpl implements FileDomainService {
 
-    @Autowired
     private FileCategoryRepository fileCategoryRepository;
 
-    @Autowired
     private FileRepository fileRepository;
 
-    @Autowired
-    private FileCategoryManager fileCategoryManager;
-
-    @Autowired
     private FileAttachmentRepository fileAttachmentRepository;
 
-    @Autowired
     private FileCategoryEventPublisher fileCategoryEventPublisher;
+
+    public FileDomainServiceImpl() {
+
+    }
+
+    @Autowired
+    public FileDomainServiceImpl(FileCategoryRepository fileCategoryRepository, FileRepository fileRepository,
+       FileAttachmentRepository fileAttachmentRepository,
+        FileCategoryEventPublisher fileCategoryEventPublisher) {
+        this.fileRepository = fileRepository;
+        this.fileAttachmentRepository = fileAttachmentRepository;
+        this.fileCategoryEventPublisher = fileCategoryEventPublisher;
+        this.fileCategoryRepository = fileCategoryRepository;
+    }
+
+    @Override
+    public ExecuteResult<FileCategoryVo> getCategoryAsSave(FileCategoryVo fileCategory) {
+        FileCategoryVo fileCategoryVo = fileCategoryRepository.findFileCategoryByCode(fileCategory.getCode());
+        if (fileCategoryVo == null) {
+            fileCategoryRepository.addFileCategory(fileCategory);
+            return ExecuteResult.success(fileCategory);
+        }
+        return ExecuteResult.success(fileCategoryVo);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -78,7 +95,6 @@ public class FileDomainServiceImpl implements FileDomainService {
     public ExecuteResult<Boolean> updateCategoryConfig(String categoryId, Map<FileCategoryConfigType, String> config) {
         // 验证是否存在
         FileCategoryVo fileCategory = fileCategoryRepository.getFileCategory(categoryId);
-        Check.notNull(fileCategory, new AppException(""));
         // 更新配置
         Map<FileCategoryConfigType, String> fileCategoryConfigs = fileCategoryRepository.getCategoryConfig(categoryId);
         config.forEach((k, v) -> {
@@ -170,7 +186,7 @@ public class FileDomainServiceImpl implements FileDomainService {
         FileCategoryVo fileCategory = fileCategoryRepository.getFileCategory(file.getCategoryId());
         // 控制关联值
         fileAttachment.setFileName(file.getName());
-        fileAttachment.setCategoryId(file.getCategoryId());
+        fileAttachment.setCategoryId(fileCategory.getUid());
         fileAttachment.setObjectId(objectId);
         // 计算版本
         List<FileAttachmentVo> fileAttachmentVos = fileAttachmentRepository.getFileAttachmentByObject(objectId);

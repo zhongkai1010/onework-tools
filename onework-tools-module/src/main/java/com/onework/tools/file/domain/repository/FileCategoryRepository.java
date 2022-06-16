@@ -25,16 +25,46 @@ public interface FileCategoryRepository {
      */
     FileCategoryVo findFileCategoryByCode(String code);
 
+    /**
+     *
+     * @param fileCategory
+     */
     void addFileCategory(FileCategoryVo fileCategory);
 
+    /**
+     *
+     * @param categoryConfig
+     */
     void addCategoryConfig(FileCategoryConfigVo categoryConfig);
 
+    /**
+     *
+     * @param categoryId
+     * @return
+     */
     FileCategoryVo getFileCategory(String categoryId);
 
+    /**
+     *
+     * @param categoryId
+     * @return
+     */
     Map<FileCategoryConfigType, String> getCategoryConfig(String categoryId);
 
+    /**
+     *
+     * @param categoryId
+     * @param k
+     * @param v
+     */
     void updateCategoryConfigValue(String categoryId, FileCategoryConfigType k, String v);
 
+    /**
+     *
+     * @param categoryId
+     * @param k
+     * @param v
+     */
     void addCategoryConfigValue(String categoryId, FileCategoryConfigType k, String v);
 
     void deleteFileCategory(String categoryId);

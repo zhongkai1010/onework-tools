@@ -27,7 +27,7 @@ public interface DictionarySelectRepository {
      *
      * @param item
      */
-    void addItem(DictionarySelectVo item);
+    void insertItem(DictionarySelectVo item);
 
     /**
      * 根据字典项id查询字典项
@@ -58,4 +58,6 @@ public interface DictionarySelectRepository {
      * @param uid
      */
     void deleteItem(String uid);
+
+    List<DictionarySelectVo> getAllChildrenItem(String id);
 }

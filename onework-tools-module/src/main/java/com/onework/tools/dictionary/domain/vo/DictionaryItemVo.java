@@ -16,6 +16,7 @@ public class DictionaryItemVo implements Entity {
 
     private String uid;
     private String groupId;
+    private String groupName;
     private String name;
     private String value;
 }

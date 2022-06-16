@@ -1,6 +1,6 @@
 package com.onework.tools.application.domain.vo;
 
-import com.onework.tools.domain.entity.Entity;
+import com.onework.tools.domain.tree.vo.TreeNameNodeEntity;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @date Date : 2022年05月25日 11:21
  */
 @Data
-public class ApplicationNavigationVo implements Entity {
+public class ApplicationNavigationVo implements TreeNameNodeEntity {
 
     /**
      * 导航id

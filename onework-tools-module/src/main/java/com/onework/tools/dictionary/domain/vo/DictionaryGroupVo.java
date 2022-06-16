@@ -1,10 +1,8 @@
 package com.onework.tools.dictionary.domain.vo;
 
-import com.onework.tools.domain.entity.Entity;
 import com.onework.tools.domain.entity.NameCodeValue;
+import com.onework.tools.domain.tree.vo.TreeNameNodeEntity;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author : zhongkai1010@163.com
@@ -15,20 +13,21 @@ import javax.validation.constraints.NotNull;
  * @date Date : 2022年05月25日 15:44
  */
 @Data
-public class DictionaryGroupVo implements Entity, NameCodeValue {
+public class DictionaryGroupVo implements TreeNameNodeEntity, NameCodeValue {
 
     private String uid;
 
-    @NotNull
     private String name;
 
-    @NotNull
     private String code;
 
     private String defaultValue;
-    /**
-     * one、many
-     */
-    @NotNull
+
     private DictionaryGroupType type;
+
+    private String parentId;
+
+    private String parentName;
+
+    private String parentIds;
 }

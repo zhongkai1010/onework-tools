@@ -1,6 +1,6 @@
 package com.onework.tools.file.domain.event;
 
-import com.onework.tools.file.domain.FileCategoryManager;
+import com.onework.tools.file.FileCategoryManager;
 import com.onework.tools.file.domain.repository.FileCategoryRepository;
 import com.onework.tools.file.domain.vo.FileCategoryConfigType;
 import com.onework.tools.file.domain.vo.FileCategoryConfigVo;

@@ -110,7 +110,7 @@ public class App {
         ObjectMapper objectMapper = new ObjectMapper();
         Object model = null;
         try {
-            model = objectMapper.readValue(context,Object.class);
+            model = objectMapper.readValue(context, Object.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -139,13 +139,13 @@ public class App {
 
         generatorConfigValue.getPackageConfigValue()
             .setParent("com.onework.tools")
-            .setModuleName("file")
+            .setModuleName("dictionary")
             .setEntity("entity")
             .setMapper("mapper")
             .setService("service")
             .setServiceImpl("service.impl")
             .setPathInfo(new HashMap<OutputFile, String>(16) {private static final long serialVersionUID = -4418335994349371423L;{
-                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper/file"));
+                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper/dictionary"));
             }});
 
         generatorConfigValue.getTemplateConfigValue()
@@ -155,8 +155,12 @@ public class App {
             .setAddTablePrefix(new String[] { "ow_" })
             .setAddTableSuffix(new String[] { "s" })
             .setEnableCapitalMode(true)
-            .setLikeTable(new LikeTable("file"))
+            .setLikeTable(new LikeTable("dictionary"))
         .getEntityBuilder()
+//            .setConvertFileName(entityName-> {
+//                System.out.printf("------------------------- %s",entityName);
+//                return  entityName;
+//            })
             .setIdType(IdType.ASSIGN_ID)
             .setNaming(NamingStrategy.underline_to_camel)
             .setColumnNaming(NamingStrategy.underline_to_camel)

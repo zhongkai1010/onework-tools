@@ -1,6 +1,6 @@
 package com.onework.tools.dictionary.domain.vo;
 
-import com.onework.tools.domain.entity.Entity;
+import com.onework.tools.domain.tree.vo.TreeNameNodeEntity;
 import lombok.Data;
 
 /**
@@ -12,10 +12,11 @@ import lombok.Data;
  * @date Date : 2022年05月25日 15:46
  */
 @Data
-public class DictionarySelectVo implements Entity {
+public class DictionarySelectVo implements TreeNameNodeEntity {
 
     private String uid;
     private String groupId;
+    private String groupName;
     private String name;
     private String value;
     private String parentId;
