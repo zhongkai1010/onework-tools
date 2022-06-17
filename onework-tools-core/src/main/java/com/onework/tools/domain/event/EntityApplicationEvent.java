@@ -20,6 +20,7 @@ public class EntityApplicationEvent extends ApplicationEvent {
     @Getter
     private Entity entity;
 
+    @Getter
     private OperateType operate;
 
     public EntityApplicationEvent(Object source, Entity entity, OperateType operate) {

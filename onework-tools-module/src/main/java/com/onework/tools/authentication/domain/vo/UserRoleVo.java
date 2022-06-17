@@ -12,20 +12,25 @@ import lombok.Data;
  * @date Date : 2022年06月16日 16:07
  */
 @Data
-public class UserRoleVo   implements Entity {
+public class UserRoleVo implements Entity {
 
     /**
-     * ID
+     * id
      */
     private String uid;
 
     /**
-     *
+     * 用户id
      */
     private String userId;
 
     /**
-     *
+     * 角色id
      */
     private String roleId;
+
+    /**
+     * 角色名称
+     */
+    private String roleName;
 }

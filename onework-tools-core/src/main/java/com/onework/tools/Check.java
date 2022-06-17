@@ -18,7 +18,7 @@ public class Check {
 
     public static <T, E extends Throwable> void nullString(T value, E exception) throws E {
         if (value == null) {
-
+            throw exception;
         } else {
             if (value.equals("")) {
                 throw exception;

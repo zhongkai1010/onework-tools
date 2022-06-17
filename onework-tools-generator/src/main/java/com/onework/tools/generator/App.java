@@ -139,13 +139,13 @@ public class App {
 
         generatorConfigValue.getPackageConfigValue()
             .setParent("com.onework.tools")
-            .setModuleName("dictionary")
+            .setModuleName("authentication")
             .setEntity("entity")
             .setMapper("mapper")
             .setService("service")
             .setServiceImpl("service.impl")
             .setPathInfo(new HashMap<OutputFile, String>(16) {private static final long serialVersionUID = -4418335994349371423L;{
-                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper/dictionary"));
+                    put(OutputFile.mapperXml, System.getProperty("user.dir").concat("/onework-tools-module/src/main/resources/mapper/authentication"));
             }});
 
         generatorConfigValue.getTemplateConfigValue()
@@ -155,7 +155,7 @@ public class App {
             .setAddTablePrefix(new String[] { "ow_" })
             .setAddTableSuffix(new String[] { "s" })
             .setEnableCapitalMode(true)
-            .setLikeTable(new LikeTable("dictionary"))
+            .setLikeTable(new LikeTable("user"))
         .getEntityBuilder()
 //            .setConvertFileName(entityName-> {
 //                System.out.printf("------------------------- %s",entityName);

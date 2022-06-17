@@ -25,11 +25,6 @@ public class UserOrganizationVo implements Entity {
     private String userId;
 
     /**
-     * 组织id
-     */
-    private String organizationId;
-
-    /**
      * 人员id
      */
     private String personnelId;

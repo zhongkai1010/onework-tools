@@ -4,6 +4,8 @@ import com.onework.tools.authentication.domain.vo.UserVo;
 import com.onework.tools.domain.entity.Entity;
 import com.onework.tools.domain.event.EntityApplicationEvent;
 import com.onework.tools.domain.event.EntityHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 /**
  * @author : zhongkai1010@163.com
@@ -13,6 +15,8 @@ import com.onework.tools.domain.event.EntityHandler;
  * @Description: 描述
  * @date Date : 2022年05月30日 14:57
  */
+@Component
+@Slf4j
 public class UserEntityHandle implements EntityHandler {
 
     @Override
@@ -23,5 +27,6 @@ public class UserEntityHandle implements EntityHandler {
 
     @Override
     public void doHandle(EntityApplicationEvent applicationEvent) {
+        log.info("event update user %s", applicationEvent.getOperate());
     }
 }

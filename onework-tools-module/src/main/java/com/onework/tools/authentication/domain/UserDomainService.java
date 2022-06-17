@@ -36,10 +36,10 @@ public interface UserDomainService {
     /**
      * 删除用户
      *
-     * @param user
+     * @param id
      * @return
      */
-    ExecuteResult<Boolean> deleteUser(UserVo user);
+    ExecuteResult<Boolean> deleteUser(String id);
 
     /**
      * 设置用户角色
@@ -54,9 +54,9 @@ public interface UserDomainService {
      * 设置用户组织
      *
      * @param userid
-     * @param organizationId
+     *
      * @param personnelId
      * @return
      */
-    ExecuteResult<Boolean> setUserOrganization(String userid, String organizationId, String personnelId);
+    ExecuteResult<Boolean> setUserOrganization(String userid, String personnelId);
 }
