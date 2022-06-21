@@ -33,7 +33,7 @@
         <!-- Web 相关 -->
         <springdoc-openapi.version>1.6.6</springdoc-openapi.version>
         <!-- DB 相关 -->
-        <mysql.version>8.0.27</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <mssql.version>6.4.0.jre8</mssql.version>
         <druid.version>1.2.8</druid.version>
         <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
